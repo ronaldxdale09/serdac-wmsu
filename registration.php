@@ -345,7 +345,7 @@ $(document).ready(function() {
             e.preventDefault();
             // Set the form action to the desired URL
             $('#regForm').attr('action',
-            'function/registration.action.php'); // Corrected form ID
+                'function/registration.action.php'); // Corrected form ID
             // Show the loading overlay
             // $('#loadingOverlay').show();
             // Submit the form asynchronously using AJAX
@@ -362,7 +362,7 @@ $(document).ready(function() {
                         });
                         formnumber++; // Ensure this variable is defined elsewhere
                         shownname.innerHTML = username
-                        .value; // Ensure 'username' is defined
+                            .value; // Ensure 'username' is defined
 
                         updateform(); // Ensure this function is defined
                     } else {

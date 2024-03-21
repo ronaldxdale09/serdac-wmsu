@@ -214,7 +214,8 @@
                         <div class="col-lg-12">
                             <div class="item">
                                 <h3>Our Vision</h3>
-                                <p>To become the leading center for socio-economic research and development in Western Mindanao.</p>
+                                <p>To become the leading center for socio-economic research and development in Western
+                                    Mindanao.</p>
                                 <!-- <div class="main-button-yellow">
                                     <div class="scroll-to-section"><a href="#contact">Join Us Now!</a></div>
                                 </div> -->
@@ -401,8 +402,6 @@
         checkSection();
     });
     </script>
-</body>
-
 </body>
 
 </html>

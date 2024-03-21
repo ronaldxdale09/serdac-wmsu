@@ -16,6 +16,14 @@ if ($result->num_rows === 0) {
 } else {
     $user = $result->fetch_assoc();
 
+     // Check if the user's account is active
+     if ($user['isActive'] == 0) {
+        echo json_encode(["success" => false, "message" => "Please Activate your Account First"]);
+        $stmt->close();
+        mysqli_close($con);
+        exit; // Stop script execution after sending the message
+    }
+
     // Use password_verify to check the hashed password
     if (!password_verify($password, $user['password'])) {
         echo json_encode(["success" => false, "message" => "Invalid email or password!"]);

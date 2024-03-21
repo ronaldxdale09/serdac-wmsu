@@ -19,7 +19,7 @@ $province = $_POST['province'];
 $city = $_POST['city'];
 $barangay = $_POST['barangay'];
 $userType = 'Client'; 
-$isActive = 1; 
+$isActive = 0; 
 $activationCode = substr(str_shuffle(md5(microtime())), 0, 10);
 
 $query = "INSERT INTO `users` (activationCode,fname, midname, lname, contact_no, email, password, occupation, education_level, accessType, gender, zipcode, region, province, city, barangay, userType, isActive) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -36,7 +36,7 @@ if (mysqli_stmt_execute($stmt)) {
 
     
 // Usage
-$activationLink = 'https://localhost/serdac-wmsu/login.php?code=some_activation_code'; // Replace with actual activation link
+$activationLink = 'https://localhost/serdac-wmsu/login.php?code='.$activationCode; // Replace with actual activation link
 $userEmail = $email ;
 
 // sendActivationEmail($userEmail, $activationLink);

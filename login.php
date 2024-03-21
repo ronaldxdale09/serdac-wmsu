@@ -17,6 +17,10 @@ if (isset($_GET["code"])) {
     if ($result->num_rows > 0) {
         // Valid activation code
         $codeExists = true;
+
+        $stmt = $con->prepare("UPDATE users SET  `isActive` = 1 WHERE activationCode = ?");
+        $stmt->bind_param("s", $activationCode);
+        $stmt->execute();
     }
     $stmt->close();
 }
@@ -27,9 +31,9 @@ $con->close();
 
 <?php if ($codeExists): ?>
 <script>
-$(document).ready(function() {
-    $('#show-activate').removeAttr('hidden');
-});
+window.onload = function() {
+    document.getElementById('show-activate').style.display = 'block';
+};
 </script>
 <?php endif; ?>
 
@@ -62,7 +66,8 @@ $(document).ready(function() {
             <img src="assets/images/serdac.png" alt="School Logo 1" class="school-logo" />
             <img src="assets/images/wmsu.png" alt="School Logo 2" class="school-logo" />
         </div>
-        <div class="alert alert-success alert-dismissible fade show" role="alert" id="show-activate" hidden>
+        <div class="alert alert-success alert-dismissible fade show " style="display:none" role="alert"
+            id="show-activate">
             <strong>Activation Successful</strong> – Your account has been successfully activated. Welcome aboard!
         </div>
 
@@ -117,7 +122,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Login Failed',
-                    text: 'Incorrect email or password. Please try again.',
+                    text: data.message,
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'Try Again'
                 });
