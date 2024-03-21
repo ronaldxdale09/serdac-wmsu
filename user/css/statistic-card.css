@@ -1,0 +1,68 @@
+.stat-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: start;
+    /* Changed from center to start */
+    justify-content: space-between;
+    padding: 20px;
+    margin: 10px;
+    /* Ensure width is always 100% within its container */
+    height: 120px;
+    /* Set a fixed height */
+}
+
+.stat-card__icon {
+    font-size: 30px;
+    color: #333;
+    opacity: 0.7;
+}
+
+.stat-card__content h6 {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.stat-card__content p {
+    font-size: 20px;
+    color: #555;
+    margin: 0;
+}
+
+
+/* Existing CSS for the base icon color */
+
+.stat-card__icon {
+    font-size: 30px;
+    color: #333;
+    opacity: 0.7;
+}
+
+
+/* Colors for specific icons */
+
+.stat-card__icon--warning {
+    color: #f0ad4e;
+    /* Bootstrap's warning color */
+}
+
+.stat-card__icon--success {
+    color: #5cb85c;
+    /* Bootstrap's success color */
+}
+
+.stat-card__icon--danger {
+    color: #d9534f;
+    /* Bootstrap's danger color */
+}
+
+.stat-card__icon--primary {
+    color: #007bff;
+    /* Bootstrap's primary color */
+}
+
+.stat-card__icon--info {
+    color: #17a2b8;
+    /* Bootstrap's info color */
+}

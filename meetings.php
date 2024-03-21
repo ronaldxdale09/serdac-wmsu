@@ -1,31 +1,54 @@
 <?php include('include/header.php');?>
 
 <body>
+<style>
+/* Styles for the article image */
+.article-image {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 250px;
+}
 
-    <style>
-    .article-image {
-        background-size: cover;
-        /* Cover the entire area of the container */
-        background-position: center;
-        /* Center the image within the container */
-        background-repeat: no-repeat;
-        /* Do not repeat the image */
-        width: 100%;
-        /* Set the width to cover the container */
-        height: 250px;
-        /* Set a fixed height for consistency */
-        /* Use 'object-fit' if you are using 'img' tags instead of background images */
-    }
+/* Styles for the article image if using img tags */
+.article-image img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
 
-    .article-image img {
-        width: 100%;
-        /* Set the width to cover the container */
-        height: 250px;
-        /* Set a fixed height for consistency */
-        object-fit: cover;
-        /* Cover the entire area without stretching */
-    }
-    </style>
+/* Styles for the meeting item, which is the card container */
+.meeting-item {
+    width: 100%; /* Full width within its column */
+    height: auto; /* Height adjusts to content */
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+}
+
+/* Styles for the content area of the card */
+.meeting-item .down-content {
+    height: 150px; /* Fixed height for content area */
+    overflow: hidden; /* Hide overflow */
+}
+
+/* Styles for the title in the card */
+.meeting-item .down-content h4 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncate long titles */
+}
+
+/* Styles for the paragraph in the card */
+.meeting-item .down-content p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Show max 3 lines of text */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* Truncate long texts */
+}
+
+</style>
 
     <!-- Sub Header -->
     <?php include('include/navbar.php');?>
@@ -79,17 +102,19 @@
 
 
                                 <div class="row grid">
-
                                     <?php foreach ($articles as $article): ?>
-                                    <div class="col-lg-2 templatemo-item-col all <?php echo $article['type']; ?>">
+                                    <div
+                                        class="col-lg-2 templatemo-item-col all <?php echo htmlspecialchars($article['type']); ?>">
                                         <div class="meeting-item">
-                                            <div class="thumb article-image ">
+                                            <div class="thumb article-image">
                                                 <div class="price">
-                                                    <span><?php echo $article['type'];; ?></span>
+                                                    <span><?php echo htmlspecialchars($article['type']); ?></span>
                                                 </div>
-                                                <a href="article.php?id=<?= $article['article_id']; ?>"><img
-                                                        src="admin/images/article/<?php echo $article['image_path']; ?>"
-                                                        alt=""></a>
+                                                <a
+                                                    href="article.php?id=<?= htmlspecialchars($article['article_id']); ?>">
+                                                    <img src="admin/images/article/<?php echo htmlspecialchars($article['image_path']); ?>"
+                                                        alt="">
+                                                </a>
                                             </div>
                                             <div class="down-content">
                                                 <div class="date">
@@ -97,7 +122,8 @@
                                                         <span><?= date("d", strtotime($article['published_at'])); ?></span>
                                                     </h6>
                                                 </div>
-                                                <a href="article.php?id=<?= $article['article_id']; ?>">
+                                                <a
+                                                    href="article.php?id=<?= htmlspecialchars($article['article_id']); ?>">
                                                     <h4><?= htmlspecialchars($article['title']); ?></h4>
                                                 </a>
                                                 <p><?= substr(htmlspecialchars($article['content']), 0, 100) . '...'; ?>
@@ -107,6 +133,7 @@
                                     </div>
                                     <?php endforeach; ?>
                                 </div>
+
 
                             </div>
                         </div>

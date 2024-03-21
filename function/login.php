@@ -12,51 +12,29 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
-    echo json_encode(["success" => false, "message" => "Invalid Password!"]);
-
+    echo json_encode(["success" => false, "message" => "Invalid email or password!"]);
 } else {
     $user = $result->fetch_assoc();
-    if ($password !== $user['password']) {
-        echo json_encode(["success" => false, "message" => "Invalid Password!"]);
 
+    // Use password_verify to check the hashed password
+    if (!password_verify($password, $user['password'])) {
+        echo json_encode(["success" => false, "message" => "Invalid email or password!"]);
     } else {
-        $userType = $user['userType'];
-        $_SESSION["type"] = $userType;
+        $accessType = $user['accessType'];
         $_SESSION["fname"] = $user['fname'];
         $_SESSION["email"] = $email;
+        $_SESSION["userId_code"] =  $user['user_id'];
 
-       // Generate and store token
-        // $token = generateUserToken($user['user_id'], $con); // Pass the user's ID and $con
-        // setcookie("user_token", $token, time() + (86400 * 30), "/"); // Set the cookie
+        // Token generation and storage can be enabled here
 
-
-
-
-        if ($userType == 'Administrator') {
+        if ($accessType == 'Administrator') {
             echo json_encode(["success" => true, "redirect" => "admin/index.php"]);
-            // echo 'success';
+        } elseif ($accessType == 'Client') {
+            echo json_encode(["success" => true, "redirect" => "user/index.php"]);
         } 
     }
 }
 
 $stmt->close();
 mysqli_close($con);
-
-
-
-// function generateUserToken($user_id, $con) {
-//     $token = bin2hex(random_bytes(32)); // Generate a secure token
-
-//     // Store the token in the database with the user ID (implement this according to your database schema)
-//     $stmt = $con->prepare("UPDATE users SET token = ? WHERE user_id = ?");
-//     $stmt->bind_param("si", $token, $user_id);
-//     $stmt->execute();
-//     $stmt->close();
-
-//     return $token;
-// }
-
-
-
 ?>
-

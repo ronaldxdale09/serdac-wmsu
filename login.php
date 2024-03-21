@@ -1,24 +1,71 @@
 <!DOCTYPE html>
 <html>
+<?php 
+
+include('function/db.php');
+$codeExists = false;
+
+if (isset($_GET["code"])) {
+
+    $activationCode = $_GET['code'];
+    // Prepare a statement to avoid SQL injection
+    $stmt = $con->prepare("SELECT * FROM users WHERE activationCode = ?");
+    $stmt->bind_param("s", $activationCode);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        // Valid activation code
+        $codeExists = true;
+    }
+    $stmt->close();
+}
+$con->close();
+
+// After closing the PHP tag, place your HTML outside of PHP
+?>
+
+<?php if ($codeExists): ?>
+<script>
+$(document).ready(function() {
+    $('#show-activate').removeAttr('hidden');
+});
+</script>
+<?php endif; ?>
+
+.
+
+
+
+
 
 <head>
     <title>SERDAC-WMSU</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="css/login.css">
     <link rel="icon" type="image/x-icon" href="assets/images/serdac.ico">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+    integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
+</script>
 
 <body>
     <div class="wrapper">
+
         <div class="logos-container">
             <img src="assets/images/serdac.png" alt="School Logo 1" class="school-logo" />
             <img src="assets/images/wmsu.png" alt="School Logo 2" class="school-logo" />
         </div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert" id="show-activate" hidden>
+            <strong>Activation Successful</strong> – Your account has been successfully activated. Welcome aboard!
+        </div>
+
         <div class="headline">
 
             <h1>WELCOME<br>SERDAC-WMSU</h1>
@@ -68,11 +115,11 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
                 window.location.href = data.redirect;
             } else {
                 Swal.fire({
-                    icon: 'error', 
-                    title: 'Login Failed', 
-                    text: 'Incorrect email or password. Please try again.', 
-                    confirmButtonColor: '#3085d6', 
-                    confirmButtonText: 'Try Again' 
+                    icon: 'error',
+                    title: 'Login Failed',
+                    text: 'Incorrect email or password. Please try again.',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Try Again'
                 });
 
             }
