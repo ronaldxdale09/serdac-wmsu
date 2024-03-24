@@ -13,7 +13,7 @@ include('function/db.php'); // Path to your database connection
     <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-    <title>SERDAC</title>
+    <title>SERDAC-WMSU</title>
     <link rel="icon" type="image/x-icon" href="assets/images/serdac.ico">
 
    
