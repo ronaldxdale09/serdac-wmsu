@@ -39,7 +39,7 @@ if (mysqli_stmt_execute($stmt)) {
 $activationLink = 'https://localhost/serdac-wmsu/login.php?code='.$activationCode; // Replace with actual activation link
 $userEmail = $email ;
 
-// sendActivationEmail($userEmail, $activationLink);
+sendActivationEmail($userEmail, $activationLink);
 
 
 

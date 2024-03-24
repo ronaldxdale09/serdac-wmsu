@@ -93,7 +93,7 @@ window.onload = function() {
             </div>
             <button type="submit" class="btn">LOGIN</button>
             <div class="account-exist">
-                Create New a account? <a href="#" id="signup">Signup</a>
+                Create New a account? <a href="registration.php" id="signup">Signup</a>
             </div>
 
 

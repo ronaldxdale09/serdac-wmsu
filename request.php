@@ -11,7 +11,6 @@ if (isset($_SESSION["userId_code"])) {
 
     if ($result->num_rows > 0) {
         $record = $result->fetch_assoc();
-     
             echo "
             <script>
                 $(document).ready(function() {
@@ -20,15 +19,15 @@ if (isset($_SESSION["userId_code"])) {
                     $('#mname').val('".$record['midname']. "');
                     $('#lname').val('".$record['lname']. "');
                     $('#email').val('".$record['email']. "');
-                    $('#contact').val('".$record['contact_no']. "');
-
-                    
-
+                    $('#contact').val('".$record['contact_no']. "');               
                 });
             </script>
         ";
         }
-
+    }
+    else{
+        header("Location: login.php");
+        exit;
     }
 ?>
 

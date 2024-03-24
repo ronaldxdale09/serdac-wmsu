@@ -27,9 +27,9 @@
                             <p>The general objective of the project is to enhance socio-economic research in Luzon, the
                                 Visayas, and Mindanao through the establishment of satellite centers, as well as to
                                 continuously provide assistance to other research sectors.</p>
-                            <div class="main-button-red">
+                            <!-- <div class="main-button-red">
                                 <div class="scroll-to-section"><a href="#contact">Join Us Now!</a></div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

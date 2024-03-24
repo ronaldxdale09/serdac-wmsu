@@ -34,8 +34,8 @@
                         <li class="has-sub servnav">
                             <a href="javascript:void(0)">SERVICES</a>
                             <ul class="sub-menu">
-                                <li><a href="meetings.html">Data Analytics</a></li>
-                                <li><a href="meeting-details.html">Capability Training</a></li>
+                                <li><a href="request.php">REQUEST SERVICE</a></li>
+                                <!-- <li><a href="meeting-details.html">Capability Training</a></li> -->
 
                             </ul>
                         </li>
