@@ -133,8 +133,6 @@
                                     </div>
                                     <?php endforeach; ?>
                                 </div>
-
-
                             </div>
                         </div>
                         <div class="col-lg-12">

@@ -864,7 +864,6 @@ services
 */
 
 .services {
-    margin-top: -135px;
     position: absolute;
     width: 100%;
 }
@@ -979,88 +978,139 @@ services
 
 /*
 ---------------------------------------------
-about us
+upcoming meetings
 ---------------------------------------------
 */
 
-.section-title {
+section.upcoming-meetings {
+    background-image: url(../images/meetings-bg.jpg);
+    background-position: center center;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 220px;
+    /* This adds a gray border, you can adjust the color as needed */
+    padding-bottom: 90px;
+}
+
+section.upcoming-meetings .section-heading {
     text-align: center;
-    padding: 20px;
 }
 
-.section-title h2 {
-    color: #00B4D8;
-    margin-bottom: 0.5em;
-}
-
-.section-title p {
-    font-size: 1em;
-    line-height: 1.5;
-    margin-bottom: 20px;
-}
-
-.divider-bar {
-    background-color: #00B4D8;
-    height: 4px;
-    width: 60px;
-    margin: 10px auto;
-}
-
-.about-content {
-    display: flex;
-    flex-wrap: wrap;
-    /* Ensures that the items can wrap on smaller screens */
-    border-top: 1px solid #ccc;
-}
-
-.about-section {
-    flex: 1;
+section.upcoming-meetings .categories {
+    border: 3px solid #011639;
+    background-color: #fff;
+    border-radius: 20px;
     padding: 40px;
+    margin-right: 45px;
+}
+
+section.upcoming-meetings .categories h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f272b;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+section.upcoming-meetings .categories ul li {
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+section.upcoming-meetings .categories ul li a {
+    font-size: 15px;
+    color: #1f272b;
+    font-weight: 500;
+    transition: all .3s;
+}
+
+section.upcoming-meetings .categories ul li a:hover {
+    color: #a12c2f;
+}
+
+section.upcoming-meetings .categories .main-button-red {
+    border-top: 1px solid #eee;
+    padding-top: 30px;
+    margin-top: 15px;
+}
+
+section.upcoming-meetings .categories .main-button-red a {
+    width: 100%;
     text-align: center;
-    min-width: 250px;
-    /* Minimum width of a section */
 }
 
-
-/* Vertical dividers */
-
-.about-section:not(:last-child) {
-    border-right: 1px solid #ccc;
+.meeting-item {
+    margin-bottom: 30px;
 }
 
-.about-section h2 {
-    color: #00B4D8;
-    font-size: 1.5em;
-    margin-bottom: 10px;
+.meeting-item .thumb {
+    position: relative;
 }
 
-.about-section p {
-    font-size: 1em;
-    line-height: 1.5;
+.meeting-item .thumb img {
+    border: 1px solid #011639;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
 }
 
-.icon {
+.meeting-item .thumb .price {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+.meeting-item .thumb .price span {
+    font-size: 16px;
+    color: #1f272b;
+    font-weight: 600;
+    background-color: rgba(250, 250, 250, 0.9);
+    padding: 7px 12px;
+    border-radius: 10px;
+}
+
+.meeting-item .down-content {
+    border: 1px solid #011639;
+    background-color: #fff;
+    padding: 30px;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+}
+
+.meeting-item .down-content .date {
+    float: left;
+    text-align: center;
+    display: inline-block;
+    margin-right: 20px;
+}
+
+.meeting-item .down-content .date h6 {
+    font-size: 13px;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #a12c2f;
+}
+
+.meeting-item .down-content .date span {
     display: block;
-    font-size: 2em;
-    margin: 20px auto;
-    color: #00B4D8;
+    color: #1f272b;
+    font-size: 22px;
+    margin-top: 7px;
 }
 
+.meeting-item .down-content h4 {
+    font-size: 18px;
+    color: #1f272b;
+    font-weight: 600;
+    display: inline-block;
+    margin-bottom: 15px;
+}
 
-/* Responsive adjustments */
-
-@media (max-width: 768px) {
-    .about-section {
-        border-right: none;
-        /* Remove vertical dividers for smaller screens */
-        border-bottom: 1px solid #ccc;
-        /* Add horizontal dividers */
-        padding: 20px;
-    }
-    .about-section:last-child {
-        border-bottom: none;
-        /* Remove bottom border for the last section */
-    }
+.meeting-item .down-content p {
+    margin-left: 50px;
+    color: #1f272b;
+    font-size: 14px;
 }
 
 

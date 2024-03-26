@@ -1,4 +1,41 @@
 <?php include('include/header.php');?>
+<style>
+.carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+
+.carousel-slide {
+    display: none;
+    width: 100%;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    color: white;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.carousel-control-prev {
+    left: 10px;
+}
+
+.carousel-control-next {
+    right: 10px;
+}
+
+@media screen and (max-width: 767px) {}
+
+
+</style>
 
 <body>
     <!-- Sub Header -->
@@ -7,35 +44,70 @@
     <!-- ***** Header Area End ***** -->
 
     <!-- ***** Main Banner Area Start ***** -->
+
     <section class="section main-banner" id="top" data-section="section1">
-        <img src="assets/images/banner2.jpg" alt="Image Description" id="bg-video" />
+        <div id="newsCarousel" class="carousel-container">
+            <div class="carousel-slide">
+                <img src="assets/images/banner2.jpg" alt="Image Description" id="bg-video" />
 
 
-        <!-- School logos container -->
-        <div class="logos-container">
-            <img src="assets/images/serdac.png" alt="School Logo 1" class="school-logo" />
-            <img src="assets/images/wmsu.png" alt="School Logo 2" class="school-logo" />
-        </div>
+                <!-- School logos container -->
+                <div class="logos-container">
+                    <img src="assets/images/serdac.png" alt="School Logo 1" class="school-logo" />
+                    <img src="assets/images/wmsu.png" alt="School Logo 2" class="school-logo" />
+                </div>
 
-        <div class="video-overlay header-text">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="caption">
-                            <h6>Socio-Economic Research and Data Analytics Center</h6>
-                            <h2>WELCOME TO SERDAC-WMSU</h2>
-                            <p>The general objective of the project is to enhance socio-economic research in Luzon, the
-                                Visayas, and Mindanao through the establishment of satellite centers, as well as to
-                                continuously provide assistance to other research sectors.</p>
-                            <div class="main-button-red">
-                                <div class="scroll-to-section"><a href="#contact">Join Us Now!</a></div>
+                <div class="video-overlay header-text">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="caption">
+                                    <h6>Socio-Economic Research and Data Analytics Center</h6>
+                                    <h2>WELCOME TO SERDAC-WMSU</h2>
+                                    <p>The general objective of the project is to enhance socio-economic research in
+                                        Luzon, the
+                                        Visayas, and Mindanao through the establishment of satellite centers, as well as
+                                        to
+                                        continuously provide assistance to other research sectors.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="carousel-slide">
+                <img src="assets/images/meeting-02.jpg" alt="Image Description" id="bg-video" />
+
+
+                <!-- School logos container -->
+                <div class="logos-container">
+                    <img src="assets/images/serdac.png" alt="School Logo 1" class="school-logo" />
+                </div>
+
+                <div class="video-overlay header-text">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="caption">
+                                    <h6>Socio-Economic Research and Data Analytics Center</h6>
+                                    <h2>WELCOME TO SERDAC-WMSU</h2>
+                                    <p>The general objective of the project is to enhance socio-economic research in
+                                        Luzon, the
+                                        Visayas, and Mindanao through the establishment of satellite centers, as well as
+                                        to
+                                        continuously provide assistance to other research sectors.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ... other slides ... -->
         </div>
+        <a class="carousel-control-prev" onclick="moveSlide(-1)">&#10094;</a>
+        <a class="carousel-control-next" onclick="moveSlide(1)">&#10095;</a>
     </section>
+
     <!-- ***** Main Banner Area End ***** -->
 
     <section class="services">
@@ -84,324 +156,260 @@
         </div>
     </section>
 
-    <section class="upcoming-meetings" id="meetings">
+    <br> <br><br> <br><br> <br>
+    <div class="section-container">
+
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-heading">
-                        <h2 c>Upcoming Meetings</h2>
-                    </div>
+            <div class="section-title">
+                <h2>ABOUT US</h2>
+                <p>If you have any inquiries or wish to discuss how we can cater our services to your specific needs,
+                    don't hesitate to reach out to us. Our team at AetherIO is dedicated to providing comprehensive tech
+                    solutions and we value open, direct
+                    communication with our clients. We're here to navigate the complexities of the digital world with
+                    you.</p>
+            </div>
+
+            <div class="about-content">
+                <div class="about-section">
+                    <span class="icon">🎯</span> <!-- Replace with actual icons or images -->
+                    <h2>Mission</h2>
+                    <p>Provide access to genuine socio-economic tools, cutting edge data analytics and relevant capacity
+                        development for quality research to generate inputs for policy makers that can enhance people’s
+                        welfare.</p>
                 </div>
-                <div class="col-lg-4">
-                    <div class="categories">
-                        <h4>Meeting Catgories</h4>
-                        <ul>
-                            <li><a href="#">Sed tempus enim leo</a></li>
-                            <li><a href="#">Aenean molestie quis</a></li>
-                            <li><a href="#">Cras et metus vestibulum</a></li>
-                            <li><a href="#">Nam et condimentum</a></li>
-                            <li><a href="#">Phasellus nec sapien</a></li>
-                        </ul>
-                        <div class="main-button-red">
-                            <a href="meetings.html">All Upcoming Meetings</a>
-                        </div>
-                    </div>
+
+                <div class="about-section">
+                    <span class="icon">💡</span> <!-- Replace with actual icons or images -->
+                    <h2>Vision</h2>
+                    <p>To become the leading center for socio-economic research and data analytics in Luzon.</p>
                 </div>
-                <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="meeting-item">
-                                <div class="thumb">
-                                    <div class="price">
-                                        <span>$22.00</span>
-                                    </div>
-                                    <a href="meeting-details.html"><img src="assets/images/meeting-01.jpg"
-                                            alt="New Lecturer Meeting"></a>
-                                </div>
-                                <div class="down-content">
-                                    <div class="date">
-                                        <h6>Nov <span>10</span></h6>
-                                    </div>
-                                    <a href="meeting-details.html">
-                                        <h4>New Lecturers Meeting</h4>
-                                    </a>
-                                    <p>Morbi in libero blandit lectus<br>cursus ullamcorper.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="meeting-item">
-                                <div class="thumb">
-                                    <div class="price">
-                                        <span>$36.00</span>
-                                    </div>
-                                    <a href="meeting-details.html"><img src="assets/images/meeting-02.jpg"
-                                            alt="Online Teaching"></a>
-                                </div>
-                                <div class="down-content">
-                                    <div class="date">
-                                        <h6>Nov <span>24</span></h6>
-                                    </div>
-                                    <a href="meeting-details.html">
-                                        <h4>Online Teaching Techniques</h4>
-                                    </a>
-                                    <p>Mrbi in libero blandit lectus<br>cursus ullamcorper.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="meeting-item">
-                                <div class="thumb">
-                                    <div class="price">
-                                        <span>$14.00</span>
-                                    </div>
-                                    <a href="meeting-details.html"><img src="assets/images/meeting-03.jpg"
-                                            alt="Higher Education"></a>
-                                </div>
-                                <div class="down-content">
-                                    <div class="date">
-                                        <h6>Nov <span>26</span></h6>
-                                    </div>
-                                    <a href="meeting-details.html">
-                                        <h4>Higher Education Conference</h4>
-                                    </a>
-                                    <p>Morbi in libero blandit lectus<br>cursus ullamcorper.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="meeting-item">
-                                <div class="thumb">
-                                    <div class="price">
-                                        <span>$48.00</span>
-                                    </div>
-                                    <a href="meeting-details.html"><img src="assets/images/meeting-04.jpg"
-                                            alt="Student Training"></a>
-                                </div>
-                                <div class="down-content">
-                                    <div class="date">
-                                        <h6>Nov <span>30</span></h6>
-                                    </div>
-                                    <a href="meeting-details.html">
-                                        <h4>Student Training Meetup</h4>
-                                    </a>
-                                    <p>Morbi in libero blandit lectus<br>cursus ullamcorper.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+                <div class="about-section">
+                    <span class="icon">🏆</span> <!-- Replace with actual icons or images -->
+                    <h2>Goals</h2>
+                        <p>To enhance the capacity of socio-economic researchers in Luzon and tap the potential of the
+                            socio-economic R&D sector in providing technical assistance to the other research sectors
+                            (e.g.,
+                            crops, livestock, forestry, and fishery).</p>
                 </div>
             </div>
+
         </div>
-    </section>
+</body>
 
-    <section class="apply-now" id="apply">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 align-self-center">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="item">
-                                <h3>Our Mission</h3>
-                                <p>Provide access to genuine socio-economic tools, cutting edge data analytics and
-                                    relevant capacity development for quality research to generate inputs for policy
-                                    makers that can enhance people’s welfare.</p>
-                                <!-- <div class="main-button-red">
-                                    <div class="scroll-to-section"><a href="#contact">Join Us Now!</a></div>
-                                </div> -->
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="item">
-                                <h3>Our Vision</h3>
-                                <p>To become the leading center for socio-economic research and development in Western
-                                    Mindanao.</p>
-                                <!-- <div class="main-button-yellow">
-                                    <div class="scroll-to-section"><a href="#contact">Join Us Now!</a></div>
-                                </div> -->
-                            </div>
-                        </div>
+</html>
+</div>
+
+
+
+<section id="contact" class="contact">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+            <h2>Contact</h2>
+            <p>If you have any inquiries or wish to discuss how we can cater our services to your specific needs,
+                don't hesitate to reach out to us. Our team at AetherIO is dedicated to providing comprehensive tech
+                solutions and we value open, direct
+                communication with our clients. We're here to navigate the complexities of the digital world with
+                you.</p>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-lg-5 d-flex align-items-stretch">
+                <div class="info">
+                    <div class="address">
+                        <i class="bi bi-geo-alt"></i>
+                        <h4>Location:</h4>
+                        <p>Veterans Drive, Lamitan City, Basilan Province</p>
                     </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="accordions is-first-expanded">
-                        <article class="accordion">
-                            <div class="accordion-head">
-                                <span>What is WMSU-SERDAC?</span>
-                                <span class="icon">
-                                    <i class="icon fa fa-chevron-right"></i>
-                                </span>
-                            </div>
-                            <div class="accordion-body">
-                                <div class="content">
-                                    <p>The demand for socio-economic research in the university and other regions in
-                                        Mindanao are increasing, therefore, enhancing the technology that will help its
-                                        result to be more accurate is desirable. The need to strengthen socio-economic
-                                        research was address by establishing a facility called Socio-Economic Research
-                                        Center and Data Analytics Center (SERDAC).</p>
-                                </div>
-                            </div>
-                        </article>
-                        <article class="accordion is-first-expanded">
-                            <div class="accordion-head">
-                                <span>Our Objectives</span>
-                                <span class="icon">
-                                    <i class="icon fa fa-chevron-right"></i>
-                                </span>
-                            </div>
-                            <div class="accordion-body">
-                                <div class="content">
-                                    <p>WMSU-SERDAC generally aims to enhance the capacity of socio-economic researchers
-                                        in Mindanao and tap the potential of the socio-economic R&D sector in providing
-                                        technical assistance to the other research sectors (e.g. crops, livestock,
-                                        forestry, and fishery).</p>
-                                </div>
-                            </div>
-                        </article>
 
-
+                    <div class="email">
+                        <i class="bi bi-envelope"></i>
+                        <h4>Email:</h4>
+                        <p>business@aetherio.tech</p>
                     </div>
+
+                    <div class="phone">
+                        <i class="bi bi-phone"></i>
+                        <h4>Call:</h4>
+                        <p>+63 935 2232 051</p>
+                    </div>
+
+                    <iframe <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3962.8919974525347!2d122.14191481477147!3d6.660305395184244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMzknMzcuMSJOIDEyMsKwMDgnMzguOCJF!5e0!3m2!1sen!2sph!4v1690030559152!5m2!1sen!2sph"
+                        frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
                 </div>
+
             </div>
-        </div>
-    </section>
 
+            <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+                <form method="post" action="contact.php" role="form" id="contactForm" class="php-email-form">
 
-
-
-    <section class="contact-us" id="contact">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 align-self-center">
                     <div class="row">
-                        <div class="col-lg-12">
-                            <form id="contact" action="" method="post">
-                                <div class="row">
-                                    <div class="col-lg-12">
-                                        <h2>Let's get in touch</h2>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <fieldset>
-                                            <input name="name" type="text" id="name" placeholder="YOURNAME...*"
-                                                required="">
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <fieldset>
-                                            <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*"
-                                                placeholder="YOUR EMAIL..." required="">
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-4">
-                                        <fieldset>
-                                            <input name="subject" type="text" id="subject" placeholder="SUBJECT...*"
-                                                required="">
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <fieldset>
-                                            <textarea name="message" type="text" class="form-control" id="message"
-                                                placeholder="YOUR MESSAGE..." required=""></textarea>
-                                        </fieldset>
-                                    </div>
-                                    <div class="col-lg-12">
-                                        <fieldset>
-                                            <button type="submit" id="form-submit" class="button">SEND MESSAGE
-                                                NOW</button>
-                                        </fieldset>
-                                    </div>
-                                </div>
-                            </form>
+                        <div class="form-group col-md-6">
+                            <label for="name">Your Name</label>
+                            <input type="text" name="name" class="form-control" id="name" required>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="name">Your Email</label>
+                            <input type="email" class="form-control" name="email" id="email" required>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="right-info">
-                        <ul>
-                            <li>
-                                <h6>Phone Number</h6>
-                                <span>0917 109 8164</span>
-                            </li>
-                            <li>
-                                <h6>Email Address</h6>
-                                <span>wmsuserdac@wmsu.edu.ph</span>
-                            </li>
-                            <li>
-                                <h6>Street Address</h6>
-                                <span>Ground Floor, Research Building,
-                                    WMSU,
-                                    Normal Road, Baliwasan,
-                                    Zamboanga City 7000 Philippines</span>
-                            </li>
-
-                        </ul>
+                    <div class="form-group">
+                        <label for="name">Mobile</label>
+                        <input type="text" name="mobile" class="form-control" id="mobile" required>
                     </div>
-                </div>
+                    <div class="form-group">
+                        <label for="name">Subject</label>
+                        <input type="text" class="form-control" name="subject" id="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="name">Message</label>
+                        <textarea class="form-control" name="message" rows="10" required></textarea>
+                    </div>
+                    <div class="my-3">
+                        <div class="loading">Loading</div>
+                        <div class="error-message"></div>
+                        <div class="sent-message">Your message has been sent. Thank you!</div>
+                    </div>
+                    <div class="text-center"><button type="submit" name="submit">Send Message</button></div>
+                </form>
+
             </div>
+
         </div>
 
-        <?php include('include/footer.php');?>
-    </section>
-
-    <!-- Scripts -->
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <script src="assets/js/isotope.min.js"></script>
-    <script src="assets/js/owl-carousel.js"></script>
-    <script src="assets/js/lightbox.js"></script>
-    <script src="assets/js/tabs.js"></script>
-    <script src="assets/js/video.js"></script>
-    <script src="assets/js/slick-slider.js"></script>
-    <script src="assets/js/custom.js"></script>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-    //according to loftblog tut
-    $('.nav li:first').addClass('active');
+    $(document).ready(function() {
+        $('#contactForm').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr('action');
 
-    var showSection = function showSection(section, isAnimate) {
-        var
-            direction = section.replace(/#/, ''),
-            reqSection = $('.section').filter('[data-section="' + direction + '"]'),
-            reqSectionPos = reqSection.offset().top - 0;
-
-        if (isAnimate) {
-            $('body, html').animate({
-                    scrollTop: reqSectionPos
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status === 'success') {
+                        $('.sent-message').text(data.message).show();
+                        $('.error-message').hide();
+                    } else {
+                        $('.error-message').text(data.message).show();
+                        $('.sent-message').hide();
+                    }
+                    form[0].reset();
                 },
-                800);
-        } else {
-            $('body, html').scrollTop(reqSectionPos);
-        }
-
-    };
-
-    var checkSection = function checkSection() {
-        $('.section').each(function() {
-            var
-                $this = $(this),
-                topEdge = $this.offset().top - 80,
-                bottomEdge = topEdge + $this.height(),
-                wScroll = $(window).scrollTop();
-            if (topEdge < wScroll && bottomEdge > wScroll) {
-                var
-                    currentId = $this.data('section'),
-                    reqLink = $('a').filter('[href*=\\#' + currentId + ']');
-                reqLink.closest('li').addClass('active').
-                siblings().removeClass('active');
-            }
+                error: function() {
+                    $('.error-message').text(
+                            'An unexpected error occurred. Please try again later.')
+                        .show();
+                    $('.sent-message').hide();
+                }
+            });
         });
-    };
-
-    $('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function(e) {
-        e.preventDefault();
-        showSection($(this).attr('href'), true);
-    });
-
-    $(window).scroll(function() {
-        checkSection();
     });
     </script>
+
+</section>
+<?php include('include/footer.php')?>
+
+
+<!-- Scripts -->
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="assets/js/isotope.min.js"></script>
+<script src="assets/js/owl-carousel.js"></script>
+<script src="assets/js/lightbox.js"></script>
+<script src="assets/js/tabs.js"></script>
+<script src="assets/js/video.js"></script>
+<script src="assets/js/slick-slider.js"></script>
+<script src="assets/js/custom.js"></script>
+<script>
+let currentSlideIndex = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+
+function showSlide(index) {
+    if (index >= slides.length) currentSlideIndex = 0;
+    else if (index < 0) currentSlideIndex = slides.length - 1;
+    else currentSlideIndex = index;
+
+    slides.forEach(slide => {
+        slide.classList.remove('active');
+        slide.style.display = 'none';
+    });
+
+    slides[currentSlideIndex].style.display = 'block';
+    setTimeout(() => slides[currentSlideIndex].classList.add('active'), 10);
+}
+
+function moveSlide(step) {
+    showSlide(currentSlideIndex + step);
+}
+
+function autoMoveSlide() {
+    moveSlide(1);
+}
+
+showSlide(currentSlideIndex);
+setInterval(autoMoveSlide, 5000);
+
+
+
+
+//according to loftblog tut
+$('.nav li:first').addClass('active');
+
+var showSection = function showSection(section, isAnimate) {
+    var
+        direction = section.replace(/#/, ''),
+        reqSection = $('.section').filter('[data-section="' + direction + '"]'),
+        reqSectionPos = reqSection.offset().top - 0;
+
+    if (isAnimate) {
+        $('body, html').animate({
+                scrollTop: reqSectionPos
+            },
+            800);
+    } else {
+        $('body, html').scrollTop(reqSectionPos);
+    }
+
+};
+
+var checkSection = function checkSection() {
+    $('.section').each(function() {
+        var
+            $this = $(this),
+            topEdge = $this.offset().top - 80,
+            bottomEdge = topEdge + $this.height(),
+            wScroll = $(window).scrollTop();
+        if (topEdge < wScroll && bottomEdge > wScroll) {
+            var
+                currentId = $this.data('section'),
+                reqLink = $('a').filter('[href*=\\#' + currentId + ']');
+            reqLink.closest('li').addClass('active').
+            siblings().removeClass('active');
+        }
+    });
+};
+
+$('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function(e) {
+    e.preventDefault();
+    showSection($(this).attr('href'), true);
+});
+
+$(window).scroll(function() {
+    checkSection();
+});
+</script>
 </body>
 
 </html>
