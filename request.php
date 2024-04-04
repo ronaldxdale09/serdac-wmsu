@@ -11,7 +11,6 @@ if (isset($_SESSION["userId_code"])) {
 
     if ($result->num_rows > 0) {
         $record = $result->fetch_assoc();
-     
             echo "
             <script>
                 $(document).ready(function() {
@@ -20,15 +19,15 @@ if (isset($_SESSION["userId_code"])) {
                     $('#mname').val('".$record['midname']. "');
                     $('#lname').val('".$record['lname']. "');
                     $('#email').val('".$record['email']. "');
-                    $('#contact').val('".$record['contact_no']. "');
-
-                    
-
+                    $('#contact').val('".$record['contact_no']. "');               
                 });
             </script>
         ";
         }
-
+    }
+    else{
+        header("Location: login.php");
+        exit;
     }
 ?>
 
@@ -36,36 +35,7 @@ if (isset($_SESSION["userId_code"])) {
     <?php include('include/navbar.php');?>
     <!-- ***** Header Area End ***** -->
     <link rel="stylesheet" href="assets/css/request.css">
-    <style>
-    .form-group {
-        margin-bottom: 10px;
-    }
-
-    .form-group label {
-        font-weight: bold;
-        display: block;
-        margin-bottom: 5px;
-    }
-
-    .form-group input[type="text"],
-    .form-group textarea {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-    }
-
-    .required::after {
-        content: "*";
-        color: red;
-    }
-
-    .check {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-    </style>
+  
 
     <section class="meetings-page" id="meetings">
 
@@ -321,7 +291,7 @@ if (isset($_SESSION["userId_code"])) {
     <script src="assets/js/lightbox.js"></script>
     <script src="assets/js/tabs.js"></script>
     <script src="assets/js/video.js"></script>
-    <script src="assets/js/slick-slider.js"></script>>
+    <script src="assets/js/slick-slider.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         var serviceCards = document.querySelectorAll('.radio-group .radio');

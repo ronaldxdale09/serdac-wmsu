@@ -34,8 +34,8 @@
                         <li class="has-sub servnav">
                             <a href="javascript:void(0)">SERVICES</a>
                             <ul class="sub-menu">
-                                <li><a href="meetings.html">Data Analytics</a></li>
-                                <li><a href="meeting-details.html">Capability Training</a></li>
+                                <li><a href="request.php">REQUEST SERVICE</a></li>
+                                <!-- <li><a href="meeting-details.html">Capability Training</a></li> -->
 
                             </ul>
                         </li>
@@ -46,7 +46,15 @@
                         // Check if the session variable exists and has data
                         if (isset($_SESSION["userId_code"]) && !empty($_SESSION["userId_code"])) {
                             // If data exists in the session, show 'PORTAL' link
-                            echo '<li><a href="user/index.php"><i class="fas fa-user"></i> PORTAL </a></li>';
+                            if (($_SESSION["accessType"]) == 'Administrator') 
+                            {
+                                echo '<li><a href="admin/index.php"><i class="fas fa-user"></i> PORTAL </a></li>';
+
+                            }
+                            else {
+                                echo '<li><a href="profile.php"><i class="fas fa-user"></i> PROFILE </a></li>';
+
+                            }
                         } else {
                             // If no data in the session, show 'LOGIN' link
                             echo '<li><a href="login.php"><i class="fas fa-sign-in-alt"></i> LOGIN </a></li>';

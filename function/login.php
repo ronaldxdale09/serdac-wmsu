@@ -32,13 +32,14 @@ if ($result->num_rows === 0) {
         $_SESSION["fname"] = $user['fname'];
         $_SESSION["email"] = $email;
         $_SESSION["userId_code"] =  $user['user_id'];
+        $_SESSION["accessType"] = $user['accessType'];
 
         // Token generation and storage can be enabled here
 
         if ($accessType == 'Administrator') {
             echo json_encode(["success" => true, "redirect" => "admin/index.php"]);
         } elseif ($accessType == 'Client') {
-            echo json_encode(["success" => true, "redirect" => "user/index.php"]);
+            echo json_encode(["success" => true, "redirect" => "profile.php"]);
         } 
     }
 }

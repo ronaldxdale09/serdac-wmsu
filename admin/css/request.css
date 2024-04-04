@@ -1,0 +1,51 @@
+.invite-code-container {
+    text-align: center;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: auto;
+}
+
+.invite-code-header {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 4px;
+}
+
+.invite-code-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2f7;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 18px;
+    color: #007bff;
+    margin-bottom: 8px;
+    width: auto;
+}
+
+.invite-code-box .copy-btn {
+    background: transparent;
+    border: none;
+    color: #333;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+.invite-instruction {
+    font-size: 14px;
+    color: #666;
+    margin-top: 4px;
+}
+
+#qrCode {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* Set the width to 100% of the container */
+    margin-top: 15px;
+}

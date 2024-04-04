@@ -10,19 +10,18 @@ $office_agency = $_POST['office_agency'];
 $agency_classification = $_POST['agency_classification'];
 $client_type = $_POST['client_type'];
 $purpose = $_POST['purpose'];
-
-
+$status = "Pending";
 // Prepare SQL query to insert service request into the database
-$query = "INSERT INTO `service_request` (user_id,service_type, office_agency, agency_classification, client_type, purpose) VALUES (?,?, ?, ?, ?, ?)";
+$query = "INSERT INTO `service_request` (status,user_id,service_type, office_agency, agency_classification, client_type, purpose) VALUES (?,?,?, ?, ?, ?, ?)";
 
 $stmt = mysqli_prepare($con, $query);
 
 // Bind parameters and execute
-mysqli_stmt_bind_param($stmt, "ssssss", $user_id,$service_type, $office_agency, $agency_classification, $client_type, $purpose);
+mysqli_stmt_bind_param($stmt, "sssssss", $status, $user_id,$service_type, $office_agency, $agency_classification, $client_type, $purpose);
 
 if (mysqli_stmt_execute($stmt)) {
     echo "Service request submitted successfully";
-    sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $purpose);
+    // sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $purpose);
 
 } else {
     // Handle errors

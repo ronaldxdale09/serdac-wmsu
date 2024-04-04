@@ -1,54 +1,140 @@
 <?php include('include/header.php');?>
 
 <body>
-<style>
-/* Styles for the article image */
-.article-image {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    width: 100%;
-    height: 250px;
-}
+    <style>
+    .article-card {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        border: 2px solid #666;
+        width: 350px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between
+            /* Organizes content vertically */
+    }
 
-/* Styles for the article image if using img tags */
-.article-image img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-}
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        /* Adjusted to space-between */
+        align-items: stretch;
+    }
 
-/* Styles for the meeting item, which is the card container */
-.meeting-item {
-    width: 100%; /* Full width within its column */
-    height: auto; /* Height adjusts to content */
-    display: flex;
-    flex-direction: column; /* Stack elements vertically */
-}
 
-/* Styles for the content area of the card */
-.meeting-item .down-content {
-    height: 150px; /* Fixed height for content area */
-    overflow: hidden; /* Hide overflow */
-}
+    .col-md-4 {
+        display: flex;
+        flex: 0 0 auto;
+        /* Override flex-grow to prevent stretching */
+        width: 350px;
+        /* Fixed width; can be adjusted as necessary */
+        margin: 10px;
+        /* Keep or adjust the margin as necessary */
+    }
 
-/* Styles for the title in the card */
-.meeting-item .down-content h4 {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Truncate long titles */
-}
+    .article-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
 
-/* Styles for the paragraph in the card */
-.meeting-item .down-content p {
-    display: -webkit-box;
-    -webkit-line-clamp: 3; /* Show max 3 lines of text */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis; /* Truncate long texts */
-}
+    .article-image {
+        width: 100%;
+        position: relative;
 
-</style>
+        height: 150px;
+        /* Reduced height */
+        background-size: cover;
+        background-position: center;
+    }
+
+    .article-body {
+        flex-grow: 1;
+        /* Makes the article body expand to fill available space */
+
+        background-color: aliceblue;
+        padding: 12px;
+        /* Reduced padding */
+    }
+
+    .article-title {
+        font-size: 16px;
+        /* Adjusted font size */
+        font-weight: bold;
+    }
+
+    .article-date {
+        font-size: 13px;
+        /* Adjusted font size */
+        color: #666;
+        margin-bottom: 8px;
+    }
+
+    .article-summary {
+        font-size: 13px;
+        /* Adjusted font size */
+        margin-bottom: 10px;
+    }
+
+    .article-buttons .btn {
+        margin-right: 5px;
+        padding: 5px 10px;
+        /* Reduced padding */
+        font-size: 13px;
+        /* Adjusted font size */
+    }
+
+    .article-status {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
+    .article-footer {
+        background-color: #ededed;
+        margin-top: auto;
+        /* Pushes the footer to the bottom */
+        padding: 10px;
+        /* Match the padding of the body if necessary */
+    }
+
+    .article-buttons {
+        text-align: center;
+        /* Aligns the buttons to the right */
+    }
+
+    .article-status.published {
+        background-color: #28a745;
+        /* Green for published articles */
+    }
+
+    .article-status.draft {
+        background-color: #ffc107;
+        /* Yellow for draft articles */
+    }
+
+    @media (max-width: 768px) {
+        .row {
+            grid-template-columns: repeat(2, 1fr);
+            /* 2 columns for smaller screens */
+        }
+    }
+
+    @media (max-width: 576px) {
+        .row {
+            grid-template-columns: 1fr;
+            /* 1 column for extra small screens */
+        }
+    }
+    </style>
+
 
     <!-- Sub Header -->
     <?php include('include/navbar.php');?>
@@ -85,55 +171,61 @@
                                 </ul>
                             </div>
                         </div>
-                        <?php
-                        $articles = [];
-                        $query = "SELECT * FROM articles ORDER BY published_at DESC";
-                        $result = mysqli_query($con, $query);
-
-                        if ($result) {
-                            while($row = mysqli_fetch_assoc($result)) {
-                                $articles[] = $row;
-                            }
-                        }
-                        ?>
 
                         <div class="col-lg-12">
-                            <div class="row grid">
+                            <div class="row">
 
 
-                                <div class="row grid">
+
+                                <?php 
+                                                $articles = [];
+                                                $query = "SELECT * FROM articles ORDER BY published_at DESC";
+                                                $result = mysqli_query($con, $query);
+
+                                                if ($result) {
+                                                    while($row = mysqli_fetch_assoc($result)) {
+                                                        $articles[] = $row;
+                                                    }
+                                                }
+                                                ?>
+                                <div class="row">
                                     <?php foreach ($articles as $article): ?>
-                                    <div
-                                        class="col-lg-2 templatemo-item-col all <?php echo htmlspecialchars($article['type']); ?>">
-                                        <div class="meeting-item">
-                                            <div class="thumb article-image">
-                                                <div class="price">
-                                                    <span><?php echo htmlspecialchars($article['type']); ?></span>
-                                                </div>
-                                                <a
-                                                    href="article.php?id=<?= htmlspecialchars($article['article_id']); ?>">
-                                                    <img src="admin/images/article/<?php echo htmlspecialchars($article['image_path']); ?>"
-                                                        alt="">
-                                                </a>
+                                    <div class="col-md-4">
+                                        <div class="article-card">
+                                            <div class="article-image"
+                                                style="background-image: url('admin/images/article/<?= $article['image_path']; ?>');">
+                                                <span class="article-status bg-primary ">
+                                                    <?= htmlspecialchars($article['type']); ?>
+
+                                                </span>
                                             </div>
-                                            <div class="down-content">
-                                                <div class="date">
-                                                    <h6><?= date("M", strtotime($article['published_at'])); ?>
-                                                        <span><?= date("d", strtotime($article['published_at'])); ?></span>
-                                                    </h6>
+                                            <div class="article-body">
+                                                <div class="article-title">
+                                                    <?= htmlspecialchars($article['title']); ?>
                                                 </div>
-                                                <a
-                                                    href="article.php?id=<?= htmlspecialchars($article['article_id']); ?>">
-                                                    <h4><?= htmlspecialchars($article['title']); ?></h4>
-                                                </a>
-                                                <p><?= substr(htmlspecialchars($article['content']), 0, 100) . '...'; ?>
-                                                </p>
+                                                <div class="article-date">Published on:
+                                                    <?= $article['published_at']; ?>
+                                                </div>
+                                                <div class="article-summary">
+                                                <?= substr(htmlspecialchars(strip_tags($article['content'])), 0, 100) . '...'; ?>
+                                                </div>
+                                            </div>
+                                            <div class="article-footer">
+                                                <div class="article-buttons">
+                                                    <a href="article.php?id=<?= $article['article_id']; ?>"
+                                                        target="_blank" class="btn btn-dark btn-sm">
+                                                        <i class="fas fa-eye"> VIEW</i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+
                                     <?php endforeach; ?>
                                 </div>
-                            </div>
+
+
+                            </div><!-- .animated -->
                         </div>
                         <div class="col-lg-12">
                             <div class="pagination">
@@ -149,6 +241,7 @@
                 </div>
             </div>
         </div>
+        <br> <Br>
 
         <?php include('include/footer.php');?>
     </section>

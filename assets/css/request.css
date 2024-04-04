@@ -265,3 +265,99 @@ button {
     content: "*";
     color: red;
 }
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.required::after {
+    content: "*";
+    color: red;
+}
+
+.check {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sub-desc {
+    font-size: 18px;
+    /* Increases the font size */
+    font-weight: bold;
+    /* Makes the text bold */
+    color: #6c0505;
+    /* Sets a darker color for better readability */
+    margin: 10px 0;
+    /* Adds some space around the paragraph */
+    text-align: center;
+    /* Centers the text */
+    letter-spacing: 1px;
+    /* Increases spacing between characters for a more polished look */
+    line-height: 1.4;
+    /* Adjusts the line height for better readability */
+}
+
+.schedule-date-label {
+    display: flex;
+    /* Enables flexbox */
+    flex-direction: column;
+    /* Stack items vertically */
+    align-items: center;
+    /* Center items horizontally */
+    justify-content: center;
+    /* Center items vertically (if needed) */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 10px;
+}
+
+.schedule-date-label label {
+    font-size: 18px;
+    font-weight: 600;
+    color: #444;
+    margin-bottom: 5px;
+}
+
+.date-value {
+    font-size: 20px;
+    font-weight: 500;
+    color: #0056b3;
+    background-color: #eef2f7;
+    padding: 8px 12px;
+    border-radius: 6px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+}
+
+.button-container {
+    display: flex;
+    /* Enable flexbox */
+    justify-content: center;
+    /* Center horizontally */
+    align-items: center;
+    /* Center vertically (if needed) */
+    height: 100%;
+    /* Take full height of the container (if needed) */
+}
+
+.sub-heading {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
