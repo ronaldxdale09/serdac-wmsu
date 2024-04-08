@@ -24,6 +24,9 @@
                             <li><i class="fa fa-table"></i><a href="assessment.php">Assessment</a></li>
                         </ul>
                     </li>
+                    <li>
+                        <a href="schedules.php"> <i class="menu-icon ti-calendar"></i>Schedules </a>
+                    </li>
                     <!-- 
 
                     <li class="menu-item-has-children dropdown">

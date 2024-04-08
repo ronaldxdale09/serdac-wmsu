@@ -21,7 +21,7 @@ mysqli_stmt_bind_param($stmt, "sssssss", $status, $user_id,$service_type, $offic
 
 if (mysqli_stmt_execute($stmt)) {
     echo "Service request submitted successfully";
-    // sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $purpose);
+    sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $purpose);
 
 } else {
     // Handle errors

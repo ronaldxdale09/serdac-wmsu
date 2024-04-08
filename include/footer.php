@@ -14,7 +14,7 @@
                         , Zamboanga City 7000 Philippines
                         <br><br>
                         <strong>Phone:</strong> +63 935 2232 051<br>
-                        <strong>Email:</strong> business@aetherio.tech<br>
+                        <strong>Email:</strong> wmsuserdac@wmsu.edu.ph<br>
                     </p>
                 </div>
 
@@ -31,9 +31,9 @@
                 <div class="col-lg-3 col-md-6 footer-links">
                     <h4>Our Services</h4>
                     <ul>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Web Design</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Web Development</a></li>
-                        <li><i class="bx bx-chevron-right"></i> <a href="#">Mobile App Development</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Data Analytics</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Training and Consultancy</a></li>
+                        <li><i class="bx bx-chevron-right"></i> <a href="#">Publications</a></li>
                     </ul>
                 </div>
 

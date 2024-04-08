@@ -42,6 +42,10 @@
     object-position: center;
     /* This will center the image in the container */
 }
+.article-link {
+    color:white;
+    text-decoration: none; /* Removes the underline */
+}
 
 @media screen and (max-width: 767px) {}
 </style>
@@ -118,7 +122,11 @@
                                             <?= htmlspecialchars($article['type']); ?>
 
                                         </span></h6>
-                                    <h2><?= htmlspecialchars($article['title']); ?></h2>
+                                    <h2>
+                                    <a href="article.php?id=<?php echo $article['article_id']?>" target="_blank" class="article-link">
+                                        <?= htmlspecialchars($article['title']); ?>
+            </a>
+                                    </h2>
                                     <p><?= htmlspecialchars($article['subtitle']); ?></p>
                                 </div>
                             </div>
@@ -277,13 +285,13 @@
                 <div class="about-section">
                     <span class="icon">💡</span> <!-- Replace with actual icons or images -->
                     <h2>Vision</h2>
-                    <p>To become the leading center for socio-economic research and data analytics in Luzon.</p>
+                    <p>To become the leading center for socio-economic research and data analytics.</p>
                 </div>
 
                 <div class="about-section">
                     <span class="icon">🏆</span> <!-- Replace with actual icons or images -->
                     <h2>Goals</h2>
-                    <p>To enhance the capacity of socio-economic researchers in Luzon and tap the potential of the
+                    <p>To enhance the capacity of socio-economic researchers and tap the potential of the
                         socio-economic R&D sector in providing technical assistance to the other research sectors
                         (e.g.,
                         crops, livestock, forestry, and fishery).</p>

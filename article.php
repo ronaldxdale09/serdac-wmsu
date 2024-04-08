@@ -70,27 +70,7 @@ if (isset($_GET['id'])) {
                                       <?php echo $content; ?>
                                     </p>
                                     <div class="row">
-                                        <div class="col-lg-4">
-                                            <div class="hours">
-                                                <h5>Hours</h5>
-                                                <p>Monday - Friday: 07:00 AM - 13:00 PM<br>Saturday- Sunday: 09:00 AM -
-                                                    15:00 PM</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="location">
-                                                <h5>Location</h5>
-                                                <p>Western Mindanao State University,
-                                                    <br>Contact Details
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="book now">
-                                                <h5>Contact Us</h5>
-                                                <p>123456-</p>
-                                            </div>
-                                        </div>
+                                       
                                         <div class="col-lg-12">
                                             <div class="share">
                                                 <h5>Share:</h5>
