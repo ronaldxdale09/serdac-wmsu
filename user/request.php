@@ -7,6 +7,8 @@
                 <th scope="col">Office / Agency</th>
                 <th scope="col">Purpose</th>
                 <th scope="col">Status</th>
+                <th scope="col"></th>
+
             </tr>
         </thead>
         <tbody>
@@ -27,29 +29,34 @@
                             case "Approved":
                                 $status_color = 'badge-success';
                                 break;
-                            case "Rejected":
+                            case "Cancelled":
                                 $status_color = 'badge-danger';
                                 break;
                         }
                         ?>
-                        <tr>
-                            <td><?php echo $row['request_id']; ?></td>
-                            <td><?php echo $row['service_type']; ?></td>
-                            <td><?php echo $row['office_agency']; ?></td>
-                            <td><?php echo $row['purpose']; ?></td>
-                            <td><span class="badge <?php echo $status_color; ?>">
-                                    <?php echo $row['status']; ?>
-                                </span></td>
-                            <td>
-                                <!-- Other columns or action buttons if any -->
-                            </td>
-                        </tr>
-                        <?php
-                    }
-                } else {
-                    echo '<tr><td colspan="5">No record found</td></tr>';
-                }
-            ?>
-        </tbody>
+                    <tr>
+                        <td><?php echo $row['request_id']; ?></td>
+                        <td><?php echo $row['service_type']; ?></td>
+                        <td><?php echo $row['office_agency']; ?></td>
+                        <td><?php echo $row['selected_purposes']; ?></td>
+                        <td><span class="badge <?php echo $status_color; ?>">
+                                <?php echo $row['status']; ?>
+                            </span>
+
+                        </td>
+                        <td>
+                            <button type="button" class="btn btn-sm btn-primary mb-1 btnView"
+                                data-request='<?php echo json_encode($row); ?>'>
+                                <i class="fas fa-book"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    <?php
+                            }
+                        } else {
+                            echo '<tr><td colspan="5">No record found</td></tr>';
+                        }
+                    ?>
+                </tbody>
     </table>
 </div>

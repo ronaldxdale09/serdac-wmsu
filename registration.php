@@ -75,14 +75,26 @@
                                     <span>Phone number</span>
                                 </div>
                                 <div class="input-div">
-                                    <select name="gender">
-                                        <option selected disabled>Select Gender...</option>
+                                    <select name="sex">
+                                        <option selected disabled>Select Sex...</option>
 
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
                                         <option value="Prefer not to say">Prefer not to say</option>
                                         <option value="Prefer to self-describe">Prefer to self-describe</option>
 
+                                    </select>
+                                </div>
+                                <div class="input-div">
+                                    <select name="gender">
+                                        <option selected disabled>Select Gender...</option>
+                                        <option value="Man">Man</option>
+                                        <option value="Woman">Woman</option>
+                                        <option value="Non-Binary">Non-Binary</option>
+                                        <option value="Transgender">Transgender</option>
+                                        <option value="Intersex">Intersex</option>
+                                        <option value="Prefer not to say">Prefer not to say</option>
+                                        <option value="Prefer to self-describe">Prefer to self-describe</option>
                                     </select>
                                 </div>
 
@@ -365,7 +377,14 @@ $(document).ready(function() {
                             .value; // Ensure 'username' is defined
 
                         updateform(); // Ensure this function is defined
-                    } else {
+                    } else if (response.trim() === 'Email is already registered'){
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Email is already registered',
+                            text: response,
+                        });
+                    }
+                    else{
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',

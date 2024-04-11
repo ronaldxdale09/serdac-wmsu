@@ -9,19 +9,31 @@ $service_type = $_POST['service_type']; // Assuming the name of the input field 
 $office_agency = $_POST['office_agency'];
 $agency_classification = $_POST['agency_classification'];
 $client_type = $_POST['client_type'];
-$purpose = $_POST['purpose'];
+
+// Handle the multiple select options
+$purpose_options = $_POST['purpose_options'];
+// Convert the array of selected options to a string
+$selected_purposes = implode(", ", $purpose_options);
+
+$additional_purpose_details = $_POST['additional_purpose_details'];
+
+
 $status = "Pending";
-// Prepare SQL query to insert service request into the database
-$query = "INSERT INTO `service_request` (status,user_id,service_type, office_agency, agency_classification, client_type, purpose) VALUES (?,?,?, ?, ?, ?, ?)";
+
+// $from_date = $_POST['from_date'];;
+// $to_date =  $_POST['to_date'];;
+
+$query = "INSERT INTO service_request ( status, user_id, service_type, office_agency, agency_classification, client_type,  selected_purposes, additional_purpose_details) 
+VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = mysqli_prepare($con, $query);
 
 // Bind parameters and execute
-mysqli_stmt_bind_param($stmt, "sssssss", $status, $user_id,$service_type, $office_agency, $agency_classification, $client_type, $purpose);
+mysqli_stmt_bind_param($stmt, "ssssssss",  $status, $user_id, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes, $additional_purpose_details);
 
 if (mysqli_stmt_execute($stmt)) {
-    echo "Service request submitted successfully";
-    sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $purpose);
+    echo "success";
+    //sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $purpose);
 
 } else {
     // Handle errors

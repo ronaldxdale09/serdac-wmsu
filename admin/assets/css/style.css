@@ -3404,3 +3404,15 @@ footer.site-footer .footer-inner a {
 
 
 /*# sourceMappingURL=style.css.map */
+
+.required::after {
+    content: "*";
+    color: red;
+}
+
+input[readonly] {
+    background-color: #f6f4f4 !important;
+    /* White background */
+    color: #1b1b1b !important;
+    /* Soft shadow for emphasis */
+}

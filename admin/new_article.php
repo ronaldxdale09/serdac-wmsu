@@ -48,8 +48,8 @@
                             <div class="page-title">
                                 <ol class="breadcrumb text-right">
                                     <li><a href="#">Dashboard</a></li>
-                                    <li><a href="#">Table</a></li>
-                                    <li class="active">Data table</li>
+                                    <li><a href="#">Article</a></li>
+                                    <li class="active">New Article</li>
                                 </ol>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                                 <form action="#" method="post" id="articlePost" enctype="multipart/form-data">
                                     <div class="form-group row">
                                         <!-- Type Dropdown - occupies 2 columns -->
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <label for="type">Type:</label>
                                             <select class="form-control" id="type" name="type">
                                                 <option value="Announcement">Announcement</option>
@@ -84,19 +84,23 @@
                                         </div>
 
                                         <!-- Title Input Field - occupies 9 columns -->
-                                        <div class="col-9">
-                                            <label for="title">Title:</label>
-                                            <input type="text" class="form-control" id="title" name="title" required>
+                                        <div class="col-7">
+                                            <label for="title" class="required">Title:</label>
+                                            <input type="text" class="form-control " id="title" name="title" required>
+                                        </div>
+                                        <div class="col-3">
+                                            <label for="title " class="required">Author:</label>
+                                            <input type="text" class="form-control" id="author" name="author" required>
                                         </div>
                                     </div>
 
 
                                     <div class="form-group">
-                                        <label for="subtitle">Subtitle:</label>
+                                        <label for="subtitle" class="required">Subtitle:</label>
                                         <input type="text" class="form-control" id="subtitle" name="subtitle">
                                     </div>
                                     <div class="form-group">
-                                        <label for="image">Image:</label>
+                                        <label for="image" class="required">Image:</label>
                                         <div class="custom-file">
                                             <input type="file" class="custom-file-input" id="image" name="image"
                                                 accept="image/*" hidden>

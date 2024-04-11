@@ -5,11 +5,32 @@
 $tab = '';
 if (isset($_GET['tab'])) {
     $tab = filter_var($_GET['tab']);
+
+
+
+
 }
 
+$sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE status='Pending'  ");
+$res = mysqli_fetch_array($sql);
+$pending_count = $res['Total'];
+
+$sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE status='Approved'  ");
+$res = mysqli_fetch_array($sql);
+$approved_count = $res['Total'];
+
+$sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE status='In Progress'  ");
+$res = mysqli_fetch_array($sql);
+$progress_count = $res['Total'];
 
 
+$sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE status='Cancelled'  ");
+$res = mysqli_fetch_array($sql);
+$cancel_count = $res['Total'];
 
+$sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE status='Completed'  ");
+$res = mysqli_fetch_array($sql);
+$completed_count = $res['Total'];
 
 ?>
 <style>
@@ -30,9 +51,7 @@ if (isset($_GET['tab'])) {
     color: #666;
 }
 </style>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel='stylesheet' href='css/tab-style.css'>
 <link rel='stylesheet' href='css/request.css'>
@@ -102,31 +121,31 @@ if (isset($_GET['tab'])) {
                             <!-- Pending Approval -->
                             <label for="home" class="home">
                                 <i class="fas fa-hourglass-half"></i> Pending
-                                <span class="badge bg-danger text-light"> <?php echo '1' ?> </span>
+                                <span class="badge bg-danger text-light"> <?php echo $pending_count ?> </span>
                             </label>
 
                             <!-- Scheduled -->
                             <label for="blog" class="blog">
                                 <i class="fas fa-calendar-alt"></i> Scheduled
-                                <span class="badge bg-danger text-light"> <?php echo '1' ?> </span>
+                                <span class="badge bg-danger text-light"> <?php echo $approved_count ?> </span>
                             </label>
 
                             <!-- Completed -->
                             <label for="drying" class="drying">
-                                <i class="fas fa-check-circle"></i> Completed
-                                <span class="badge bg-danger text-light"> <?php echo '1' ?> </span>
+                                <i class="fas fa-clock"></i> In Progress
+                                <span class="badge bg-danger text-light"> <?php echo $progress_count ?> </span>
                             </label>
 
                             <!-- Cancelled (Assuming you need this) -->
                             <label for="code" class="code">
                                 <i class="fas fa-times-circle"></i> Cancelled
-                                <span class="badge bg-danger text-light"><?php echo '1' ?> </span>
+                                <span class="badge bg-danger text-light"><?php echo $cancel_count ?> </span>
                             </label>
 
                             <!-- Archived -->
                             <label for="help" class="help">
-                                <i class="fas fa-archive"></i> Archived
-                                <span class="badge bg-danger text-light"> <?php echo '1' ?> </span>
+                                <i class="fas fa-archive"></i> Completed
+                                <span class="badge bg-danger text-light"> <?php echo $completed_count ?> </span>
                             </label>
 
 
@@ -135,26 +154,41 @@ if (isset($_GET['tab'])) {
                         <section>
                             <div class="content content-1">
 
-                                <div class="title">PENDING REQUEST </div>
-                                <hr>
+                                <div class="title"
+                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                                    Pending Service</div>
+
                                 <?php include('request_tab/req.pending.php'); ?>
 
                             </div>
                             <div class="content content-2">
 
-                                <div class="title">SCHEDULED </div>
+                                <div class="title"
+                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                                    Scheduled Request</div>
                                 <hr>
                                 <?php include('request_tab/req.approved.php'); ?>
 
                             </div>
                             <div class="content content-3">
-                                <div class="title">COMPLETED</div>
+                                <div class="title"
+                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                                    In Progress Request</div>
+                                <hr>
+                                <?php include('request_tab/req.progress.php'); ?>
+
                             </div>
                             <div class="content content-4">
-                                <div class="title">CANCELLED</div>
+                                <div class="title"
+                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                                    Cancelled Request</div>
+                                <?php include('request_tab/req.cancelled.php'); ?>
+
                             </div>
                             <div class="content content-5">
-                                <div class="title">ARCHIVED</div>
+                                <div class="title"
+                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                                    Completed</div>
                         </section>
                     </div>
 
@@ -170,7 +204,7 @@ if (isset($_GET['tab'])) {
     <?php include('modal/approved.modal.php');?>
 
     <?php include('modal/request.modal.php');?>
-
+    <?php include('include/datatables.php');?>
 
 </body>
 

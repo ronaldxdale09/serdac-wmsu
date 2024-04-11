@@ -152,3 +152,27 @@ section .content p {
     font-size: 1.5rem;
     /* 24px */
 }
+
+.d_selected_schedule {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.d_selected_schedule h5 {
+    margin-bottom: 10px;
+    color: #495057;
+    font-size: 1.25rem;
+    /* 20px */
+}
+
+.d_selected_schedule p {
+    margin: 0;
+    color: #007bff;
+    font-weight: bold;
+    font-size: 1.5rem;
+    /* 24px */
+}

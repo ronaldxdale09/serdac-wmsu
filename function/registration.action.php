@@ -12,6 +12,8 @@ $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 $occupation = $_POST['occupation'];
 $education_level = $_POST['education_level'];
 $accessType = 'Client'; 
+$sex = $_POST['sex'];
+
 $gender = $_POST['gender'];
 $zipcode = '';
 $region = $_POST['region'];
@@ -22,30 +24,33 @@ $userType = 'Client';
 $isActive = 0; 
 $activationCode = substr(str_shuffle(md5(microtime())), 0, 10);
 
-$query = "INSERT INTO `users` (activationCode,fname, midname, lname, contact_no, email, password, occupation, education_level, accessType, gender, zipcode, region, province, city, barangay, userType, isActive) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-$stmt = mysqli_prepare($con, $query);
-
-// Bind parameters and execute
-mysqli_stmt_bind_param($stmt, "ssssssssssssssssss", $activationCode, $fname, $midname, $lname, $contact_no, $email, $password, $occupation, $education_level, $accessType, $gender, $zipcode, $region, $province, $city, $barangay, $userType, $isActive);
-
-if (mysqli_stmt_execute($stmt)) {
-  
-
-    echo "success";
-
-    
-// Usage
-$activationLink = 'https://localhost/serdac-wmsu/login.php?code='.$activationCode; // Replace with actual activation link
-$userEmail = $email ;
-
-sendActivationEmail($userEmail, $activationLink);
 
 
+// Check if email is already registered
+$emailCheckQuery = "SELECT email FROM users WHERE email = ?";
+$emailCheckStmt = mysqli_prepare($con, $emailCheckQuery);
+mysqli_stmt_bind_param($emailCheckStmt, "s", $email);
+mysqli_stmt_execute($emailCheckStmt);
+mysqli_stmt_store_result($emailCheckStmt);
 
+if (mysqli_stmt_num_rows($emailCheckStmt) > 0) {
+    echo "Email is already registered.";
 } else {
-    // Handle errors
-    echo "Error: " . mysqli_error($con);
+    // Prepare insert query
+    $query = "INSERT INTO users (sex, activationCode, fname, midname, lname, contact_no, email, password, occupation, education_level, accessType, gender, zipcode, region, province, city, barangay, userType, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = mysqli_prepare($con, $query);
+    mysqli_stmt_bind_param($stmt, "sssssssssssssssssss", $sex, $activationCode, $fname, $midname, $lname, $contact_no, $email, $password, $occupation, $education_level, $accessType, $gender, $zipcode, $region, $province, $city, $barangay, $userType, $isActive);
+
+    if (mysqli_stmt_execute($stmt)) {
+        echo "success";
+        // Send activation email
+        $activationLink = 'https://localhost/serdac-wmsu/login.php?code='.$activationCode; // Replace with actual activation link
+        $userEmail = $email;
+        // sendActivationEmail($userEmail, $activationLink);
+    } else {
+        echo "Error: " . mysqli_error($con);
+    }
 }
 
 
@@ -121,9 +126,6 @@ function sendActivationEmail($recipientEmail, $activationLink) {
     }
 }
 
-
-mysqli_stmt_close($stmt);
-mysqli_close($con);
 
 
 

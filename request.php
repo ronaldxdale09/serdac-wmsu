@@ -35,7 +35,8 @@ if (isset($_SESSION["userId_code"])) {
     <?php include('include/navbar.php');?>
     <!-- ***** Header Area End ***** -->
     <link rel="stylesheet" href="assets/css/request.css">
-  
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <section class="meetings-page" id="meetings">
 
@@ -167,8 +168,9 @@ if (isset($_SESSION["userId_code"])) {
                                                         <div class="row">
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label class="form-control-label">Office/Agency:
-                                                                        *</label>
+                                                                    <label
+                                                                        class="form-control-label required">Office/Agency:
+                                                                    </label>
                                                                     <input type="text" id="agency" name="office_agency"
                                                                         placeholder="" class="form-control"
                                                                         onblur="validate2(1)">
@@ -177,8 +179,9 @@ if (isset($_SESSION["userId_code"])) {
                                                             </div>
                                                             <div class="col">
                                                                 <div class="form-group">
-                                                                    <label class="form-control-label">Agency
-                                                                        Classification:*</label>
+                                                                    <label class="form-control-label required"
+                                                                        class="form-control-label">Agency
+                                                                        Classification:</label>
                                                                     <select name="agency_classification"
                                                                         class="form-control">
                                                                         <option value="" selected disabled>Select...
@@ -201,17 +204,17 @@ if (isset($_SESSION["userId_code"])) {
                                                         </div>
 
                                                         <div class="row">
-                                                            <div class="col-6">
+                                                            <div class="col-4">
                                                                 <div class="form-group">
-                                                                    <label class="form-control-label">Type of Client
-                                                                        :*</label>
+                                                                    <label class="form-control-label required">Type of
+                                                                        Client
+                                                                        :</label>
                                                                     <select name="client_type" class="form-control">
                                                                         <option value="" selected disabled>Select...
                                                                         </option>
-
                                                                         <option value="Researcher">Researcher</option>
                                                                         <option value="Goverment Employee">Goverment
-                                                                            Employee </option>
+                                                                            Employee</option>
                                                                         <option value="Student">Student</option>
                                                                         <option value="Faculty">Faculty</option>
                                                                         <option value="University">University</option>
@@ -219,20 +222,40 @@ if (isset($_SESSION["userId_code"])) {
                                                                             Worker</option>
                                                                         <option value="Policy Maker">Policy Maker
                                                                         </option>
-
                                                                     </select>
                                                                 </div>
                                                             </div>
-
+                                                      
                                                         </div>
 
 
                                                         <div class="form-group">
-                                                            <label for="purpose" class="required">Purpose of
+                                                            <label for="purpose-select" class="required">Purpose of
                                                                 Request</label>
-                                                            <textarea id="purpose" name="purpose" rows="4"
-                                                                placeholder="Please describe the purpose of your request"></textarea>
+                                                            <select id="purpose-select" name="purpose_options[]"
+                                                                class="form-control" multiple>
+                                                                <option value="Research">Research</option>
+                                                                <option value="Data Analysis">Data Analysis</option>
+                                                                <option value="Policy Development">Policy Development
+                                                                </option>
+                                                                <option value="Educational">Educational</option>
+                                                                <option value="Technical Support">Technical Support
+                                                                </option>
+                                                                <!-- Add more options as needed -->
+                                                            </select>
+                                                            <small class="form-text text-muted">Hold down the Ctrl
+                                                                (windows) or Command (Mac) button to select multiple
+                                                                options.</small>
                                                         </div>
+
+                                                        <div class="form-group">
+                                                            <label for="purpose" class="required">Additional
+                                                                Details</label>
+                                                            <textarea id="purpose" name="additional_purpose_details"
+                                                                rows="4" class="form-control"
+                                                                placeholder="Please describe the purpose of your request in detail if needed"></textarea>
+                                                        </div>
+
 
                                                         <button id="next3"
                                                             class="btn  btn-sm btn-success  submit">Submit<span
@@ -346,6 +369,14 @@ if (isset($_SESSION["userId_code"])) {
     }
 
     $(document).ready(function() {
+
+        function isServiceSelected() {
+            var selectedServiceInput = document.getElementById('selected-service');
+            return selectedServiceInput && selectedServiceInput.value !== '';
+        }
+
+
+
         function toggleFieldset($btn) {
             let current_fs = $btn.parent().parent();
             let target_fs = $btn.hasClass('next') ? current_fs.next() : current_fs.prev();
@@ -364,6 +395,7 @@ if (isset($_SESSION["userId_code"])) {
             });
         }
 
+
         function updateProgressBar(isNext, target_fs) {
             let index = $("fieldset").index(target_fs);
             if (isNext) {
@@ -372,8 +404,28 @@ if (isset($_SESSION["userId_code"])) {
                 $("#progressbar li").eq(index + 1).removeClass("active");
             }
         }
+        $(".next").click(function(event) {
+            event.preventDefault();
+            let current_fs = $(this).parent().parent();
 
-        $(".next, .prev").click(function(event) {
+            // Check if currently on 'Select Service' fieldset
+            if (current_fs.find('.radio-group').length > 0) {
+                // Validate service selection only in this fieldset
+                if (!isServiceSelected()) {
+                    Swal.fire({ // Using SweetAlert for better user experience
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Please select a service before proceeding.'
+                    });
+                    return false; // Prevents moving to the next step
+                }
+            }
+
+            toggleFieldset($(this));
+        });
+
+
+        $(".prev").click(function(event) {
             event.preventDefault();
             toggleFieldset($(this));
         });
@@ -381,27 +433,53 @@ if (isset($_SESSION["userId_code"])) {
         $(".submit").click(function(event) {
             event.preventDefault();
 
+            // Flag to check if all required fields are filled
+            let allFieldsValid = true;
 
-            $('#reqForm').attr('action',
-                'function/request.action.php'); // Corrected form ID
-            // Show the loading overlay
-            // $('#loadingOverlay').show();
+            // Iterate through each required field and check if it's empty
+            $('.form-card').find('.required').each(function() {
+                let input = $(this).closest('.form-group').find('input, select, textarea');
+
+                // Check if the input field is empty
+                if (!input.val()) {
+                    allFieldsValid = false;
+                    // Highlight the empty field
+                    input.css('border-color', 'red');
+                } else {
+                    // Reset the border color if the field is not empty
+                    input.css('border-color', '');
+                }
+            });
+
+            // If any required field is empty, show an alert and stop the function
+            if (!allFieldsValid) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Please fill out all required fields.'
+                });
+                return; // Stop the function if validation fails
+            }
+
+            // Proceed with the AJAX call if all fields are valid
+            $('#reqForm').attr('action', 'function/request.action.php');
+
             $.ajax({
                 type: "POST",
-                url: $('#reqForm').attr('action'), // Corrected form ID
-                data: $('#reqForm').serialize(), // Corrected form ID
+                url: $('#reqForm').attr('action'),
+                data: $('#reqForm').serialize(),
                 success: function(response) {
                     if (response.trim() === 'success') {
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: 'Request Completed!',
+                            text: 'Request Completed!'
                         });
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: response,
+                            text: response
                         });
                     }
                 },
@@ -409,12 +487,12 @@ if (isset($_SESSION["userId_code"])) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Form submission failed!',
+                        text: 'Form submission failed!'
                     });
                 }
             });
 
-
+            // Move to the last fieldset
             let last_fs = $("fieldset").last();
             $("fieldset.show").removeClass("show").css({
                 'display': 'none',
@@ -425,6 +503,7 @@ if (isset($_SESSION["userId_code"])) {
             });
             updateProgressBar(true, last_fs);
         });
+
 
 
         $('.radio-group .radio').click(function() {

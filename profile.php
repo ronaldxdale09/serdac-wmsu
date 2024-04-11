@@ -141,7 +141,7 @@ if (isset($_SESSION["userId_code"])) {
                                                 <!--/row-->
                                             </div>
                                             <div class="tab-pane" id="messages">
-                                                <div class="alert alert-info alert-dismissible" role="alert">
+                                                <!-- <div class="alert alert-info alert-dismissible" role="alert">
                                                     <button type="button" class="close" data-dismiss="alert">×</button>
                                                     <div class="alert-icon">
                                                         <i class="icon-info"></i>
@@ -150,7 +150,7 @@ if (isset($_SESSION["userId_code"])) {
                                                         <span><strong>Info!</strong> Lorem Ipsum is simply dummy
                                                             text.</span>
                                                     </div>
-                                                </div>
+                                                </div> -->
                                                 <?php include('user/request.php'); ?>
 
                                             </div>
@@ -274,8 +274,9 @@ if (isset($_SESSION["userId_code"])) {
         <br>
     </section>
 
-    <?php include('include/footer.php');?>
+    <?php include('modal/profile_modal.php');?>
 
+    <?php include('include/footer.php');?>
 
 
 </body>

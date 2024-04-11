@@ -51,11 +51,12 @@
     <table class="table table-hover" id='service_request_table'>
         <thead>
             <tr>
-                <th scope="col">Request ID</th>
-                <th scope="col">Service Type</th>
-                <th scope="col">Office / Agency</th>
-                <th scope="col">Purpose</th>
+                <th scope="col">Req. ID</th>
                 <th scope="col">Status</th>
+
+                <th scope="col">Service Type</th>
+                <th scope="col">Agency</th>
+                <th scope="col">Purpose</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
@@ -77,18 +78,19 @@
                                                 ?>
             <tr>
                 <td><?php echo $row['request_id']; ?></td>
-                <td><?php echo $row['service_type']; ?></td>
-                <td><?php echo $row['office_agency']; ?></td>
-                <td><?php echo $row['purpose']; ?></td>
                 <td><span class="badge <?php echo $status_color; ?>">
                         <?php echo $row['status']; ?>
                     </span></td>
+              
+                <td><?php echo $row['service_type']; ?></td>
+                <td><?php echo $row['office_agency']; ?></td>
+                <td><?php echo $row['selected_purposes']; ?></td>
                 <td>
-
-                    <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
-                        data-request='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-book"></i>
-                    </button>
+                                                    
+                <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
+                    data-request='<?php echo json_encode($row); ?>'>
+                    <i class="fas fa-book"></i>
+                </button>
 
                 </td>
             </tr>
@@ -113,8 +115,13 @@ $(document).ready(function() {
         $('#office-agency').val(request.office_agency);
         $('#agency-classification').val(request.agency_classification);
         $('#client-type').val(request.client_type);
-        $('#purpose').val(request.purpose);
 
+        $('#from_date').val(request.sched_from_date);
+        $('#to_date').val(request.sched_to_date);
+
+
+        $('#purpose').val(request.selected_purposes);
+        $('#additional_details').val(request.additional_purpose_details);
 
 
         var modal = new bootstrap.Modal(document.getElementById('serviceRequestDetailsModal'));
@@ -122,6 +129,13 @@ $(document).ready(function() {
 
     });
 
+
+    $(document).ready(function() {
+        var table = $('#service_request_table').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['excelHtml5', 'pdfHtml5', 'print']
+        });
+    });
 
     // // Handling click event for Delete button
     // $('.btnDelete').on('click', function() {
@@ -151,19 +165,22 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.getElementById('confirm-schedule').addEventListener('click', function() {
-        var selectedDate = document.getElementById('schedule-date').value;
+        var selectedDateTime = document.getElementById('schedule-date').value;
 
-        if (selectedDate) {
-            var formattedDate = new Date(selectedDate).toLocaleDateString('en-US', {
+        if (selectedDateTime) {
+            // Format the date and time
+            var formattedDateTime = new Date(selectedDateTime).toLocaleString('en-US', {
                 year: 'numeric',
                 month: 'long',
-                day: 'numeric'
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
             });
 
-            document.getElementById('p_sched_date').value = selectedDate;
+            document.getElementById('p_sched_date').value = selectedDateTime;
 
             document.querySelector('.selected_schedule').innerHTML = '<h5>Selected Schedule</h5><p>' +
-                formattedDate + '</p>';
+                formattedDateTime + '</p>';
 
             // Unhide the confirm service request button
             var submitBtn = document.getElementById('submit-request');
@@ -171,7 +188,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             scheduleModal.hide();
         } else {
-            alert('Please select a date.');
+            alert('Please select a date and time.');
         }
     });
 });

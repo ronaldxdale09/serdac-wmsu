@@ -20,12 +20,15 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Services</a>
                         <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-table"></i><a href="request_record.php">Request Record</a></li>
-                            <li><i class="fa fa-table"></i><a href="assessment.php">Assessment</a></li>
+                            <li><i class="fa fa-book"></i><a href="request_record.php">Request Record</a></li>
+                            <li><i class="fa fa-pencil"></i><a href="assessment.php">Assessment</a></li>
                         </ul>
                     </li>
                     <li>
                         <a href="schedules.php"> <i class="menu-icon ti-calendar"></i>Schedules </a>
+                    </li>
+                    <li>
+                        <a href="account_mngmt.php"> <i class="menu-icon ti-user"></i>Account Management </a>
                     </li>
                     <!-- 
 

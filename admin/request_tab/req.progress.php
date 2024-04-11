@@ -1,9 +1,3 @@
-<style>
-.btnView,
-.btnParticiapnts {
-    margin-right: 5px;
-}
-</style>
 <div class="row">
 
     <!-- Check Status Filter -->
@@ -52,19 +46,19 @@
                             // Fetch data from the service_request table
                             $results = mysqli_query($con, "SELECT * FROM service_request
                             LEFT JOIN users ON users.user_id = service_request.user_id
-                            WHERE service_request.status = 'Approved' ");
+                            WHERE service_request.status = 'In Progress' ");
                             ?>
-    <table class="table table-hover" id='service_sched_table'>
+    <table class="table table-hover" id='service_progress'>
         <thead>
             <tr>
                 <th scope="col">Req. ID</th>
                 <th scope="col">Status</th>
+                <th scope="col">Title</th>
+                <th scope="col">Speaker</th>
 
-                <th scope="col">Meeting Scheduled</th>
                 <th scope="col">Service Type</th>
                 <th scope="col">Agency</th>
                 <th scope="col">Participants</th>
-                <th scope="col">Remarks</th>
 
 
                 <th scope="col">Actions</th>
@@ -75,14 +69,9 @@
                                                     // Status color coding (optional)
                                                     $status_color = '';
                                                     switch ($row['status']) {
-                                                        case "Pending":
-                                                            $status_color = 'badge-warning';
-                                                            break;
-                                                        case "Approved":
-                                                            $status_color = 'badge-primary';
-                                                            break;
-                                                        case "Rejected":
-                                                            $status_color = 'badge-danger';
+                                                  
+                                                        case "In Progress":
+                                                            $status_color = 'badge-success';
                                                             break;
                                                     }
                                                 ?>
@@ -91,32 +80,27 @@
                 <td><span class="badge <?php echo $status_color; ?>">
                         <?php echo $row['status']; ?>
                     </span></td>
-
-                <td class="nowrap"><?php echo date('M j, Y, h:i A', strtotime($row['scheduled_date'])); ?></td>
+                    
+                <td><?php echo $row['event_title']; ?></td>
+                <td><?php echo $row['event_speaker']; ?></td>
 
                 <td><?php echo $row['service_type']; ?></td>
                 <td><?php echo $row['office_agency']; ?></td>
+
 
                 <td><?php echo $row['participants']; ?></td>
                 <td><?php echo $row['admin_remarks']; ?></td>
 
                 <td style="display: flex; align-items: center; justify-content: center;">
 
-                    <button type="button" class="btn btn-sm btn-primary  btnView"
+                    <button type="button" class="btn btn-sm btn-primary mb-1 btnView"
                         data-request='<?php echo json_encode($row); ?>'>
                         <i class="fas fa-book"></i>
                     </button>
-                    <button type="button" class="btn btn-sm btn-dark  btnParticiapnts"
+                    <button type="button" class="btn btn-sm btn-dark mb-1 btnProgPart"
                         data-req='<?php echo json_encode($row); ?>'>
                         <i class="fas fa-user"></i>
                     </button>
-
-                    <button type="button" class="btn btn-sm btn-success btnComplete"
-                        data-req='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-check"></i>
-                    </button>
-
-
                 </td>
             </tr>
             <?php } ?>
@@ -127,19 +111,23 @@
 
 <script>
 $(document).ready(function() {
-    var table = $('#service_sched_table').DataTable({
+    var table = $('#service_progress').DataTable({
         dom: 'Bfrtip',
         buttons: ['excelHtml5', 'pdfHtml5', 'print']
     });
 });
 
 
+
 $(document).ready(function() {
-    $('.btnParticiapnts').on('click', function() {
+    $('.btnProgPart').on('click', function() {
         var req = $(this).data('req');
 
         var request = req.request_id;
         var invite = req.inviteCode;
+
+
+        document.querySelector('.d_selected_schedule').style.display = 'none';
 
 
         $('#p_user-name').val(req.fname && req.lname ? req.fname + ' ' + req.lname :
@@ -148,6 +136,7 @@ $(document).ready(function() {
         $('#p_office-agency').val(req.office_agency || 'N/A');
         $('#p_agency-classification').val(req.agency_classification || 'N/A');
         $('#p_client-type').val(req.client_type || 'N/A');
+
 
 
         console.log(invite);
@@ -173,19 +162,6 @@ $(document).ready(function() {
 
 
         var modal = new bootstrap.Modal(document.getElementById('participantsModal'));
-        modal.show();
-
-    });
-
-
-    $('.btnComplete').on('click', function() {
-        var req = $(this).data('req');
-
-        $('#d_req_id').val(req.request_id || 'N/A');
-
-
-
-        var modal = new bootstrap.Modal(document.getElementById('markCompleteModal'));
         modal.show();
 
     });
