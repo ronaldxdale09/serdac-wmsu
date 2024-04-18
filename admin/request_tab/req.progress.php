@@ -75,34 +75,34 @@
                                                             break;
                                                     }
                                                 ?>
-            <tr>
-                <td><?php echo $row['request_id']; ?></td>
-                <td><span class="badge <?php echo $status_color; ?>">
-                        <?php echo $row['status']; ?>
-                    </span></td>
-                    
-                <td><?php echo $row['event_title']; ?></td>
-                <td><?php echo $row['event_speaker']; ?></td>
+                        <tr>
+                            <td><?php echo $row['request_id']; ?></td>
+                            <td><span class="badge <?php echo $status_color; ?>">
+                                    <?php echo $row['status']; ?>
+                                </span></td>
+                                
+                            <td><?php echo $row['event_title']; ?></td>
+                            <td><?php echo $row['event_speaker']; ?></td>
 
-                <td><?php echo $row['service_type']; ?></td>
-                <td><?php echo $row['office_agency']; ?></td>
+                            <td><?php echo $row['service_type']; ?></td>
+                            <td><?php echo $row['office_agency']; ?></td>
 
 
-                <td><?php echo $row['participants']; ?></td>
-                <td><?php echo $row['admin_remarks']; ?></td>
+                            <td><?php echo $row['participants']; ?></td>
+                            <td><?php echo $row['admin_remarks']; ?></td>
 
-                <td style="display: flex; align-items: center; justify-content: center;">
+                            <td style="display: flex; align-items: center; justify-content: center;">
 
-                    <button type="button" class="btn btn-sm btn-primary mb-1 btnView"
-                        data-request='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-book"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-dark mb-1 btnProgPart"
-                        data-req='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-user"></i>
-                    </button>
-                </td>
-            </tr>
+                                <button type="button" class="btn btn-sm btn-primary mb-1 btnView"
+                                    data-request='<?php echo json_encode($row); ?>'>
+                                    <i class="fas fa-book"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-dark mb-1 btnProgPart"
+                                    data-req='<?php echo json_encode($row); ?>'>
+                                    <i class="fas fa-user"></i>
+                                </button>
+                            </td>
+                        </tr>
             <?php } ?>
         </tbody>
     </table>

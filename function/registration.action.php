@@ -55,6 +55,9 @@ if (mysqli_stmt_num_rows($emailCheckStmt) > 0) {
 
 
 
+
+
+
 function sendActivationEmail($recipientEmail, $activationLink) {
     try {
         $mail = new PHPMailer(true);

@@ -2,44 +2,75 @@
 include('db.php');
 require 'PHPMailer/PHPMailerAutoload.php';
 
-$user_id = $_POST['user_id']; // Assuming the name of the input field for service type
-$email = $_POST['email']; // Assuming the name of the input field for service type
+$user_id = $_POST['user_id'];
+$email = $_POST['email'];
 
-$service_type = $_POST['service_type']; // Assuming the name of the input field for service type
+$service_type = $_POST['service_type'];
 $office_agency = $_POST['office_agency'];
 $agency_classification = $_POST['agency_classification'];
 $client_type = $_POST['client_type'];
 
-// Handle the multiple select options
 $purpose_options = $_POST['purpose_options'];
-// Convert the array of selected options to a string
 $selected_purposes = implode(", ", $purpose_options);
 
 $additional_purpose_details = $_POST['additional_purpose_details'];
-
-
 $status = "Pending";
 
-// $from_date = $_POST['from_date'];;
-// $to_date =  $_POST['to_date'];;
-
-$query = "INSERT INTO service_request ( status, user_id, service_type, office_agency, agency_classification, client_type,  selected_purposes, additional_purpose_details) 
-VALUES ( ?, ?, ?, ?, ?, ?, ?, ?)";
-
+$query = "INSERT INTO service_request (user_id, service_type, office_agency, agency_classification, client_type, selected_purposes, additional_purpose_details, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 $stmt = mysqli_prepare($con, $query);
-
-// Bind parameters and execute
-mysqli_stmt_bind_param($stmt, "ssssssss",  $status, $user_id, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes, $additional_purpose_details);
+mysqli_stmt_bind_param($stmt, "isssssss", $user_id, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes, $additional_purpose_details, $status);
 
 if (mysqli_stmt_execute($stmt)) {
-    echo "success";
-    //sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $purpose);
+    $last_id = mysqli_insert_id($con);
+  //  echo "Service request created successfully.";
+
+    switch ($service_type) {
+        case 'data-analysis':
+            $analysis_type = $_POST['analysis_type'];
+            $overview = $_POST['research_overview'];
+            $g_objective = $_POST['general_objective'];
+            $s_objective = $_POST['specific_objective'];
+
+            // Assume additional details for Data Analysis
+            $query_da = "INSERT INTO sr_dataanalysis (request_id, analysis_type, overview, g_objective, s_objective) VALUES (?, ?, ?, ?, ?)";
+            $stmt_da = mysqli_prepare($con, $query_da);
+            mysqli_stmt_bind_param($stmt_da, "issss", $last_id, $analysis_type, $overview, $g_objective, $s_objective);
+            mysqli_stmt_execute($stmt_da);
+            break;
+        
+        case 'technical-assistance':
+            $consultation_type = $_POST['consultation_type'];
+            $remarks = $_POST['remarks'];
+
+            // Insert into sr_tech_assistance table
+            $query_ta = "INSERT INTO sr_tech_assistance (request_id, consultation_type, remarks) VALUES (?, ?, ?)";
+            $stmt_ta = mysqli_prepare($con, $query_ta);
+            mysqli_stmt_bind_param($stmt_ta, "iss", $last_id, $consultation_type, $remarks);
+            mysqli_stmt_execute($stmt_ta);
+            break;
+
+        case 'capability-training':
+            $s_from = $_POST['s_from'];
+            $s_to = $_POST['s_to'];
+            $title = $_POST['title'];
+            $venue = $_POST['venue'];
+            $no_participants = $_POST['no_participants'];
+            $speaker_id = $_POST['speaker_id'];
+
+            // Insert into sr_training table
+            $query_tr = "INSERT INTO sr_training (request_id, s_from, s_to, title, venue, no_participants, speaker_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $stmt_tr = mysqli_prepare($con, $query_tr);
+            mysqli_stmt_bind_param($stmt_tr, "issssis", $last_id, $s_from, $s_to, $title, $venue, $no_participants, $speaker_id);
+            mysqli_stmt_execute($stmt_tr);
+            break;
+    }
+    echo 'success';
+
+  //  sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes);
 
 } else {
-    // Handle errors
     echo "Error: " . mysqli_error($con);
 }
-
 
 
 

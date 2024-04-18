@@ -106,6 +106,8 @@ if (isset($_SESSION["userId_code"])) {
                                                     </div>
                                                 </fieldset>
 
+
+
                                                 <fieldset>
                                                     <div class="form-card">
                                                         <h5 class="sub-heading">Select Service</h5>
@@ -155,117 +157,23 @@ if (isset($_SESSION["userId_code"])) {
                                                     </div>
                                                 </fieldset>
 
-
-
+                                                <!-- SERVICES FIELDSETS -->
                                                 <fieldset>
-                                                    <div class="form-card">
-                                                        <h5 class="sub-heading mb-4">Request Information</h5>
+                                                    <!-- <div id="selected-service-card"
+                                                        class="selected-service text-center"></div> -->
 
-                                                        <div id="selected-service-card"
-                                                            class="selected-service text-center"></div>
-                                                        <hr>
+                                                    <div id="service-content"> </div>
 
-                                                        <div class="row">
-                                                            <div class="col">
-                                                                <div class="form-group">
-                                                                    <label
-                                                                        class="form-control-label required">Office/Agency:
-                                                                    </label>
-                                                                    <input type="text" id="agency" name="office_agency"
-                                                                        placeholder="" class="form-control"
-                                                                        onblur="validate2(1)">
-                                                                </div>
+                                                    <button id="next3"
+                                                        class="btn  btn-sm btn-success  submit">Submit<span
+                                                            class="fa fa-long-arrow-right"></span></button>
 
-                                                            </div>
-                                                            <div class="col">
-                                                                <div class="form-group">
-                                                                    <label class="form-control-label required"
-                                                                        class="form-control-label">Agency
-                                                                        Classification:</label>
-                                                                    <select name="agency_classification"
-                                                                        class="form-control">
-                                                                        <option value="" selected disabled>Select...
-                                                                        </option>
+                                                    <button class="btn btn-sm btn-secondary prev"><span
+                                                            class="fa fa-long-arrow-left"></span>PREVIOUS</button>
 
-                                                                        <option value="Public Agency">Public Agency
-                                                                        </option>
-                                                                        <option value="Private Agency">Private Agency
-                                                                        </option>
-                                                                        <option value="Goverment Organization">Goverment
-                                                                            Organization</option>
-
-                                                                        <option value="Non-Goverment Organization">
-                                                                            Non-Goverment Organization</option>
-                                                                        <option value="University">University</option>
-                                                                        <option value="Others">Others</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="row">
-                                                            <div class="col-4">
-                                                                <div class="form-group">
-                                                                    <label class="form-control-label required">Type of
-                                                                        Client
-                                                                        :</label>
-                                                                    <select name="client_type" class="form-control">
-                                                                        <option value="" selected disabled>Select...
-                                                                        </option>
-                                                                        <option value="Researcher">Researcher</option>
-                                                                        <option value="Goverment Employee">Goverment
-                                                                            Employee</option>
-                                                                        <option value="Student">Student</option>
-                                                                        <option value="Faculty">Faculty</option>
-                                                                        <option value="University">University</option>
-                                                                        <option value="Development Worker">Development
-                                                                            Worker</option>
-                                                                        <option value="Policy Maker">Policy Maker
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                      
-                                                        </div>
-
-
-                                                        <div class="form-group">
-                                                            <label for="purpose-select" class="required">Purpose of
-                                                                Request</label>
-                                                            <select id="purpose-select" name="purpose_options[]"
-                                                                class="form-control" multiple>
-                                                                <option value="Research">Research</option>
-                                                                <option value="Data Analysis">Data Analysis</option>
-                                                                <option value="Policy Development">Policy Development
-                                                                </option>
-                                                                <option value="Educational">Educational</option>
-                                                                <option value="Technical Support">Technical Support
-                                                                </option>
-                                                                <!-- Add more options as needed -->
-                                                            </select>
-                                                            <small class="form-text text-muted">Hold down the Ctrl
-                                                                (windows) or Command (Mac) button to select multiple
-                                                                options.</small>
-                                                        </div>
-
-                                                        <div class="form-group">
-                                                            <label for="purpose" class="required">Additional
-                                                                Details</label>
-                                                            <textarea id="purpose" name="additional_purpose_details"
-                                                                rows="4" class="form-control"
-                                                                placeholder="Please describe the purpose of your request in detail if needed"></textarea>
-                                                        </div>
-
-
-                                                        <button id="next3"
-                                                            class="btn  btn-sm btn-success  submit">Submit<span
-                                                                class="fa fa-long-arrow-right"></span></button>
-
-                                                        <button class="btn btn-sm btn-secondary prev"><span
-                                                                class="fa fa-long-arrow-left"></span>PREVIOUS</button>
-                                                    </div>
                                                 </fieldset>
 
+                                                <!-- END SERVICE FIELDSETS -->
                                                 <fieldset>
                                                     <div class="form-card">
                                                         <h5 class="sub-heading mb-4">Request Submitted Successfully!
@@ -315,159 +223,120 @@ if (isset($_SESSION["userId_code"])) {
     <script src="assets/js/tabs.js"></script>
     <script src="assets/js/video.js"></script>
     <script src="assets/js/slick-slider.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var serviceCards = document.querySelectorAll('.radio-group .radio');
-
-        serviceCards.forEach(function(card) {
-            card.addEventListener('click', function() {
-                // Clone the entire card
-                var clonedCard = this.cloneNode(true);
-                // Get the placeholder element
-                var selectedServiceCard = document.getElementById('selected-service-card');
-                // Clear previous selections
-                selectedServiceCard.innerHTML = '';
-                // Append the cloned card to the placeholder element
-                selectedServiceCard.appendChild(clonedCard);
-
-                // Extract the service type
-                var serviceType = this.getAttribute('data-option');
-                // Find or create the input element
-                var selectedServiceInput = document.getElementById('selected-service');
-
-                // Set the value of the input to the service type
-                selectedServiceInput.value = serviceType;
-            });
-        });
-    });
-    </script>
-
 
     <script>
-    function validateFields(fields, val) {
-        let allValid = true;
-        fields.forEach((fieldId, index) => {
-            if (val >= index + 1 || val == 0) {
-                let field = document.getElementById(fieldId);
-                if (field.value == "") {
-                    field.style.borderColor = "red";
-                    allValid = false;
-                } else {
-                    field.style.borderColor = "green";
-                }
-            }
-        });
-        return allValid;
-    }
-
-    function validate1(val) {
-        return validateFields(["fname", "lname", "email", "mob"], val);
-    }
-
-    function validate2(val) {
-        return validateFields(["cname", "zip", "state", "city"], val);
-    }
-
     $(document).ready(function() {
+        // Function to handle showing and hiding fieldsets
+        function toggleFieldset(btn, direction) {
+            let currentFieldset = btn.closest('fieldset');
+            let targetFieldset = (direction === 'next') ? currentFieldset.next('fieldset') : currentFieldset
+                .prev('fieldset');
 
-        function isServiceSelected() {
-            var selectedServiceInput = document.getElementById('selected-service');
-            return selectedServiceInput && selectedServiceInput.value !== '';
-        }
-
-
-
-        function toggleFieldset($btn) {
-            let current_fs = $btn.parent().parent();
-            let target_fs = $btn.hasClass('next') ? current_fs.next() : current_fs.prev();
-
-            current_fs.removeClass("show");
-            target_fs.addClass("show");
-
-            updateProgressBar($btn.hasClass('next'), target_fs);
-
-            current_fs.css({
-                'display': 'none',
-                'position': 'relative'
-            });
-            target_fs.css({
-                'display': 'block'
-            });
-        }
-
-
-        function updateProgressBar(isNext, target_fs) {
-            let index = $("fieldset").index(target_fs);
-            if (isNext) {
-                $("#progressbar li").eq(index).addClass("active");
-            } else {
-                $("#progressbar li").eq(index + 1).removeClass("active");
+            if (targetFieldset.length) {
+                currentFieldset.removeClass("show").hide();
+                targetFieldset.addClass("show").show();
+                updateProgressBar(direction, targetFieldset);
             }
         }
-        $(".next").click(function(event) {
+
+        // Function to update the progress bar based on the fieldset being shown
+        function updateProgressBar(direction, fieldset) {
+            let index = $('fieldset').index(fieldset);
+            $("#progressbar li").removeClass("active").slice(0, index + 1).addClass("active");
+        }
+
+        // Click handler for 'next' buttons
+        $('.next').click(function(event) {
             event.preventDefault();
-            let current_fs = $(this).parent().parent();
+            let current_fs = $(this).closest('fieldset');
 
-            // Check if currently on 'Select Service' fieldset
-            if (current_fs.find('.radio-group').length > 0) {
-                // Validate service selection only in this fieldset
-                if (!isServiceSelected()) {
-                    Swal.fire({ // Using SweetAlert for better user experience
-                        icon: 'warning',
-                        title: 'Oops...',
-                        text: 'Please select a service before proceeding.'
-                    });
-                    return false; // Prevents moving to the next step
-                }
-            }
-
-            toggleFieldset($(this));
-        });
-
-
-        $(".prev").click(function(event) {
-            event.preventDefault();
-            toggleFieldset($(this));
-        });
-
-        $(".submit").click(function(event) {
-            event.preventDefault();
-
-            // Flag to check if all required fields are filled
-            let allFieldsValid = true;
-
-            // Iterate through each required field and check if it's empty
-            $('.form-card').find('.required').each(function() {
-                let input = $(this).closest('.form-group').find('input, select, textarea');
-
-                // Check if the input field is empty
-                if (!input.val()) {
-                    allFieldsValid = false;
-                    // Highlight the empty field
-                    input.css('border-color', 'red');
-                } else {
-                    // Reset the border color if the field is not empty
-                    input.css('border-color', '');
-                }
-            });
-
-            // If any required field is empty, show an alert and stop the function
-            if (!allFieldsValid) {
+            // Validation for service selection
+            if (current_fs.find('.radio-group').length > 0 && !isServiceSelected()) {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Please fill out all required fields.'
+                    icon: 'warning',
+                    title: 'Oops...',
+                    text: 'Please select a service before proceeding.'
                 });
-                return; // Stop the function if validation fails
+                return; // Prevents moving to the next step
             }
 
-            // Proceed with the AJAX call if all fields are valid
-            $('#reqForm').attr('action', 'function/request.action.php');
+            toggleFieldset($(this), 'next');
+        });
+
+        // Click handler for 'previous' buttons
+        $('.prev').click(function(event) {
+            event.preventDefault();
+            toggleFieldset($(this), 'prev');
+        });
+
+        // Function to check if a service is selected
+        function isServiceSelected() {
+            return $('#selected-service').val() !== '';
+        }
+
+        $('.radio-group .radio').click(function() {
+            var serviceType = $(this).data('option');
+            fetchServiceContent(serviceType);
+
+            // Set the value of the hidden input to the service type
+            $('#selected-service').val(serviceType);
+
+            // Visually indicate which service has been selected
+            $('.radio-group .radio').removeClass('selected');
+            $(this).addClass('selected');
+
+            // Clone the entire card and display it in the placeholder
+            var clonedCard = this.cloneNode(true); // Clone the clicked element
+            var selectedServiceCard = document.getElementById('selected-service-card');
+            selectedServiceCard.innerHTML = ''; // Clear previous selections
+            selectedServiceCard.appendChild(clonedCard); // Append the cloned card
+        });
+
+        function fetchServiceContent(serviceType) {
+            var url = '';
+            switch (serviceType) {
+                case 'data-analysis':
+                    url = 'request/field.data_analysis.php';
+                    break;
+                case 'capability-training':
+                    url = 'request/field.training.php';
+                    break;
+                case 'technical-assistance':
+                    url = 'request/field.technical.php';
+                    break;
+                default:
+                    $('#service-content').html('<p>Please select a service.</p>');
+                    return;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    $('#service-content').html(response);
+                },
+                error: function() {
+                    $('#service-content').html('<p>Error loading the service content.</p>');
+                }
+            });
+        }
+
+        // Submit handling
+        $('.submit').click(function(event) {
+            event.preventDefault();
+            if (validateAllFields()) {
+                submitForm();
+            }
+        });
+
+        function submitForm() {
+            let formAction = $('#reqForm').attr('action', 'function/request.action.php').attr('action');
+            // Now the formAction variable correctly holds the action URL
 
             $.ajax({
                 type: "POST",
-                url: $('#reqForm').attr('action'),
-                data: $('#reqForm').serialize(),
+                url: formAction, // Use the action URL from the form
+                data: $('#reqForm').serialize(), // Serialize form data for submission
                 success: function(response) {
                     if (response.trim() === 'success') {
                         Swal.fire({
@@ -487,33 +356,84 @@ if (isset($_SESSION["userId_code"])) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Form submission failed!'
+                        text: 'Form submission failed: ' + error
                     });
                 }
             });
+        }
 
-            // Move to the last fieldset
-            let last_fs = $("fieldset").last();
-            $("fieldset.show").removeClass("show").css({
-                'display': 'none',
-                'position': 'relative'
+        function submitForm() {
+            let formAction = $('#reqForm').attr('action', 'function/request.action.php').attr('action');
+            // Now the formAction variable correctly holds the action URL
+
+            $.ajax({
+                type: "POST",
+                url: formAction, // Use the action URL from the form
+                data: $('#reqForm').serialize(), // Serialize form data for submission
+                success: function(response) {
+                    if (response.trim() === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Request Completed!'
+                        });
+
+                        // Move to the last fieldset
+                        let last_fs = $("fieldset").last();
+                        $("fieldset.show").removeClass("show").css({
+                            'display': 'none',
+                            'position': 'relative'
+                        });
+                        last_fs.addClass("show").css({
+                            'display': 'block'
+                        });
+                        updateProgressBar(true, last_fs);
+
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Form submission failed: ' + error
+                    });
+                }
             });
-            last_fs.addClass("show").css({
-                'display': 'block'
+        }
+
+
+        function validateAllFields() {
+            let allFieldsValid = true;
+
+            $('.form-card').find('.required').each(function() {
+                let input = $(this).closest('.form-group').find('input, select, textarea');
+
+                if (!input.val()) {
+                    input.css('border-color', 'red');
+                    allFieldsValid = false;
+                } else {
+                    input.css('border-color', '');
+                }
             });
-            updateProgressBar(true, last_fs);
-        });
 
+            if (!allFieldsValid) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Please fill out all required fields.'
+                });
+            }
+            return allFieldsValid;
+        }
 
-
-        $('.radio-group .radio').click(function() {
-            $('.radio-group .radio').removeClass('selected');
-            $(this).addClass('selected');
-        });
     });
     </script>
-
-</body>
 
 
 </body>
