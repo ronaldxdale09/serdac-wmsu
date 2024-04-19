@@ -45,7 +45,6 @@
     <?php
                             // Fetch data from the service_request table
                             $results = mysqli_query($con, "SELECT * FROM service_request
-                            
                             LEFT JOIN users ON users.user_id = service_request.user_id
                             WHERE service_request.status = 'Pending' ");
                             ?>
@@ -82,16 +81,16 @@
                 <td><span class="badge <?php echo $status_color; ?>">
                         <?php echo $row['status']; ?>
                     </span></td>
-
+              
                 <td><?php echo $row['service_type']; ?></td>
                 <td><?php echo $row['office_agency']; ?></td>
                 <td><?php echo $row['selected_purposes']; ?></td>
                 <td>
-
-                    <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
-                        data-request='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-book"></i>
-                    </button>
+                                                    
+                <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
+                    data-request='<?php echo json_encode($row); ?>'>
+                    <i class="fas fa-book"></i>
+                </button>
 
                 </td>
             </tr>
@@ -101,106 +100,34 @@
 </div>
 
 
+
 <script>
 $(document).ready(function() {
     $('.btnEdit').on('click', function() {
         var request = $(this).data('request');
 
-        // Basic data fill
+
         $('#p_user_id').val(request.user_id);
         $('#p_req_id').val(request.request_id);
+
         $('#p_user-name').val(request.fname + ' ' + request.lname);
         $('#service-type').val(request.service_type);
         $('#office-agency').val(request.office_agency);
         $('#agency-classification').val(request.agency_classification);
         $('#client-type').val(request.client_type);
+
+        $('#from_date').val(request.sched_from_date);
+        $('#to_date').val(request.sched_to_date);
+
+
         $('#purpose').val(request.selected_purposes);
         $('#additional_details').val(request.additional_purpose_details);
 
-        serviceType = request.service_type;
-        $.ajax({
-            url: 'fetch/fetch.data_analysis.php', // Server-side script to return data
-            type: 'POST',
-            data: {
-                service_type: serviceType,
-                request_id: request.request_id
-            },
-            success: function(response) {
-                // Assume response is JSON
-                // Parse and populate more specific fields if necessary
-                if (serviceType === 'data-analysis') {
-                    var details = JSON.parse(response);
-                    $('#anaylsis-type').val(details.analysis_type);
-                    $('#research-overview').val(details.overview);
-                    $('#general-objective').val(details.g_objective);
-                    $('#specific-objective').val(details.s_objective);
 
-                    console.log(details)
-
-                    // Show the modal
-                    var modal = new bootstrap.Modal(document.getElementById(
-                        'dataAnalysisDetails'));
-                    modal.show();
-                }
-            },
-            error: function() {
-                console.log('Error fetching details.');
-            }
-        });
-        loadAndShowModal(serviceType, request.request_id)
+        var modal = new bootstrap.Modal(document.getElementById('serviceRequestDetailsModal'));
+        modal.show();
 
     });
-
-    function loadAndShowModal(serviceType, requestId) {
-
-        console.log(serviceType)
-        // Map service types to modal file paths and their corresponding IDs
-        var modalInfo = {
-            'data-analysis': {
-                url: 'modal/modal.data_analysis.php',
-                id: 'dataAnalysisDetails'
-            },
-            'technical-assistance': {
-                url: 'modal/modal_technical.php',
-                id: 'technicalAssistanceDetails'
-            },
-            'training': {
-                url: 'modal/modal_training.php',
-                id: 'trainingDetails'
-            }
-        };
-
-        // Normalize the service type to match keys in the modalInfo object
-        var serviceKey = serviceType.toLowerCase().replace(/\s+/g, '-');
-        var modalDetails = modalInfo[serviceKey];
-
-        if (modalDetails && modalDetails.url) {
-            $.ajax({
-                url: modalDetails.url,
-                type: 'GET',
-                data: {
-                    request_id: requestId
-                },
-                success: function(html) {
-                    // Append the fetched modal HTML to the body if not already loaded
-                    if (!$('#' + modalDetails.id).length) {
-                        $('body').append(html);
-                    }
-
-                    var modal = new bootstrap.Modal(document.getElementById(modalDetails.id));
-                    modal.show();
-                },
-                error: function() {
-                    console.error('Error loading the modal for', serviceType);
-                }
-            });
-        } else {
-            console.error('No modal URL found for the given service type:', serviceType);
-        }
-    }
-
-
-
 
 
     $(document).ready(function() {
