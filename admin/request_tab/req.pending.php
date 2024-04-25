@@ -99,7 +99,7 @@
         </tbody>
     </table>
 </div>
-
+<?php include('modal/pending.modal.php');?>
 
 <script>
 $(document).ready(function() {
@@ -116,6 +116,26 @@ $(document).ready(function() {
         $('#client-type').val(request.client_type);
         $('#purpose').val(request.selected_purposes);
         $('#additional_details').val(request.additional_purpose_details);
+
+
+
+        // Load service-specific content based on service type
+        var serviceTypeUrl = '';
+        if (request.service_type === 'data-analysis') {
+            serviceTypeUrl = 'modal/md.data_analysis.php';
+        } else if (request.service_type === 'capability-training	') {
+            //  serviceTypeUrl = 'md.training.php';
+        }
+
+        // Append the service-specific form to the div
+        if (serviceTypeUrl) {
+            $('#service-specific').load(serviceTypeUrl, function(response, status, xhr) {
+                if (status === "error") {
+                    console.log("Error loading the page: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        }
+
 
         serviceType = request.service_type;
         $.ajax({
@@ -137,70 +157,63 @@ $(document).ready(function() {
 
                     console.log(details)
 
-                    // Show the modal
-                    var modal = new bootstrap.Modal(document.getElementById(
-                        'dataAnalysisDetails'));
-                    modal.show();
                 }
+
+
+                // Show the modal
+                var modal = new bootstrap.Modal(document.getElementById(
+                    'serviceRequestDetailsModal'));
+                modal.show();
             },
             error: function() {
                 console.log('Error fetching details.');
             }
         });
-        loadAndShowModal(serviceType, request.request_id)
+
+
+
 
     });
 
-    function loadAndShowModal(serviceType, requestId) {
+    $(document).ready(function() {
+        var serviceRequestModal = new bootstrap.Modal(document.getElementById(
+            'serviceRequestDetailsModal'));
+        var scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
 
-        console.log(serviceType)
-        // Map service types to modal file paths and their corresponding IDs
-        var modalInfo = {
-            'data-analysis': {
-                url: 'modal/modal.data_analysis.php',
-                id: 'dataAnalysisDetails'
-            },
-            'technical-assistance': {
-                url: 'modal/modal_technical.php',
-                id: 'technicalAssistanceDetails'
-            },
-            'training': {
-                url: 'modal/modal_training.php',
-                id: 'trainingDetails'
+        document.getElementById('assign-sched').addEventListener('click', function() {
+            serviceRequestModal.hide();
+            scheduleModal.show();
+        });
+
+        document.getElementById('confirm-schedule').addEventListener('click', function() {
+            var selectedDateTime = document.getElementById('schedule-date').value;
+
+            if (selectedDateTime) {
+                // Format the date and time
+                var formattedDateTime = new Date(selectedDateTime).toLocaleString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                document.getElementById('p_sched_date').value = selectedDateTime;
+
+                document.querySelector('.selected_schedule').innerHTML =
+                    '<h5>Selected Schedule</h5><p>' +
+                    formattedDateTime + '</p>';
+
+                // Unhide the confirm service request button
+                var submitBtn = document.getElementById('submit-request');
+                submitBtn.removeAttribute('hidden');
+
+                scheduleModal.hide();
+            } else {
+                alert('Please select a date and time.');
             }
-        };
-
-        // Normalize the service type to match keys in the modalInfo object
-        var serviceKey = serviceType.toLowerCase().replace(/\s+/g, '-');
-        var modalDetails = modalInfo[serviceKey];
-
-        if (modalDetails && modalDetails.url) {
-            $.ajax({
-                url: modalDetails.url,
-                type: 'GET',
-                data: {
-                    request_id: requestId
-                },
-                success: function(html) {
-                    // Append the fetched modal HTML to the body if not already loaded
-                    if (!$('#' + modalDetails.id).length) {
-                        $('body').append(html);
-                    }
-
-                    var modal = new bootstrap.Modal(document.getElementById(modalDetails.id));
-                    modal.show();
-                },
-                error: function() {
-                    console.error('Error loading the modal for', serviceType);
-                }
-            });
-        } else {
-            console.error('No modal URL found for the given service type:', serviceType);
-        }
-    }
-
-
-
+        });
+    });
 
 
     $(document).ready(function() {
@@ -210,59 +223,6 @@ $(document).ready(function() {
         });
     });
 
-    // // Handling click event for Delete button
-    // $('.btnDelete').on('click', function() {
 
-    //     var $tr = $(this).closest('tr');
-    //     var data = $tr.children("td").map(function() {
-    //         return $.trim($(this).text()); // Trimming the text content of each 'td'
-    //     }).get();
-
-
-    //     $('#deleteUserId').val(data[0]);
-
-    //     // Show the Delete User modal
-    //     $('#deleteUserModal').modal('show');
-    // });
-});
-</script>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    var serviceRequestModal = new bootstrap.Modal(document.getElementById('serviceRequestDetailsModal'));
-    var scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
-
-    document.getElementById('confirm-service-request').addEventListener('click', function() {
-        serviceRequestModal.hide();
-        scheduleModal.show();
-    });
-
-    document.getElementById('confirm-schedule').addEventListener('click', function() {
-        var selectedDateTime = document.getElementById('schedule-date').value;
-
-        if (selectedDateTime) {
-            // Format the date and time
-            var formattedDateTime = new Date(selectedDateTime).toLocaleString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-            document.getElementById('p_sched_date').value = selectedDateTime;
-
-            document.querySelector('.selected_schedule').innerHTML = '<h5>Selected Schedule</h5><p>' +
-                formattedDateTime + '</p>';
-
-            // Unhide the confirm service request button
-            var submitBtn = document.getElementById('submit-request');
-            submitBtn.removeAttribute('hidden');
-
-            scheduleModal.hide();
-        } else {
-            alert('Please select a date and time.');
-        }
-    });
 });
 </script>

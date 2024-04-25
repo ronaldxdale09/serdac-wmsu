@@ -48,9 +48,9 @@
                          <label for="client-type">Client Type</label>
                          <input type="text" class="form-control" id="d_client-type" readonly>
                      </div>
-              
 
                  </div>
+
                  <div class="form-row">
                      <!-- Client Type -->
                      <div class="form-group  col-md-6">
@@ -83,3 +83,5 @@
 
      </div>
  </div>
+
+ 

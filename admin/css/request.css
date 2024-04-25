@@ -49,3 +49,11 @@
     /* Set the width to 100% of the container */
     margin-top: 15px;
 }
+
+
+/* Custom CSS for an even larger modal if modal-xl does not suffice */
+
+.modal-xl {
+    max-width: 1200px;
+    /* You can set this to the width you require */
+}

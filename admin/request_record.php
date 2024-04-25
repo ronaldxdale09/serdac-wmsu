@@ -201,9 +201,9 @@ $completed_count = $res['Total'];
 
     </div>
     <?php include('include/footer.php');?>
+    
     <?php include('modal/approved.modal.php');?>
 
-    <?php include('modal/request.modal.php');?>
     <?php include('include/datatables.php');?>
 
 </body>

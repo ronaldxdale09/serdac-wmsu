@@ -63,7 +63,6 @@
                 <th scope="col">Meeting Scheduled</th>
                 <th scope="col">Service Type</th>
                 <th scope="col">Agency</th>
-                <th scope="col">Participants</th>
                 <th scope="col">Remarks</th>
 
 
@@ -97,7 +96,6 @@
                 <td><?php echo $row['service_type']; ?></td>
                 <td><?php echo $row['office_agency']; ?></td>
 
-                <td><?php echo $row['participants']; ?></td>
                 <td><?php echo $row['admin_remarks']; ?></td>
 
                 <td style="display: flex; align-items: center; justify-content: center;">

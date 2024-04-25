@@ -40,7 +40,7 @@ if (mysqli_stmt_execute($stmt)) {
         
         case 'technical-assistance':
             $consultation_type = $_POST['consultation_type'];
-            $remarks = $_POST['remarks'];
+            $remarks = '';
 
             // Insert into sr_tech_assistance table
             $query_ta = "INSERT INTO sr_tech_assistance (request_id, consultation_type, remarks) VALUES (?, ?, ?)";
@@ -50,17 +50,15 @@ if (mysqli_stmt_execute($stmt)) {
             break;
 
         case 'capability-training':
-            $s_from = $_POST['s_from'];
-            $s_to = $_POST['s_to'];
-            $title = $_POST['title'];
-            $venue = $_POST['venue'];
-            $no_participants = $_POST['no_participants'];
-            $speaker_id = $_POST['speaker_id'];
-
+            $s_from ='';
+            $s_to ='';
+            $title ='';
+            $venue = '';
+            $no_participants ='';
             // Insert into sr_training table
-            $query_tr = "INSERT INTO sr_training (request_id, s_from, s_to, title, venue, no_participants, speaker_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $query_tr = "INSERT INTO sr_training (request_id, s_from, s_to, title, venue, no_participants) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt_tr = mysqli_prepare($con, $query_tr);
-            mysqli_stmt_bind_param($stmt_tr, "issssis", $last_id, $s_from, $s_to, $title, $venue, $no_participants, $speaker_id);
+            mysqli_stmt_bind_param($stmt_tr, "issssi", $last_id, $s_from, $s_to, $title, $venue, $no_participants);
             mysqli_stmt_execute($stmt_tr);
             break;
     }

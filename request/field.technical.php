@@ -64,7 +64,7 @@
             <div class="col">
                 <div class="form-group">
                     <label for="mode-of-assistance" class="form-control-label required">Mode of Assistance:</label>
-                    <select id="mode-of-assistance" name="mode_of_assistance" class="form-control">
+                    <select id="mode-of-assistance" name="consultation_type" class="form-control">
                         <option value="" selected disabled>Select mode...</option>
                         <option value="Online">Online</option>
                         <option value="Face to Face">Face to Face</option>
