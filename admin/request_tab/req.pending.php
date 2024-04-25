@@ -45,7 +45,6 @@
     <?php
                             // Fetch data from the service_request table
                             $results = mysqli_query($con, "SELECT * FROM service_request
-                            
                             LEFT JOIN users ON users.user_id = service_request.user_id
                             WHERE service_request.status = 'Pending' ");
                             ?>
@@ -82,16 +81,16 @@
                 <td><span class="badge <?php echo $status_color; ?>">
                         <?php echo $row['status']; ?>
                     </span></td>
-
+              
                 <td><?php echo $row['service_type']; ?></td>
                 <td><?php echo $row['office_agency']; ?></td>
                 <td><?php echo $row['selected_purposes']; ?></td>
                 <td>
-
-                    <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
-                        data-request='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-book"></i>
-                    </button>
+                                                    
+                <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
+                    data-request='<?php echo json_encode($row); ?>'>
+                    <i class="fas fa-book"></i>
+                </button>
 
                 </td>
             </tr>
@@ -101,19 +100,26 @@
 </div>
 <?php include('modal/pending.modal.php');?>
 
+
 <script>
 $(document).ready(function() {
     $('.btnEdit').on('click', function() {
         var request = $(this).data('request');
 
-        // Basic data fill
+
         $('#p_user_id').val(request.user_id);
         $('#p_req_id').val(request.request_id);
+
         $('#p_user-name').val(request.fname + ' ' + request.lname);
         $('#service-type').val(request.service_type);
         $('#office-agency').val(request.office_agency);
         $('#agency-classification').val(request.agency_classification);
         $('#client-type').val(request.client_type);
+
+        $('#from_date').val(request.sched_from_date);
+        $('#to_date').val(request.sched_to_date);
+
+
         $('#purpose').val(request.selected_purposes);
         $('#additional_details').val(request.additional_purpose_details);
 
