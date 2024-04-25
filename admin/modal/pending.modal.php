@@ -1,89 +1,96 @@
-<div class="modal fade" id="serviceRequestDetailsModal" tabindex="-1" aria-labelledby="requestServiceDetailsModalLabel" aria-hidden="true">
+<div class="modal fade" id="serviceRequestDetailsModal" tabindex="-1" aria-labelledby="requestServiceDetailsModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
                 <h5 class="modal-title" id="requestServiceDetailsModalLabel">Request Service Details</h5>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="print_request">
                 <!-- Form -->
 
                 <form action="function/request.action.php" method="post">
+                    <div class="container-research my-4 p-3 border">
+                        <h3 class="header-research mb-3 text-center">Request Details</h3>
+                        <hr>
+                        <input type="text" class="form-control" name="user_id" id="p_user_id" hidden>
+                        <input type="text" class="form-control" name="req_id" id="p_req_id" hidden>
+                        <input type="text" class="form-control" name="sched_date" id="p_sched_date" hidden>
 
-                    <input type="text" class="form-control" name="user_id" id="p_user_id" hidden>
-                    <input type="text" class="form-control" name="req_id" id="p_req_id" hidden>
-                    <input type="text" class="form-control" name="sched_date" id="p_sched_date" hidden>
+                        <div class="form-row">
+                            <!-- User ID -->
+                            <div class="form-group col-md-6">
+                                <label for="user-id">Client</label>
+                                <input type="text" class="form-control" id="p_user-name" readonly>
+                            </div>
 
-                    <div class="form-row">
-                        <!-- User ID -->
-                        <div class="form-group col-md-6">
-                            <label for="user-id">Client</label>
-                            <input type="text" class="form-control" id="p_user-name" readonly>
+                            <!-- Service Type -->
+                            <div class="form-group col-md-6">
+                                <label for="service-type">Service Type</label>
+                                <input type="text" class="form-control" id="service-type" readonly>
+                            </div>
                         </div>
 
-                        <!-- Service Type -->
-                        <div class="form-group col-md-6">
-                            <label for="service-type">Service Type</label>
-                            <input type="text" class="form-control" id="service-type" readonly>
+
+                        <div class="form-row">
+                            <!-- Office Agency -->
+                            <div class="form-group col-md-6">
+                                <label for="office-agency">Office/Agency</label>
+                                <input type="text" class="form-control" id="office-agency" readonly
+                                    placeholder="Enter office/agency">
+                            </div>
+
+                            <!-- Agency Classification -->
+                            <div class="form-group col-md-6">
+                                <label for="agency-classification">Agency Classification</label>
+                                <input type="text" class="form-control" id="agency-classification" readonly>
+                            </div>
                         </div>
-                    </div>
 
-
-                    <div class="form-row">
-                        <!-- Office Agency -->
-                        <div class="form-group col-md-6">
-                            <label for="office-agency">Office/Agency</label>
-                            <input type="text" class="form-control" id="office-agency" readonly
-                                placeholder="Enter office/agency">
+                        <div class="form-row">
+                            <!-- Client Type -->
+                            <div class="form-group  col-md-6">
+                                <label for="client-type">Client Type</label>
+                                <input type="text" class="form-control" id="client-type" readonly>
+                            </div>
                         </div>
 
-                        <!-- Agency Classification -->
-                        <div class="form-group col-md-6">
-                            <label for="agency-classification">Agency Classification</label>
-                            <input type="text" class="form-control" id="agency-classification" readonly>
+
+                        <div id='service-specific'> </div>
+
+
+
+                        <div class="form-row">
+                            <!-- Client Type -->
+                            <div class="form-group  col-md-6">
+                                <label for="client-type">Purpose</label>
+                                <input type="text" class="form-control" id="purpose" readonly>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-row">
-                        <!-- Client Type -->
-                        <div class="form-group  col-md-6">
-                            <label for="client-type">Client Type</label>
-                            <input type="text" class="form-control" id="client-type" readonly>
+                        <!-- Purpose -->
+                        <div class="form-group">
+                            <label for="purpose">Additional Details </label>
+                            <textarea readonly class="form-control" id="additional_details" rows="3"></textarea>
                         </div>
-                    </div>
+                        <hr>
+
+                        <div class="selected_schedule"></div>
+                        <br>
 
 
-                    <div id='service-specific'> </div>
-
-
-
-                    <div class="form-row">
-                        <!-- Client Type -->
-                        <div class="form-group  col-md-6">
-                            <label for="client-type">Purpose</label>
-                            <input type="text" class="form-control" id="purpose" readonly>
+                        <div class="form-group">
+                            <label for="remarks">Admin Remarks (Optional):</label>
+                            <textarea class="form-control" id="remarks" name="remarks" rows="3"
+                                placeholder="Enter any additional comments or information here."></textarea>
                         </div>
-                    </div>
-
-                    <!-- Purpose -->
-                    <div class="form-group">
-                        <label for="purpose">Additional Details </label>
-                        <textarea readonly class="form-control" id="additional_details" rows="3"></textarea>
-                    </div>
-                    <hr>
-
-                    <div class="selected_schedule"></div>
-                    <br>
-
-
-                    <div class="form-group">
-                        <label for="remarks">Admin Remarks (Optional):</label>
-                        <textarea class="form-control" id="remarks" name="remarks" rows="3"
-                            placeholder="Enter any additional comments or information here."></textarea>
                     </div>
 
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="printModalContent()"><i class="fas fa-print"></i>
+                    Print</button>
+
 
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times-circle"></i>
                     Cancel Request</button>
@@ -100,7 +107,26 @@
 
 
 
+<script>
+function printModalContent() {
+    var element = document.getElementById('print_request'); // Get the modal element
 
+    html2canvas(element).then(function(canvas) {
+        var myWindow = window.open('', 'Print', 'height=600,width=800');
+        myWindow.document.write('<html><head><title>Print</title></head><body>');
+        myWindow.document.body.appendChild(canvas); // Append the canvas
+        myWindow.document.write('</body></html>');
+        myWindow.document.close();
+        myWindow.focus();
+
+        // Timeout to allow rendering on the canvas
+        setTimeout(function() {
+            myWindow.print();
+            myWindow.close();
+        }, 500);
+    });
+}
+</script>
 <!-- Schedule Modal -->
 <div class="modal fade" id="scheduleModal" tabindex="-1" role="dialog" aria-labelledby="scheduleModalLabel"
     aria-hidden="true">
@@ -120,4 +146,3 @@
         </div>
     </div>
 </div>
-

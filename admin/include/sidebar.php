@@ -25,6 +25,9 @@
                         </ul>
                     </li>
                     <li>
+                        <a href="speaker_profile.php"> <i class="menu-icon fa fa-users"></i> Speaker Profile </a>
+                    </li>
+                    <li>
                         <a href="schedules.php"> <i class="menu-icon ti-calendar"></i>Schedules </a>
                     </li>
                     <li>

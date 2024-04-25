@@ -62,7 +62,7 @@
                  </div>
 
 
-             
+
 
                  <div id="particiapnts_list_table"></div>
              </div>
@@ -79,7 +79,8 @@
 function generateQRCode() {
     var inviteCodeText = document.getElementById('inviteCode').textContent;
 
-    var inviteCode = 'serdac-wmsu.online/service_join.php?inv='+inviteCodeText; // Convert the number to a string to use as text in QR code
+    var inviteCode = 'serdac-wmsu.online/service_join.php?inv=' +
+    inviteCodeText; // Convert the number to a string to use as text in QR code
     var qrContainer = document.getElementById('qrCode');
 
     // Clear previous QR Code
@@ -156,7 +157,7 @@ function copyCode() {
                          <label for="client-type">Client Type</label>
                          <input type="text" class="form-control" id="d_client-type" readonly>
                      </div>
-              
+
 
                  </div>
                  <div class="form-row">
@@ -174,8 +175,8 @@ function copyCode() {
                  </div>
                  <hr>
 
-                 <div class="d_selected_schedule"></div>
-                 <br>
+                 <div id='d_service-specific'> </div>
+
 
                  <div class="form-group">
                      <label for="remarks">Admin Remarks (Optional):</label>
@@ -192,67 +193,72 @@ function copyCode() {
      </div>
  </div>
 
-<!-- Mark as Complete Modal -->
-<div class="modal fade" id="markCompleteModal" tabindex="-1" aria-labelledby="markCompleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg"> <!-- Larger modal -->
-        <div class="modal-content">
+ <!-- Mark as Complete Modal -->
+ <div class="modal fade" id="markCompleteModal" tabindex="-1" aria-labelledby="markCompleteModalLabel"
+     aria-hidden="true">
+     <div class="modal-dialog modal-lg">
+         <!-- Larger modal -->
+         <div class="modal-content">
 
-            <!-- Modal Header -->
-            <div class="modal-header bg-dark text-white" >
-                <h5 class="modal-title" id="transitionOngoingModalLabel" style="font-weight: bold;">Schedule Service Request</h5>
-            </div>
+             <!-- Modal Header -->
+             <div class="modal-header bg-dark text-white">
+                 <h5 class="modal-title" id="transitionOngoingModalLabel" style="font-weight: bold;">Schedule Service
+                     Request</h5>
+             </div>
 
-            <!-- Modal Body -->
-            <div class="modal-body" style="background-color: #f8f9fc;">
-                <form action="function/request.action.php" method="post">
+             <!-- Modal Body -->
+             <div class="modal-body" style="background-color: #f8f9fc;">
+                 <form action="function/request.action.php" method="post">
 
-                    <!-- Service Title -->
-                    <div class="form-group">
-                        <label for="serviceTitle" class="form-control-label" style="font-weight: bold;">Service Title:</label>
-                        <input type="text" id="serviceTitle" name="service_title" class="form-control" placeholder="Enter service title" style="border-radius: 0.35rem; border-color: #d1d3e2;">
-                    </div>
+                     <!-- Service Title -->
+                     <div class="form-group">
+                         <label for="serviceTitle" class="form-control-label" style="font-weight: bold;">Service
+                             Title:</label>
+                         <input type="text" id="serviceTitle" name="service_title" class="form-control"
+                             placeholder="Enter service title" style="border-radius: 0.35rem; border-color: #d1d3e2;">
+                     </div>
 
-                    <!-- Speaker -->
-                    <div class="form-group">
-                        <label for="speaker" class="form-control-label" style="font-weight: bold;">Speaker:</label>
-                        <input type="text" id="speaker" name="speaker" class="form-control" placeholder="Enter speaker's name" style="border-radius: 0.35rem; border-color: #d1d3e2;">
-                    </div>
+                  
 
-                    <!-- Date Type Selection -->
-                    <div class="form-group">
-                        <label for="dateTypeSelect" class="form-control-label" style="font-weight: bold;">Select Date Type:</label>
-                        <select class="form-control" id="dateTypeSelect" name="date_type" style="border-radius: 0.35rem; border-color: #d1d3e2;">
-                            <option value="single">Single Date</option>
-                            <option value="range">Date Range</option>
-                        </select>
-                    </div>
+                     <!-- Date Type Selection -->
+                     <div class="form-group">
+                         <label for="dateTypeSelect" class="form-control-label" style="font-weight: bold;">Select Date
+                             Type:</label>
+                         <select class="form-control" id="dateTypeSelect" name="date_type"
+                             style="border-radius: 0.35rem; border-color: #d1d3e2;">
+                             <option value="single">Single Date</option>
+                             <option value="range">Date Range</option>
+                         </select>
+                     </div>
 
-                    <!-- From Date -->
-                    <div class="form-group">
-                        <label class="form-control-label" style="font-weight: bold;">From Date:</label>
-                        <input type="date" name="from_date" class="form-control" style="border-radius: 0.35rem; border-color: #d1d3e2;">
-                    </div>
+                     <!-- From Date -->
+                     <div class="form-group">
+                         <label class="form-control-label" style="font-weight: bold;">From Date:</label>
+                         <input type="date" name="from_date" class="form-control"
+                             style="border-radius: 0.35rem; border-color: #d1d3e2;">
+                     </div>
 
-                    <!-- To Date -->
-                    <div class="form-group" id="toDateGroup">
-                        <label class="form-control-label" style="font-weight: bold;">To Date :</label>
-                        <input type="date" name="to_date" class="form-control" style="border-radius: 0.35rem; border-color: #d1d3e2;">
-                    </div>
+                     <!-- To Date -->
+                     <div class="form-group" id="toDateGroup">
+                         <label class="form-control-label" style="font-weight: bold;">To Date :</label>
+                         <input type="date" name="to_date" class="form-control"
+                             style="border-radius: 0.35rem; border-color: #d1d3e2;">
+                     </div>
 
-                    <!-- Hidden Request ID -->
-                    <input type="hidden" name="request_id" id="d_req_id">
+                     <!-- Hidden Request ID -->
+                     <input type="hidden" name="request_id" id="d_req_id">
 
-                    <!-- Modal Footer -->
-                    <div class="modal-footer" style="background-color: #f8f9fc;">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary" name="ongoing">Confirm Schedule</button>
-                    </div>
-                </form>
-            </div>
+                     <!-- Modal Footer -->
+                     <div class="modal-footer" style="background-color: #f8f9fc;">
+                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                         <button type="submit" class="btn btn-primary" name="ongoing">Confirm Schedule</button>
+                     </div>
+                 </form>
+             </div>
 
-        </div>
-    </div>
-</div>
+         </div>
+     </div>
+ </div>
 
 
 

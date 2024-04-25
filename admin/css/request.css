@@ -57,3 +57,13 @@
     max-width: 1200px;
     /* You can set this to the width you require */
 }
+
+@media print {
+    body {
+        font-size: 12pt;
+    }
+    /* Hide elements not needed in the printout */
+    .no-print {
+        display: none;
+    }
+}

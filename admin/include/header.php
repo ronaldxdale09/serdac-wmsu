@@ -12,6 +12,8 @@
     <link rel="apple-touch-icon" href="../assets/images/serdac.ico">
     <link rel="shortcut icon" href="../assets/images/serdac.ico">
     <link rel="icon" type="image/x-icon" href="../assets/images/serdac.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="css/chosen.min.css">
 
     <?php include('include/bootstrap.php');?>
 

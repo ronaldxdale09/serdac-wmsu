@@ -81,16 +81,16 @@
                 <td><span class="badge <?php echo $status_color; ?>">
                         <?php echo $row['status']; ?>
                     </span></td>
-              
+
                 <td><?php echo $row['service_type']; ?></td>
                 <td><?php echo $row['office_agency']; ?></td>
                 <td><?php echo $row['selected_purposes']; ?></td>
                 <td>
-                                                    
-                <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
-                    data-request='<?php echo json_encode($row); ?>'>
-                    <i class="fas fa-book"></i>
-                </button>
+
+                    <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
+                        data-request='<?php echo json_encode($row); ?>'>
+                        <i class="fas fa-book"></i>
+                    </button>
 
                 </td>
             </tr>
@@ -124,14 +124,19 @@ $(document).ready(function() {
         $('#additional_details').val(request.additional_purpose_details);
 
 
+        // Clear previous service type content
+        $('#service-specific').empty();
 
         // Load service-specific content based on service type
         var serviceTypeUrl = '';
         if (request.service_type === 'data-analysis') {
             serviceTypeUrl = 'modal/md.data_analysis.php';
-        } else if (request.service_type === 'capability-training	') {
-            //  serviceTypeUrl = 'md.training.php';
+        } else if (request.service_type === 'technical-assistance') {
+            serviceTypeUrl = 'modal/md.tech_assist.php';
+        } else if (request.service_type === 'technical-assistance') {
+            serviceTypeUrl = '';
         }
+
 
         // Append the service-specific form to the div
         if (serviceTypeUrl) {
@@ -180,6 +185,11 @@ $(document).ready(function() {
 
 
     });
+
+
+
+
+
 
     $(document).ready(function() {
         var serviceRequestModal = new bootstrap.Modal(document.getElementById(
