@@ -432,17 +432,102 @@ $('.btnSpeaker').on('click', function() {
             },
             success: function(data) {
                 $('#speaker_list_table').html(data);
-                //makeReadOnly(); // Call this function here
+
+
 
             }
         });
     }
     fetch_speaker();
- 
+
+
+    serviceType = request.service_type;
+    $.ajax({
+        url: 'fetch/fetch.training.php', // Server-side script to return data
+        type: 'POST',
+        data: {
+            service_type: serviceType,
+            request_id: request.request_id
+        },
+        success: function(response) {
+            // Assume response is JSON
+
+            var details = JSON.parse(response);
+
+            $('#service_title').val(details.title || '');
+            $('#serviceVenue').val(details.venue || '');
+
+            $('#fromDate').val(details.s_from || '');
+            $('#toDate').val(details.s_to || '');
+
+            //makeReadOnly(); // Call this function here
+
+        },
+        error: function() {
+            console.log('Error fetching details.');
+        }
+    });
+
 
 
     var modal = new bootstrap.Modal(document.getElementById('serviceSpeakerModal'));
     modal.show();
 
+});
+
+
+
+$(document).on('click', '#btnSaveSpeaker', function(e) {
+    // Prevent the default form submission
+    e.preventDefault();
+
+    // Set the form action to the desired URL
+    $('#speaker_form').attr('action', 'function/service_action.speaker.php');
+
+    // Submit the form asynchronously using AJAX
+    $.ajax({
+        type: "POST",
+        url: $('#speaker_form').attr('action'),
+        data: $('#speaker_form').serialize(),
+        success: function(response) {
+            if (response.trim() === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Training Record Saved!',
+                });
+
+
+                var selectElement = document.getElementById('patient_name');
+                $(selectElement).chosen('destroy');
+
+
+                // Set all inputs to readonly
+                $('#speaker_form input').prop('readonly', true);
+                $('#speaker_form textarea').prop('readonly', true);
+                $('#speaker_form select').prop('disabled',
+                    true); //use 'disabled' for select elements
+                // Disable all buttons inside the form
+                // Temporarily hide the buttons
+
+                // $('#confirmPrenatalModal').modal('hide');
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: response,
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            // Handle the error response
+            // Display SweetAlert error popup
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Form submission failed!',
+            });
+        }
+    });
 });
 </script>

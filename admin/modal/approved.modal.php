@@ -210,40 +210,13 @@ function copyCode() {
              <div class="modal-body" style="background-color: #f8f9fc;">
                  <form action="function/request.action.php" method="post">
 
-                     <!-- Service Title -->
-                     <div class="form-group">
-                         <label for="serviceTitle" class="form-control-label" style="font-weight: bold;">Service
-                             Title:</label>
-                         <input type="text" id="serviceTitle" name="service_title" class="form-control"
-                             placeholder="Enter service title" style="border-radius: 0.35rem; border-color: #d1d3e2;">
-                     </div>
+                 <p>Please review the information carefully. By confirming, you are agreeing to schedule this service based on the details provided. This action cannot be undone easily.</p>
+
 
                   
 
                      <!-- Date Type Selection -->
-                     <div class="form-group">
-                         <label for="dateTypeSelect" class="form-control-label" style="font-weight: bold;">Select Date
-                             Type:</label>
-                         <select class="form-control" id="dateTypeSelect" name="date_type"
-                             style="border-radius: 0.35rem; border-color: #d1d3e2;">
-                             <option value="single">Single Date</option>
-                             <option value="range">Date Range</option>
-                         </select>
-                     </div>
-
-                     <!-- From Date -->
-                     <div class="form-group">
-                         <label class="form-control-label" style="font-weight: bold;">From Date:</label>
-                         <input type="date" name="from_date" class="form-control"
-                             style="border-radius: 0.35rem; border-color: #d1d3e2;">
-                     </div>
-
-                     <!-- To Date -->
-                     <div class="form-group" id="toDateGroup">
-                         <label class="form-control-label" style="font-weight: bold;">To Date :</label>
-                         <input type="date" name="to_date" class="form-control"
-                             style="border-radius: 0.35rem; border-color: #d1d3e2;">
-                     </div>
+                    
 
                      <!-- Hidden Request ID -->
                      <input type="hidden" name="request_id" id="d_req_id">
@@ -251,7 +224,7 @@ function copyCode() {
                      <!-- Modal Footer -->
                      <div class="modal-footer" style="background-color: #f8f9fc;">
                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                         <button type="submit" class="btn btn-primary" name="ongoing">Confirm Schedule</button>
+                         <button type="submit" class="btn btn-primary" name="ongoing">Proceed</button>
                      </div>
                  </form>
              </div>
@@ -260,24 +233,3 @@ function copyCode() {
      </div>
  </div>
 
-
-
-
- <script>
-$(document).ready(function() {
-    function toggleToDate() {
-        var selectedValue = $("#dateTypeSelect").val();
-        if (selectedValue === "range") {
-            $("#toDateGroup").show();
-        } else {
-            $("#toDateGroup").hide();
-        }
-    }
-
-    // Initial check
-    toggleToDate();
-
-    // Event listener
-    $("#dateTypeSelect").change(toggleToDate);
-});
- </script>

@@ -6,7 +6,7 @@
                 <h5 class="modal-title">Request Service Meeting</h5>
             </div>
             <div class="modal-body">
-                <form action="function/service_action.meeting.php" id="meeting_form" method="post">
+                <form id="speaker_form" method="post">
                     <input type="text" class="form-control" name="req_id" id="sp_req_id" hidden>
                     <div class="form-row">
                         <!-- User ID -->
@@ -50,14 +50,79 @@
                             <input type="text" class="form-control" id="sp_purpose" readonly>
                         </div>
                     </div>
+                    <div class="container-research my-4 p-3 border">
 
-                    <div id="speaker_list_table"></div>
+                        <!-- Service Title -->
+                        <div class="row mb-3">
+                            <div class="col text-center">
+                                <label for="serviceTitle" class="form-control-label"
+                                    style="font-weight: bold; font-size: 1.2rem;">Service Title:</label>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <input type="text" id="service_title" name="service_title" class="form-control"
+                                    placeholder="Enter service title"
+                                    style="border-radius: 0.35rem; border-color: #d1d3e2; font-size: 1.25rem; text-align: center;">
+
+                            </div>
+                        </div>
+
+                        <div class="row ">
+                            <div class="col text-center">
+                                <label for="serviceTitle" class="form-control-label"
+                                    style="font-weight: bold; font-size: 1.2rem;">Training Venue:</label>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <input type="text" id="serviceVenue" name="venue" class="form-control"
+                                    placeholder="Enter venue address"
+                                    style="border-radius: 0.35rem; border-color: #d1d3e2; font-size: 1.25rem; text-align: center;">
+
+                            </div>
+                        </div>
+                        <!-- Date Type Selection -->
+                        <div class="row mb-3">
+                            <div class="col-12 col-md-6">
+                                <label for="dateTypeSelect" class="form-control-label" style="font-weight: bold;">Select
+                                    Date Type:</label>
+                                <select class="form-control" id="dateTypeSelect" name="date_type"
+                                    style="border-radius: 0.35rem; border-color: #d1d3e2;">
+                                    <option value="single">Single Date</option>
+                                    <option value="range">Date Range</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Date Inputs -->
+                        <div class="form-row">
+                            <!-- From Date -->
+                            <!-- From Date -->
+                            <div class="form-group col-md-6">
+                                <label class="form-control-label" style="font-weight: bold;">From Date:</label>
+                                <input type="date" id="fromDate" name="from_date" class="form-control"
+                                    style="border-radius: 0.35rem; border-color: #d1d3e2;">
+                            </div>
+
+                            <!-- To Date -->
+                            <div class="form-group col-md-6" id="toDateGroup">
+                                <label class="form-control-label" style="font-weight: bold;">To Date:</label>
+                                <input type="date" id="toDate" name="to_date" class="form-control"
+                                    style="border-radius: 0.35rem; border-color: #d1d3e2;">
+                            </div>
+
+                        </div>
+
+                        <div id="speaker_list_table"></div>
+                    </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" name="confirm" id="btnSaveMeetingForm" class="btn btn-warning text-dark"><i
-                        class="fas fa-check"></i> Confirm Meeting</button>
+                <button type="submit" name="confirm" id="btnSaveSpeaker" class="btn btn-warning text-dark"><i
+                        class="fas fa-check"></i> Confirm Training</button>
                 </form>
 
             </div>
@@ -67,3 +132,27 @@
 
     </div>
 </div>
+
+
+<script>
+$(document).ready(function() {
+    // Function to adjust the To Date input based on the Date Type selection
+    function adjustToDate() {
+        var dateType = $("#dateTypeSelect").val();
+        var fromDateValue = $("#fromDate").val(); // Assuming the ID for the From Date input is fromDate
+
+        if (dateType === "single") {
+            $("#toDate").val(fromDateValue); // Set To Date same as From Date
+            $("#toDate").prop('readonly', true); // Make To Date readonly
+        } else {
+            $("#toDate").prop('readonly', false); // Make To Date editable
+        }
+    }
+
+    // Initial adjustment
+    adjustToDate();
+
+    // Adjust To Date whenever the From Date or the Date Type changes
+    $("#dateTypeSelect, #fromDate").change(adjustToDate);
+});
+</script>
