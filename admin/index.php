@@ -24,7 +24,7 @@ while ($row = $result->fetch_assoc()) {
 }
 
 ?>
-    <link rel="stylesheet" href="css/dashboard.css">
+<link rel="stylesheet" href="css/dashboard.css">
 
 <body>
 
@@ -111,103 +111,62 @@ while ($row = $result->fetch_assoc()) {
                         <div class="col-xl-8">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="box-title">Orders </h4>
+                                    <h4 class="box-title">Recently Requested Services </h4>
                                 </div>
                                 <div class="card-body--">
                                     <div class="table-stats order-table ov-h">
-                                        <table class="table ">
-                                            <thead>
+                                        <?php 
+                                                $query = "SELECT service_request.*, users.fname, users.lname FROM service_request
+                                                LEFT JOIN users ON users.user_id = service_request.user_id
+                                                ORDER BY request_date DESC LIMIT 20 ";
+                                                $results = mysqli_query($con, $query);
+                                                                ?>
+                                        <table class="table">
+                                            <thead class="thead-light">
                                                 <tr>
-                                                    <th class="serial">#</th>
-                                                    <th class="avatar">Avatar</th>
-                                                    <th>ID</th>
-                                                    <th>Name</th>
-                                                    <th>Product</th>
-                                                    <th>Quantity</th>
-                                                    <th>Status</th>
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Status</th>
+                                                    <th scope="col">Client</th>
+                                                    <th scope="col">Service Type</th>
+                                                    <th scope="col">Agency</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                <?php while ($row = mysqli_fetch_assoc($results)) { 
+                                               $status_color = '';
+                                               switch ($row['status']) {
+                                                   case "Pending":
+                                                       $status_color = 'badge-warning';
+                                                       break;
+                                                   case "Approved":
+                                                       $status_color = 'badge-success';
+                                                       break;
+                                                   case "In Progress":
+                                                           $status_color = 'badge-primary';
+                                                           break;
+                                                   case "Cancelled":
+                                                       $status_color = 'badge-danger';
+                                                       break;
+                                               }
+                       
+                                                    $type_color = $row['service_type'] === 'data-analysis' ? 'badge-success' :
+                                                                ($row['service_type'] === 'capability-training' ? 'badge-primary' :
+                                                                ($row['service_type'] === 'technical-assistance' ? 'badge-dark' : ''));
+                                                ?>
                                                 <tr>
-                                                    <td class="serial">1.</td>
-                                                    <td class="avatar">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle"
-                                                                    src="images/avatar/1.jpg" alt=""></a>
-                                                        </div>
+                                                    <td><?php echo $row['request_id']; ?></td>
+                                                    <td><span
+                                                            class="badge <?php echo $status_color; ?>"><?php echo $row['status']; ?></span>
                                                     </td>
-                                                    <td> #5469 </td>
-                                                    <td> <span class="name">Louis Stanley</span> </td>
-                                                    <td> <span class="product">iMax</span> </td>
-                                                    <td><span class="count">231</span></td>
-                                                    <td>
-                                                        <span class="badge badge-complete">Complete</span>
+                                                    <td class='nowrap'><?php echo $row['fname'].' '.$row['lname']; ?>
                                                     </td>
+                                                    <td><span
+                                                            class="badge <?php echo $type_color; ?>"><?php echo $row['service_type']; ?></span>
+                                                    </td>
+                                                    <td><?php echo $row['office_agency']; ?></td>
+
                                                 </tr>
-                                                <tr>
-                                                    <td class="serial">2.</td>
-                                                    <td class="avatar">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle"
-                                                                    src="images/avatar/2.jpg" alt=""></a>
-                                                        </div>
-                                                    </td>
-                                                    <td> #5468 </td>
-                                                    <td> <span class="name">Gregory Dixon</span> </td>
-                                                    <td> <span class="product">iPad</span> </td>
-                                                    <td><span class="count">250</span></td>
-                                                    <td>
-                                                        <span class="badge badge-complete">Complete</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial">3.</td>
-                                                    <td class="avatar">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle"
-                                                                    src="images/avatar/3.jpg" alt=""></a>
-                                                        </div>
-                                                    </td>
-                                                    <td> #5467 </td>
-                                                    <td> <span class="name">Catherine Dixon</span> </td>
-                                                    <td> <span class="product">SSD</span> </td>
-                                                    <td><span class="count">250</span></td>
-                                                    <td>
-                                                        <span class="badge badge-complete">Complete</span>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td class="serial">4.</td>
-                                                    <td class="avatar">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle"
-                                                                    src="images/avatar/4.jpg" alt=""></a>
-                                                        </div>
-                                                    </td>
-                                                    <td> #5466 </td>
-                                                    <td> <span class="name">Mary Silva</span> </td>
-                                                    <td> <span class="product">Magic Mouse</span> </td>
-                                                    <td><span class="count">250</span></td>
-                                                    <td>
-                                                        <span class="badge badge-pending">Pending</span>
-                                                    </td>
-                                                </tr>
-                                                <tr class=" pb-0">
-                                                    <td class="serial">5.</td>
-                                                    <td class="avatar pb-0">
-                                                        <div class="round-img">
-                                                            <a href="#"><img class="rounded-circle"
-                                                                    src="images/avatar/6.jpg" alt=""></a>
-                                                        </div>
-                                                    </td>
-                                                    <td> #5465 </td>
-                                                    <td> <span class="name">Johnny Stephens</span> </td>
-                                                    <td> <span class="product">Monitor</span> </td>
-                                                    <td><span class="count">250</span></td>
-                                                    <td>
-                                                        <span class="badge badge-complete">Complete</span>
-                                                    </td>
-                                                </tr>
+                                                <?php } ?>
                                             </tbody>
                                         </table>
                                     </div> <!-- /.table-stats -->

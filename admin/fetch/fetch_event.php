@@ -1,9 +1,10 @@
-<?php 
-
+<?php
 include('../../function/db.php');
 
-
-$sql = "SELECT request_id, service_type, scheduled_date FROM service_request";
+// Query to select data from the sr_meeting table
+$sql = "SELECT sr_meeting.meet_id, sr_meeting.request_id, sr_meeting.meeting_type, sr_meeting.date_time, sr_meeting.remarks, service_request.service_type
+        FROM sr_meeting
+        JOIN service_request ON sr_meeting.request_id = service_request.request_id";
 $result = $con->query($sql);
 
 $events = array();
@@ -12,24 +13,29 @@ if ($result->num_rows > 0) {
     // Output data of each row
     while($row = $result->fetch_assoc()) {
         $e = array();
-        $e['id'] = $row['request_id'];
-        $e['title'] = $row['service_type'];
-        $e['start'] = $row['scheduled_date'];
+        $e['id'] = $row['meet_id'];
+        $e['title'] = $row['meeting_type'] . " - " . $row['service_type'];
+        $e['start'] = $row['date_time'];
+        $e['description'] = $row['remarks']; // Additional detail to display
 
-        // Assign background color based on service type
+        // Assign background color based on meeting type or service type
         switch($row['service_type']) {
-            case "ServiceType1":
-                $e['backgroundColor'] = "#ff0000"; // red
+            case "data-analysis":
+                $e['backgroundColor'] = "#ff0000"; // Red for specific service type
                 break;
-            case "ServiceType2":
-                $e['backgroundColor'] = "#00ff00"; // green
+            case "capability-training":
+                $e['backgroundColor'] = "#00ff00"; // Green for another type
                 break;
-            // Add more cases for different service types
-            default:
-                $e['backgroundColor'] = "#0000ff"; // blue
+            case "technical-assistance":
+                    $e['backgroundColor'] = "#0000ff"; // Green for another type
+                    break;
+            // Add more cases as needed for different service types
+
         }
 
-        // Merge the event array into the return array
+        // // Optionally add more properties to events, such as urls, etc.
+        // $e['url'] = "request_record.php";
+
         array_push($events, $e);
     }
 } else {
@@ -38,5 +44,6 @@ if ($result->num_rows > 0) {
 $con->close();
 
 // Return JSON encoded events
+header('Content-Type: application/json');
 echo json_encode($events);
 ?>

@@ -103,11 +103,11 @@
 
                 <td>
                     <div class="button-grid">
-                        <button type="button" class="btn btn-sm btn-primary btnProgView" data-toggle="tooltip"
+                        <button type="button" class="btn btn-sm btn-primary btnComView" data-toggle="tooltip"
                             data-placement="top" title="View Request" data-request='<?php echo json_encode($row); ?>'>
                             <i class="fas fa-book"></i> Details
                         </button>
-                        <button type="button" class="btn btn-sm btn-secondary btnProgMeeting"
+                        <button type="button" class="btn btn-sm btn-secondary btnComMeeting"
                             data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip"
                             title="Progress Meeting">
                             <i class="fas fa-calendar"></i> Meetings
@@ -134,10 +134,6 @@
 
                         <?php endif; ?>
 
-                        <button type="button" class="btn btn-sm btn-success btnCompleteService"
-                            data-req='<?php echo json_encode($row); ?>'>
-                            <i class="fas fa-check"></i> Complete
-                        </button>
                     </div>
 
 
