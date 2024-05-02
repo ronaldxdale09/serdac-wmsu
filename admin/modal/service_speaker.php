@@ -3,7 +3,7 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
-                <h5 class="modal-title">Request Service Meeting</h5>
+                <h5 class="modal-title">Capability Training Speakers</h5>
             </div>
             <div class="modal-body">
                 <form id="speaker_form" method="post">
@@ -52,37 +52,27 @@
                     </div>
                     <div class="container-research my-4 p-3 border">
 
-                        <!-- Service Title -->
-                        <div class="row mb-3">
-                            <div class="col text-center">
-                                <label for="serviceTitle" class="form-control-label"
-                                    style="font-weight: bold; font-size: 1.2rem;">Service Title:</label>
-                            </div>
-                        </div>
 
-                        <div class="row mb-3">
-                            <div class="col">
+
+                        <div class="form-row">
+                            <!-- Client Type -->
+                            <div class="form-group  col-md-6">
+                                <label for="client-type">Service Title</label>
                                 <input type="text" id="service_title" name="service_title" class="form-control"
                                     placeholder="Enter service title"
                                     style="border-radius: 0.35rem; border-color: #d1d3e2; font-size: 1.25rem; text-align: center;">
-
                             </div>
-                        </div>
-
-                        <div class="row ">
-                            <div class="col text-center">
-                                <label for="serviceTitle" class="form-control-label"
-                                    style="font-weight: bold; font-size: 1.2rem;">Training Venue:</label>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col">
+                            <div class="form-group  col-md-6">
+                                <label for="client-type">Training Venue:</label>
                                 <input type="text" id="serviceVenue" name="venue" class="form-control"
                                     placeholder="Enter venue address"
                                     style="border-radius: 0.35rem; border-color: #d1d3e2; font-size: 1.25rem; text-align: center;">
-
                             </div>
                         </div>
+
+
+
+
                         <!-- Date Type Selection -->
                         <div class="row mb-3">
                             <div class="col-12 col-md-6">

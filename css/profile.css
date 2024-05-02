@@ -28,7 +28,14 @@
 }
 
 .profile-background {
-    background-color: #04376a;
+    position: relative;
+    /* Required for the positioning of the pseudo-element */
+    background-image: url('../assets/images/background2.jpg');
+    /* Set the background image */
+    background-size: cover;
+    /* Cover the entire area of the element */
+    background-position: center;
+    /* Center the background image */
 }
 
 .profile-card-2 .card {

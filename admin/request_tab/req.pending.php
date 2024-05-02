@@ -51,7 +51,7 @@
     <table class="table table-hover" id='service_request_table'>
         <thead>
             <tr>
-                <th scope="col">Req. ID</th>
+                <th scope="col">ID</th>
                 <th scope="col">Status</th>
 
                 <th scope="col">Service Type</th>
@@ -62,19 +62,32 @@
         </thead>
         <tbody>
             <?php while ($row = mysqli_fetch_array($results)) { 
-                                                    // Status color coding (optional)
-                                                    $status_color = '';
-                                                    switch ($row['status']) {
-                                                        case "Pending":
-                                                            $status_color = 'badge-warning';
-                                                            break;
-                                                        case "Approved":
-                                                            $status_color = 'badge-success';
-                                                            break;
-                                                        case "Rejected":
-                                                            $status_color = 'badge-danger';
-                                                            break;
-                                                    }
+            // Status color coding (optional)
+            $status_color = '';
+            switch ($row['status']) {
+                case "Pending":
+                    $status_color = 'badge-warning';
+                    break;
+                case "Approved":
+                    $status_color = 'badge-success';
+                    break;
+                case "Rejected":
+                    $status_color = 'badge-danger';
+               
+                    break;
+            }
+
+            $type_color = '';
+            if ($row['service_type'] === "data-analysis") {
+                $type_color = 'badge-success';
+            } elseif ($row['service_type'] === "capability-training") {
+                $type_color = 'badge-primary';
+            } elseif ($row['service_type'] === "technical-assistance") {
+                $type_color = 'badge-dark';
+            }
+            
+
+
                                                 ?>
             <tr>
                 <td><?php echo $row['request_id']; ?></td>
@@ -82,23 +95,26 @@
                         <?php echo $row['status']; ?>
                     </span></td>
 
-                <td><?php echo $row['service_type']; ?></td>
+                <td><span class="badge <?php echo $type_color; ?>">
+                        <?php echo $row['service_type']; ?>
+                    </span>
+                </td>
                 <td><?php echo $row['office_agency']; ?></td>
                 <td><?php echo $row['selected_purposes']; ?></td>
                 <td>
+                    <div class="button-grid">
 
-                    <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
-                        data-request='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-book"></i>
-                    </button>
-
+                        <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
+                            data-request='<?php echo json_encode($row); ?>'>
+                            <i class="fas fa-book"></i> Details
+                        </button>
+                    </div>
                 </td>
             </tr>
             <?php } ?>
         </tbody>
     </table>
 </div>
-<?php include('modal/pending.modal.php');?>
 
 
 <script>
@@ -127,6 +143,9 @@ $(document).ready(function() {
         // Clear previous service type content
         $('#service-specific').empty();
 
+
+
+
         // Load service-specific content based on service type
         var serviceTypeUrl = '';
         if (request.service_type === 'data-analysis') {
@@ -146,6 +165,9 @@ $(document).ready(function() {
                 }
             });
         }
+
+
+
 
 
         serviceType = request.service_type;
@@ -168,9 +190,17 @@ $(document).ready(function() {
 
                     console.log(details)
 
+
                 }
 
 
+
+                document.querySelectorAll('button').forEach(function(button) {
+                    if (button.innerHTML.includes('Cancel Request') ||
+                        button.innerHTML.includes('Assign Schedule')) {
+                        button.style.display = 'inline-block'; // Show the buttons
+                    }
+                });
                 // Show the modal
                 var modal = new bootstrap.Modal(document.getElementById(
                     'serviceRequestDetailsModal'));
@@ -190,22 +220,22 @@ $(document).ready(function() {
 
 
 
-
     $(document).ready(function() {
         var serviceRequestModal = new bootstrap.Modal(document.getElementById(
             'serviceRequestDetailsModal'));
         var scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
 
         document.getElementById('assign-sched').addEventListener('click', function() {
+            console.log("Hiding service request modal and showing schedule modal.");
             serviceRequestModal.hide();
             scheduleModal.show();
         });
 
         document.getElementById('confirm-schedule').addEventListener('click', function() {
             var selectedDateTime = document.getElementById('schedule-date').value;
+            console.log("Selected DateTime: " + selectedDateTime);
 
             if (selectedDateTime) {
-                // Format the date and time
                 var formattedDateTime = new Date(selectedDateTime).toLocaleString('en-US', {
                     year: 'numeric',
                     month: 'long',
@@ -215,14 +245,12 @@ $(document).ready(function() {
                 });
 
                 document.getElementById('p_sched_date').value = selectedDateTime;
-
                 document.querySelector('.selected_schedule').innerHTML =
-                    '<h5>Selected Schedule</h5><p>' +
-                    formattedDateTime + '</p>';
+                    '<h5>Selected Schedule</h5><p>' + formattedDateTime + '</p>';
 
-                // Unhide the confirm service request button
                 var submitBtn = document.getElementById('submit-request');
                 submitBtn.removeAttribute('hidden');
+                console.log("Submit button should now be visible.");
 
                 scheduleModal.hide();
             } else {
@@ -230,6 +258,7 @@ $(document).ready(function() {
             }
         });
     });
+
 
 
     $(document).ready(function() {

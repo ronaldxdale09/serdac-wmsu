@@ -37,7 +37,12 @@ if (isset($_SESSION["userId_code"])) {
                 
             </script>
         ";
+
+        $sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE user_id='$id'  ");
+        $res = mysqli_fetch_array($sql);
+        $req_count = $res['Total'];
         }
+
     }
     else{
         header("Location: login.php");
@@ -125,7 +130,7 @@ if (isset($_SESSION["userId_code"])) {
                                             <li class="nav-item">
                                                 <a href="javascript:void();" data-target="#messages" data-toggle="pill"
                                                     class="nav-link"><i class="icon-envelope-open"></i> <span
-                                                        class="hidden-xs">REQUEST</span></a>
+                                                        class="hidden-xs">REQUEST    <span class="badge bg-danger text-light"> <?php echo  $req_count ?> </span></span></a>
                                             </li>
                                             <li class="nav-item">
                                                 <a href="javascript:void();" data-target="#edit" data-toggle="pill"
@@ -275,6 +280,7 @@ if (isset($_SESSION["userId_code"])) {
     </section>
 
     <?php include('modal/profile_modal.php');?>
+    <?php include('modal/service_analysis.req.php');?>
 
     <?php include('include/footer.php');?>
 

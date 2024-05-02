@@ -67,6 +67,13 @@ $completed_count = $res['Total'];
 
         <!-- Header-->
         <?php include('include/navbar.php')?>
+        <?php include('modal/pending.modal.php');?>
+        <?php include('modal/approved.modal.php');?>
+        <?php include('modal/progress.modal.php');?>
+
+        <?php include('modal/service_meeting.php');?>
+        <?php include('modal/service_speaker.php');?>
+        <?php include('modal/service_analysis.req.php');?>
 
         <!-- Content -->
         <div class="breadcrumbs">
@@ -189,6 +196,8 @@ $completed_count = $res['Total'];
                                 <div class="title"
                                     style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
                                     Completed</div>
+                                <?php include('request_tab/req.completed.php'); ?>
+
                         </section>
                     </div>
 
@@ -201,8 +210,6 @@ $completed_count = $res['Total'];
 
     </div>
     <?php include('include/footer.php');?>
-    
-    <?php include('modal/approved.modal.php');?>
 
     <?php include('include/datatables.php');?>
 

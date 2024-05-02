@@ -1,6 +1,7 @@
 <?php 
     include('../../function/db.php');
-
+    include('email_notification.php');
+    
 
     if (isset($_POST['confirm'])) {
 
@@ -14,13 +15,22 @@
         
         // Creating the SQL query
 
-        $query = "UPDATE service_request SET admin_remarks='$remarks',status='Approved',inviteCode='$inviteCode', scheduled_date='$sched_date'
+        $query = "UPDATE service_request SET scheduled_remarks='$remarks',status='Approved',inviteCode='$inviteCode', scheduled_date='$sched_date'
         WHERE request_id   = '$request_id'";
   
         // Executing the query
         $results = mysqli_query($con, $query);
     
         if ($results) {
+
+            // Insert new meeting 
+            $insertSql = "INSERT INTO sr_meeting (request_id, meeting_type, date_time,mode) 
+            VALUES ('$request_id', 'Initial Meeting',NOW(),'face2face')";
+            // Executing the query
+            $results = mysqli_query($con, $insertSql);
+    
+            
+
             header("Location: ../request_record.php?tab=2");  // Change this to your desired location
             exit();
         } else {
@@ -29,29 +39,69 @@
         exit();
     }
 
-    if (isset($_POST['ongoing'])) {
+    if (isset($_POST['progress'])) {
+        $request_id = $_POST['request_id'];
+        $remarks = $_POST['remarks'];
+
+        
+        // Start transaction
+        mysqli_begin_transaction($con);
+    
+        try {
+            // Fetch the user email and service_type
+            $fetchQuery = "SELECT users.email, service_request.service_type 
+                           FROM service_request 
+                           JOIN users ON service_request.user_id = users.user_id 
+                           WHERE service_request.request_id = '$request_id'";
+            $fetchResult = mysqli_query($con, $fetchQuery);
+            if ($fetchResult && mysqli_num_rows($fetchResult) > 0) {
+                $data = mysqli_fetch_assoc($fetchResult);
+                $recipientEmail = $data['email'];
+                $serviceType = $data['service_type'];
+    
+                // Update the service_request status
+                $updateQuery = "UPDATE service_request SET status='In Progress',inprogress_remarks='$remarks', ongoing_date=NOW() 
+                                WHERE request_id = '$request_id'";
+                $updateResult = mysqli_query($con, $updateQuery);
+    
+                if ($updateResult) {
+
+                    if ($serviceType == 'data-analysis') {
+                        dataAnalysisDocument($recipientEmail);
+                    }
+    
+                    mysqli_commit($con);
+                    header("Location: ../request_record.php?tab=3");  // Change this to your desired location
+                    exit();
+                } else {
+                    throw new Exception("ERROR: Could not be able to execute the update query. " . mysqli_error($con));
+                }
+            } else {
+                throw new Exception("No data found for the provided request ID.");
+            }
+        } catch (Exception $e) {
+            mysqli_rollback($con);
+            echo $e->getMessage();
+        }
+    }
+
+
+    if (isset($_POST['complete'])) {
 
         $request_id = $_POST['request_id'];
-        $dateType = $_POST['date_type'];
-        $fromDate = $_POST['from_date'];
-        $toDate = isset($_POST['to_date']) ? $_POST['to_date'] : null;
+        $remarks = $_POST['remarks'];
 
-        $service_title = $_POST['service_title'];
+          // Update the service_request status
+          $updateQuery = "UPDATE service_request SET status='Completed',completed_remarks='$remarks', ongoing_date=NOW() 
+          WHERE request_id = '$request_id'";
+        $updateResult = mysqli_query($con, $updateQuery);
+            
+        if ($updateResult) {
 
-        $event_speaker = $_POST['speaker'];
+        
 
-    
-
-        $query = "UPDATE service_request SET status='In Progress', ongoing_date=NOW(), sched_from_date='$fromDate',
-        sched_to_date='$toDate' ,dateType='$dateType',event_title='$service_title',event_speaker='$event_speaker'
-                WHERE request_id = '$request_id'";
-    
-    
-        // Executing the query
-        $results = mysqli_query($con, $query);
-    
-        if ($results) {
-            header("Location: ../request_record.php?tab=3");  // Change this to your desired location
+        
+           // header("Location: ../request_record.php?tab=5");  // Change this to your desired location
             exit();
         } else {
             echo "ERROR: Could not be able to execute the query. " . mysqli_error($con);

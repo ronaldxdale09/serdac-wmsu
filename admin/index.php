@@ -1,4 +1,30 @@
-<?php include('include/header.php')?>
+<?php include('include/header.php');
+
+// Execute SQL query to get the average completion time for completed requests
+$result = $con->query("SELECT AVG(DATEDIFF(completed_date, request_date)) AS avg_time FROM service_request WHERE status = 'Completed'");
+if ($result) {
+    $row = $result->fetch_assoc();
+    $avgResolutionTime = round($row['avg_time'], 2);
+} else {
+    $avgResolutionTime = 0; // default or error handling
+}
+
+// Execute SQL query to get the count of requests by client type
+$results = $con->query("SELECT client_type, COUNT(*) AS count FROM service_request GROUP BY client_type");
+$clientTypes = [];
+while ($row = $results->fetch_assoc()) {
+    $clientTypes[$row['client_type']] = $row['count'];
+}
+
+// Execute SQL query to get monthly request counts
+$result = $con->query("SELECT MONTH(request_date) AS month, COUNT(*) AS count FROM service_request WHERE YEAR(request_date) = YEAR(CURDATE()) GROUP BY MONTH(request_date)");
+$monthlyCounts = [];
+while ($row = $result->fetch_assoc()) {
+    $monthlyCounts[$row['month']] = $row['count'];
+}
+
+?>
+    <link rel="stylesheet" href="css/dashboard.css">
 
 <body>
 
@@ -23,60 +49,60 @@
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
-                                <h4 class="box-title">Traffic </h4>
+                                <h4 class="box-title">Service Type Demand Overview</h4>
                             </div>
                             <div class="row">
-                                <div class="col-lg-8">
+                                <div class="col-lg-12">
                                     <div class="card-body">
-                                        <!-- <canvas id="TrafficChart"></canvas>   -->
-                                        <div id="traffic-chart" class="traffic-chart"></div>
+                                        <!-- Pie Chart for Service Request Types -->
+                                        <canvas id="service-type-chart"></canvas>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="card-body">
-                                        <div class="progress-box progress-1">
-                                            <h4 class="por-title">Visits</h4>
-                                            <div class="por-txt">96,930 Users (40%)</div>
-                                            <div class="progress mb-2" style="height: 5px;">
-                                                <div class="progress-bar bg-flat-color-1" role="progressbar"
-                                                    style="width: 40%;" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-box progress-2">
-                                            <h4 class="por-title">Bounce Rate</h4>
-                                            <div class="por-txt">3,220 Users (24%)</div>
-                                            <div class="progress mb-2" style="height: 5px;">
-                                                <div class="progress-bar bg-flat-color-2" role="progressbar"
-                                                    style="width: 24%;" aria-valuenow="25" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-box progress-2">
-                                            <h4 class="por-title">Unique Visitors</h4>
-                                            <div class="por-txt">29,658 Users (60%)</div>
-                                            <div class="progress mb-2" style="height: 5px;">
-                                                <div class="progress-bar bg-flat-color-3" role="progressbar"
-                                                    style="width: 60%;" aria-valuenow="60" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                        <div class="progress-box progress-2">
-                                            <h4 class="por-title">Targeted Visitors</h4>
-                                            <div class="por-txt">99,658 Users (90%)</div>
-                                            <div class="progress mb-2" style="height: 5px;">
-                                                <div class="progress-bar bg-flat-color-4" role="progressbar"
-                                                    style="width: 90%;" aria-valuenow="90" aria-valuemin="0"
-                                                    aria-valuemax="100"></div>
-                                            </div>
-                                        </div>
-                                    </div> <!-- /.card-body -->
-                                </div>
+
                             </div> <!-- /.row -->
-                            <div class="card-body"></div>
+                            <div class="card-body">
+                                <!-- Stat Cards Container -->
+                                <div class="stat-cards">
+
+                                    <!-- Average Resolution Time Card -->
+                                    <div class="stat-card">
+                                        <h4 class="stat-title">Average Resolution Time</h4>
+                                        <div class="stat-value"><?php echo $avgResolutionTime; ?> days</div>
+                                        <div class="stat-icon">
+                                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+
+                                    <!-- Requests by Client Type Card -->
+                                    <div class="stat-card">
+                                        <h4 class="stat-title">Requests by Client Type</h4>
+                                        <?php foreach ($clientTypes as $type => $count): ?>
+                                        <div class="stat-text"><?php echo $type; ?>: <?php echo $count; ?></div>
+                                        <?php endforeach; ?>
+                                        <div class="stat-icon">
+                                            <i class="fa fa-users" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+
+                                    <!-- Monthly Requests Card -->
+                                    <div class="stat-card">
+                                        <h4 class="stat-title">Monthly Requests</h4>
+                                        <?php foreach ($monthlyCounts as $month => $count): ?>
+                                        <div class="stat-text">Month <?php echo $month; ?>: <?php echo $count; ?></div>
+                                        <?php endforeach; ?>
+                                        <div class="stat-icon">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
                         </div>
                     </div><!-- /# column -->
                 </div>
+                <!--  /Traffic -->
+
                 <!--  /Traffic -->
                 <div class="clearfix"></div>
                 <!-- Orders -->
@@ -217,86 +243,7 @@
                 </div>
                 <!-- /.orders -->
                 <!-- To Do and Live Chat -->
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title box-title">To Do List</h4>
-                                <div class="card-content">
-                                    <div class="todo-list">
-                                        <div class="tdl-holder">
-                                            <div class="tdl-content">
-                                                <ul>
-                                                    <li>
-                                                        <label>
-                                                            <input type="checkbox"><i
-                                                                class="check-box"></i><span>Conveniently fabricate
-                                                                interactive technology for ....</span>
-                                                            <a href='#' class="fa fa-times"></a>
-                                                            <a href='#' class="fa fa-pencil"></a>
-                                                            <a href='#' class="fa fa-check"></a>
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label>
-                                                            <input type="checkbox"><i
-                                                                class="check-box"></i><span>Creating component
-                                                                page</span>
-                                                            <a href='#' class="fa fa-times"></a>
-                                                            <a href='#' class="fa fa-pencil"></a>
-                                                            <a href='#' class="fa fa-check"></a>
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label>
-                                                            <input type="checkbox" checked><i
-                                                                class="check-box"></i><span>Follow back those who follow
-                                                                you</span>
-                                                            <a href='#' class="fa fa-times"></a>
-                                                            <a href='#' class="fa fa-pencil"></a>
-                                                            <a href='#' class="fa fa-check"></a>
-                                                        </label>
-                                                    </li>
-                                                    <li>
-                                                        <label>
-                                                            <input type="checkbox" checked><i
-                                                                class="check-box"></i><span>Design One page theme</span>
-                                                            <a href='#' class="fa fa-times"></a>
-                                                            <a href='#' class="fa fa-pencil"></a>
-                                                            <a href='#' class="fa fa-check"></a>
-                                                        </label>
-                                                    </li>
 
-                                                    <li>
-                                                        <label>
-                                                            <input type="checkbox" checked><i
-                                                                class="check-box"></i><span>Creating component
-                                                                page</span>
-                                                            <a href='#' class="fa fa-times"></a>
-                                                            <a href='#' class="fa fa-pencil"></a>
-                                                            <a href='#' class="fa fa-check"></a>
-                                                        </label>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div> <!-- /.todo-list -->
-                                </div>
-                            </div> <!-- /.card-body -->
-                        </div><!-- /.card -->
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <!-- <h4 class="box-title">Chandler</h4> -->
-                                <div class="calender-cont widget-calender">
-                                    <div id="calendar"></div>
-                                </div>
-                            </div>
-                        </div><!-- /.card -->
-                    </div>
-                </div>
                 <!-- /To Do and Live Chat -->
                 <!-- Calender Chart Weather  -->
                 <div class="row">
@@ -380,225 +327,70 @@
         </div>
         <div class="clearfix"></div>
         <!-- Footer -->
-       
+
     </div>
     <?php include('include/footer.php');?>
 
     <!--Local Stuff-->
     <script>
-    jQuery(document).ready(function($) {
-        "use strict";
-
-        // Pie chart flotPie1
-        var piedata = [{
-                label: "Desktop visits",
-                data: [
-                    [1, 32]
-                ],
-                color: '#5c6bc0'
+    $(document).ready(function() {
+        var ctx = $('#service-type-chart').get(0).getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Number of Requests',
+                    data: [],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)', // Bright red
+                        'rgba(54, 162, 235, 1)', // Bright blue
+                        'rgba(255, 206, 86, 1)', // Bright yellow
+                        'rgba(75, 192, 192, 1)' // Bright teal
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ],
+                    borderWidth: 1
+                }]
             },
-            {
-                label: "Tab visits",
-                data: [
-                    [1, 33]
-                ],
-                color: '#ef5350'
-            },
-            {
-                label: "Mobile visits",
-                data: [
-                    [1, 35]
-                ],
-                color: '#66bb6a'
-            }
-        ];
-
-        $.plot('#flotPie1', piedata, {
-            series: {
-                pie: {
-                    show: true,
-                    radius: 1,
-                    innerRadius: 0.65,
-                    label: {
-                        show: true,
-                        radius: 2 / 3,
-                        threshold: 1
-                    },
-                    stroke: {
-                        width: 0
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
-                }
-            },
-            grid: {
-                hoverable: true,
-                clickable: true
+                },
+                legend: {
+                    display: true,
+                    position: 'top'
+                },
+                responsive: true,
+                maintainAspectRatio: false
             }
         });
-        // Pie chart flotPie1  End
-        // cellPaiChart
-        var cellPaiChart = [{
-                label: "Direct Sell",
-                data: [
-                    [1, 65]
-                ],
-                color: '#5b83de'
-            },
-            {
-                label: "Channel Sell",
-                data: [
-                    [1, 35]
-                ],
-                color: '#00bfa5'
-            }
-        ];
-        $.plot('#cellPaiChart', cellPaiChart, {
-            series: {
-                pie: {
-                    show: true,
-                    stroke: {
-                        width: 0
-                    }
-                }
-            },
-            legend: {
-                show: false
-            },
-            grid: {
-                hoverable: true,
-                clickable: true
-            }
 
-        });
-        // cellPaiChart End
-        // Line Chart  #flotLine5
-        var newCust = [
-            [0, 3],
-            [1, 5],
-            [2, 4],
-            [3, 7],
-            [4, 9],
-            [5, 3],
-            [6, 6],
-            [7, 4],
-            [8, 10]
-        ];
-
-        var plot = $.plot($('#flotLine5'), [{
-            data: newCust,
-            label: 'New Data Flow',
-            color: '#fff'
-        }], {
-            series: {
-                lines: {
-                    show: true,
-                    lineColor: '#fff',
-                    lineWidth: 2
-                },
-                points: {
-                    show: true,
-                    fill: true,
-                    fillColor: "#ffffff",
-                    symbol: "circle",
-                    radius: 3
-                },
-                shadowSize: 0
+        // Fetch data using jQuery AJAX
+        $.ajax({
+            url: 'fetch/fetch_serviceDisChart.php',
+            method: 'GET',
+            success: function(data) {
+                data.forEach(function(item) {
+                    chart.data.labels.push(item.service_type);
+                    chart.data.datasets[0].data.push(parseInt(item.count, 10));
+                });
+                chart.update();
             },
-            points: {
-                show: true,
-            },
-            legend: {
-                show: false
-            },
-            grid: {
-                show: false
+            error: function(xhr, status, error) {
+                console.error("AJAX error: Status", status, "Error", error);
             }
         });
-        // Line Chart  #flotLine5 End
-        // Traffic Chart using chartist
-        if ($('#traffic-chart').length) {
-            var chart = new Chartist.Line('#traffic-chart', {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                series: [
-                    [0, 18000, 35000, 25000, 22000, 0],
-                    [0, 33000, 15000, 20000, 15000, 300],
-                    [0, 15000, 28000, 15000, 30000, 5000]
-                ]
-            }, {
-                low: 0,
-                showArea: true,
-                showLine: false,
-                showPoint: false,
-                fullWidth: true,
-                axisX: {
-                    showGrid: true
-                }
-            });
 
-            chart.on('draw', function(data) {
-                if (data.type === 'line' || data.type === 'area') {
-                    data.element.animate({
-                        d: {
-                            begin: 2000 * data.index,
-                            dur: 2000,
-                            from: data.path.clone().scale(1, 0).translate(0, data.chartRect
-                                .height()).stringify(),
-                            to: data.path.clone().stringify(),
-                            easing: Chartist.Svg.Easing.easeOutQuint
-                        }
-                    });
-                }
-            });
-        }
-        // Traffic Chart using chartist End
-        //Traffic chart chart-js
-        if ($('#TrafficChart').length) {
-            var ctx = document.getElementById("TrafficChart");
-            ctx.height = 150;
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul"],
-                    datasets: [{
-                            label: "Visit",
-                            borderColor: "rgba(4, 73, 203,.09)",
-                            borderWidth: "1",
-                            backgroundColor: "rgba(4, 73, 203,.5)",
-                            data: [0, 2900, 5000, 3300, 6000, 3250, 0]
-                        },
-                        {
-                            label: "Bounce",
-                            borderColor: "rgba(245, 23, 66, 0.9)",
-                            borderWidth: "1",
-                            backgroundColor: "rgba(245, 23, 66,.5)",
-                            pointHighlightStroke: "rgba(245, 23, 66,.5)",
-                            data: [0, 4200, 4500, 1600, 4200, 1500, 4000]
-                        },
-                        {
-                            label: "Targeted",
-                            borderColor: "rgba(40, 169, 46, 0.9)",
-                            borderWidth: "1",
-                            backgroundColor: "rgba(40, 169, 46, .5)",
-                            pointHighlightStroke: "rgba(40, 169, 46,.5)",
-                            data: [1000, 5200, 3600, 2600, 4200, 5300, 0]
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    tooltips: {
-                        mode: 'index',
-                        intersect: false
-                    },
-                    hover: {
-                        mode: 'nearest',
-                        intersect: true
-                    }
-
-                }
-            });
-        }
     });
     </script>
+
 </body>
 
 </html>

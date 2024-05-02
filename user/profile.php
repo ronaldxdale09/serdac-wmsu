@@ -30,8 +30,8 @@
     <div class="form-group row">
         <label class="col-lg-3 col-form-label form-control-label">Address</label>
         <div class="col-lg-9">
-        <select  class="form-control" name="region" id="region-select">
-        </select>
+            <select class="form-control" name="region" id="region-select">
+            </select>
         </div>
     </div>
     <div class="form-group row">
@@ -74,8 +74,60 @@
 </form>
 
 
-
 <script>
+$(document).ready(function() {
+    $('.btnRequirement').on('click', function() {
+        var request = $(this).data('request');
+
+        $('#r_req_id').val(request.request_id);
+
+        $('#r_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
+            'N/A');
+        $('#r_service-type').val(request.service_type || 'N/A');
+        $('#r_office-agency').val(request.office_agency || 'N/A');
+        $('#r_agency-classification').val(request.agency_classification || 'N/A');
+        $('#r_client-type').val(request.client_type || 'N/A');
+
+        $('#r_fror_date').val(request.sched_fror_date || 'N/A');
+        $('#r_to_date').val(request.sched_to_date || 'N/A');
+
+        $('#r_purpose').val(request.selected_purposes || 'N/A');
+
+
+        $('#m_purpose').val(request.selected_purposes || 'N/A');
+
+
+        request_id = request.request_id;
+
+        function fetch_files() {
+
+            $.ajax({
+                url: "table_fetch/anaylsis_files_fetch.php",
+                method: "POST",
+                data: {
+                    request_id: request_id,
+
+                },
+                success: function(data) {
+                    $('#upload_document_list').html(data);
+
+                }
+            });
+        }
+        fetch_files();
+
+
+
+
+        var modal = new bootstrap.Modal(document.getElementById('anaylsisReqModal'));
+        modal.show();
+
+    });
+
+});
+</script>
+
+<!-- <script>
 document.addEventListener('DOMContentLoaded', function() {
     const regionSelect = document.getElementById('region-select');
     const provinceSelect = document.getElementById('province-select');
@@ -166,5 +218,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 }
 
-});
+}); -->
 </script>

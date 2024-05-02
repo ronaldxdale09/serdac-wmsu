@@ -11,25 +11,8 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 $request_id = mysqli_real_escape_string($con, $_POST['req_id']);
-//echo $request_id;
 processMeetingRecords($con, $request_id);
-//echo '<pre>'; print_r($_POST); echo '</pre>'; // To check all received POST data
 
-// $meet_ids = isset($_POST['meet_id']) ? $_POST['meet_id'] : [];
-// foreach ($meet_ids as $index => $meet_id) {
-//     $meeting_type = mysqli_real_escape_string($con, $meeting_types[$index] ?? null);
-//     $date_time = mysqli_real_escape_string($con, $date_times[$index] ?? null);
-//     $mode = mysqli_real_escape_string($con, $modes[$index] ?? '-');
-//     $remark = mysqli_real_escape_string($con, $remarks[$index] ?? '-');
-
-//     // Debugging output
-//     echo "Debugging - Meeting ID: " . $meet_id . "<br>";
-//     echo "Debugging - Meeting Type: " . $meeting_type . "<br>";
-//     echo "Debugging - Date and Time: " . $date_time . "<br>";
-//     echo "Debugging - Mode: " . $mode . "<br>";
-//     echo "Debugging - Remark: " . $remark . "<br><br>";
-
-// }
 
 function processMeetingRecords($con, $request_id) {
     // Fetch existing meeting records

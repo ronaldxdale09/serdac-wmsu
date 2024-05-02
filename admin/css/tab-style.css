@@ -53,7 +53,7 @@
     border-radius: 5px;
     margin: 0 5px;
     transition: all 0.3s ease;
-    border: 2px solid #021f4f;
+    border: 1px solid #284067;
     /* You can customize the border color and thickness here */
 }
 
@@ -175,4 +175,70 @@ section .content p {
     font-weight: bold;
     font-size: 1.5rem;
     /* 24px */
+}
+
+.tooltip {
+    position: absolute;
+    display: none;
+    bottom: 110%;
+    padding: 10px;
+    background-color: #333;
+    border-radius: 3px;
+    font-size: 10px;
+    color: #eee;
+    animation: moveup 0.1s linear;
+}
+
+.tooltip:after {
+    position: absolute;
+    content: "";
+    top: 100%;
+    left: 10%;
+    border-top: 5px solid #333;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid transparent;
+}
+
+.btn:hover>.tooltip {
+    display: block;
+}
+
+@keyframes moveup {
+    0% {
+        transform: translateY(10px) rotate(25deg);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+    }
+}
+
+.nowrap {
+    white-space: nowrap;
+}
+
+.button-grid {
+    border: 1px solid #a9a9a9;
+    /* Solid border with a lighter gray color */
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Three columns of equal size */
+    gap: 5px;
+    /* Space between buttons */
+    justify-content: center;
+    /* Center buttons horizontally */
+    align-items: center;
+    /* Align buttons vertically */
+    padding: 5px;
+    /* Padding around the content inside the border */
+}
+
+.button-grid .btn {
+    font-size: 10px;
+    /* Smaller font size */
+    padding: 5px 10px;
+    /* Smaller padding for a more compact button appearance */
+    /* You can adjust font-size and padding as needed */
 }

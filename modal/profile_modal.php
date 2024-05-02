@@ -14,13 +14,17 @@
 
                      <div class="form-row">
                          <!-- User ID -->
-                         <div class="form-group col-md-6">
+                         <div class="form-group col-md-2">
+                             <label for="user-id">Request Status </label>
+                             <input type="text" class="form-control" id="p_status" readonly>
+                         </div>
+                         <div class="form-group col-md">
                              <label for="user-id">Client</label>
                              <input type="text" class="form-control" id="p_user-name" readonly>
                          </div>
 
                          <!-- Service Type -->
-                         <div class="form-group col-md-6">
+                         <div class="form-group col-md">
                              <label for="service-type">Service Type</label>
                              <input type="text" class="form-control" id="service-type" readonly>
                          </div>
@@ -42,28 +46,7 @@
                      </div>
 
 
-                     <div class="form-row">
-                         <!-- Client Type -->
-                         <div class="form-group  col-md-4">
-                             <label for="client-type">Client Type</label>
-                             <input type="text" class="form-control" id="client-type" readonly>
-                         </div>
-                         <div class="col-4">
-                             <div class="form-group">
-                                 <label class="form-control-label required">From Date
-                                     :</label>
-                                 <input type="text" id="from_date" class="form-control" readonly>
-                             </div>
-                         </div>
-                         <div class="col-4">
-                             <div class="form-group">
-                                 <label class="form-control-label required">To Date
-                                     :</label>
-                                 <input type="text" id="to_date" class="form-control" readonly>
-                             </div>
-                         </div>
 
-                     </div>
                      <div class="form-row">
                          <!-- Client Type -->
                          <div class="form-group  col-md-6">
@@ -77,6 +60,10 @@
                          <label for="purpose">Additional Details </label>
                          <textarea readonly class="form-control" id="additional_details" rows="3"></textarea>
                      </div>
+
+
+
+                     <div id='service-specific'> </div>
 
              </div>
              <div class="modal-footer">
@@ -98,6 +85,7 @@ $(document).ready(function() {
     $('.btnView').on('click', function() {
         var request = $(this).data('request');
 
+        $('#p_status').val(request.status);
 
         $('#p_user_id').val(request.user_id);
         $('#p_req_id').val(request.request_id);
@@ -114,6 +102,70 @@ $(document).ready(function() {
 
         $('#purpose').val(request.selected_purposes);
         $('#additional_details').val(request.additional_purpose_details);
+
+
+        // Clear previous service type content
+        $('#service-specific').empty();
+
+
+
+
+        // Load service-specific content based on service type
+        var serviceTypeUrl = '';
+        if (request.service_type === 'data-analysis') {
+            serviceTypeUrl = 'modal/md.data_analysis.php';
+        } else if (request.service_type === 'technical-assistance') {
+            serviceTypeUrl = 'modal/md.tech_assist.php';
+        } else if (request.service_type === 'technical-assistance') {
+            serviceTypeUrl = '';
+        }
+
+
+        // Append the service-specific form to the div
+        if (serviceTypeUrl) {
+            $('#service-specific').load(serviceTypeUrl, function(response, status, xhr) {
+                if (status === "error") {
+                    console.log("Error loading the page: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        }
+
+        serviceType = request.service_type;
+        $.ajax({
+            url: 'user/fetch/fetch.data_analysis.php', // Server-side script to return data
+            type: 'POST',
+            data: {
+                service_type: serviceType,
+                request_id: request.request_id
+            },
+            success: function(response) {
+                // Assume response is JSON
+                // Parse and populate more specific fields if necessary
+                if (serviceType === 'data-analysis') {
+                    var details = JSON.parse(response);
+                    $('#anaylsis-type').val(details.analysis_type);
+                    $('#research-overview').val(details.overview);
+                    $('#general-objective').val(details.g_objective);
+                    $('#specific-objective').val(details.s_objective);
+
+                    console.log(details)
+
+
+                }
+            },
+            error: function() {
+                console.log('Error fetching details.');
+            }
+        });
+
+
+
+        // Determine whether to show or hide the Cancel Request button based on the status
+        if (request.status.toLowerCase() === 'pending') {
+            $('button[name="reject"]').show();
+        } else {
+            $('button[name="reject"]').hide();
+        }
 
 
 

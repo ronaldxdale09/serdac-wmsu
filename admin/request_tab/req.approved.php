@@ -2,64 +2,49 @@
 .btnView,
 .btnParticiapnts,
 .btnMeeting,
-.btnSpeaker {
+.btnSpeaker,
+.btnRequirement,
+.btnProgMeeting {
     margin-right: 5px;
 }
 </style>
-<div class="row">
-
-    <!-- Check Status Filter -->
-    <div class="col-md-3 mb-3">
-        <label for="filterStatus"> Service Type:</label>
-        <select id="filterStatus" class="form-control">
-            <option value="">All</option>
-            <option value="Shipped Out">Capability Training</option>
-            <option value="Sold">Data Analysis</option>
-            <option value="In Progress">In Progress</option>
-
-        </select>
-    </div>
-
-
-    <!-- Month Filter -->
-    <div class="col-md-3 mb-3">
-        <label for="filterMonth">Month:</label>
-        <select id="filterMonth" class="form-control">
-            <option value="">All</option>
-            <?php
-            for ($i = 1; $i <= 12; $i++) {
-                echo '<option value="' . $i . '">' . date("F", mktime(0, 0, 0, $i, 10)) . '</option>';
-            }
-            ?>
-        </select>
-    </div>
-    <div class="col-md-3 mb-3">
-        <label for="filterYear">Year:</label>
-        <select id="filterYear" class="form-control">
-            <option value="">All</option>
-            <?php
-            $currentYear = date("Y");
-            $startYear = 2022;
-            for ($i = $startYear; $i <= $currentYear; $i++) {
-                echo '<option value="' . $i . '">' . $i . '</option>';
-            }
-            ?>
-        </select>
-    </div>
-
-</div>
 
 <div class="table-responsive custom-table-container">
     <?php
                             // Fetch data from the service_request table
-                            $results = mysqli_query($con, "SELECT * FROM service_request
-                            LEFT JOIN users ON users.user_id = service_request.user_id
-                            WHERE service_request.status = 'Approved' ");
+                            $results = mysqli_query($con, "SELECT 
+                            sr.request_id,
+                            sr.status,
+                            sr.service_type,
+                            sr.office_agency,
+                            sr.agency_classification,
+                            sr.client_type,
+                            sr.selected_purposes,
+                            sr.additional_purpose_details,
+                            sr.request_date,
+                            sr.scheduled_date,
+                            sr.ongoing_date,
+                            sr.inviteCode,
+                            sr.scheduled_remarks,
+                            sr.inprogress_remarks,
+                            sr.cancelled_remarks,
+                            u.fname,
+                            u.midname,
+                            u.lname,
+                            MAX(sm.date_time) AS latest_meeting_date
+                        FROM service_request sr
+                        LEFT JOIN users u ON sr.user_id = u.user_id
+                        LEFT JOIN sr_meeting sm ON sr.request_id = sm.request_id
+                        WHERE sr.status = 'Approved'
+                        GROUP BY sr.request_id
+                        ORDER BY latest_meeting_date DESC, sr.request_date DESC;  -- Order primarily by the latest meeting date, and secondarily by the request date
+                        
+                        ");
                             ?>
     <table class="table table-hover" id='service_sched_table'>
         <thead>
             <tr>
-                <th scope="col">Req. ID</th>
+                <th scope="col">ID</th>
                 <th scope="col">Status</th>
 
                 <th scope="col">Meeting Scheduled</th>
@@ -73,58 +58,71 @@
         </thead>
         <tbody>
             <?php while ($row = mysqli_fetch_array($results)) { 
-                                                    // Status color coding (optional)
-                                                    $status_color = '';
-                                                    switch ($row['status']) {
-                                                        case "Pending":
-                                                            $status_color = 'badge-warning';
-                                                            break;
-                                                        case "Approved":
-                                                            $status_color = 'badge-primary';
-                                                            break;
-                                                        case "Rejected":
-                                                            $status_color = 'badge-danger';
-                                                            break;
-                                                    }
-                                                ?>
+                // Status color coding (optional)
+            $status_color = '';
+            switch ($row['status']) {
+                case "Pending":
+                    $status_color = 'badge-warning';
+                    break;
+                case "Approved":
+                    $status_color = 'badge-primary';
+                    break;
+                case "Rejected":
+                    $status_color = 'badge-danger';
+                    break;
+            }
+
+            $type_color = '';
+            if ($row['service_type'] === "data-analysis") {
+                $type_color = 'badge-success';
+            } elseif ($row['service_type'] === "capability-training") {
+                $type_color = 'badge-primary';
+            } elseif ($row['service_type'] === "technical-assistance") {
+                $type_color = 'badge-dark';
+            }
+                    ?>
             <tr>
                 <td><?php echo $row['request_id']; ?></td>
                 <td><span class="badge <?php echo $status_color; ?>">
                         <?php echo $row['status']; ?>
                     </span></td>
 
-                <td class="nowrap"><?php echo date('M j, Y, h:i A', strtotime($row['scheduled_date'])); ?></td>
+                <td><?php echo $row['latest_meeting_date'] ? date('M j, Y, h:i A', strtotime($row['latest_meeting_date'])) : 'No meeting scheduled'; ?>
+                </td>
 
-                <td><?php echo $row['service_type']; ?></td>
+                <td><span class="badge <?php echo $type_color; ?>">
+                        <?php echo $row['service_type']; ?>
+                    </span></td>
                 <td><?php echo $row['office_agency']; ?></td>
 
-                <td><?php echo $row['admin_remarks']; ?></td>
+                <td><?php echo $row['scheduled_remarks']; ?></td>
 
-                                <td style="display: flex; align-items: center; justify-content: center;">
-
-                    <button type="button" class="btn btn-sm btn-primary  btnView"
-                        data-request='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-book"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-secondary  btnMeeting"
-                        data-request='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-calendar"></i>
-                    </button>
-
-                    <?php if ($row['service_type'] == 'capability-training'): ?>
-                    <button type="button" class="btn btn-sm btn-dark btnSpeaker"
-                        data-request='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-users"></i>
-                    </button>
-                    <?php endif; ?>
+                <td>
 
 
+                    <div class="button-grid">
+                        <button type="button" class="btn btn-sm btn-primary  btnView"
+                            data-request='<?php echo json_encode($row); ?>'>
+                            <i class="fas fa-book"></i> Details
+                        </button>
+                        <button type="button" class="btn btn-sm btn-secondary  btnMeeting"
+                            data-request='<?php echo json_encode($row); ?>'>
+                            <i class="fas fa-calendar"></i> Meetings
+                        </button>
 
-                    <button type="button" class="btn btn-sm btn-success btnComplete"
-                        data-req='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-check"></i>
-                    </button>
+                        <?php if ($row['service_type'] == 'capability-training'): ?>
+                        <button type="button" class="btn btn-sm btn-dark btnSpeaker"
+                            data-request='<?php echo json_encode($row); ?>'> Speakers
+                            <i class="fas fa-users"></i>
+                        </button>
+                        <?php endif; ?>
 
+
+                        <button type="button" class="btn btn-sm btn-success btnProceed"
+                            data-req='<?php echo json_encode($row); ?>'> Proceed
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
 
                 </td>
             </tr>
@@ -133,8 +131,6 @@
     </table>
 </div>
 
-<?php include('modal/service_meeting.php');?>
-<?php include('modal/service_speaker.php');?>
 
 <script>
 $(document).ready(function() {
@@ -146,57 +142,17 @@ $(document).ready(function() {
 
 
 $(document).ready(function() {
-    $('.btnParticiapnts').on('click', function() {
-        var req = $(this).data('req');
-
-        var request = req.request_id;
-        var invite = req.inviteCode;
-
-
-        $('#p_user-name').val(req.fname && req.lname ? req.fname + ' ' + req.lname :
-            'N/A');
-        $('#p_service-type').val(req.service_type || 'N/A');
-        $('#p_office-agency').val(req.office_agency || 'N/A');
-        $('#p_agency-classification').val(req.agency_classification || 'N/A');
-        $('#p_client-type').val(req.client_type || 'N/A');
-
-
-        console.log(invite);
-        $('#inviteCode').text(invite);
-
-        function fetch_participants() {
-            $.ajax({
-                url: "table/service_participants.php",
-                method: "POST",
-                data: {
-                    request_id: request
-                },
-                success: function(data) {
-                    $('#particiapnts_list_table').html(data);
-
-                }
-            });
-        }
-        fetch_participants();
 
 
 
-
-
-        var modal = new bootstrap.Modal(document.getElementById('participantsModal'));
-        modal.show();
-
-    });
-
-
-    $('.btnComplete').on('click', function() {
+    $('.btnProceed').on('click', function() {
         var req = $(this).data('req');
 
         $('#d_req_id').val(req.request_id || 'N/A');
 
 
 
-        var modal = new bootstrap.Modal(document.getElementById('markCompleteModal'));
+        var modal = new bootstrap.Modal(document.getElementById('serviceProceedModal'));
         modal.show();
 
     });
@@ -206,20 +162,22 @@ $(document).ready(function() {
     $('.btnView').on('click', function() {
         var request = $(this).data('request');
 
-        $('#d_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
-            'N/A');
-        $('#d_service-type').val(request.service_type || 'N/A');
-        $('#d_office-agency').val(request.office_agency || 'N/A');
-        $('#d_agency-classification').val(request.agency_classification || 'N/A');
-        $('#d_client-type').val(request.client_type || 'N/A');
+        $('#p_user_id').val(request.user_id);
+        $('#p_req_id').val(request.request_id);
 
-        $('#d_from_date').val(request.sched_from_date || 'N/A');
-        $('#d_to_date').val(request.sched_to_date || 'N/A');
+        $('#p_user-name').val(request.fname + ' ' + request.lname);
+        $('#service-type').val(request.service_type);
+        $('#office-agency').val(request.office_agency);
+        $('#agency-classification').val(request.agency_classification);
+        $('#client-type').val(request.client_type);
 
-        $('#d_purpose').val(request.selected_purposes || 'N/A');
-        $('#d_additional_details').val(request.additional_purpose_details || 'N/A');
+        $('#from_date').val(request.sched_from_date);
+        $('#to_date').val(request.sched_to_date);
 
-        $('#d_remarks').val(request.admin_remarks || 'N/A');
+
+        $('#purpose').val(request.selected_purposes);
+        $('#additional_details').val(request.additional_purpose_details);
+        $('#sched_remarks').val(request.scheduled_remarks);
 
 
         // Clear previous service type content
@@ -238,14 +196,12 @@ $(document).ready(function() {
 
         // Append the service-specific form to the div
         if (serviceTypeUrl) {
-            $('#d_service-specific').load(serviceTypeUrl, function(response, status, xhr) {
+            $('#service-specific').load(serviceTypeUrl, function(response, status, xhr) {
                 if (status === "error") {
                     console.log("Error loading the page: " + xhr.status + " " + xhr.statusText);
                 }
             });
         }
-
-
 
 
         serviceType = request.service_type;
@@ -268,20 +224,29 @@ $(document).ready(function() {
 
                     console.log(details)
 
+
                 }
 
+                var buttons = document.querySelectorAll('button');
+                buttons.forEach(function(button) {
+                    if (button.innerHTML.includes('Cancel Request') ||
+                        button.innerHTML.includes('Assign Schedule') ||
+                        button.innerHTML.includes('Confirm Request')) {
+                        button.style.display = 'none';
+                    }
+                });
 
+
+
+                // Show the modal
+                var modal = new bootstrap.Modal(document.getElementById(
+                    'serviceRequestDetailsModal'));
+                modal.show();
             },
             error: function() {
                 console.log('Error fetching details.');
             }
         });
-
-
-
-
-        var modal = new bootstrap.Modal(document.getElementById('reqserviceDetails'));
-        modal.show();
 
     });
 
@@ -303,9 +268,6 @@ $(document).ready(function() {
         $('#m_to_date').val(request.sched_to_date || 'N/A');
 
         $('#m_purpose').val(request.selected_purposes || 'N/A');
-        // $('#d_additional_details').val(request.additional_purpose_details || 'N/A');
-
-        // $('#d_remarks').val(request.admin_remarks || 'N/A');
 
 
         request_id = request.request_id;
@@ -321,7 +283,6 @@ $(document).ready(function() {
                 },
                 success: function(data) {
                     $('#meeting_table_modal').html(data);
-                    //makeReadOnly(); // Call this function here
 
                 }
             });
@@ -340,10 +301,6 @@ $(document).ready(function() {
     $(document).on('click', '#btnSaveMeetingForm', function(e) {
         // Prevent the default form submission
         e.preventDefault();
-
-
-
-
         // Set the form action to the desired URL
         $('#meeting_form').attr('action', 'function/service_action.meeting.php');
 
@@ -416,7 +373,7 @@ $('.btnSpeaker').on('click', function() {
     $('#sp_purpose').val(request.selected_purposes || 'N/A');
     // $('#d_additional_details').val(request.additional_purpose_details || 'N/A');
 
-    // $('#d_remarks').val(request.admin_remarks || 'N/A');
+    // $('#d_remarks').val(request.scheduled_remarks || 'N/A');
 
 
     request_id = request.request_id;

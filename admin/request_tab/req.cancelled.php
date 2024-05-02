@@ -8,7 +8,7 @@
     <table class="table table-hover" id='service_cancelled_table'>
         <thead>
             <tr>
-                <th scope="col">Req. ID</th>
+                <th scope="col">ID</th>
                 <th scope="col">Status</th>
 
                 <th scope="col">Date Cancelled</th>
@@ -23,15 +23,15 @@
         </thead>
         <tbody>
             <?php while ($row = mysqli_fetch_array($results)) { 
-                                                    // Status color coding (optional)
-                                                    $status_color = '';
-                                                    switch ($row['status']) {
-                                                  
-                                                        case "Cancelled":
-                                                            $status_color = 'badge-danger';
-                                                            break;
-                                                    }
-                                                ?>
+                  // Status color coding (optional)
+                $status_color = '';
+                switch ($row['status']) {
+                
+                    case "Cancelled":
+                        $status_color = 'badge-danger';
+                        break;
+                }
+            ?>
             <tr>
                 <td><?php echo $row['request_id']; ?></td>
                 <td><span class="badge <?php echo $status_color; ?>">
@@ -44,7 +44,7 @@
                 <td><?php echo $row['office_agency']; ?></td>
 
                 <td><?php echo $row['participants']; ?></td>
-                <td><?php echo $row['admin_remarks']; ?></td>
+                <td><?php echo $row['scheduled_remarks']; ?></td>
 
                 <td>
 
@@ -94,7 +94,7 @@ $('.btnView').on('click', function() {
     $('#d_purpose').val(request.selected_purposes || 'N/A');
     $('#d_additional_details').val(request.additional_purpose_details || 'N/A');
 
-    $('#d_remarks').val(request.admin_remarks || 'N/A');
+    $('#d_remarks').val(request.scheduled_remarks || 'N/A');
 
 
     var selectedDateTime = request.scheduled_date;

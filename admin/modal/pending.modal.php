@@ -1,6 +1,6 @@
 <div class="modal fade" id="serviceRequestDetailsModal" tabindex="-1" aria-labelledby="requestServiceDetailsModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header bg-dark text-white">
                 <h5 class="modal-title" id="requestServiceDetailsModalLabel">Request Service Details</h5>
@@ -18,16 +18,22 @@
 
                         <div class="form-row">
                             <!-- User ID -->
-                            <div class="form-group col-md-6">
+                            <div class="form-group  col">
                                 <label for="user-id">Client</label>
                                 <input type="text" class="form-control" id="p_user-name" readonly>
                             </div>
 
                             <!-- Service Type -->
-                            <div class="form-group col-md-6">
+                            <div class="form-group  col">
                                 <label for="service-type">Service Type</label>
                                 <input type="text" class="form-control" id="service-type" readonly>
                             </div>
+
+                            <div class="form-group  col">
+                                <label for="client-type">Client Type</label>
+                                <input type="text" class="form-control" id="client-type" readonly>
+                            </div>
+
                         </div>
 
 
@@ -49,29 +55,24 @@
                         <div class="form-row">
                             <!-- Client Type -->
                             <div class="form-group  col-md-6">
-                                <label for="client-type">Client Type</label>
-                                <input type="text" class="form-control" id="client-type" readonly>
+                                <label for="client-type">Purpose</label>
+                                <input type="text" class="form-control" id="purpose" readonly>
                             </div>
+                            <div class="form-group col-md">
+                                <label for="purpose">Additional Details </label>
+                                <textarea readonly class="form-control" id="additional_details" rows="3"></textarea>
+                            </div>
+
                         </div>
+
 
 
                         <div id='service-specific'> </div>
 
 
 
-                        <div class="form-row">
-                            <!-- Client Type -->
-                            <div class="form-group  col-md-6">
-                                <label for="client-type">Purpose</label>
-                                <input type="text" class="form-control" id="purpose" readonly>
-                            </div>
-                        </div>
 
-                        <!-- Purpose -->
-                        <div class="form-group">
-                            <label for="purpose">Additional Details </label>
-                            <textarea readonly class="form-control" id="additional_details" rows="3"></textarea>
-                        </div>
+
                         <hr>
 
                         <div class="selected_schedule"></div>
@@ -80,7 +81,7 @@
 
                         <div class="form-group">
                             <label for="remarks">Admin Remarks (Optional):</label>
-                            <textarea class="form-control" id="remarks" name="remarks" rows="3"
+                            <textarea class="form-control" id="sched_remarks" name="remarks" rows="3"
                                 placeholder="Enter any additional comments or information here."></textarea>
                         </div>
                     </div>

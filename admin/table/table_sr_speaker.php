@@ -26,8 +26,8 @@ foreach ($speakerOptions as $id => $name) {
 $selectHTML .= '</select>';
 
 $output = '
-<table class="table table-hover table-bordered" id="speakerTable">
-    <thead>
+<table class="table " id="speakerTable">
+    <thead class="table-dark">
         <tr>
             <th>Speaker</th>
             <th>Topic</th>
