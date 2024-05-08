@@ -242,3 +242,62 @@ section .content p {
     /* Smaller padding for a more compact button appearance */
     /* You can adjust font-size and padding as needed */
 }
+
+input[type="text"] {
+    border: none;
+    /* Removes the border */
+}
+
+thead th {
+    font-size: 13px;
+    /* Change the font size as needed */
+}
+
+
+/* Styling specific to inputs with IDs 'service_title' and 'serviceVenue' */
+
+#service_title,
+#serviceVenue {
+    border-radius: 0.35rem;
+    border: 2px solid #d1d3e2;
+    /* Slightly thicker border for more focus */
+    font-size: 1.25rem;
+    /* Larger font size for readability */
+    text-align: center;
+    /* Centers text */
+    height: 50px;
+    /* Fixed height for uniform appearance */
+    padding: 10px;
+    /* Ample padding for comfort */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* More pronounced shadow for a modern look */
+    outline: none;
+    /* Removes the default focus outline */
+}
+
+#service_title:focus,
+#serviceVenue:focus {
+    border-color: #5a5c69;
+    /* Changes border color on focus */
+    box-shadow: 0 0 8px rgba(90, 92, 105, 0.25);
+    /* Brighter shadow on focus for better visibility */
+}
+
+
+/* Labels for specific inputs to maintain consistent styling */
+
+label[for="service_title"],
+label[for="serviceVenue"] {
+    font-size: 1rem;
+    /* Standard font size for labels */
+    font-weight: bold;
+    /* Bold text for better readability */
+    color: #333;
+    /* Dark color for contrast */
+    margin-bottom: 5px;
+    /* Space below the label */
+    display: block;
+    /* Ensures the label takes up the full width available */
+    text-align: left;
+    /* Aligns the text to the left for consistency */
+}

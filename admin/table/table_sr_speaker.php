@@ -31,7 +31,7 @@ $output = '
         <tr>
             <th>Speaker</th>
             <th>Topic</th>
-            <th>Action</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>';
@@ -42,8 +42,8 @@ while ($row = mysqli_fetch_assoc($result)) {
     $output .= '
         <tr>
             <td>' . $selectedSpeakerHTML . '</td>
-            <td><input type="text" class="form-control" name="topic[]" value="' . htmlspecialchars($row['topic'], ENT_QUOTES, 'UTF-8') . '"></td>
-            <td><button type="button" class="btn btn-sm btn-danger remove-item">Remove</button></td>
+            <td><input type="text" class="form-control" style="border: 1px solid #00235e;" name="topic[]" value="' . htmlspecialchars($row['topic'], ENT_QUOTES, 'UTF-8') . '"></td>
+            <td><button type="button" class="btn btn-sm btn-danger remove-item"><i class="fa fa-trash"></i></button></td>
         </tr>';
 }
 
@@ -61,9 +61,9 @@ $(document).ready(function() {
     $('#addSpeaker').click(function() {
         var newRow = $('<tr>').append(
             $('<td>').html(selectHTML),
-            $('<td>').html('<input type="text" class="form-control" name="topic[]">'),
+            $('<td>').html('<input type="text" style="border: 1px solid #00235e;" class="form-control" name="topic[]">'),
             $('<td>').html(
-                '<button type="button" class="btn btn-sm btn-danger remove-item">Remove</button>')
+                '<button type="button" class="btn btn-sm btn-danger remove-item"><i class="fa fa-trash"></i></button>')
         );
         $('#speakerTable tbody').append(newRow);
     });

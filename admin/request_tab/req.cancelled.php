@@ -78,45 +78,45 @@ $(document).ready(function() {
 
 
 
-$('.btnView').on('click', function() {
-    var request = $(this).data('request');
+// $('.btnView').on('click', function() {
+//     var request = $(this).data('request');
 
-    $('#d_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
-        'N/A');
-    $('#d_service-type').val(request.service_type || 'N/A');
-    $('#d_office-agency').val(request.office_agency || 'N/A');
-    $('#d_agency-classification').val(request.agency_classification || 'N/A');
-    $('#d_client-type').val(request.client_type || 'N/A');
+//     $('#d_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
+//         'N/A');
+//     $('#d_service-type').val(request.service_type || 'N/A');
+//     $('#d_office-agency').val(request.office_agency || 'N/A');
+//     $('#d_agency-classification').val(request.agency_classification || 'N/A');
+//     $('#d_client-type').val(request.client_type || 'N/A');
 
-    $('#d_from_date').val(request.sched_from_date || 'N/A');
-    $('#d_to_date').val(request.sched_to_date || 'N/A');
+//     $('#d_from_date').val(request.sched_from_date || 'N/A');
+//     $('#d_to_date').val(request.sched_to_date || 'N/A');
 
-    $('#d_purpose').val(request.selected_purposes || 'N/A');
-    $('#d_additional_details').val(request.additional_purpose_details || 'N/A');
+//     $('#d_purpose').val(request.selected_purposes || 'N/A');
+//     $('#d_additional_details').val(request.additional_purpose_details || 'N/A');
 
-    $('#d_remarks').val(request.scheduled_remarks || 'N/A');
-
-
-    var selectedDateTime = request.scheduled_date;
-
-    if (selectedDateTime) {
-        // Format the date and time
-        var formattedDateTime = new Date(selectedDateTime).toLocaleString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+//     $('#d_remarks').val(request.scheduled_remarks || 'N/A');
 
 
-        document.querySelector('.d_selected_schedule').innerHTML = '<h5>Selected Schedule</h5><p>' +
-            formattedDateTime + '</p>';
-    }
+//     var selectedDateTime = request.scheduled_date;
+
+//     if (selectedDateTime) {
+//         // Format the date and time
+//         var formattedDateTime = new Date(selectedDateTime).toLocaleString('en-US', {
+//             year: 'numeric',
+//             month: 'long',
+//             day: 'numeric',
+//             hour: '2-digit',
+//             minute: '2-digit'
+//         });
 
 
-    var modal = new bootstrap.Modal(document.getElementById('reqserviceDetails'));
-    modal.show();
+//         document.querySelector('.d_selected_schedule').innerHTML = '<h5>Selected Schedule</h5><p>' +
+//             formattedDateTime + '</p>';
+//     }
 
-});
+
+//     var modal = new bootstrap.Modal(document.getElementById('reqserviceDetails'));
+//     modal.show();
+
+// });
 </script>

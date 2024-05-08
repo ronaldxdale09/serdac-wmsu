@@ -1,4 +1,3 @@
-
 <div class="row">
     <!-- Check Status Filter -->
     <div class="col-md-3 mb-3">
@@ -146,7 +145,7 @@
             <?php } ?>
         </tbody>
     </table>
- 
+
 </div>
 
 
@@ -160,14 +159,14 @@ $(document).ready(function() {
 
 
 $('.btnCompleteService').on('click', function() {
-        var req = $(this).data('req');
+    var req = $(this).data('req');
 
-        $('#c_req_id').val(req.request_id || 'N/A');
+    $('#c_req_id').val(req.request_id || 'N/A');
 
-        var modal = new bootstrap.Modal(document.getElementById('completeRequestModal'));
-        modal.show();
+    var modal = new bootstrap.Modal(document.getElementById('completeRequestModal'));
+    modal.show();
 
-    });
+});
 
 
 
@@ -295,6 +294,24 @@ $('.btnRequirement').on('click', function() {
         });
     }
     fetch_files();
+
+
+    function fetch_result() {
+
+        $.ajax({
+            url: "table/anaylsis_files_fetch_res.php",
+            method: "POST",
+            data: {
+                request_id: request_id,
+
+            },
+            success: function(data) {
+                $('#upload_document_result').html(data);
+
+            }
+        });
+    }
+    fetch_result();
 
 
 

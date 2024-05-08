@@ -55,6 +55,8 @@
                 <th scope="col">Status</th>
 
                 <th scope="col">Service Type</th>
+                <th scope="col">Client</th>
+
                 <th scope="col">Agency</th>
                 <th scope="col">Purpose</th>
                 <th scope="col">Actions</th>
@@ -85,7 +87,7 @@
             } elseif ($row['service_type'] === "technical-assistance") {
                 $type_color = 'badge-dark';
             }
-            
+            $client = $row['fname'].' '.$row['lname'];
 
 
                                                 ?>
@@ -99,6 +101,8 @@
                         <?php echo $row['service_type']; ?>
                     </span>
                 </td>
+                <td><?php echo $client ?></td>
+
                 <td><?php echo $row['office_agency']; ?></td>
                 <td><?php echo $row['selected_purposes']; ?></td>
                 <td>

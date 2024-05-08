@@ -25,7 +25,7 @@
 
             // Insert new meeting 
             $insertSql = "INSERT INTO sr_meeting (request_id, meeting_type, date_time,mode) 
-            VALUES ('$request_id', 'Initial Meeting',NOW(),'face2face')";
+            VALUES ('$request_id', '5',NOW(),'face2face')";
             // Executing the query
             $results = mysqli_query($con, $insertSql);
     

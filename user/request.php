@@ -64,7 +64,7 @@
                         data-request='<?php echo json_encode($row); ?>'>
                         <i class="fas fa-book"></i>
                     </button>
-                    <?php if ($row['service_type'] === "data-analysis" && $row['status'] === "Approved") { ?>
+                    <?php if ($row['service_type'] === "data-analysis" && $row['status'] === "In Progress") { ?>
                     <button type="button" class="btn btn-sm btn-dark btnRequirement"
                         data-request='<?php echo json_encode($row); ?>'>
                         <i class="fas fa-tasks"></i> Docu

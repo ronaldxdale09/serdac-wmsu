@@ -4,7 +4,7 @@ include('../../function/db.php');
 $request_id = $_POST['request_id'];  // Ensure this is safely handled
 
 // Fetch documents related to the specific request ID
-$query = "SELECT * FROM sr_dataanalysis_files WHERE type='client' and request_id = $request_id";
+$query = "SELECT * FROM sr_dataanalysis_files WHERE type='Result' and request_id = $request_id";
 $result = mysqli_query($con, $query);
 
 if (!$result) {
@@ -29,13 +29,14 @@ function formatSizeUnits($bytes) {
 
 $output = '
 <br>
-<table class="table " id="documentTable">
+<table class="table" style="width: 100% !important;" id="docResTable">
     <thead class="table-dark">
         <tr>
             <th>Filename</th>
             <th>Size</th>
             <th>Date Submitted</th>
             <th>Remarks</th>
+            <th>Type</th>
 
             <th>Action</th>
         </tr>
@@ -55,7 +56,7 @@ if (mysqli_num_rows($result) > 0) {
                 <td>' . $fileSizeFormatted . '</td>
                 <td>' . $dateFormatted . '</td>
                 <td><textarea class="form-control" readonly name="remarks[]">' . htmlspecialchars($row['remarks'], ENT_QUOTES, 'UTF-8') . '</textarea></td>
-
+                <td>Result</td>
                 <td><a href="' . $fileUrl . '" class="btn btn-sm btn-success" download>Download</a></td>
             </tr>';
     }
@@ -69,12 +70,3 @@ $output .= '</tbody></table>';
 
 echo $output;
 ?>
-
-<script>
-$(document).ready(function() {
-    // Handler for removing a document row
-    $(document).on('click', '.remove-item', function() {
-        $(this).closest('tr').remove();
-    });
-});
-</script>

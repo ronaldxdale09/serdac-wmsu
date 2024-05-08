@@ -46,9 +46,9 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Status</th>
-
                 <th scope="col">Meeting Scheduled</th>
                 <th scope="col">Service Type</th>
+                <th scope="col">Client</th>
                 <th scope="col">Agency</th>
                 <th scope="col">Remarks</th>
 
@@ -80,6 +80,8 @@
             } elseif ($row['service_type'] === "technical-assistance") {
                 $type_color = 'badge-dark';
             }
+            $client = $row['fname'].' '.$row['lname'];
+
                     ?>
             <tr>
                 <td><?php echo $row['request_id']; ?></td>
@@ -93,6 +95,8 @@
                 <td><span class="badge <?php echo $type_color; ?>">
                         <?php echo $row['service_type']; ?>
                     </span></td>
+                <td class="nowrap"><?php echo $client ?></td>
+
                 <td><?php echo $row['office_agency']; ?></td>
 
                 <td><?php echo $row['scheduled_remarks']; ?></td>
