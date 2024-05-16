@@ -214,10 +214,15 @@
                             </svg>
 
                             <div class="text congrats">
-                                <h2>Thank You Mr./Mrs. <span class="shown_name"></span> for Registering!</h2>
+                                <h2>Thank You <span class="shown_name"></span> for Registering!</h2>
                                 <p style="color: #7a0014">We've sent an activation link to your email. Please check
                                     your inbox to complete the
                                     registration process.</p>
+
+                                <div class="main-button-red">
+                                    <a href="login.php">Return to login page</a>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -377,14 +382,13 @@ $(document).ready(function() {
                             .value; // Ensure 'username' is defined
 
                         updateform(); // Ensure this function is defined
-                    } else if (response.trim() === 'Email is already registered'){
+                    } else if (response.trim() === 'Email is already registered') {
                         Swal.fire({
                             icon: 'info',
                             title: 'Email is already registered',
                             text: response,
                         });
-                    }
-                    else{
+                    } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',

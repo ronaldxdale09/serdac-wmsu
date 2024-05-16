@@ -4,7 +4,7 @@ include('../function/db.php');
 $request_id = $_POST['request_id'];  // Ensure this is safely handled
 
 // Fetch documents related to the specific request ID
-$query = "SELECT * FROM sr_dataanalysis_files WHERE request_id = $request_id";
+$query = "SELECT * FROM sr_dataanalysis_files WHERE type='client' and request_id = $request_id";
 $result = mysqli_query($con, $query);
 
 if (!$result) {

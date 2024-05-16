@@ -24,6 +24,7 @@ $userType = 'Client';
 $isActive = 0; 
 $activationCode = substr(str_shuffle(md5(microtime())), 0, 10);
 
+$current_date_dmy = date('d-m-Y');
 
 
 // Check if email is already registered
@@ -37,23 +38,21 @@ if (mysqli_stmt_num_rows($emailCheckStmt) > 0) {
     echo "Email is already registered.";
 } else {
     // Prepare insert query
-    $query = "INSERT INTO users (sex, activationCode, fname, midname, lname, contact_no, email, password, occupation, education_level, accessType, gender, zipcode, region, province, city, barangay, userType, isActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $query = "INSERT INTO users (sex, activationCode, fname, midname, lname, contact_no, email, password, occupation, education_level, accessType, gender, zipcode, region, province, city, barangay, userType, isActive,registration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = mysqli_prepare($con, $query);
-    mysqli_stmt_bind_param($stmt, "sssssssssssssssssss", $sex, $activationCode, $fname, $midname, $lname, $contact_no, $email, $password, $occupation, $education_level, $accessType, $gender, $zipcode, $region, $province, $city, $barangay, $userType, $isActive);
+    mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss", $sex, $activationCode, $fname, $midname, $lname, $contact_no, $email, $password, $occupation, $education_level, $accessType, $gender, $zipcode, $region, $province, $city, $barangay, $userType, $isActive,$current_date_dmy);
 
     if (mysqli_stmt_execute($stmt)) {
         echo "success";
         // Send activation email
         $activationLink = 'https://localhost/serdac-wmsu/login.php?code='.$activationCode; // Replace with actual activation link
         $userEmail = $email;
-        // sendActivationEmail($userEmail, $activationLink);
+        sendActivationEmail($userEmail, $activationLink);
     } else {
         echo "Error: " . mysqli_error($con);
     }
 }
-
-
 
 
 
@@ -85,40 +84,77 @@ function sendActivationEmail($recipientEmail, $activationLink) {
         <html>
         <head>
             <style>
-                body { font-family: 'Arial', sans-serif; color: #333; }
-                .content-wrapper { width: 100%; max-width: 600px; margin: auto; padding: 20px; box-sizing: border-box; }
+                body {
+                    font-family: Arial, sans-serif;
+                    color: #333;
+                    background-color: #f8f9fa;
+                    margin: 0;
+                    padding: 0;
+                }
+                .content-wrapper {
+                    width: 100%;
+                    max-width: 600px;
+                    margin: auto;
+                    padding: 20px;
+                    background-color: #fff;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                }
+                h2 {
+                    color: #0d6efd;
+                }
+                p {
+                    font-size: 16px;
+                    line-height: 1.5;
+                }
                 .button {
-                    background-color: #0d6efd; /* Bootstrap primary color */
+                    background-color: #0d6efd;
                     color: white;
-                    padding: 10px 15px;
+                    padding: 10px 20px;
                     text-align: center;
                     text-decoration: none;
                     display: inline-block;
-                    border: none;
                     border-radius: 5px;
                     font-size: 16px;
                     cursor: pointer;
                     transition: background-color 0.3s;
+                    margin-top: 20px;
                 }
                 .button:hover {
-                    background-color: #0b5ed7; /* A slightly darker shade for hover effect */
+                    background-color: #0b5ed7;
                 }
-                .footer { font-size: 0.8em; color: #666; }
+                .footer {
+                    font-size: 0.8em;
+                    color: #666;
+                    margin-top: 20px;
+                    text-align: center;
+                }
+                .footer a {
+                    color: #0d6efd;
+                    text-decoration: none;
+                }
+                .footer a:hover {
+                    text-decoration: underline;
+                }
             </style>
         </head>
         <body>
             <div class='content-wrapper'>
                 <h2>Activate Your Account</h2>
                 <p>Hi,</p>
-                <p>Thank you for registering. To complete your registration, please click the following button within an hour:</p>
-                <p><a href='{$activationLink}' class='button'>Activate Account</a></p>
-                <p class='footer'>Do not reply to this email; it was sent from an unmonitored email address.<br>
-                For inquiries, please contact our Technical Support at <a href='http://www.serdac-wmsu.online/support'>www.yourdomain.com/support</a>.</p>
+                <p>Thank you for registering with SERDAC-WMSU. To complete your registration, please click the button below within the next hour:</p>
+                <p style='text-align: center;'><a href='{$activationLink}' class='button'>Activate Account</a></p>
+                <p>If the button above does not work, copy and paste the following link into your web browser:</p>
+                <p><a href='{$activationLink}'>{$activationLink}</a></p>
+                <div class='footer'>
+                    <p>Do not reply to this email; it was sent from an unmonitored email address.<br>
+                    For inquiries, please contact our Technical Support at <a href='http://www.serdac-wmsu.online/support'>www.serdac-wmsu.online/support</a>.</p>
+                </div>
             </div>
         </body>
         </html>";
-    
-    $mail->Body = $emailContent;
+
+        $mail->Body = $emailContent;
 
         $mail->send();
         return true;
@@ -128,7 +164,6 @@ function sendActivationEmail($recipientEmail, $activationLink) {
         return false;
     }
 }
-
 
 
 

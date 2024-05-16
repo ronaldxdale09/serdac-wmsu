@@ -40,7 +40,7 @@
                             </ul>
                         </li>
                         <li class="scroll-to-section"><a href="#courses">ABOUT US</a></li>
-                        <li class="scroll-to-section"><a href="#contact">Contact Us</a></li>
+                        <li ><a href="contact_us.php">Contact Us</a></li>
                         
                         <?php
                         // Check if the session variable exists and has data

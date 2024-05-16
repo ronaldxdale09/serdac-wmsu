@@ -70,8 +70,9 @@ $completed_count = $res['Total'];
         <?php include('modal/pending.modal.php');?>
         <?php include('modal/approved.modal.php');?>
         <?php include('modal/progress.modal.php');?>
-
         <?php include('modal/service_meeting.php');?>
+
+        <?php include('modal/service_participants.php');?>
         <?php include('modal/service_speaker.php');?>
         <?php include('modal/service_analysis.req.php');?>
 

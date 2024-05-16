@@ -16,8 +16,8 @@ if ($result->num_rows === 0) {
 } else {
     $user = $result->fetch_assoc();
 
-     // Check if the user's account is active
-     if ($user['isActive'] == 0) {
+    // Check if the user's account is active
+    if ($user['isActive'] == 0) {
         echo json_encode(["success" => false, "message" => "Please Activate your Account First"]);
         $stmt->close();
         mysqli_close($con);
@@ -31,7 +31,7 @@ if ($result->num_rows === 0) {
         $accessType = $user['accessType'];
         $_SESSION["fname"] = $user['fname'];
         $_SESSION["email"] = $email;
-        $_SESSION["userId_code"] =  $user['user_id'];
+        $_SESSION["userId_code"] = $user['user_id'];
         $_SESSION["accessType"] = $user['accessType'];
 
         // Token generation and storage can be enabled here
@@ -40,7 +40,7 @@ if ($result->num_rows === 0) {
             echo json_encode(["success" => true, "redirect" => "admin/index.php"]);
         } elseif ($accessType == 'Client') {
             echo json_encode(["success" => true, "redirect" => "profile.php"]);
-        } 
+        }
     }
 }
 

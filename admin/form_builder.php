@@ -1,74 +1,57 @@
-<?php include('include/header.php')?>
+<?php include('include/header.php');
+
+    ?>
+<?php
+if (isset($_GET["form_id"])) {
+    $form_id =  $_GET['form_id'];
+    $formQuery = "SELECT * FROM asmt_forms WHERE form_id = $form_id";
+    $formResult = mysqli_query($con, $formQuery);
+
+    if ($formResult && mysqli_num_rows($formResult) > 0) {
+        $formRecord = mysqli_fetch_assoc($formResult);
+        echo "
+        <script>
+            $(document).ready(function() {
+                $('input[name=title]').val('{$formRecord['title']}');
+                $('textarea[name=description]').val('{$formRecord['description']}');
+                $('select[name=form_type]').val('{$formRecord['form_type']}');
+                $('select[name=request_id]').val('{$formRecord['request_id']}');
+
+                fetchQuestions($form_id);
+            });
+        </script>
+        ";
+    }
+} else {
+    echo "
+    <script>
+        $(document).ready(function() {
+            fetchQuestions(0); // No form_id, load default or empty form
+        });
+    </script>
+    ";
+}
+
+// Fetch distinct service types from the service_request table
+$query = "SELECT DISTINCT service_type FROM service_request";
+$result = mysqli_query($con, $query);
+
+if (!$result) {
+    die('Query Failed: ' . mysqli_error($con));
+}
+
+$serviceOptions = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $serviceOptions[] = $row['service_type'];
+}
+
+
+
+
+?>
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<style>
-.form-title {
-    text-align: center;
-    font-size: 24px;
-    /* Choose the size that fits your design */
-    margin-bottom: 1rem;
-    font-weight: bold;
-    /* Optional: if you want the title to be bold */
-}
-
-
-.question-card {
-    background: #fff;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    padding: 1rem;
-    margin-bottom: 1rem;
-}
-
-.question-header {
-    display: flex;
-    align-items: center;
-}
-
-.question-header .form-control,
-.question-header .form-control.question-type {
-    margin-right: 0.5rem;
-}
-
-.delete-question {
-    color: #dc3545;
-    cursor: pointer;
-    font-size: 1.5rem;
-    line-height: 1;
-}
-
-.delete-question:hover {
-    color: #bd2130;
-}
-
-.required-checkbox {
-    display: flex;
-    align-items: center;
-    margin-top: 0.5rem;
-}
-
-.required-checkbox .form-check-input {
-    margin-top: 0;
-    margin-right: 0.25rem;
-}
-
-.question-body .answers-container {
-    margin-top: 0.5rem;
-}
-
-.input-group-text {
-    min-width: 38px;
-    text-align: center;
-}
-
-.input-group .btn-outline-secondary,
-.input-group .btn-outline-danger {
-    padding: 0.375rem 0.75rem;
-}
-</style>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="css/assmt.form.builder.css">
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -109,11 +92,10 @@
 
         <div class="content">
             <div class="row">
-
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title">List of Articles</strong>
+                            <strong class="card-title">Assessment Form</strong>
                         </div>
                         <div class="card-body">
                             <div class="container mt-4">
@@ -128,101 +110,115 @@
                                                 <textarea name="description" class="form-control" rows="2"
                                                     placeholder="Enter Description Here"></textarea>
                                             </div>
-                                        </div>
+                                            <div class="form-row row">
+                                                <div class="form-group col-md-6">
+                                                    <label for="formType">Form Type</label>
+                                                    <select id="formType" name="form_type" class="form-control">
+                                                        <option value="" selected disabled>Select Form Type</option>
+                                                        <option value="survey">Survey</option>
+                                                        <option value="post_assessment">Post Assessment</option>
+                                                        <option value="pre_assessment">Pre Assessment</option>
+                                                        <!-- Add more options as needed -->
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="serviceType">Service Request ID</label>
+                                                    <select id="serviceType" name="request_id" class="form-control">
+                                                        <option value="" selected disabled>Select Service Type</option>
+                                                        <?php
+                                                
 
+                                                    // Fetch service types from the service_request table
+                                                    $sql = "SELECT * FROM service_request";
+                                                    $result = $con->query($sql);
+
+                                                    if ($result->num_rows > 0) {
+                                                        while($row = $result->fetch_assoc()) {
+                                                            echo "<option value='".$row["request_id"]."'>Req ID:".$row["request_id"]." - ".$row["service_type"]."</option>";
+                                                        }
+                                                    } else {
+                                                        echo "<option value='' disabled>No services available</option>";
+                                                    }
+                                                    ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                        </div>
                                         <div id="question_list_container" class="form-builder-container">
                                             <!-- Questions will be loaded here -->
                                         </div>
-
-
+                                        <input type="hidden" name="form_id"
+                                            value="<?php echo isset($form_id) ? $form_id : 0; ?>">
+                                        <input type="hidden" name="is_update" id="is_update" value="0">
                                     </form>
                                 </div>
                             </div>
-
-                            <div class="d-flex justify-content-between"> <button class="btn btn-primary" type="button"
-                                    id="add-item">+ Add Item</button>
-                                <button class="btn btn-success" type="button" id="saveFormButton">Save
-                                    Form</button>
-
+                            <div class="d-flex">
+                                <button class="btn btn-primary" type="button" id="add-item">+ Add Item</button>
+                                <button class="btn btn-success" type="button" id="saveFormButton">Save Form</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script> -->
-
-        <script>
-        $(document).ready(function() {
-            // Fetch and display questions when the page loads
-            fetchQuestions();
-
-            // Rest of your existing JavaScript...
-
-            function fetchQuestions() {
-                $.ajax({
-                    url: 'table/form.build.php', // Path to your PHP script
-                    method: 'POST',
-                    success: function(data) {
-                        $('#question_list_container').html(data);
-                        // Re-initialize event listeners or other functionalities if needed
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.error('Error fetching questions:', textStatus, errorThrown);
-                    }
-                });
-            }
-        });
-
-
-
-
-        $(document).ready(function() {
-            $('#saveFormButton').click(function() {
-                console.log('test')
-                var formData = $('#myForm').serialize(); // Serialize form data
-                console.log(formData); // Add this line to inspect the serialized data
-
-                $.ajax({
-                    url: 'function/assessment.form.php', // Replace with the path to your PHP script
-                    type: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        // Replace 'response' with a condition or data returned from your PHP script
-                        if (response === 'success') {
-                            Swal.fire(
-                                'Saved!',
-                                'Your form has been saved.',
-                                'success'
-                            );
-                        } else {
-                            // Handle the error message from the PHP script
-                            Swal.fire(
-                                'Error!',
-                                'There was an issue saving your form.',
-                                'error'
-                            );
-                        }
-                    },
-                    error: function() {
-                        Swal.fire(
-                            'Error!',
-                            'Your form could not be saved. Please try again.',
-                            'error'
-                        );
-                    }
-                });
-            });
-        });
-
-
-        </script>
-
-
+    </div>
+    <!-- Modal for update or save as new -->
+    <div class="modal fade" id="saveModal" tabindex="-1" role="dialog" aria-labelledby="saveModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="saveModalLabel">Save Form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Do you want to update this form or save it as a new form?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="updateFormButton">Update Form</button>
+                    <button type="button" class="btn btn-success" id="saveAsNewFormButton">Save as New Form</button>
+                </div>
+            </div>
+        </div>
     </div>
 
-    </div>
+
+
     <?php include('include/footer.php');?>
+
+    <script>
+    $(document).ready(function() {
+        function fetchQuestions(form_id) {
+            $.ajax({
+                url: 'table/form.build.php',
+                method: 'POST',
+                data: {
+                    form_id: form_id
+                },
+                success: function(data) {
+                    $('#question_list_container').html(data);
+                    // Re-initialize event listeners or other functionalities if needed
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('Error fetching questions:', textStatus, errorThrown);
+                }
+            });
+        }
+
+        var formId = <?php echo isset($form_id) ? $form_id : 'null'; ?>;
+
+        fetchQuestions(formId || 0);
+
+
+    });
+    </script>
+
+
 
 
 </body>

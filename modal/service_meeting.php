@@ -6,7 +6,6 @@
                 <h5 class="modal-title">Request Service Meeting</h5>
             </div>
             <div class="modal-body">
-                <form action="function/service_action.meeting.php" id="meeting_form" method="post">
                     <input type="text" class="form-control" name="req_id" id="m_req_id" hidden>
                     <div class="form-row">
                         <!-- User ID -->
@@ -56,12 +55,8 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <!-- <button type="button" class="btn btn-primary" onclick="printModalContent()"><i class="fas fa-print"></i>
-                    Print</button> -->
-
-                <button type="submit" name="confirm" id="btnSaveMeetingForm" class="btn btn-warning text-dark"><i
-                        class="fas fa-check"></i> Confirm Meeting</button>
-                </form>
+                <button type="button" class="btn btn-primary" onclick="printModalContent()"><i class="fas fa-print"></i>
+                    Print</button>
 
             </div>
 

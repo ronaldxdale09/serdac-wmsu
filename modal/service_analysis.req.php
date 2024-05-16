@@ -1,4 +1,70 @@
 <style>
+.document-title {
+    font-size: 1.5rem;
+    /* Adjust size as needed */
+    color: #333;
+    /* Dark grey for readability */
+    text-align: center;
+    /* Centers text horizontally */
+    width: 100%;
+    /* Maintains padding if needed, though it might be unnecessary with centering */
+}
+
+
+/* Style the tab */
+.tab {
+    background-color: #800000;
+    /* Maroon background */
+    border: 1px solid #ccc;
+    overflow: hidden;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+    background-color: inherit;
+    /* Inherits maroon from .tab */
+    color: #ffffff;
+    /* White text for readability */
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+    font-size: 17px;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+    background-color: #b30000;
+    /* A slightly lighter maroon on hover */
+    color: #ffffff;
+    /* Maintains white text on hover */
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+    background-color: #990000;
+    /* A different shade of maroon for active state */
+    color: #ffffff;
+    /* White text for active state */
+}
+
+/* Style the tab content */
+.tabcontent {
+    display: none;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-top: none;
+    background-color: white;
+    /* White text for content */
+}
+
+.tabcontent.active {
+    display: block;
+}
+</style>
+<style>
 .request-progress-message p {
     font-size: 1.2em;
     /* Adjust size as needed */
@@ -78,9 +144,19 @@
     cursor: pointer;
     color: #dc3545;
 }
+
+.file-uploader .remarks-input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    box-sizing: border-box;
+    /* Includes padding and border in the element's width/height */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
 </style>
 
-<div class="modal fade" id="anaylsisReqModal" tabindex="-1" role="dialog"
+<div class="modal fade" id="anaylsisReqModal" tabindex="-999999" role="dialog"
     aria-labelledby="requestServiceDetailsModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -105,60 +181,59 @@
                     </div>
 
 
-                    <div class="form-row">
-                        <!-- Office Agency -->
-                        <div class="form-group col-md-6">
-                            <label for="office-agency">Office/Agency</label>
-                            <input type="text" class="form-control" id="r_office-agency" readonly
-                                placeholder="Enter office/agency">
-                        </div>
 
-                        <!-- Agency Classification -->
-                        <div class="form-group col-md-6">
-                            <label for="agency-classification">Agency Classification</label>
-                            <input type="text" class="form-control" id="r_agency-classification" readonly>
-                        </div>
+
+                    <div class="tab">
+                        <button type="button" class="tablinks active" onclick="openTab(event, 'Tab1')">
+                            <i class="fa fa-folder-open"></i> Client Documents
+                        </button>
+                        <button type="button" class="tablinks" onclick="openTab(event, 'Tab2')">
+                            <i class="fa fa-file-alt"></i> Result Files
+                        </button>
                     </div>
 
+                    <!-- Tab content -->
+                    <div id="Tab1" class="tabcontent active">
+                        <hr>
+                        <h3 class="document-title">Documents Submitted by Client</h3>
+                        <hr>
+                        <div id="upload_document_list"></div>
+                        <div class="form-row">
 
-                    <div class="form-row">
-                        <!-- Client Type -->
-                        <div class="form-group  col-md-6">
-                            <label for="client-type">Client Type</label>
-                            <input type="text" class="form-control" id="r_client-type" readonly>
-                        </div>
-                        <div class="form-group  col-md-6">
-                            <label for="client-type">Purpose</label>
-                            <input type="text" class="form-control" id="r_purpose" readonly>
-                        </div>
-                    </div>
 
-                    <div id="upload_document_list"></div>
 
-                    <div class="form-row">
+                            <div class="file-uploader">
+                                <div class="upload-box" onclick="document.getElementById('file-input').click();">
+                                    <i class="fa fa-cloud-upload-alt"></i>
+                                    <span>Click To Upload</span>
+                                </div>
+                                <input type="file" id="file-input" name="files[]" multiple accept=".doc,.docx,.pdf,.csv"
+                                    style="display:none;">
 
-                        <div class="request-progress-message">
-                            <p>Your request is currently being processed. To facilitate the next steps, SERDAC requires
-                                the submission of manuscripts, datasets, and any other relevant documents pertinent to
-                                your request.</p>
-
-                        </div>
-
-                        <div class="file-uploader">
-                            <div class="upload-box" onclick="document.getElementById('file-input').click();">
-                                <i class="fa fa-cloud-upload-alt"></i>
-                                <span>Click To Upload</span>
+                                <div class="file-list">
+                                    <h4>Uploaded Documents</h4>
+                                    <ul id="file-list"></ul>
+                                </div>
                             </div>
-                            <input type="file" id="file-input" name="files[]" multiple accept=".doc,.docx,.pdf,.csv"
-                                style="display:none;">
 
-                            <div class="file-list">
-                                <h4>Uploaded Documents</h4>
-                                <ul id="file-list"></ul>
-                            </div>
                         </div>
 
+
+
                     </div>
+                    <div id="Tab2" class="tabcontent">
+                        <div class="form-row">
+                            <hr>
+                            <h3 class="document-title">Data Analysis Results</h3>
+                            <hr>
+                            <div id="upload_document_result" style="width: 100% !important;"></div>
+
+
+                        </div>
+                    </div>
+
+
+
 
 
             </div>
@@ -167,8 +242,13 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 
 
-                <button type="submit" name="confirm" id="btnSaveMeetingForm" class="btn btn-warning text-dark"><i
-                        class="fas fa-check"></i>Upload Document</button>
+
+
+                <div id="btnUploadDoc" style="display: none;">
+                    <button type="submit" name="confirm"  class="btn btn-warning text-dark"><i
+                            class="fas fa-check"></i>Upload Document</button>
+                </div>
+
                 </form>
 
             </div>
@@ -178,9 +258,22 @@
 
     </div>
 </div>
-
 <script>
-// Check if the handler has already been set
+function openTab(evt, TabName) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(TabName).style.display = "block";
+    evt.currentTarget.className += " active";
+}
+
+
 if (!window.fileInputHandlerSet) {
     var fileInput = document.getElementById('file-input');
 
@@ -190,7 +283,15 @@ if (!window.fileInputHandlerSet) {
 
         Array.from(files).forEach((file, index) => {
             var li = document.createElement('li');
-            li.textContent = file.name + ' - Uploading...';
+            li.textContent = file.name + ' - ';
+
+            // Remarks input
+            var remarksInput = document.createElement('input');
+            remarksInput.type = 'text';
+            remarksInput.placeholder = 'Enter remarks';
+            remarksInput.className = 'remarks-input';
+            remarksInput.name = 'remarks[]';
+            li.appendChild(remarksInput);
 
             // Progress bar
             var progressBar = document.createElement('div');
@@ -211,16 +312,14 @@ if (!window.fileInputHandlerSet) {
             // Simulate upload progress
             setTimeout(() => {
                 progressBar.style.width = '100%';
-                li.textContent = file.name + ' - Uploaded';
+                li.textContent = file.name + ' - Verified ';
+                li.appendChild(remarksInput);
                 li.appendChild(removeBtn);
             }, 1500);
         });
     }
 
-    // Attach the event listener
     fileInput.addEventListener('change', handleFileChange);
-
-    // Set a flag to indicate the handler has been set
     window.fileInputHandlerSet = true;
 }
 </script>

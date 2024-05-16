@@ -1,27 +1,35 @@
 <?php
 include('db.php');
 require 'PHPMailer/PHPMailerAutoload.php';
+$user_id = $_POST['user_id'];
+$req_id = $_POST['req_id'];
+$current_date = date("Y-m-d"); 
 
-$user_id = $_POST['user_id']; 
-$req_id = $_POST['req_id']; 
-$current_date = date("Y-m-d"); // Get current date in YYYY-MM-DD format
-
-// Prepare SQL query to insert service request into the database
-$query = "INSERT INTO `service_participant` (user_id,request_id,registration_date) VALUES (?,?, ?)";
-
-
+// Prepare SQL query to insert service participant into the database
+$query = "INSERT INTO `service_participant` (user_id, request_id, registration_date) VALUES (?, ?, ?)";
 $stmt = mysqli_prepare($con, $query);
 
 // Bind parameters and execute
-mysqli_stmt_bind_param($stmt, "sss", $user_id,$req_id,$current_date );
+mysqli_stmt_bind_param($stmt, "sss", $user_id, $req_id, $current_date);
 
 if (mysqli_stmt_execute($stmt)) {
-    echo "Service request submitted successfully";
+    echo "Service participant added successfully";
 
-    
-    $query = "UPDATE service_request SET participants = participants + 1 WHERE request_id = $req_id";
-    $results = mysqli_query($con, $query);
-    
+    // Update the service request to increment participants count
+    $query_update = "UPDATE service_request SET participants = participants + 1 WHERE request_id = $req_id";
+    $results = mysqli_query($con, $query_update);
+
+    if ($results) {
+        // Log the activity
+        $activity_type = 'service_participation';
+        $activity_description = "User participated in service request with ID $req_id";
+        log_activity($con, $user_id, $activity_type, $activity_description);
+    } else {
+        // Handle errors
+        echo "Error updating participants count: " . mysqli_error($con);
+    }
+
+    // Optionally, send a service request summary email
     // sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $purpose);
 
 } else {

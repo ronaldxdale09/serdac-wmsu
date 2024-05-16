@@ -1,28 +1,31 @@
 <?php
 include('db.php');
 require 'PHPMailer/PHPMailerAutoload.php';
-
 $user_id = $_POST['user_id'];
 $email = $_POST['email'];
-
 $service_type = $_POST['service_type'];
 $office_agency = $_POST['office_agency'];
 $agency_classification = $_POST['agency_classification'];
 $client_type = $_POST['client_type'];
-
 $purpose_options = $_POST['purpose_options'];
 $selected_purposes = implode(", ", $purpose_options);
-
 $additional_purpose_details = $_POST['additional_purpose_details'];
 $status = "Pending";
 
-$query = "INSERT INTO service_request (user_id, service_type, office_agency, agency_classification, client_type, selected_purposes, additional_purpose_details, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+// Insert into service_request table
+$query = "INSERT INTO service_request (request_date, user_id, service_type, office_agency, agency_classification, client_type, selected_purposes, additional_purpose_details, status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$request_date = date('Y-m-d H:i:s'); // Formats the date and time as Year-Month-Day Hours:Minutes:Seconds
 $stmt = mysqli_prepare($con, $query);
-mysqli_stmt_bind_param($stmt, "isssssss", $user_id, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes, $additional_purpose_details, $status);
+mysqli_stmt_bind_param($stmt, "sisssssss", $request_date, $user_id, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes, $additional_purpose_details, $status);
 
 if (mysqli_stmt_execute($stmt)) {
     $last_id = mysqli_insert_id($con);
-  //  echo "Service request created successfully.";
+
+    // Log the activity
+    $activity_type = 'service_request';
+    $activity_description = "User submitted a new service request with ID $last_id and service type $service_type";
+    log_activity($con, $user_id, $activity_type, $activity_description);
 
     switch ($service_type) {
         case 'data-analysis':
@@ -31,13 +34,13 @@ if (mysqli_stmt_execute($stmt)) {
             $g_objective = $_POST['general_objective'];
             $s_objective = $_POST['specific_objective'];
 
-            // Assume additional details for Data Analysis
+            // Insert into sr_dataanalysis table
             $query_da = "INSERT INTO sr_dataanalysis (request_id, analysis_type, overview, g_objective, s_objective) VALUES (?, ?, ?, ?, ?)";
             $stmt_da = mysqli_prepare($con, $query_da);
             mysqli_stmt_bind_param($stmt_da, "issss", $last_id, $analysis_type, $overview, $g_objective, $s_objective);
             mysqli_stmt_execute($stmt_da);
             break;
-        
+
         case 'technical-assistance':
             $consultation_type = $_POST['consultation_type'];
             $remarks = '';
@@ -50,11 +53,12 @@ if (mysqli_stmt_execute($stmt)) {
             break;
 
         case 'capability-training':
-            $s_from ='';
-            $s_to ='';
-            $title ='';
+            $s_from = '';
+            $s_to = '';
+            $title = '';
             $venue = '';
-            $no_participants ='';
+            $no_participants = '';
+            
             // Insert into sr_training table
             $query_tr = "INSERT INTO sr_training (request_id, s_from, s_to, title, venue, no_participants) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt_tr = mysqli_prepare($con, $query_tr);
@@ -64,7 +68,8 @@ if (mysqli_stmt_execute($stmt)) {
     }
     echo 'success';
 
-  //  sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes);
+    // Optionally, send a service request summary email
+    // sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes);
 
 } else {
     echo "Error: " . mysqli_error($con);

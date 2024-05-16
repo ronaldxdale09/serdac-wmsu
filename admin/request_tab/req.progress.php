@@ -120,11 +120,11 @@
                         <?php endif; ?>
 
                         <?php if ($row['service_type'] == 'capability-training'): ?>
-                        <button type="button" class="btn btn-sm btn-dark btnSpeaker"
+                        <button type="button" class="btn btn-sm btn-dark btnProgSpeaker"
                             data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip" title="Speaker">
                             <i class="fas fa-users"></i> Speakers
                         </button>
-                        <button type="button" class="btn btn-sm btn-danger btnParticiapnts"
+                        <button type="button" class="btn btn-sm btn-danger btnProgParticiapnts"
                             data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip" title="Participants">
                             <i class="fas fa-user-friends"></i> Participants
                         </button>
@@ -214,19 +214,47 @@ $('.btnProgMeeting').on('click', function() {
 
 });
 
-$('.btnParticiapnts').on('click', function() {
+$('.btnProgParticiapnts').on('click', function() {
     var req = $(this).data('request');
 
     var request = req.request_id;
     var invite = req.inviteCode;
 
-
-    $('#p_user-name').val(req.fname && req.lname ? req.fname + ' ' + req.lname :
+    $('#participants_client').val(req.fname && req.lname ? req.fname + ' ' + req.lname :
         'N/A');
     $('#p_service-type').val(req.service_type || 'N/A');
     $('#p_office-agency').val(req.office_agency || 'N/A');
     $('#p_agency-classification').val(req.agency_classification || 'N/A');
     $('#p_client-type').val(req.client_type || 'N/A');
+    $('#s_invcode').val(req.inviteCode || 'N/A');
+
+    serviceType = req.service_type;
+
+    $.ajax({
+        url: 'fetch/fetch.training.php', // Server-side script to return data
+        type: 'POST',
+        data: {
+            service_type: serviceType,
+            request_id: request
+        },
+        success: function(response) {
+            // Assume response is JSON
+
+            var details = JSON.parse(response);
+
+            // console.log(details.title);
+            $('#p_service_title').val(details.title || '');
+            $('#p_serviceVenue').val(details.venue || '');
+
+            $('#p_fromDate').val(formatDate(details.s_from || ''));
+            $('#p_toDate').val(formatDate(details.s_to || ''));
+
+
+        },
+        error: function() {
+            console.log('Error fetching details.');
+        }
+    });
 
 
     console.log(invite);
@@ -322,92 +350,168 @@ $('.btnRequirement').on('click', function() {
 
 
 $(document).ready(function() {
-    $('.btnProgPart').on('click', function() {
-        var req = $(this).data('req');
 
-        var request = req.request_id;
-        var invite = req.inviteCode;
-
-
-        document.querySelector('.d_selected_schedule').style.display = 'none';
-
-
-        $('#participants_client').val(req.fname && req.lname ? req.fname + ' ' + req.lname :
-            'N/A');
-        $('#p_service-type').val(req.service_type || 'N/A');
-        $('#p_office-agency').val(req.office_agency || 'N/A');
-        $('#p_agency-classification').val(req.agency_classification || 'N/A');
-        $('#p_client-type').val(req.client_type || 'N/A');
-
-
-
-        console.log(invite);
-        $('#inviteCode').text(invite);
-
-        function fetch_participants() {
-            $.ajax({
-                url: "table/service_participants.php",
-                method: "POST",
-                data: {
-                    request_id: request
-                },
-                success: function(data) {
-                    $('#particiapnts_list_table').html(data);
-
-                }
-            });
-        }
-        fetch_participants();
-
-
-
-
-
-        var modal = new bootstrap.Modal(document.getElementById('participantsModal'));
-        modal.show();
-
-    });
 
 
 
     $('.btnProgView').on('click', function() {
         var request = $(this).data('request');
 
-        $('#d_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
-            'N/A');
-        $('#d_service-type').val(request.service_type || 'N/A');
-        $('#d_office-agency').val(request.office_agency || 'N/A');
-        $('#d_agency-classification').val(request.agency_classification || 'N/A');
-        $('#d_client-type').val(request.client_type || 'N/A');
+        $('#p_user_id').val(request.user_id);
+        $('#p_req_id').val(request.request_id);
 
-        $('#d_from_date').val(request.sched_from_date || 'N/A');
-        $('#d_to_date').val(request.sched_to_date || 'N/A');
+        $('#p_user-name').val(request.fname + ' ' + request.lname);
+        $('#service-type').val(request.service_type);
+        $('#office-agency').val(request.office_agency);
+        $('#agency-classification').val(request.agency_classification);
+        $('#client-type').val(request.client_type);
 
-        $('#d_purpose').val(request.selected_purposes || 'N/A');
-        $('#d_additional_details').val(request.additional_purpose_details || 'N/A');
+        $('#from_date').val(request.sched_from_date);
+        $('#to_date').val(request.sched_to_date);
 
-        $('#d_remarks').val(request.scheduled_remarks || 'N/A');
+        $('#purpose').val(request.selected_purposes);
+        $('#additional_details').val(request.additional_purpose_details);
 
+        // Clear previous service type content
+        $('#service-specific').empty();
 
-        var selectedDateTime = request.scheduled_date;
-
-        if (selectedDateTime) {
-            // Format the date and time
-            var formattedDateTime = new Date(selectedDateTime).toLocaleString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-
-            document.querySelector('.d_selected_schedule').innerHTML = '<h5>Selected Schedule</h5><p>' +
-                formattedDateTime + '</p>';
+        // Load service-specific content based on service type
+        var serviceTypeUrl = '';
+        if (request.service_type === 'data-analysis') {
+            serviceTypeUrl = 'modal/md.data_analysis.php';
+        } else if (request.service_type === 'technical-assistance') {
+            serviceTypeUrl = 'modal/md.tech_assist.php';
+        } else if (request.service_type === 'technical-assistance') {
+            serviceTypeUrl = '';
         }
 
+        // Append the service-specific form to the div
+        if (serviceTypeUrl) {
+            $('#service-specific').load(serviceTypeUrl, function(response, status, xhr) {
+                if (status === "error") {
+                    console.log("Error loading the page: " + xhr.status + " " + xhr.statusText);
+                }
+            });
+        }
+        // Hide the Admin Remarks section
+        $('#sched_remarks').closest('.form-group').hide();
 
-        var modal = new bootstrap.Modal(document.getElementById('reqserviceDetails'));
+        serviceType = request.service_type;
+        $.ajax({
+            url: 'fetch/fetch.data_analysis.php', // Server-side script to return data
+            type: 'POST',
+            data: {
+                service_type: serviceType,
+                request_id: request.request_id
+            },
+            success: function(response) {
+                // Assume response is JSON
+                // Parse and populate more specific fields if necessary
+                if (serviceType === 'data-analysis') {
+                    var details = JSON.parse(response);
+                    $('#anaylsis-type').val(details.analysis_type);
+                    $('#research-overview').val(details.overview);
+                    $('#general-objective').val(details.g_objective);
+                    $('#specific-objective').val(details.s_objective);
+
+                    console.log(details);
+                }
+
+                // Hide the buttons
+                $('button').each(function() {
+                    if ($(this).html().includes('Cancel Request') || $(this).html()
+                        .includes('Assign Schedule') || $(this).html().includes(
+                            'Print')) {
+                        $(this).hide();
+                    }
+                });
+
+                // Show the modal
+                var modal = new bootstrap.Modal(document.getElementById(
+                    'serviceRequestDetailsModal'));
+                modal.show();
+            },
+            error: function() {
+                console.log('Error fetching details.');
+            }
+        });
+    });
+
+
+
+    $('.btnProgSpeaker').on('click', function() {
+        var request = $(this).data('request');
+
+        $('#sp_req_id').val(request.request_id);
+
+        $('#sp_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
+            'N/A');
+        $('#sp_service-type').val(request.service_type || 'N/A');
+        $('#sp_office-agency').val(request.office_agency || 'N/A');
+        $('#sp_agency-classification').val(request.agency_classification || 'N/A');
+        $('#sp_client-type').val(request.client_type || 'N/A');
+
+        $('#sp_frosp_date').val(request.sched_frosp_date || 'N/A');
+        $('#sp_to_date').val(request.sched_to_date || 'N/A');
+
+        $('#sp_purpose').val(request.selected_purposes || 'N/A');
+        // $('#d_additional_details').val(request.additional_purpose_details || 'N/A');
+
+        // $('#d_remarks').val(request.scheduled_remarks || 'N/A');
+
+
+        request_id = request.request_id;
+
+        function fetch_speaker() {
+
+            $.ajax({
+                url: "table/table_sr_speaker.php",
+                method: "POST",
+                data: {
+                    request_id: request_id,
+
+                },
+                success: function(data) {
+                    $('#speaker_list_table').html(data);
+
+
+
+                }
+            });
+        }
+        fetch_speaker();
+
+
+        serviceType = request.service_type;
+        $.ajax({
+            url: 'fetch/fetch.training.php', // Server-side script to return data
+            type: 'POST',
+            data: {
+                service_type: serviceType,
+                request_id: request.request_id
+            },
+            success: function(response) {
+                // Assume response is JSON
+
+                var details = JSON.parse(response);
+
+                $('#service_title').val(details.title || '');
+                $('#serviceVenue').val(details.venue || '');
+
+                $('#fromDate').val(details.s_from || '');
+                $('#toDate').val(details.s_to || '');
+
+                //makeReadOnly(); // Call this function here
+
+            },
+            error: function() {
+                console.log('Error fetching details.');
+            }
+        });
+
+
+
+        var modal = new bootstrap.Modal(document.getElementById('serviceSpeakerModal'));
         modal.show();
 
     });

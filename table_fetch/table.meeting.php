@@ -5,7 +5,7 @@
 
 .meeting-accordion .meeting-header {
     background: #a3c0f0;
-
+    
     /* Light gray background */
     border-top: 1px solid #ddd;
 }
@@ -57,7 +57,7 @@ textarea.form-control {
 }
 </style>
 <?php
-include('../../function/db.php');
+include('../function/db.php');
 
 $request_id = $_POST['request_id'];
 
@@ -87,14 +87,14 @@ $modeOptions = [
 ];
 
 // Prepare the select HTML for meeting types
-$selectHTML = '<select class="form-control" name="meeting_type[]">';
+$selectHTML = '<select class="form-control" name="meeting_type[]" disabled>';
 foreach ($meetingTypes as $key => $type) {
     $selectHTML .= "<option value=\"$key\">$type</option>";
 }
 $selectHTML .= '</select>';
 
 // Prepare the select HTML for mode options
-$modeSelectHTML = '<select class="form-control" name="mode[]">';
+$modeSelectHTML = '<select class="form-control" name="mode[]" disabled>';
 foreach ($modeOptions as $value => $text) {
     $modeSelectHTML .= "<option value=\"$value\">$text</option>";
 }
@@ -122,71 +122,15 @@ while ($row = mysqli_fetch_assoc($result)) {
         <div id="collapse' . $index . '" class="collapse" aria-labelledby="heading' . $index . '" data-parent="#meetingAccordion">
             <div class="meeting-body">
                 <div><strong>Type:</strong> ' . $selectedTypeHTML . '</div>
-                <strong>Date and Time:</strong><input type="datetime-local" class="form-control" name="date_time[]" value="' . $dateValue . '"> 
+                <strong>Date and Time:</strong><input type="datetime-local" readonly  class="form-control" name="date_time[]" value="' . $dateValue . '"> 
                 <div><strong>Mode:</strong> ' . $selectedModeHTML . '</div>
-                <div><strong>Remarks:</strong> <textarea class="form-control" name="remarks[]">' . htmlspecialchars($row['remarks'], ENT_QUOTES, 'UTF-8') . '</textarea></div>
-                <button type="button" class="btn btn-danger remove-item"><i class="fa fa-trash"></i> Remove</button>
+                <div><strong>Remarks:</strong> <textarea class="form-control" readonly name="remarks[]">' . htmlspecialchars($row['remarks'], ENT_QUOTES, 'UTF-8') . '</textarea></div>
             </div>
         </div>
     </div>';
 $index++;  // Increment index for the next panel
 }
 
-$output .= '</div>
-<div class="text-center mt-3">
-    <button type="button" class="btn btn-dark" id="addMeeting">
-        <i class="fa fa-plus mr-2"></i> Add New Meeting
-    </button>
-</div>';
-
 echo $output;
 
 ?>
-
-<script>
-$(document).ready(function() {
-    var index = $('.meeting-panel').length; // Initialize index based on existing panels
-
-    $('#addMeeting').click(function() {
-        var newIndex = $('.meeting-panel')
-            .length; // Fetch new index in case other meetings were added or removed
-
-        // Create HTML for the new meeting accordion panel with "Set New Meeting" title
-        var newPanel = $('<div class="meeting-panel">').append(
-            $('<div class="meeting-header" id="heading' + newIndex + '">').html(
-                '<button type="button" class="meeting-toggle collapsed" data-toggle="collapse" data-target="#collapse' +
-                newIndex + '" aria-expanded="true" aria-controls="collapse' + newIndex +
-                '">Set New Meeting</button>'
-            ),
-            $('<div id="collapse' + newIndex + '" class="collapse show" aria-labelledby="heading' +
-                newIndex + '" data-parent="#meetingAccordion">').html(
-                '<div class="meeting-body">' +
-                '<div><strong>Type:</strong> ' + '<?php echo $selectHTML; ?>' + '</div>' +
-                '<div><strong>Date and Time:</strong> <input type="datetime-local" class="form-control" name="date_time[]"></div>' +
-                '<div><strong>Mode:</strong> ' + '<?php echo $modeSelectHTML; ?>' + '</div>' +
-                '<div><strong>Remarks:</strong> <textarea class="form-control" name="remarks[]"></textarea></div>' +
-                '<button type="button" class="btn btn-danger remove-item"><i class="fa fa-trash"></i> Remove</button></div>'
-            )
-        );
-
-        // Append new panel to the accordion and immediately show it
-        $('#meetingAccordion').append(newPanel);
-        $('#collapse' + newIndex).collapse('show'); // Ensure the new panel is opened
-    });
-
-    // Event delegation for removing items dynamically added to the DOM
-    $(document).on('click', '.remove-item', function() {
-        $(this).closest('.meeting-panel').remove();
-    });
-
-    // Initialize Bootstrap collapse functionality if needed
-    // This ensures that dynamically added accordion components work properly
-    $(document).on('show.bs.collapse', '.collapse', function() {
-        $(this).siblings('.meeting-header').find('.meeting-toggle').attr('aria-expanded', 'true');
-    });
-
-    $(document).on('hide.bs.collapse', '.collapse', function() {
-        $(this).siblings('.meeting-header').find('.meeting-toggle').attr('aria-expanded', 'false');
-    });
-});
-</script>

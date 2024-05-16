@@ -42,9 +42,11 @@
     object-position: center;
     /* This will center the image in the container */
 }
+
 .article-link {
-    color:white;
-    text-decoration: none; /* Removes the underline */
+    color: white;
+    text-decoration: none;
+    /* Removes the underline */
 }
 
 @media screen and (max-width: 767px) {}
@@ -73,7 +75,7 @@
     <section class="section main-banner" id="top" data-section="section1">
         <div id="newsCarousel" class="carousel-container">
             <div class="carousel-slide">
-                <img  src="assets/images/banner2.jpg" class=' d-block h-500 ' />
+                <img src="assets/images/banner2.jpg" class=' d-block h-500 ' />
 
 
                 <!-- School logos container -->
@@ -123,9 +125,10 @@
 
                                         </span></h6>
                                     <h2>
-                                    <a href="article.php?id=<?php echo $article['article_id']?>" target="_blank" class="article-link">
-                                        <?= htmlspecialchars($article['title']); ?>
-            </a>
+                                        <a href="article.php?id=<?php echo $article['article_id']?>" target="_blank"
+                                            class="article-link">
+                                            <?= htmlspecialchars($article['title']); ?>
+                                        </a>
                                     </h2>
                                     <p><?= htmlspecialchars($article['subtitle']); ?></p>
                                 </div>
@@ -440,6 +443,42 @@
 <script src="assets/js/video.js"></script>
 <script src="assets/js/slick-slider.js"></script>
 <script src="assets/js/custom.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("contactForm").addEventListener("submit", function(e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        var formData = new FormData(this);
+
+        fetch("function/send.contact_us.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    document.querySelector(".sent-message").style.display = "block";
+                    document.querySelector(".error-message").style.display = "none";
+                    document.getElementById("contactForm").reset(); // Reset the form
+                } else {
+                    document.querySelector(".sent-message").style.display = "none";
+                    document.querySelector(".error-message").style.display = "block";
+                    document.querySelector(".error-message").innerHTML = data.message;
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.querySelector(".sent-message").style.display = "none";
+                document.querySelector(".error-message").style.display = "block";
+                document.querySelector(".error-message").innerHTML =
+                    "There was an error submitting your message. Please try again.";
+            });
+    });
+});
+</script>
+
+
 <script>
 let currentSlideIndex = 0;
 const slides = document.querySelectorAll('.carousel-slide');

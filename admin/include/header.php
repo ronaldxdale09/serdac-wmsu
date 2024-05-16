@@ -60,3 +60,18 @@
     }
     </style>
 </head>
+
+
+<script>
+function formatDate(dateStr) {
+    if (!dateStr) return ''; // return empty string if no date provided
+
+    const dateObj = new Date(dateStr);
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    };
+    return dateObj.toLocaleDateString('en-US', options);
+}
+</script>

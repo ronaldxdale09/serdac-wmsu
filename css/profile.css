@@ -466,3 +466,160 @@
     -webkit-box-shadow: 0 11px 7px 0 rgba(0, 0, 0, 0.19), 0 13px 25px 0 rgba(0, 0, 0, 0.3);
     box-shadow: 0 11px 7px 0 rgba(0, 0, 0, 0.19), 0 13px 25px 0 rgba(0, 0, 0, 0.3);
 }
+
+.button-grid {
+    border: 1px solid #a9a9a9;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+}
+
+.button-grid .btn {
+    font-size: 10px;
+    padding: 5px 10px;
+}
+
+.profile-card-3 {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    background: #ffffff;
+    border-radius: 10px;
+    position: relative;
+}
+
+.user-box {
+    position: relative;
+    text-align: center;
+}
+
+.user-box img {
+    border: 5px solid #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-info h5 {
+    margin-top: 10px;
+    color: #343a40;
+}
+
+.user-info h6 {
+    color: #6c757d;
+}
+
+.list-group-item {
+    border: none;
+    background: none;
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.list-group-item .list-icon {
+    flex-shrink: 0;
+    color: #343a40;
+}
+
+.list-group-item .list-details {
+    flex-grow: 1;
+}
+
+.list-group-item span {
+    font-size: 1.1em;
+    color: #343a40;
+}
+
+.list-group-item small {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    box-shadow: 0 4px 6px rgba(220, 53, 69, 0.3);
+    transition: all 0.2s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    border-radius: 0.2rem;
+}
+
+.logout-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.details-card {
+    padding-top: 20px;
+}
+
+.nav-pills-primary .nav-link {
+    border-radius: 0.25rem;
+    color: #495057;
+}
+
+.nav-pills-primary .nav-link.active,
+.nav-pills-primary .nav-link:hover {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.tab-content {
+    padding-top: 20px;
+}
+
+.form-control {
+    border-radius: 0.2rem;
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-group label {
+    font-weight: 600;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.3);
+    transition: all 0.2s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    box-shadow: 0 4px 6px rgba(108, 117, 125, 0.3);
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}

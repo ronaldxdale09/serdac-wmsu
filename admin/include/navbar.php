@@ -9,73 +9,52 @@
     <div class="top-right">
         <div class="header-menu">
             <div class="header-left">
-                
+               
 
                 <div class="dropdown for-notification">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="notification"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-bell"></i>
-                        <span class="count bg-danger">3</span>
+                        <span class="count bg-danger" id="notificationCount">0</span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="notification">
-                        <p class="red">You have 3 Notification</p>
-                        <a class="dropdown-item media" href="#">
-                            <i class="fa fa-check"></i>
-                            <p>Server #1 overloaded.</p>
-                        </a>
-                        <a class="dropdown-item media" href="#">
-                            <i class="fa fa-info"></i>
-                            <p>Server #2 overloaded.</p>
-                        </a>
-                        <a class="dropdown-item media" href="#">
-                            <i class="fa fa-warning"></i>
-                            <p>Server #3 overloaded.</p>
-                        </a>
+                        <p class="red" id="notificationHeader">You have 0 notifications</p>
+                        <div id="notificationList"></div>
                     </div>
                 </div>
+                <?php 
+                // Fetch the latest 4 messages
+                $query = "SELECT name, message, submitted_at FROM contact_messages ORDER BY submitted_at DESC LIMIT 4";
+                $result = mysqli_query($con, $query);
 
+                $messages = [];
+                while ($row = mysqli_fetch_assoc($result)) {
+                    $messages[] = $row;
+                }
+                ?>
                 <div class="dropdown for-message">
                     <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-envelope"></i>
-                        <span class="count bg-primary">4</span>
+                        <span class="count bg-primary"><?php echo count($messages); ?></span>
                     </button>
                     <div class="dropdown-menu" aria-labelledby="message">
-                        <p class="red">You have 4 Mails</p>
-                        <a class="dropdown-item media" href="#">
-                            <span class="photo media-left"><img alt="avatar" src="images/avatar/1.jpg"></span>
+                        <p class="red">You have <?php echo count($messages); ?> Mails</p>
+                        <?php foreach ($messages as $message) { ?>
+                        <a class="dropdown-item media" href="contact_messages.php">
+                            <span class="photo media-left"><img alt="avatar" src="assets/images/serdac.png"></span>
                             <div class="message media-body">
-                                <span class="name float-left">Jonathan Smith</span>
-                                <span class="time float-right">Just now</span>
-                                <p>Hello, this is an example msg</p>
+                                <span class="name float-left"><?php echo htmlspecialchars($message['name']); ?></span>
+                                <span
+                                    class="time float-right"><?php echo htmlspecialchars($message['submitted_at']); ?></span>
+                                <p><?php echo htmlspecialchars($message['message']); ?></p>
                             </div>
                         </a>
-                        <a class="dropdown-item media" href="#">
-                            <span class="photo media-left"><img alt="avatar" src="images/avatar/2.jpg"></span>
-                            <div class="message media-body">
-                                <span class="name float-left">Jack Sanders</span>
-                                <span class="time float-right">5 minutes ago</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur</p>
-                            </div>
-                        </a>
-                        <a class="dropdown-item media" href="#">
-                            <span class="photo media-left"><img alt="avatar" src="images/avatar/3.jpg"></span>
-                            <div class="message media-body">
-                                <span class="name float-left">Cheryl Wheeler</span>
-                                <span class="time float-right">10 minutes ago</span>
-                                <p>Hello, this is an example msg</p>
-                            </div>
-                        </a>
-                        <a class="dropdown-item media" href="#">
-                            <span class="photo media-left"><img alt="avatar" src="images/avatar/4.jpg"></span>
-                            <div class="message media-body">
-                                <span class="name float-left">Rachel Santos</span>
-                                <span class="time float-right">15 minutes ago</span>
-                                <p>Lorem ipsum dolor sit amet, consectetur</p>
-                            </div>
-                        </a>
+                        <?php } ?>
                     </div>
                 </div>
+
+
             </div>
 
             <div class="user-area dropdown float-right">
@@ -99,7 +78,41 @@
         </div>
     </div>
 </header>
-
 <script>
-    
+$(document).ready(function() {
+    function loadNotifications() {
+        $.ajax({
+            url: 'fetch/fetch_notifications.php', // Your endpoint for fetching notifications
+            type: 'GET',
+            dataType: 'json',
+            success: function(data) {
+                var notificationCount = data.length;
+                $('#notificationCount').text(notificationCount);
+                $('#notificationHeader').text('You have ' + notificationCount + ' notifications');
+
+                var notificationList = $('#notificationList');
+                notificationList.empty();
+                data.forEach(function(notification) {
+                    var iconClass = 'fa-info'; // Default icon
+                    if (notification.activity_type === 'check') iconClass = 'fa-check';
+                    else if (notification.activity_type === 'warning') iconClass =
+                        'fa-warning';
+
+                    var notificationItem = `
+                        <a class="dropdown-item media" href="#">
+                            <i class="fa ${iconClass}"></i>
+                            <p>${notification.activity_description}</p>
+                        </a>`;
+                    notificationList.append(notificationItem);
+                });
+            },
+            error: function(xhr, status, error) {
+                console.error('Failed to fetch notifications:', error);
+            }
+        });
+    }
+
+    // Load notifications on page load
+    loadNotifications();
+});
 </script>

@@ -1,39 +1,50 @@
 <aside id="left-panel" class="left-panel">
-        <nav class="navbar navbar-expand-sm navbar-default">
-            <div id="main-menu" class="main-menu collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active">
-                        <a href="index.php"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
-                    </li>
-                    <li class="menu-title">Content Management</li><!-- /.menu-title -->
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> <i class="menu-icon fa fa-book"></i>Articles</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-pencil"></i><a href="new_article.php">Create Post</a></li>
-                            <li><i class="fa fa-id-badge"></i><a href="articles.php">Manage Post</a></li>
+    <nav class="navbar navbar-expand-sm navbar-default">
+        <div id="main-menu" class="main-menu collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active">
+                    <a href="index.php"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
+                </li>
+                <li class="menu-title">Content Management</li><!-- /.menu-title -->
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false"> <i class="menu-icon fa fa-book"></i>Articles</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="fa fa-pencil"></i><a href="new_article.php">Create Post</a></li>
+                        <li><i class="fa fa-id-badge"></i><a href="articles.php">Manage Post</a></li>
 
-                        
-                        </ul>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Services</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="fa fa-book"></i><a href="request_record.php">Request Record</a></li>
-                            <li><i class="fa fa-pencil"></i><a href="assessment.php">Assessment</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="speaker_profile.php"> <i class="menu-icon fa fa-users"></i> Speaker Profile </a>
-                    </li>
-                    <li>
-                        <a href="schedules.php"> <i class="menu-icon ti-calendar"></i>Schedules </a>
-                    </li>
-                    <li>
-                        <a href="account_mngmt.php"> <i class="menu-icon ti-user"></i>Account Management </a>
-                    </li>
-                    <!-- 
+
+                    </ul>
+                </li>
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                        aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Services</a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <li><i class="fa fa-book"></i><a href="request_record.php">Request Record</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="assessment.php"> <i class="menu-icon fa fa-check-circle"></i> Assessment </a>
+                </li>
+                <li>
+                    <a href="speaker_profile.php"> <i class="menu-icon fa fa-users"></i> Speaker Profile </a>
+                </li>
+                <li>
+                    <a href="schedules.php"> <i class="menu-icon ti-calendar"></i>Schedules </a>
+                </li>
+                <li>
+                    <a href="account_mngmt.php"> <i class="menu-icon ti-user"></i>Account Management </a>
+                </li>
+                <li>
+                    <a href="activity_log.php"> <i class="menu-icon ti-book"></i>Activity Logs </a>
+                </li>
+                <li>
+                    <a href="contact_messages.php"> <i class="menu-icon ti-comments"></i>Contact Messages </a>
+                </li>
+                <li>
+                    <a href="summary_report.php"> <i class="menu-icon fas fa-chart-pie"></i> Summary Report </a>
+                </li>
+                <!-- 
 
                     <li class="menu-item-has-children dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
@@ -92,7 +103,7 @@
                             </li>
                         </ul>
                     </li> -->
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </nav>
-    </aside>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </nav>
+</aside>

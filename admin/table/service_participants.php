@@ -15,8 +15,6 @@ if (!$result) {
 }
 
 $output = '
-<br>
-<!-- Your existing table here -->
 
 <hr>
 <h4> Participants </h4> <br>

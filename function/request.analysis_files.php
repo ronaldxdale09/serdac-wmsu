@@ -4,6 +4,7 @@ include('db.php');
 // Check if the form's submit button is clicked
 if (isset($_POST['confirm'])) {
     $request_id = $_POST['req_id'];  // Assuming you're correctly passing the request ID
+    $user_id = $_SESSION["userId_code"]; // Retrieve the user ID from the session
 
     // Handle file uploads
     if (!empty($_FILES['files']['name'][0])) {
@@ -36,6 +37,11 @@ if (isset($_POST['confirm'])) {
                         echo "Error inserting file data: " . mysqli_error($con);
                     } else {
                         echo "File successfully uploaded and recorded.";
+
+                        // Log the activity
+                        $activity_type = 'file_upload';
+                        $activity_description = "User uploaded file: $filename for request ID $request_id";
+                        log_activity($con, $user_id, $activity_type, $activity_description);
                     }
                 } else {
                     echo "Error uploading file: $filename";
@@ -49,7 +55,7 @@ if (isset($_POST['confirm'])) {
     }
 
     // Redirect or handle the response appropriately
-     header("Location: ../profile.php");  // Adjust as necessary
+    header("Location: ../profile.php");  // Adjust as necessary
     exit();
 }
 

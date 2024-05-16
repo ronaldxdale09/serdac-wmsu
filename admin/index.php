@@ -42,62 +42,55 @@ while ($row = $result->fetch_assoc()) {
             <div class="animated fadeIn">
                 <!-- Widgets  -->
                 <?php include('statistical_card/dashboard_card.php')?>
-
-                <!-- /Widgets -->
-                <!--  Traffic  -->
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Requests by Client Type Card -->
+                        <div class="stat-card">
+                            <h4 class="stat-title">Requests by Client Type</h4>
+                            <?php foreach ($clientTypes as $type => $count): ?>
+                            <div class="stat-text"><?php echo $type; ?>: <?php echo $count; ?></div>
+                            <?php endforeach; ?>
+                            <div class="stat-icon">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-lg-12">
+
                         <div class="card">
-                            <div class="card-body">
-                                <h4 class="box-title">Service Type Demand Overview</h4>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    <div class="card-body">
-                                        <!-- Pie Chart for Service Request Types -->
-                                        <canvas id="service-type-chart"></canvas>
+
+                            <!-- Assuming Bootstrap CSS is loaded for grid layout and responsive design -->
+                            <div class="container-fluid mt-3">
+                                <div class="row mb-2">
+                                    <div class="col">
+                                        <h4>Service Type Demand Overview</h4>
+
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <select id="year-select" class="form-control">
+                                            <option value="2023">2023</option>
+                                            <option value="2024" selected>2024</option>
+                                            <!-- Add more years as needed -->
+                                        </select>
                                     </div>
                                 </div>
 
-                            </div> <!-- /.row -->
-                            <div class="card-body">
-                                <!-- Stat Cards Container -->
-                                <div class="stat-cards">
-
-                                    <!-- Average Resolution Time Card -->
-                                    <div class="stat-card">
-                                        <h4 class="stat-title">Average Resolution Time</h4>
-                                        <div class="stat-value"><?php echo $avgResolutionTime; ?> days</div>
-                                        <div class="stat-icon">
-                                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <!-- Stacked Bar Chart for Service Request Types -->
+                                                <canvas id="service-type-chart"></canvas>
+                                            </div>
                                         </div>
                                     </div>
-
-                                    <!-- Requests by Client Type Card -->
-                                    <div class="stat-card">
-                                        <h4 class="stat-title">Requests by Client Type</h4>
-                                        <?php foreach ($clientTypes as $type => $count): ?>
-                                        <div class="stat-text"><?php echo $type; ?>: <?php echo $count; ?></div>
-                                        <?php endforeach; ?>
-                                        <div class="stat-icon">
-                                            <i class="fa fa-users" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-
-                                    <!-- Monthly Requests Card -->
-                                    <div class="stat-card">
-                                        <h4 class="stat-title">Monthly Requests</h4>
-                                        <?php foreach ($monthlyCounts as $month => $count): ?>
-                                        <div class="stat-text">Month <?php echo $month; ?>: <?php echo $count; ?></div>
-                                        <?php endforeach; ?>
-                                        <div class="stat-icon">
-                                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                                        </div>
-                                    </div>
-
                                 </div>
-
                             </div>
+
+
+
                         </div>
                     </div><!-- /# column -->
                 </div>
@@ -108,7 +101,7 @@ while ($row = $result->fetch_assoc()) {
                 <!-- Orders -->
                 <div class="orders">
                     <div class="row">
-                        <div class="col-xl-8">
+                        <div class="col-xl-12">
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="box-title">Recently Requested Services </h4>
@@ -133,21 +126,24 @@ while ($row = $result->fetch_assoc()) {
                                             </thead>
                                             <tbody>
                                                 <?php while ($row = mysqli_fetch_assoc($results)) { 
-                                               $status_color = '';
-                                               switch ($row['status']) {
-                                                   case "Pending":
-                                                       $status_color = 'badge-warning';
-                                                       break;
-                                                   case "Approved":
-                                                       $status_color = 'badge-success';
-                                                       break;
-                                                   case "In Progress":
-                                                           $status_color = 'badge-primary';
-                                                           break;
-                                                   case "Cancelled":
-                                                       $status_color = 'badge-danger';
-                                                       break;
-                                               }
+                                                $status_color = '';
+                                                switch ($row['status']) {
+                                                    case "Pending":
+                                                        $status_color = 'badge-primary';
+                                                        break;
+                                                    case "Approved":
+                                                        $status_color = 'badge-warning';
+                                                        break;
+                                                    case "In Progress":
+                                                            $status_color = 'badge-dark';
+                                                            break;
+                                                    case "Cancelled":
+                                                        $status_color = 'badge-danger';
+                                                        break;
+                                                    case "Completed":
+                                                            $status_color = 'badge-success';
+                                                            break;
+                                                }
                        
                                                     $type_color = $row['service_type'] === 'data-analysis' ? 'badge-success' :
                                                                 ($row['service_type'] === 'capability-training' ? 'badge-primary' :
@@ -174,30 +170,7 @@ while ($row = $result->fetch_assoc()) {
                             </div> <!-- /.card -->
                         </div> <!-- /.col-lg-8 -->
 
-                        <div class="col-xl-4">
-                            <div class="row">
-                                <div class="col-lg-6 col-xl-12">
-                                    <div class="card br-0">
-                                        <div class="card-body">
-                                            <div class="chart-container ov-h">
-                                                <div id="flotPie1" class="float-chart"></div>
-                                            </div>
-                                        </div>
-                                    </div><!-- /.card -->
-                                </div>
-
-                                <div class="col-lg-6 col-xl-12">
-                                    <div class="card bg-flat-color-3  ">
-                                        <div class="card-body">
-                                            <h4 class="card-title m-0  white-color ">August 2018</h4>
-                                        </div>
-                                        <div class="card-body">
-                                            <div id="flotLine5" class="flot-line"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> <!-- /.col-md-4 -->
+                       
                     </div>
                 </div>
                 <!-- /.orders -->
@@ -205,83 +178,8 @@ while ($row = $result->fetch_assoc()) {
 
                 <!-- /To Do and Live Chat -->
                 <!-- Calender Chart Weather  -->
-                <div class="row">
-
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="card ov-h">
-                            <div class="card-body bg-flat-color-2">
-                                <div id="flotBarChart" class="float-chart ml-4 mr-4"></div>
-                            </div>
-                            <div id="cellPaiChart" class="float-chart"></div>
-                        </div><!-- /.card -->
-                    </div>
-
-                </div>
-                <!-- /Calender Chart Weather -->
-                <!-- Modal - Calendar - Add New Event -->
-                <div class="modal fade none-border" id="event-modal">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                                <h4 class="modal-title"><strong>Add New Event</strong></h4>
-                            </div>
-                            <div class="modal-body"></div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default waves-effect"
-                                    data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-success save-event waves-effect waves-light">Create
-                                    event</button>
-                                <button type="button" class="btn btn-danger delete-event waves-effect waves-light"
-                                    data-dismiss="modal">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- /#event-modal -->
-                <!-- Modal - Calendar - Add Category -->
-                <div class="modal fade none-border" id="add-category">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"
-                                    aria-hidden="true">&times;</button>
-                                <h4 class="modal-title"><strong>Add a category </strong></h4>
-                            </div>
-                            <div class="modal-body">
-                                <form>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <label class="control-label">Category Name</label>
-                                            <input class="form-control form-white" placeholder="Enter name" type="text"
-                                                name="category-name" />
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label class="control-label">Choose Category Color</label>
-                                            <select class="form-control form-white" data-placeholder="Choose a color..."
-                                                name="category-color">
-                                                <option value="success">Success</option>
-                                                <option value="danger">Danger</option>
-                                                <option value="info">Info</option>
-                                                <option value="pink">Pink</option>
-                                                <option value="primary">Primary</option>
-                                                <option value="warning">Warning</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default waves-effect"
-                                    data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-danger waves-effect waves-light save-category"
-                                    data-dismiss="modal">Save</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+               
+               
             </div>
         </div>
         <div class="clearfix"></div>
@@ -294,61 +192,94 @@ while ($row = $result->fetch_assoc()) {
     <script>
     $(document).ready(function() {
         var ctx = $('#service-type-chart').get(0).getContext('2d');
-        var chart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Number of Requests',
-                    data: [],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 1)', // Bright red
-                        'rgba(54, 162, 235, 1)', // Bright blue
-                        'rgba(255, 206, 86, 1)', // Bright yellow
-                        'rgba(75, 192, 192, 1)' // Bright teal
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                legend: {
-                    display: true,
-                    position: 'top'
-                },
-                responsive: true,
-                maintainAspectRatio: false
+        var chart; // Define chart globally to update it
+
+        // Helper function to generate a color
+        function getRandomColor() {
+            var letters = '0123456789ABCDEF';
+            var color = '#';
+            for (var i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
             }
+            return color;
+        }
+
+        function initChart(data) {
+            if (chart) {
+                chart.destroy(); // Destroy the existing chart instance before creating a new one
+            }
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
+                        'Nov', 'Dec'
+                    ],
+                    datasets: data
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        },
+                        x: {
+                            stacked: true
+                        }
+                    },
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    },
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+        }
+
+        function fetchData(year) {
+            $.ajax({
+                url: 'fetch/fetch_serviceDisChart.php',
+                method: 'GET',
+                data: {
+                    year: year
+                },
+                success: function(data) {
+                    var datasets = [];
+                    Object.keys(data).forEach(function(serviceType) {
+                        var color =
+                            getRandomColor(); // Generate a unique color for each dataset
+                        var dataset = {
+                            label: serviceType,
+                            data: [],
+                            backgroundColor: color,
+                            borderColor: color,
+                            borderWidth: 1
+                        };
+                        for (let i = 1; i <= 12; i++) {
+                            dataset.data.push(data[serviceType][i] || 0);
+                        }
+                        datasets.push(dataset);
+                    });
+                    initChart(datasets); // Initialize the chart with fetched data
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX error: Status", status, "Error", error);
+                }
+            });
+        }
+
+        // Event listener for year change
+        $('#year-select').change(function() {
+            fetchData($(this).val());
         });
 
-        // Fetch data using jQuery AJAX
-        $.ajax({
-            url: 'fetch/fetch_serviceDisChart.php',
-            method: 'GET',
-            success: function(data) {
-                data.forEach(function(item) {
-                    chart.data.labels.push(item.service_type);
-                    chart.data.datasets[0].data.push(parseInt(item.count, 10));
-                });
-                chart.update();
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX error: Status", status, "Error", error);
-            }
-        });
-
+        // Initialize chart with default year
+        fetchData($('#year-select').val());
     });
     </script>
+
+
+
+
 
 </body>
 

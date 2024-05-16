@@ -59,6 +59,7 @@ window.onload = function() {
     integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
 </script>
 
+
 <body>
     <div class="wrapper">
 
@@ -66,18 +67,14 @@ window.onload = function() {
             <img src="assets/images/serdac.png" alt="School Logo 1" class="school-logo" />
             <img src="assets/images/wmsu.png" alt="School Logo 2" class="school-logo" />
         </div>
-        <div class="alert alert-success alert-dismissible fade show " style="display:none" role="alert"
+        <div class="alert alert-success alert-dismissible fade show" style="display:none" role="alert"
             id="show-activate">
             <strong>Activation Successful</strong> – Your account has been successfully activated. Welcome aboard!
         </div>
-
         <div class="headline">
-
             <h1>WELCOME<br>SERDAC-WMSU</h1>
         </div>
-
         <form class="form" method="post" action="#" id="loginForm">
-
             <div class="form-group">
                 <input type="email" name="email" placeholder="Email">
             </div>
@@ -93,11 +90,10 @@ window.onload = function() {
             </div>
             <button type="submit" class="btn">LOGIN</button>
             <div class="account-exist">
-                Create New a account? <a href="registration.php" id="signup">Signup</a>
+                Create a new account? <a href="registration.php" id="signup">Signup</a>
+                <button onclick="location.href='index.php';" class="btn-dashboard">Return to Dashboard</button>
+
             </div>
-
-
-
         </form>
     </div>
 </body>
