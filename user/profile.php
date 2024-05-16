@@ -1,7 +1,6 @@
 <form>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label form-control-label">First
-            name</label>
+        <label class="col-lg-3 col-form-label form-control-label">First name</label>
         <div class="col-lg-9">
             <input class="form-control" type="text" name="fname" id="fname">
         </div>
@@ -13,8 +12,7 @@
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label form-control-label">Last
-            name</label>
+        <label class="col-lg-3 col-form-label form-control-label">Last name</label>
         <div class="col-lg-9">
             <input class="form-control" type="text" name="lname" id="lname">
         </div>
@@ -22,56 +20,115 @@
     <div class="form-group row">
         <label class="col-lg-3 col-form-label form-control-label">Email</label>
         <div class="col-lg-9">
-            <input class="form-control" type="email" value="<?php echo $email?>" readonly>
+            <input class="form-control" type="email" id="email" value="<?php echo $email; ?>" readonly>
         </div>
     </div>
-
-
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label form-control-label">Address</label>
+        <label class="col-lg-3 col-form-label form-control-label">Contact No</label>
+        <div class="col-lg-9">
+            <input class="form-control" type="text" id="contact_no" name="contact_no">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-lg-3 col-form-label form-control-label">Region</label>
         <div class="col-lg-9">
             <select class="form-control" name="region" id="region-select">
+                <!-- Options will be populated dynamically -->
             </select>
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label form-control-label"></label>
+        <label class="col-lg-3 col-form-label form-control-label">City</label>
         <div class="col-lg-6">
-            <input class="form-control" type="text" value="" placeholder="City">
+            <select class="form-control" name="city" id="city-input">
+                <!-- Options will be populated dynamically -->
+            </select>
         </div>
         <div class="col-lg-3">
-            <input class="form-control" type="text" value="" placeholder="State">
+            <select class="form-control" name="state" id="state-input">
+                <!-- Options will be populated dynamically -->
+            </select>
         </div>
     </div>
-
     <div class="form-group row">
         <label class="col-lg-3 col-form-label form-control-label">Username</label>
         <div class="col-lg-9">
-            <input class="form-control" type="text" value="jhonsanmark">
+            <input class="form-control" type="text" id="username" value="jhonsanmark">
         </div>
     </div>
     <div class="form-group row">
         <label class="col-lg-3 col-form-label form-control-label">Password</label>
         <div class="col-lg-9">
-            <input class="form-control" type="password" value="11111122333">
+            <input class="form-control" type="password" id="password" value="11111122333">
         </div>
     </div>
     <div class="form-group row">
-        <label class="col-lg-3 col-form-label form-control-label">Confirm
-            password</label>
+        <label class="col-lg-3 col-form-label form-control-label">Confirm password</label>
         <div class="col-lg-9">
-            <input class="form-control" type="password" value="11111122333">
+            <input class="form-control" type="password" id="confirm-password" value="11111122333">
         </div>
     </div>
     <hr>
     <div class="form-group row">
         <label class="col-lg-3 col-form-label form-control-label"></label>
         <div class="col-lg-9">
-            <input type="reset" class="btn btn-secondary" value="Cancel">
-            <input type="button" class="btn btn-primary" value="Save Changes">
+            <input type="button" class="btn btn-primary btn-submit" value="Save Changes">
         </div>
     </div>
 </form>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const regionSelect = document.getElementById('region-select');
+    const cityInput = document.getElementById('city-input');
+    const stateInput = document.getElementById('state-input');
+
+    let regions = [];
+    let provinces = [];
+    let cities = [];
+    let barangays = [];
+
+    // Load initial data
+    fetch('js/ph-json/region.json')
+        .then(response => response.json())
+        .then(data => {
+            regions = data;
+            populateSelect(regionSelect, regions, 'region_name', '<?php echo $region; ?>');
+        })
+        .catch(error => console.error('Error loading region data:', error));
+
+    fetch('js/ph-json/province.json')
+        .then(response => response.json())
+        .then(data => {
+            provinces = data;
+            populateSelect(stateInput, provinces, 'province_name', '<?php echo $province; ?>');
+        })
+        .catch(error => console.error('Error loading province data:', error));
+
+    fetch('js/ph-json/city.json')
+        .then(response => response.json())
+        .then(data => {
+            cities = data;
+            populateSelect(cityInput, cities, 'city_name', '<?php echo $city; ?>');
+        })
+        .catch(error => console.error('Error loading city data:', error));
+
+    function populateSelect(selectElement, data, key, selectedValue) {
+        selectElement.innerHTML = `<option value="">Select ${selectElement.id.split('-')[0]}</option>`;
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item[key];
+            option.textContent = item[key];
+            if (item[key] === selectedValue) {
+                option.selected = true;
+            }
+            selectElement.appendChild(option);
+        });
+    }
+});
+</script>
 
 
 <script>
@@ -84,9 +141,6 @@ $(document).ready(function() {
         $('#r_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
             'N/A');
         $('#r_service-type').val(request.service_type || 'N/A');
-
-
-
         // Show or hide the button based on the request status
         if (request.status.toLowerCase() === 'completed') {
             $('#btnUploadDoc').hide();
@@ -97,9 +151,6 @@ $(document).ready(function() {
             $('.file-uploader').show();
 
         }
-
-
-
         request_id = request.request_id;
 
         function fetch_files() {
@@ -119,9 +170,7 @@ $(document).ready(function() {
         }
         fetch_files();
 
-
         function fetch_result() {
-
             $.ajax({
                 url: "table_fetch/anaylsis_files_fetch_result.php",
                 method: "POST",
@@ -136,109 +185,57 @@ $(document).ready(function() {
             });
         }
         fetch_result();
-
-
-
-
-
         var modal = new bootstrap.Modal(document.getElementById('anaylsisReqModal'));
         modal.show();
-
     });
-
 });
-</script>
-
-<!-- <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const regionSelect = document.getElementById('region-select');
-    const provinceSelect = document.getElementById('province-select');
-    const citySelect = document.getElementById('city-select');
-
-    const barangaySelect = document.getElementById('barangay-select');
-
-    let regions = [];
-    let provinces = [];
-    let cities = [];
-    let barangays = [];
-
-    // Load initial data
-    fetch('js/ph-json/region.json')
-        .then(response => response.json())
-        .then(data => {
-            regions = data;
-            populateSelect(regionSelect, regions, 'region_name');
-        })
-        .catch(error => console.error('Error loading region data:', error));
-
-    fetch('js/ph-json/province.json')
-        .then(response => response.json())
-        .then(data => provinces = data)
-        .catch(error => console.error('Error loading province data:', error));
-
-    fetch('js/ph-json/city.json')
-        .then(response => response.json())
-        .then(data => cities = data)
-        .catch(error => console.error('Error loading city data:', error));
-
-    fetch('js/ph-json/barangay.json')
-        .then(response => response.json())
-        .then(data => barangays = data)
-        .catch(error => console.error('Error loading barangay data:', error));
 
 
-    regionSelect.addEventListener('change', function() {
-        const selectedRegionCode = regions.find(region => region.region_name === this.value)
-            ?.region_code;
-        const filteredProvinces = provinces.filter(province => province.region_code ===
-            selectedRegionCode);
-        populateSelect(provinceSelect, filteredProvinces, 'province_name');
-        citySelect.innerHTML = '<option value="">Select City</option>'; // Reset city select
+    $('.btn-submit').click(function(e) {
+        e.preventDefault();
+
+        var formData = {
+            fname: $('#fname').val(),
+            midname: $('#midname').val(),
+            lname: $('#lname').val(),
+            contact_no: $('#contact_no').val(),
+            region: $('#region-select').val(),
+            city: $('#city-input').val(),
+            state: $('#state-input').val(),
+            username: $('#username').val(),
+            password: $('#password').val(),
+            confirm_password: $('#confirm-password').val()
+        };
+
+        Swal.fire({
+            title: 'Updating Profile',
+            text: 'Please wait while we update your profile...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        $.ajax({
+            url: 'function/update_profile.php',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'Your profile has been updated successfully.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                });
+            },
+            error: function(xhr, status, error) {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An error occurred while updating your profile. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
     });
-
-    provinceSelect.addEventListener('change', function() {
-        // Find the selected province's province_code
-        const selectedProvinceCode = provinces.find(province => province.province_name === this.value)
-            ?.province_code;
-
-        // Filter the cities based on the selected province_code
-        const filteredCities = cities.filter(city => city.province_code === selectedProvinceCode);
-        populateSelect(citySelect, filteredCities, 'city_name');
-    });
-
-    citySelect.addEventListener('change', function() {
-        // Find the selected city's city_code
-        const selectedCityCode = cities.find(city => city.city_name === this.value)?.city_code;
-
-        // Filter the barangays based on the selected city_code
-        const filteredBarangays = barangays.filter(barangay => barangay.city_code === selectedCityCode);
-        populateSelect(barangaySelect, filteredBarangays, 'brgy_name');
-    });
-
-    // Placeholder for barangay select event listener
-    // ...
-
-    function populateSelect(selectElement, data, key, selectedValue) {
-    selectElement.innerHTML = `<option value="">Select ${selectElement.id.split('-')[0]}</option>`;
-    data.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item[key];
-        option.textContent = item[key];
-        if (item[key] === selectedValue) {
-            option.selected = true;
-        }
-        selectElement.appendChild(option);
-    });
-
-    fetch('js/ph-json/region.json')
-        .then(response => response.json())
-        .then(data => {
-            regions = data;
-            populateSelect(regionSelect, regions, 'region_name', '<?php echo $region; ?>');
-        })
-        .catch(error => console.error('Error loading region data:', error));
-
-}
-
-}); -->
 </script>

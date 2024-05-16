@@ -116,7 +116,7 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
                 window.location.href = data.redirect;
             } else {
                 Swal.fire({
-                    icon: 'error',
+                    icon: 'info',
                     title: 'Login Failed',
                     text: data.message,
                     confirmButtonColor: '#3085d6',

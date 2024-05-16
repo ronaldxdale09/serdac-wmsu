@@ -360,17 +360,28 @@ $(document).ready(function() {
     submit_click.forEach(function(submit_click_form) {
         submit_click_form.addEventListener('click', function(e) { // Added 'e' here
             e.preventDefault();
+            // Show loading screen
+            Swal.fire({
+                title: 'Processing...',
+                text: 'Please wait while we complete your registration.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             // Set the form action to the desired URL
             $('#regForm').attr('action',
                 'function/registration.action.php'); // Corrected form ID
             // Show the loading overlay
-            // $('#loadingOverlay').show();
             // Submit the form asynchronously using AJAX
             $.ajax({
                 type: "POST",
                 url: $('#regForm').attr('action'), // Corrected form ID
                 data: $('#regForm').serialize(), // Corrected form ID
                 success: function(response) {
+                    Swal.close(); // Close the loading overlay
+
                     if (response.trim() === 'success') {
                         Swal.fire({
                             icon: 'success',

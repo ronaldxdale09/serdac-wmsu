@@ -70,8 +70,15 @@ function formatDate(dateStr) {
     const options = {
         year: 'numeric',
         month: 'long',
-        day: 'numeric'
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        hour12: true
     };
-    return dateObj.toLocaleDateString('en-US', options);
+    return dateObj.toLocaleDateString('en-US', options) ;
 }
+
+
+
+
 </script>

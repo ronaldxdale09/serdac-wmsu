@@ -227,7 +227,9 @@ $('.btnProgParticiapnts').on('click', function() {
     $('#p_agency-classification').val(req.agency_classification || 'N/A');
     $('#p_client-type').val(req.client_type || 'N/A');
     $('#s_invcode').val(req.inviteCode || 'N/A');
+    $('#s_req_id').val(req.request_id);
 
+    
     serviceType = req.service_type;
 
     $.ajax({

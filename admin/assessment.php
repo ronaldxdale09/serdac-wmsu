@@ -197,18 +197,35 @@
             <p>Dear Participant,</p>
             <p>We are pleased to invite you to participate in our assessment titled <strong>${title}</strong>.</p>
             <p>${description}</p>
-            <p>Please find the invitation link attached: <strong>${inviteLink}</strong></p>
+            <p>Please find the invitation link attached: <strong>${inviteLink}</strong>.</p>
             <p>We look forward to your participation.</p>
             <p>Best regards,<br>Assessment Team</p>
         `;
             $('#emailBody').val(message);
 
+            // Fetch participant emails
+            $.ajax({
+                url: 'fetch/fetch_asmt_emails.php',
+                type: 'POST',
+                data: {
+                    form_id: form_id
+                },
+                success: function(response) {
+                    var result = JSON.parse(response);
+                    if (result.error) {
+                        console.log(result.error);
+                    } else {
+                        var emails = result.emails.join(', ');
+                        $('#emailList').val(emails);
+                    }
+                },
+                error: function() {
+                    console.log('Error fetching participant emails.');
+                }
+            });
+
             $('#emailModal').modal('show');
         });
-
-
-
-
     });
     </script>
 

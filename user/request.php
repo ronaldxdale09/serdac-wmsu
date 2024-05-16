@@ -1,86 +1,86 @@
 <style>
-        .table-btn {
-            margin-right: 4px;
-            white-space: nowrap;
-        }
+.table-btn {
+    margin-right: 4px;
+    white-space: nowrap;
+}
 
-        .table-btn:last-child {
-            margin-right: 0;
-        }
+.table-btn:last-child {
+    margin-right: 0;
+}
 
-        .card-equal-height {
-            height: auto;
-        }
+.card-equal-height {
+    height: auto;
+}
 
-        .card-body {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
 
-        .card-equal-height .card-title {
-            font-size: 1.25rem;
-        }
+.card-equal-height .card-title {
+    font-size: 1.25rem;
+}
 
-        .status-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+.status-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
 
-        .status-item i {
-            font-size: 1.5rem;
-        }
+.status-item i {
+    font-size: 1.5rem;
+}
 
-        .badge-pill {
-            font-size: 1rem;
-            margin-top: 5px;
-        }
+.badge-pill {
+    font-size: 1rem;
+    margin-top: 5px;
+}
 
-        .row.justify-content-center {
-            justify-content: center;
-        }
+.row.justify-content-center {
+    justify-content: center;
+}
 
-        .card-equal-height .card-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #343a40;
-        }
+.card-equal-height .card-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #343a40;
+}
 
-        .card-equal-height .badge {
-            font-size: 1rem;
-            padding: 0.5rem 1rem;
-        }
+.card-equal-height .badge {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
 
-        .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
-        }
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
 
-        .btn {
-            border-radius: 0.25rem;
-            transition: background-color 0.3s, box-shadow 0.3s;
-        }
+.btn {
+    border-radius: 0.25rem;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
 
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
 
-        .btn-secondary {
-            background-color: #6c757d;
-            border-color: #6c757d;
-        }
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
 
-        .btn-dark {
-            background-color: #343a40;
-            border-color: #343a40;
-        }
+.btn-dark {
+    background-color: #343a40;
+    border-color: #343a40;
+}
 
-        .btn:hover {
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+.btn:hover {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+</style>
 <div class="container">
     <div class="row mb-4 justify-content-center">
         <div class="col-md-10">
@@ -222,7 +222,7 @@
                 <tr>
                     <td><?php echo $row['request_id']; ?></td>
                     <td>
-                            <?php echo $row['service_type']; ?>
+                        <?php echo $row['service_type']; ?>
                     </td>
                     <td><?php echo $row['office_agency']; ?></td>
                     <td><?php echo $row['selected_purposes']; ?></td>
@@ -237,13 +237,14 @@
                                 data-request='<?php echo json_encode($row); ?>'>
                                 <i class="fas fa-book"></i>
                             </button>
-                            <?php if ($row['status'] !== "Pending" ) { ?>
+                            <?php if ($row['status'] !== "Pending" && $row['status'] !== "Cancelled") { ?>
                             <button type="button" class="btn btn-sm btn-secondary btnMeeting"
                                 data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip"
                                 title="Progress Meeting">
                                 <i class="fas fa-calendar"></i> Meetings
                             </button>
                             <?php } ?>
+
                             <!-- Conditionally displayed Requirements button for 'data-analysis' services in 'In Progress' status -->
                             <?php if ($row['service_type'] === "data-analysis" && ($row['status'] === "In Progress" || $row['status'] === "Completed" )) { ?>
                             <button type="button" class="btn btn-sm btn-dark btnRequirement"

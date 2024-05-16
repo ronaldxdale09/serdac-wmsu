@@ -1,8 +1,6 @@
 <?php include('include/header.php');
 
-
 if (isset($_SESSION["userId_code"])) {
-
     $id = $_SESSION['userId_code'];
     $id = preg_replace('~\D~', '', $id);
 
@@ -14,40 +12,34 @@ if (isset($_SESSION["userId_code"])) {
         $name = $record['fname'].' '.$record['midname'].' '.$record['lname'];
         $contact = $record['contact_no'];
         $email = $record['email'];
-
         $region = $record['region'];
+        $city = $record['city'];
+        $province = $record['province'];
 
-            echo "
-            <script>
-                $(document).ready(function() {
-
-                    $('#fname').val('".$record['fname']. "');
-                    $('#midname').val('".$record['midname']. "');
-                    $('#lname').val('".$record['lname']. "');
-                    $('#email').val('".$record['email']. "');
-                    $('#contact').val('".$record['contact_no']. "'); 
-                    
-                    $('#city').val('".$record['city']. "');
-                    $('#province').val('".$record['province']. "'); 
-                    $('#barangay').val('".$record['barangay']. "'); 
-
-                });
-
-
-                
-            </script>
+        echo "
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('fname').value = '".addslashes($record['fname'])."';
+                document.getElementById('midname').value = '".addslashes($record['midname'])."';
+                document.getElementById('lname').value = '".addslashes($record['lname'])."';
+                document.getElementById('email').value = '".addslashes($record['email'])."';
+                document.getElementById('contact_no').value = '".addslashes($record['contact_no'])."';
+                setRegionCityProvince('".addslashes($record['region'])."', '".addslashes($record['city'])."', '".addslashes($record['province'])."');
+            });
+        </script>
         ";
 
-        $sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE user_id='$id'  ");
+        $sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE user_id='$id'");
         $res = mysqli_fetch_array($sql);
         $req_count = $res['Total'];
-        }
-
-    }
-    else{
+    } else {
         header("Location: login.php");
         exit;
     }
+} else {
+    header("Location: login.php");
+    exit;
+}
 ?>
 <link rel="stylesheet" href="css/profile.css">
 
@@ -139,92 +131,7 @@ if (isset($_SESSION["userId_code"])) {
                                             <?php include('user/request.php'); ?>
                                         </div>
                                         <div class="tab-pane" id="edit">
-                                            <form>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-3 col-form-label form-control-label">First
-                                                        name</label>
-                                                    <div class="col-lg-9">
-                                                        <input class="form-control" type="text" value="Mark">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-3 col-form-label form-control-label">Last
-                                                        name</label>
-                                                    <div class="col-lg-9">
-                                                        <input class="form-control" type="text" value="Jhonsan">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label
-                                                        class="col-lg-3 col-form-label form-control-label">Email</label>
-                                                    <div class="col-lg-9">
-                                                        <input class="form-control" type="email"
-                                                            value="mark@example.com">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-3 col-form-label form-control-label">Change
-                                                        profile</label>
-                                                    <div class="col-lg-9">
-                                                        <input class="form-control" type="file">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label
-                                                        class="col-lg-3 col-form-label form-control-label">Website</label>
-                                                    <div class="col-lg-9">
-                                                        <input class="form-control" type="url" value="">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label
-                                                        class="col-lg-3 col-form-label form-control-label">Address</label>
-                                                    <div class="col-lg-9">
-                                                        <input class="form-control" type="text" value=""
-                                                            placeholder="Street">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-3 col-form-label form-control-label"></label>
-                                                    <div class="col-lg-6">
-                                                        <input class="form-control" type="text" value=""
-                                                            placeholder="City">
-                                                    </div>
-                                                    <div class="col-lg-3">
-                                                        <input class="form-control" type="text" value=""
-                                                            placeholder="State">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label
-                                                        class="col-lg-3 col-form-label form-control-label">Username</label>
-                                                    <div class="col-lg-9">
-                                                        <input class="form-control" type="text" value="jhonsanmark">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label
-                                                        class="col-lg-3 col-form-label form-control-label">Password</label>
-                                                    <div class="col-lg-9">
-                                                        <input class="form-control" type="password" value="11111122333">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-3 col-form-label form-control-label">Confirm
-                                                        password</label>
-                                                    <div class="col-lg-9">
-                                                        <input class="form-control" type="password" value="11111122333">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-lg-3 col-form-label form-control-label"></label>
-                                                    <div class="col-lg-9">
-                                                        <input type="reset" class="btn btn-secondary" value="Cancel">
-                                                        <input type="button" class="btn btn-primary"
-                                                            value="Save Changes">
-                                                    </div>
-                                                </div>
-                                            </form>
+
                                         </div>
                                     </div>
                                 </div>

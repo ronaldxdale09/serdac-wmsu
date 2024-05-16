@@ -92,14 +92,14 @@
                             <!-- From Date -->
                             <div class="form-group col-md-6">
                                 <label class="form-control-label" style="font-weight: bold;">From Date:</label>
-                                <input type="date" id="fromDate" name="from_date" class="form-control"
+                                <input type="datetime-local" id="fromDate" name="from_date" class="form-control"
                                     style="border-radius: 0.35rem; border-color: #d1d3e2;">
                             </div>
 
                             <!-- To Date -->
                             <div class="form-group col-md-6" id="toDateGroup">
                                 <label class="form-control-label" style="font-weight: bold;">To Date:</label>
-                                <input type="date" id="toDate" name="to_date" class="form-control"
+                                <input type="datetime-local" id="toDate" name="to_date" class="form-control"
                                     style="border-radius: 0.35rem; border-color: #d1d3e2;">
                             </div>
 

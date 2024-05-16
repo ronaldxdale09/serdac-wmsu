@@ -23,7 +23,9 @@ $output = '
     <tr style="font-weight: normal;">
         <th scope="col">#</th>
         <th scope="col">Full Name</th>
-        <th scope="col">Registration Date</th>
+        <th scope="col">Email</th>
+
+        <th scope="col">Joined Date</th>
     </tr>
     </thead>
     <tbody>';
@@ -32,12 +34,17 @@ $output = '
 // Fetch the data from the database and output each row
 while ($row = mysqli_fetch_assoc($result)) {
     $fullname = $row['fname'].' '.$row['midname'].' '.$row['lname'];
+    $formattedDate = date('M j, Y', ($row['registration_date']));
+    
     // Append row data to output
     $output .= '
     <tr>
         <td >' . $i++ . '</td>
         <td>' . $fullname . '</td>
-        <td class="nowrap">' .  date('M j, Y', strtotime($row['registration_date'])) . '</td>
+        <td>' . $row['email'] . '</td>
+
+        <td class="nowrap">' . $formattedDate . '</td>
+
     </tr>
 ';
 }

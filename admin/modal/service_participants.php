@@ -197,44 +197,124 @@ function copyCode() {
 
 <script>
 $(document).ready(function() {
-
     CKEDITOR.replace('emailBody');
 
     $('#email_inv').click(function() {
+        console.log("Button clicked");
+
         var serviceTitle = $('#p_service_title').val();
         var serviceVenue = $('#p_serviceVenue').val();
         var from = $('#p_fromDate').val();
         var to = $('#p_toDate').val();
-
         var inviteCode = $('#s_invcode').val(); // Grab the invite code
+        var requestId = $('#s_req_id').val(); // Grab the request id
+
+        
+        console.log("req_id : ", requestId);
+        console.log("Service Title: ", serviceTitle);
+        console.log("Service Venue: ", serviceVenue);
+        console.log("From Date: ", from);
+        console.log("To Date: ", to);
+        console.log("Invite Code: ", inviteCode);
+
+        // Manually parse the date string
+        function parseDate(dateStr) {
+            var parts = dateStr.match(/(\w+) (\d+), (\d+) at (\d+):(\d+) (AM|PM)/);
+            var month = parts[1];
+            var day = parseInt(parts[2]);
+            var year = parseInt(parts[3]);
+            var hour = parseInt(parts[4]);
+            var minute = parseInt(parts[5]);
+            var period = parts[6];
+
+            // Convert month name to month index
+            var monthIndex = new Date(Date.parse(month + " 1, 2024")).getMonth();
+
+            // Adjust hour based on AM/PM
+            if (period === "PM" && hour < 12) hour += 12;
+            if (period === "AM" && hour === 12) hour = 0;
+
+            return new Date(year, monthIndex, day, hour, minute);
+        }
+
+        var fromDateTime = parseDate(from);
+        var toDateTime = parseDate(to);
+
+        console.log("From DateTime: ", fromDateTime);
+        console.log("To DateTime: ", toDateTime);
+
+        // Format the dates for Google Calendar
+        var fromFormatted = fromDateTime.toISOString().replace(/-|:|\.\d\d\d/g, "");
+        var toFormatted = toDateTime.toISOString().replace(/-|:|\.\d\d\d/g, "");
+
+        // Format the display dates
+        var options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: true
+        };
+        var fromDisplay = fromDateTime.toLocaleString('en-US', options);
+        var toDisplay = toDateTime.toLocaleString('en-US', options);
+
+        console.log("From Display: ", fromDisplay);
+        console.log("To Display: ", toDisplay);
+
+        // Construct Google Calendar URL
+        var googleCalendarUrl =
+            `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(serviceTitle)}&dates=${fromFormatted}/${toFormatted}&details=${encodeURIComponent('Invitation Code: ' + inviteCode)}&location=${encodeURIComponent(serviceVenue)}`;
+
+        console.log("Google Calendar URL: ", googleCalendarUrl);
 
         // Set the data into the Email Invitation modal fields
         $('#e_service_title').val(serviceTitle);
         $('#e_serviceVenue').val(serviceVenue);
+        $('#e_fromDate').val(fromDisplay);
+        $('#e_toDate').val(toDisplay);
+        $('#e_inviteCode').text(inviteCode);
 
-        $('#e_fromDate').val(from);
-        $('#e_toDate').val(to);
+        // Fetch participants' emails and populate emailList
+        $.ajax({
+            url: 'fetch/fetch_participant_emails.php',
+            type: 'POST',
+            data: {
+                request_id: requestId
+            },
+            success: function(response) {
+                var result = JSON.parse(response);
+                if (result.error) {
+                    console.log(result.error);
+                } else {
+                    var emails = result.emails.join(', ');
+                    $('#emailList').val(emails);
+                    console.log(emails)
 
+                    // Dynamically update CKEditor content
+                    var message = `
+                        <p>Dear Participant,</p>
+                        <p>We are pleased to invite you to our upcoming event, scheduled to take place from <strong>${fromDisplay}</strong> to <strong>${toDisplay}</strong> at <strong>${serviceVenue}</strong>. This event will offer you the opportunity to engage with industry leaders and enhance your skills.</p>
+                        <p>Please find the invitation code attached: <strong>${inviteCode}</strong></p>
+                        <p>Invitation Link: <strong>https://www.serdac-wmsu.online/service_join.php?inv=${inviteCode}</strong></p>
+                        <p><a href="${googleCalendarUrl}" target="_blank" class="btn btn-primary">Save to Google Calendar</a></p>
+                        <p>We look forward to your participation.</p>
+                        <p>Best regards,<br>SERDAC-WMSU</p>
+                    `;
+                    CKEDITOR.instances['emailBody'].setData(
+                    message); // Set the dynamic data
 
-
-        $('#e_inviteCode').text(inviteCode); // Update the simple DOM element
-
-        // Dynamically update CKEditor content
-        var message = `
-            <p>Dear Participant,</p>
-            <p>We are pleased to invite you to our upcoming event, scheduled to take place from <strong>${from}</strong> to <strong>${to}</strong> at <strong>${serviceVenue}</strong>. This event will offer you the opportunity to engage with industry leaders and enhance your skills.</p>
-            <p>Please find the invitation code attached: <strong>${inviteCode}</strong></p>
-            <p>Invitation Link: <strong>https://www.serdac-wmsu.online/service_join.php?inv=${inviteCode}</strong></p>
-
-            <p>We look forward to your participation.</p>
-            <p>Best regards,<br>SERDAC-WMSU</p>
-        `;
-        CKEDITOR.instances['emailBody'].setData(message); // Set the dynamic data
-
-        // Hide any open modal and show the email modal
-        $("[data-dismiss=modal]").trigger("click");
-        var emailModal = new bootstrap.Modal(document.getElementById('emailModal'));
-        emailModal.show(); // Show the next modal
+                    // Hide any open modal and show the email modal
+                    $('.modal').modal('hide'); // Hide any open modal
+                    var emailModal = new bootstrap.Modal(document.getElementById(
+                        'emailModal'));
+                    emailModal.show(); // Show the next modal
+                }
+            },
+            error: function() {
+                console.log('Error fetching participant emails.');
+            }
+        });
     });
 });
 

@@ -145,8 +145,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <h6>Here are our upcoming meetings</h6>
-                    <h2>Upcoming Meetings</h2>
+                    <!-- <h6>NEWS AND ARTICLES</h6> -->
+                    <h2>NEWS AND ARTICLES</h2>
                 </div>
             </div>
         </div>

@@ -30,7 +30,8 @@
                     <ul class="nav">
                         <li><a href="index.php" class="active">Home</a></li>
                         <li><a href="meetings.php">News</a></li>
-                        <li class="scroll-to-section"><a href="#apply">Publications</a></li>
+                        <li ><a href="publication.php">Publications</a></li>
+
                         <li class="has-sub servnav">
                             <a href="javascript:void(0)">SERVICES</a>
                             <ul class="sub-menu">
