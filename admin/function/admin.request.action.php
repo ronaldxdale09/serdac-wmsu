@@ -1,7 +1,7 @@
 <?php
-include('db.php');
+include('../../function/db.php');
 require 'PHPMailer/PHPMailerAutoload.php';
-$user_id = $_POST['user_id'];
+$user_id = $_SESSION["userId_code"]; 
 $email = $_POST['email'];
 $service_type = $_POST['service_type'];
 $office_agency = $_POST['office_agency'];
@@ -10,7 +10,7 @@ $client_type = $_POST['client_type'];
 $purpose_options = $_POST['purpose_options'];
 $selected_purposes = implode(", ", $purpose_options);
 $additional_purpose_details = $_POST['additional_purpose_details'];
-$status = "Pending";
+$status = "In Progress";
 
 // Insert into service_request table
 $query = "INSERT INTO service_request (request_date, user_id, service_type, office_agency, agency_classification, client_type, selected_purposes, additional_purpose_details, status)
@@ -25,14 +25,7 @@ if (mysqli_stmt_execute($stmt)) {
     // Log the activity
     $activity_type = 'service_request';
     $activity_description = "User submitted a new service request with ID $last_id and service type $service_type";
-    log_activity($con, $user_id, $activity_type, $activity_description);
-
-        // Automatically add the user as a service participant
-        $query_sp = "INSERT INTO service_participant (user_id, request_id, registration_date) VALUES (?, ?, ?)";
-        $registration_date = date('Y-m-d'); // Formats the date as Year-Month-Day
-        $stmt_sp = mysqli_prepare($con, $query_sp);
-        mysqli_stmt_bind_param($stmt_sp, "iis", $user_id, $last_id, $registration_date);
-        mysqli_stmt_execute($stmt_sp);
+    //log_activity($con, $user_id, $activity_type, $activity_description);
 
     switch ($service_type) {
         case 'data-analysis':
@@ -74,7 +67,7 @@ if (mysqli_stmt_execute($stmt)) {
             break;
     }
     echo 'success';
-
+    header("Location: ../request_record.php?tab=3");  // Change this to your desired location
     // Optionally, send a service request summary email
     // sendServiceRequestSummaryEmail($email, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes);
 
@@ -111,9 +104,6 @@ function     sendServiceRequestSummaryEmail($recipientEmail, $serviceType, $offi
         $emailContent = "
         <html>
         <head>
-            <style>
-                // ... (your existing style definitions)
-            </style>
         </head>
         <body>
             <div class='content-wrapper'>

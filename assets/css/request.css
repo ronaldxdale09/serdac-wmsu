@@ -395,3 +395,20 @@ button {
     color: #007BFF;
     /* Matching color of the service-type background */
 }
+
+.sub-heading {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.sub-heading i {
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.service-type {
+    font-size: 1.2rem;
+    color: #555;
+}

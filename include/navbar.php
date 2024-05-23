@@ -30,19 +30,26 @@
                     <ul class="nav">
                         <li><a href="index.php" class="active">Home</a></li>
                         <li><a href="meetings.php">News</a></li>
-                        <li ><a href="publication.php">Publications</a></li>
+                        <li class="has-sub servnav">
+                            <a href="javascript:void(0)">Repository</a>
+                            <ul class="sub-menu">
+                                <li><a href="project_list.php"><i class="fas fa-project-diagram"></i>  Projects</a></li>
+                                <li><a href="publication.php"><i class="fas fa-book"></i> E-Books</a></li>
+                                <!-- <li><a href="meeting-details.html">Capability Training</a></li> -->
 
+                            </ul>
+                        </li>
                         <li class="has-sub servnav">
                             <a href="javascript:void(0)">SERVICES</a>
                             <ul class="sub-menu">
-                                <li><a href="request.php">REQUEST SERVICE</a></li>
+                                <li><a href="request.php"><i class="fas fa-chalkboard-teacher"></i> REQUEST SERVICE</a></li>
                                 <!-- <li><a href="meeting-details.html">Capability Training</a></li> -->
 
                             </ul>
                         </li>
                         <li class="scroll-to-section"><a href="#courses">ABOUT US</a></li>
-                        <li ><a href="contact_us.php">Contact Us</a></li>
-                        
+                        <li><a href="contact_us.php">Contact Us</a></li>
+
                         <?php
                         // Check if the session variable exists and has data
                         if (isset($_SESSION["userId_code"]) && !empty($_SESSION["userId_code"])) {

@@ -51,9 +51,9 @@
                         <div class="card-body">
                             <div class="table-responsive custom-table-container">
                                 <?php
-                        // Fetch data from the asmt_forms table
-                        $results = mysqli_query($con, "SELECT * FROM asmt_forms");
-                        ?>
+    // Fetch data from the asmt_forms table
+    $results = mysqli_query($con, "SELECT * FROM asmt_forms");
+    ?>
                                 <table class="table table-hover" id="assessment_form_table">
                                     <thead>
                                         <tr>
@@ -63,54 +63,72 @@
                                             <th scope="col">Description</th>
                                             <th scope="col">Questions</th>
                                             <th scope="col">Responses</th>
+                                            <th scope="col">Dates</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php 
-                                while ($row = mysqli_fetch_array($results)) { 
-                                    // Fetch the number of questions for each form
-                                    $form_id = $row['form_id'];
-                                    $questionCountResult = mysqli_query($con, "SELECT COUNT(*) as question_count FROM asmt_questions WHERE form_id = $form_id");
-                                    $questionCount = mysqli_fetch_assoc($questionCountResult)['question_count'];
+            while ($row = mysqli_fetch_array($results)) { 
+                // Fetch the number of questions for each form
+                $form_id = $row['form_id'];
+                $questionCountResult = mysqli_query($con, "SELECT COUNT(*) as question_count FROM asmt_questions WHERE form_id = $form_id");
+                $questionCount = mysqli_fetch_assoc($questionCountResult)['question_count'];
 
-                                    // Fetch the number of responses per user for each form
-                                    $responseCountResult = mysqli_query($con, "SELECT COUNT(DISTINCT user_id) as response_count FROM asmt_responses WHERE form_id = $form_id");
-                                    $responseCount = mysqli_fetch_assoc($responseCountResult)['response_count'];
-                                ?>
+                // Fetch the number of responses per user for each form
+                $responseCountResult = mysqli_query($con, "SELECT COUNT(DISTINCT user_id) as response_count FROM asmt_responses WHERE form_id = $form_id");
+                $responseCount = mysqli_fetch_assoc($responseCountResult)['response_count'];
+
+                // Format start and end dates
+                $startDate = date('Y-m-d', strtotime($row['start_date']));
+                $endDate = date('Y-m-d', strtotime($row['end_date']));
+
+                // Display response count alongside quota
+                $responsesWithQuota = $responseCount . '/' . $row['quota'];
+            ?>
                                         <tr>
                                             <td><?php echo $row['form_id']; ?></td>
                                             <td><?php echo $row['title']; ?></td>
                                             <td><?php echo $row['form_type']; ?></td>
                                             <td><?php echo $row['description']; ?></td>
                                             <td><?php echo $questionCount; ?></td>
-                                            <td><?php echo $responseCount; ?></td>
+                                            <td><?php echo $responsesWithQuota; ?></td>
+                                            <td><?php echo $startDate . ' to ' . $endDate; ?></td>
                                             <td>
-                                                <a href="../assmnt.form.php?form_id=<?php echo $row['form_id']; ?>"
-                                                    target="_blank" class="btn btn-sm btn-dark btnView">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
-                                                <a href="form_builder.php?form_id=<?php echo $row['form_id']; ?>"
-                                                    target="_blank" class="btn btn-sm btn-dark btnView">
-                                                    <i class="fa fa-pen"></i>
-                                                </a>
-                                                <button type="button" class="btn btn-sm btn-primary btnViewResponses"
-                                                    data-form-id="<?php echo $row['form_id']; ?>">
-                                                    <i class="fa fa-list"></i> Responses
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-warning btnSendInvite"
-                                                    data-form-id="<?php echo $row['form_id']; ?>"
-                                                    data-title="<?php echo $row['title']; ?>"
-                                                    data-description="<?php echo $row['description']; ?>"
-                                                    data-toggle="modal" data-target="#emailModal">
-                                                    <i class="fa fa-envelope"></i> Invite
-                                                </button>
+                                                <div class="btn-group" role="group" aria-label="Form Actions">
+                                                    <a href="../assmnt.form.php?form_id=<?php echo $row['form_id']; ?>"
+                                                        target="_blank" class="btn btn-sm btn-secondary btnView"
+                                                        title="View Form">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <a href="form_builder.php?form_id=<?php echo $row['form_id']; ?>"
+                                                        target="_blank" class="btn btn-sm btn-dark btnView"
+                                                        title="Edit Form">
+                                                        <i class="fa fa-pen"></i>
+                                                    </a>
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-primary btnViewResponses"
+                                                        data-form-id="<?php echo $row['form_id']; ?>"
+                                                        title="View Responses">
+                                                        <i class="fa fa-list"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-warning btnSendInvite"
+                                                        data-form-id="<?php echo $row['form_id']; ?>"
+                                                        data-title="<?php echo $row['title']; ?>"
+                                                        data-description="<?php echo $row['description']; ?>"
+                                                        data-toggle="modal" data-target="#emailModal"
+                                                        title="Send Invite">
+                                                        <i class="fa fa-envelope"></i>
+                                                    </button>
+                                                </div>
                                             </td>
+
                                         </tr>
                                         <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div>
                 </div>

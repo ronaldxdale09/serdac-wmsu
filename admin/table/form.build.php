@@ -10,7 +10,7 @@ if ($form_id > 0) {
         die('Query Failed: ' . mysqli_error($con));
     }
 
-    $output = '<div class="form-builder-container">';
+    $output = '<div class="form-builder-container" id="question_list_container">';
 
     $questionIndex = 0;
     while ($row = mysqli_fetch_assoc($result)) {
@@ -53,10 +53,10 @@ if ($form_id > 0) {
                             <input type="' . ($questionType == 'multiple_choice_single' ? 'radio' : 'checkbox') . '">
                         </div>
                     </div>
-                    <input type="text" name="questions[options][' . $questionIndex . '][]" class="form-control" value="' . $option . '" placeholder="Option">
+                    <input type="text" name="questions[option_text][' . $questionIndex . '][]" class="form-control" value="' . $option . '" placeholder="Option">
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary add-option" type="button">+</button>
-                        <button class="btn btn-outline-danger remove-option" type="button">-</button>
+                    <button class="btn btn-outline-secondary add-option" type="button">+</button>
+                    <button class="btn btn-outline-danger delete-option" type="button">-</button>
                     </div>
                 </div>';
             }

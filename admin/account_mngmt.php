@@ -1,5 +1,6 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="css/assmt.form.view.css">
 
 <body>
     <!-- Left Panel -->
@@ -47,7 +48,7 @@
                             <div class="inventory-table">
                                 <button type="button" class="btn btn-sm btn-dark text-white" data-toggle="modal"
                                     data-target="#createUserModal">
-                                    <i class="fa fa-user"> <span> NEW ADMIN </span> </i>
+                                    <i class="fa fa-user"> </i> NEW ADMIN
                                 </button>
                                 <hr>
                                 <table class="table table-bordered table-hover table-striped" id='patient_record'>
@@ -57,9 +58,9 @@
                                             <th scope="col">Name</th>
                                             <th scope="col">Contact #</th>
                                             <th scope="col">Username</th>
-                                            <th>User Type</th>
+                                         
                                             <th width="15%" scope="col">Access</th>
-
+                                            <th>User Type</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>

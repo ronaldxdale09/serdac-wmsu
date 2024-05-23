@@ -16,14 +16,16 @@ if (isset($_POST['new'])) {
     $userAccess = isset($_POST['userAccess']) ? json_encode($_POST['userAccess']) : '';
 
     // Modify the SQL query to include additional fields
-    $query = "INSERT INTO users (fname, midname, lname, email, contact_no, password, accessType, adminAccess) 
-              VALUES ('$fname', '$midname', '$lname', '$email', '$contact_no', '$password', '$userType', '$userAccess')";
+    $query = "INSERT INTO users (fname, midname, lname, email, contact_no,
+     password, accessType, adminAccess,isActive) 
+              VALUES ('$fname', '$midname', '$lname', '$email', '$contact_no',
+               '$password', '$userType', '$userAccess', '1')";
 
     // Executing the query
     $results = mysqli_query($con, $query);
 
     if ($results) {
-        header("Location: ../acc_mng.php");  // Change this to your desired location
+        header("Location: ../account_mngmt.php");  // Change this to your desired location
         exit();
     } else {
         echo "ERROR: Could not execute the query. " . mysqli_error($con);

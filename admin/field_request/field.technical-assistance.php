@@ -11,7 +11,7 @@
                     <label class="form-control-label required">Office/Agency:
                     </label>
                     <input type="text" id="agency" name="office_agency" placeholder="" class="form-control"
-                        onblur="validate2(1)">
+                        onblur="validate2(1)" style="border: 1px solid #a19d9d;" value="SERDAC-WMSU">
                 </div>
 
             </div>
@@ -75,57 +75,22 @@
         </div>
 
 
-        <div class="container mt-4">
-            <div class="row">
-                <div class="col-12">
-                    <div class="form-group">
-                        <label for="purpose-options" class="required">Purpose of Request</label>
-                        <div id="purpose-options" class="row">
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="purpose_options[]"
-                                        id="purpose-research" value="Research">
-                                    <label class="form-check-label ml-2" for="purpose-research"
-                                        style="font-weight: normal;">Research</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="purpose_options[]"
-                                        id="purpose-data-analysis" value="Data Analysis">
-                                    <label class="form-check-label ml-2" for="purpose-data-analysis"
-                                        style="font-weight: normal;">Data Analysis</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="purpose_options[]"
-                                        id="purpose-policy-development" value="Policy Development">
-                                    <label class="form-check-label ml-2" for="purpose-policy-development"
-                                        style="font-weight: normal;">Policy Development</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="purpose_options[]"
-                                        id="purpose-educational" value="Educational">
-                                    <label class="form-check-label ml-2" for="purpose-educational"
-                                        style="font-weight: normal;">Educational</label>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" name="purpose_options[]"
-                                        id="purpose-technical-support" value="Technical Support">
-                                    <label class="form-check-label ml-2" for="purpose-technical-support"
-                                        style="font-weight: normal;">Technical Support</label>
-                                </div>
-                            </div>
-                            <!-- Add more checkboxes as needed -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="form-group">
+            <label for="purpose-select" class="required">Purpose of
+                Request</label>
+            <select id="purpose-select" name="purpose_options[]" class="form-control" multiple>
+                <option value="Research">Research</option>
+                <option value="Data Analysis">Data Analysis</option>
+                <option value="Policy Development">Policy Development
+                </option>
+                <option value="Educational">Educational</option>
+                <option value="Technical Support">Technical Support
+                </option>
+                <!-- Add more options as needed -->
+            </select>
+            <small class="form-text text-muted">Hold down the Ctrl
+                (windows) or Command (Mac) button to select multiple
+                options.</small>
         </div>
 
         <div class="form-group">

@@ -33,6 +33,7 @@ if ($result->num_rows === 0) {
         $_SESSION["email"] = $email;
         $_SESSION["userId_code"] = $user['user_id'];
         $_SESSION["accessType"] = $user['accessType'];
+        $_SESSION["adminAccess"] = $user['adminAccess'];
 
         // Token generation and storage can be enabled here
 

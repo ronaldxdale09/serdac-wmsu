@@ -17,6 +17,12 @@ if (isset($_GET["form_id"])) {
                 $('select[name=form_type]').val('{$formRecord['form_type']}');
                 $('select[name=request_id]').val('{$formRecord['request_id']}');
 
+                $('input[name=start_date]').val('{$formRecord['start_date']}');
+                $('input[name=end_date]').val('{$formRecord['end_date']}');
+                $('input[name=quota]').val('{$formRecord['quota']}');
+                $('input[name=response_limit]').val('{$formRecord['response_limit']}');
+
+
                 fetchQuestions($form_id);
             });
         </script>
@@ -102,6 +108,39 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 <div class="form-builder-container">
                                     <form id="myForm">
                                         <div class="form-section">
+                                            <!-- New Settings Section -->
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="form-row row">
+
+                                                        <div class="form-group col-md-6">
+                                                            <label for="startDate">Start Date</label>
+                                                            <input type="date" id="startDate" name="start_date"
+                                                                class="form-control">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="endDate">End Date</label>
+                                                            <input type="date" id="endDate" name="end_date"
+                                                                class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group col-md-6">
+                                                            <label for="quota">Quota</label>
+                                                            <input type="number" id="quota" name="quota"
+                                                                class="form-control" placeholder="Enter Quota">
+                                                        </div>
+                                                        <div class="form-group col-md-6">
+                                                            <label for="responseLimit">Response Limit per User</label>
+                                                            <input type="number" id="responseLimit"
+                                                                name="response_limit" class="form-control"
+                                                                placeholder="Enter Limit" value="1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- End of New Settings Section -->
+
                                             <div class="form-group">
                                                 <input type="text" name="title" class="form-control form-title"
                                                     placeholder="Enter Title Here">
@@ -126,24 +165,21 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                     <select id="serviceType" name="request_id" class="form-control">
                                                         <option value="" selected disabled>Select Service Type</option>
                                                         <?php
-                                                
+                                                        // Fetch service types from the service_request table
+                                                        $sql = "SELECT * FROM service_request";
+                                                        $result = $con->query($sql);
 
-                                                    // Fetch service types from the service_request table
-                                                    $sql = "SELECT * FROM service_request";
-                                                    $result = $con->query($sql);
-
-                                                    if ($result->num_rows > 0) {
-                                                        while($row = $result->fetch_assoc()) {
-                                                            echo "<option value='".$row["request_id"]."'>Req ID:".$row["request_id"]." - ".$row["service_type"]."</option>";
+                                                        if ($result->num_rows > 0) {
+                                                            while($row = $result->fetch_assoc()) {
+                                                                echo "<option value='".$row["request_id"]."'>Req ID:".$row["request_id"]." - ".$row["service_type"]."</option>";
+                                                            }
+                                                        } else {
+                                                            echo "<option value='' disabled>No services available</option>";
                                                         }
-                                                    } else {
-                                                        echo "<option value='' disabled>No services available</option>";
-                                                    }
-                                                    ?>
+                                                        ?>
                                                     </select>
                                                 </div>
                                             </div>
-
                                         </div>
                                         <div id="question_list_container" class="form-builder-container">
                                             <!-- Questions will be loaded here -->
@@ -159,6 +195,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 <button class="btn btn-success" type="button" id="saveFormButton">Save Form</button>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

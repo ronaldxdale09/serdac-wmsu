@@ -67,3 +67,64 @@
         display: none;
     }
 }
+
+.custom-table-container {
+    margin-top: 20px;
+}
+
+.button-grid button {
+    margin-bottom: 5px;
+}
+
+.modal-header .close {
+    margin-top: -1.5rem;
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.radio-group .card-block {
+    border: 1px solid #ddd;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 12px;
+    text-align: center;
+    width: 100px;
+    margin: 5px;
+}
+
+.radio-group .card-block:hover {
+    border-color: #007bff;
+}
+
+.radio-group .card-block.selected {
+    border-color: #007bff;
+    background-color: #e9ecef;
+}
+
+.radio-group .image-icon img {
+    width: 30px;
+    height: 30px;
+}
+
+.radio-group .sub-desc {
+    margin-top: 5px;
+}
+
+.sub-heading {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.sub-heading i {
+    margin-right: 10px;
+    color: #007bff;
+}
+
+.service-type {
+    font-size: 1.2rem;
+    color: #555;
+}

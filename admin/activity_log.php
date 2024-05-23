@@ -1,5 +1,6 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="css/assmt.form.view.css">
 
 <body>
     <!-- Left Panel -->
@@ -40,6 +41,7 @@
 
                 <div class="col-md-12">
                     <div class="card">
+                    
                         <div class="card-header">
                             <strong class="card-title">Activity Log List</strong>
                         </div>
@@ -85,30 +87,5 @@
 
 </body>
 
-
-
-<?php include('modal/speaker_profile.modal.php');?>
-
-<?php include('include/footer.php');?>
-
-
-
-
-<script>
-$('.btnDelete').on('click', function() {
-
-    var $tr = $(this).closest('tr');
-    var data = $tr.children("td").map(function() {
-        return $.trim($(this).text()); // Trimming the text content of each 'td'
-    }).get();
-
-
-    $('#deleteUserId').val(data[0]);
-
-    // Show the Delete User modal
-    var modal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
-    modal.show();
-});
-</script>
 
 </html>

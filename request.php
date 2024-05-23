@@ -34,6 +34,13 @@ if (isset($_SESSION["userId_code"])) {
         exit;
     }
 ?>
+   <style>
+        .form-check-label {
+            margin-left: 8px;
+            /* Adjust as needed for spacing */
+            font-weight: normal;
+        }
+        </style>
 
 <body>
     <?php include('include/navbar.php');?>

@@ -55,6 +55,7 @@ $completed_count = $res['Total'];
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel='stylesheet' href='css/tab-style.css'>
 <link rel='stylesheet' href='css/request.css'>
+<link rel="stylesheet" href="css/assmt.form.view.css">
 
 <body>
 
@@ -75,6 +76,7 @@ $completed_count = $res['Total'];
         <?php include('modal/service_participants.php');?>
         <?php include('modal/service_speaker.php');?>
         <?php include('modal/service_analysis.req.php');?>
+        <?php include('modal/new_service.php');?>
 
         <!-- Content -->
         <div class="breadcrumbs">
@@ -180,12 +182,18 @@ $completed_count = $res['Total'];
                             </div>
                             <div class="content content-3">
                                 <div class="title"
-                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    In Progress Request</div>
+                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif; position: relative;">
+                                    <button
+                                        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 15px; font-size: 14px; background-color: maroon; color: white; border: none; border-radius: 5px; cursor: pointer;"
+                                        data-toggle="modal" data-target="#serviceRequestModal">
+                                        <i class="fas fa-plus"></i> New Service
+                                    </button>
+                                    In Progress Request
+                                </div>
                                 <hr>
                                 <?php include('request_tab/req.progress.php'); ?>
-
                             </div>
+
                             <div class="content content-4">
                                 <div class="title"
                                     style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">

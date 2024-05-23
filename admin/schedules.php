@@ -23,6 +23,7 @@
     margin-bottom: 10px;
 }
 </style>
+<link rel="stylesheet" href="css/assmt.form.view.css">
 
 <body>
     <!-- Left Panel -->

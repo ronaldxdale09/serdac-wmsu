@@ -1,108 +1,127 @@
+<?php
+
+// Fetch user access level from the database or session
+$user_id = $_SESSION['userId_code'];
+$query = "SELECT adminAccess FROM users WHERE user_id = $user_id";
+$result = mysqli_query($con, $query);
+$row = mysqli_fetch_assoc($result);
+$userAccess = isset($row['adminAccess']) ? json_decode($row['adminAccess'], true) : [];
+
+// Ensure $userAccess is an array
+if (!is_array($userAccess)) {
+    $userAccess = [];
+}
+
+function hasAccess($accessList, $access) {
+    return in_array($access, $accessList) || in_array('superadmin', $accessList);
+}
+?>
 <aside id="left-panel" class="left-panel">
     <nav class="navbar navbar-expand-sm navbar-default">
         <div id="main-menu" class="main-menu collapse navbar-collapse">
             <ul class="nav navbar-nav">
+                <?php if (hasAccess($userAccess, 'dashboard')): ?>
                 <li class="active">
                     <a href="index.php"><i class="menu-icon fa fa-laptop"></i>Dashboard </a>
                 </li>
-                <li class="menu-title">Content Management</li><!-- /.menu-title -->
+                <?php endif; ?>
+
+                <?php if (hasAccess($userAccess, 'content_management')): ?>
+                <li class="menu-title">Content Management</li>
                 <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-book"></i>Articles</a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                        <i class="menu-icon fa fa-book"></i>Articles
+                    </a>
                     <ul class="sub-menu children dropdown-menu">
+                        <?php if (hasAccess($userAccess, 'articles_create')): ?>
                         <li><i class="fa fa-pencil"></i><a href="new_article.php">Create Post</a></li>
+                        <?php endif; ?>
+                        <?php if (hasAccess($userAccess, 'articles_manage')): ?>
                         <li><i class="fa fa-id-badge"></i><a href="articles.php">Manage Post</a></li>
-
-
+                        <?php endif; ?>
                     </ul>
                 </li>
+                <?php endif; ?>
+
+                <?php if (hasAccess($userAccess, 'services')): ?>
                 <li class="menu-item-has-children dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                        aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Services</a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                        <i class="menu-icon fa fa-table"></i>Services
+                    </a>
                     <ul class="sub-menu children dropdown-menu">
+                        <?php if (hasAccess($userAccess, 'request_record')): ?>
                         <li><i class="fa fa-book"></i><a href="request_record.php">Request Record</a></li>
+                        <?php endif; ?>
                     </ul>
                 </li>
-                <li>
-                    <a href="assessment.php"> <i class="menu-icon fa fa-check-circle"></i> Assessment </a>
-                </li>
-                <li>
-                    <a href="speaker_profile.php"> <i class="menu-icon fa fa-users"></i> Speaker Profile </a>
-                </li>
-                <li>
-                    <a href="schedules.php"> <i class="menu-icon ti-calendar"></i>Schedules </a>
-                </li>
-                <li>
-                    <a href="account_mngmt.php"> <i class="menu-icon ti-user"></i>Account Management </a>
-                </li>
-                <li>
-                    <a href="activity_log.php"> <i class="menu-icon ti-book"></i>Activity Logs </a>
-                </li>
-                <li>
-                    <a href="contact_messages.php"> <i class="menu-icon ti-comments"></i>Contact Messages </a>
-                </li>
-                <li>
-                    <a href="summary_report.php"> <i class="menu-icon fas fa-chart-pie"></i> Summary Report </a>
-                </li>
-                <!-- 
+                <?php endif; ?>
 
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> <i class="menu-icon fa fa-th"></i>Forms</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-basic.html">Basic Form</a></li>
-                            <li><i class="menu-icon fa fa-th"></i><a href="forms-advanced.html">Advanced Form</a></li>
-                        </ul>
-                    </li>
+                <?php if (hasAccess($userAccess, 'repository')): ?>
+                <li class="menu-item-has-children dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                        <i class="menu-icon fa fa-database"></i> Repository
+                    </a>
+                    <ul class="sub-menu children dropdown-menu">
+                        <?php if (hasAccess($userAccess, 'projects')): ?>
+                        <li><i class="fas fa-project-diagram"></i><a href="project_mngnt.php"> Projects</a></li>
+                        <?php endif; ?>
+                        <?php if (hasAccess($userAccess, 'e_books')): ?>
+                        <li><i class="fas fa-book-open"></i><a href="request_record.php"> E-Book</a></li>
+                        <?php endif; ?>
+                        <?php if (hasAccess($userAccess, 'journals')): ?>
+                        <li><i class="fas fa-scroll"></i><a href="request_record.php"> Journals</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </li>
+                <?php endif; ?>
 
-                    <li class="menu-title">Icons</li>
+                <?php if (hasAccess($userAccess, 'assessment')): ?>
+                <li>
+                    <a href="assessment.php"><i class="menu-icon fa fa-check-circle"></i> Assessment </a>
+                </li>
+                <?php endif; ?>
+                
+                <?php if (hasAccess($userAccess, 'speaker_profile')): ?>
+                <li>
+                    <a href="speaker_profile.php"><i class="menu-icon fa fa-users"></i> Speaker Profile </a>
+                </li>
+                <?php endif; ?>
+                
+                <?php if (hasAccess($userAccess, 'schedules')): ?>
+                <li>
+                    <a href="schedules.php"><i class="menu-icon ti-calendar"></i>Schedules </a>
+                </li>
+                <?php endif; ?>
 
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Icons</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-fort-awesome"></i><a href="font-fontawesome.html">Font
-                                    Awesome</a></li>
-                            <li><i class="menu-icon ti-themify-logo"></i><a href="font-themify.html">Themefy Icons</a>
-                            </li>
-                        </ul>
-                    </li>
+                <?php if (hasAccess($userAccess, 'account_management')): ?>
+                <li>
+                    <a href="account_mngmt.php"><i class="menu-icon ti-user"></i>Account Management </a>
+                </li>
+                <?php endif; ?>
 
-                    <li>
-                        <a href="widgets.html"> <i class="menu-icon ti-email"></i>Widgets </a>
-                    </li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> <i class="menu-icon fa fa-bar-chart"></i>Charts</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-line-chart"></i><a href="charts-chartjs.html">Chart JS</a>
-                            </li>
-                            <li><i class="menu-icon fa fa-area-chart"></i><a href="charts-flot.html">Flot Chart</a></li>
-                            <li><i class="menu-icon fa fa-pie-chart"></i><a href="charts-peity.html">Peity Chart</a>
-                            </li>
-                        </ul>
-                    </li>
+                <?php if (hasAccess($userAccess, 'client_list')): ?>
+                <li>
+                    <a href="account_mngmt.php"><i class="menu-icon fa fa-users"></i> Client List </a>
+                </li>
+                <?php endif; ?>
 
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> <i class="menu-icon fa fa-area-chart"></i>Maps</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-map-o"></i><a href="maps-gmap.html">Google Maps</a></li>
-                            <li><i class="menu-icon fa fa-street-view"></i><a href="maps-vector.html">Vector Maps</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="menu-title">Extras</li>
-                    <li class="menu-item-has-children dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
-                            aria-expanded="false"> <i class="menu-icon fa fa-glass"></i>Pages</a>
-                        <ul class="sub-menu children dropdown-menu">
-                            <li><i class="menu-icon fa fa-sign-in"></i><a href="page-login.html">Login</a></li>
-                            <li><i class="menu-icon fa fa-sign-in"></i><a href="page-register.html">Register</a></li>
-                            <li><i class="menu-icon fa fa-paper-plane"></i><a href="pages-forget.html">Forget Pass</a>
-                            </li>
-                        </ul>
-                    </li> -->
+                <?php if (hasAccess($userAccess, 'activity_logs')): ?>
+                <li>
+                    <a href="activity_log.php"><i class="menu-icon ti-book"></i>Activity Logs </a>
+                </li>
+                <?php endif; ?>
+
+                <?php if (hasAccess($userAccess, 'contact_messages')): ?>
+                <li>
+                    <a href="contact_messages.php"><i class="menu-icon ti-comments"></i>Contact Messages </a>
+                </li>
+                <?php endif; ?>
+
+                <?php if (hasAccess($userAccess, 'summary_report')): ?>
+                <li>
+                    <a href="summary_report.php"><i class="menu-icon fas fa-chart-pie"></i> Summary Report </a>
+                </li>
+                <?php endif; ?>
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>

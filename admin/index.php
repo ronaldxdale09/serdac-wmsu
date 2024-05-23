@@ -58,15 +58,11 @@ while ($row = $result->fetch_assoc()) {
                 </div>
                 <div class="row">
                     <div class="col-lg-12">
-
                         <div class="card">
-
-                            <!-- Assuming Bootstrap CSS is loaded for grid layout and responsive design -->
                             <div class="container-fluid mt-3">
                                 <div class="row mb-2">
                                     <div class="col">
                                         <h4>Service Type Demand Overview</h4>
-
                                     </div>
                                     <div class="col-lg-2">
                                         <select id="year-select" class="form-control">
@@ -76,9 +72,8 @@ while ($row = $result->fetch_assoc()) {
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="row">
-                                    <div class="col-lg-12">
+                                    <div class="col-lg-6">
                                         <div class="card">
                                             <div class="card-body">
                                                 <!-- Stacked Bar Chart for Service Request Types -->
@@ -86,35 +81,34 @@ while ($row = $result->fetch_assoc()) {
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-lg-6">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <!-- Pie Chart for Overall Service Distribution -->
+                                                <canvas id="service-type-pie-chart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-
-
-
                         </div>
-                    </div><!-- /# column -->
+                    </div>
                 </div>
                 <!--  /Traffic -->
 
                 <!--  /Traffic -->
                 <div class="clearfix"></div>
                 <!-- Orders -->
-                <div class="orders">
+                <div class="orders mt-5">
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="box-title">Recently Requested Services </h4>
+                                    <h4 class="box-title">Recently Requested Services</h4>
                                 </div>
                                 <div class="card-body--">
                                     <div class="table-stats order-table ov-h">
-                                        <?php 
-                                                $query = "SELECT service_request.*, users.fname, users.lname FROM service_request
-                                                LEFT JOIN users ON users.user_id = service_request.user_id
-                                                ORDER BY request_date DESC LIMIT 20 ";
-                                                $results = mysqli_query($con, $query);
-                                                                ?>
-                                        <table class="table">
+                                        <table class="table" id="service-table">
                                             <thead class="thead-light">
                                                 <tr>
                                                     <th scope="col">ID</th>
@@ -125,61 +119,21 @@ while ($row = $result->fetch_assoc()) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php while ($row = mysqli_fetch_assoc($results)) { 
-                                                $status_color = '';
-                                                switch ($row['status']) {
-                                                    case "Pending":
-                                                        $status_color = 'badge-primary';
-                                                        break;
-                                                    case "Approved":
-                                                        $status_color = 'badge-warning';
-                                                        break;
-                                                    case "In Progress":
-                                                            $status_color = 'badge-dark';
-                                                            break;
-                                                    case "Cancelled":
-                                                        $status_color = 'badge-danger';
-                                                        break;
-                                                    case "Completed":
-                                                            $status_color = 'badge-success';
-                                                            break;
-                                                }
-                       
-                                                    $type_color = $row['service_type'] === 'data-analysis' ? 'badge-success' :
-                                                                ($row['service_type'] === 'capability-training' ? 'badge-primary' :
-                                                                ($row['service_type'] === 'technical-assistance' ? 'badge-dark' : ''));
-                                                ?>
-                                                <tr>
-                                                    <td><?php echo $row['request_id']; ?></td>
-                                                    <td><span
-                                                            class="badge <?php echo $status_color; ?>"><?php echo $row['status']; ?></span>
-                                                    </td>
-                                                    <td class='nowrap'><?php echo $row['fname'].' '.$row['lname']; ?>
-                                                    </td>
-                                                    <td><span
-                                                            class="badge <?php echo $type_color; ?>"><?php echo $row['service_type']; ?></span>
-                                                    </td>
-                                                    <td><?php echo $row['office_agency']; ?></td>
-
-                                                </tr>
-                                                <?php } ?>
+                                                <!-- Dynamic Content Here -->
                                             </tbody>
                                         </table>
                                     </div> <!-- /.table-stats -->
                                 </div>
                             </div> <!-- /.card -->
                         </div> <!-- /.col-lg-8 -->
-
-                       
-                    </div>
-                </div>
-                <!-- /.orders -->
+                    </div> <!-- /.row -->
+                </div> <!-- /.orders -->
                 <!-- To Do and Live Chat -->
 
                 <!-- /To Do and Live Chat -->
                 <!-- Calender Chart Weather  -->
-               
-               
+
+
             </div>
         </div>
         <div class="clearfix"></div>
@@ -188,13 +142,15 @@ while ($row = $result->fetch_assoc()) {
     </div>
     <?php include('include/footer.php');?>
 
-    <!--Local Stuff-->
     <script>
     $(document).ready(function() {
-        var ctx = $('#service-type-chart').get(0).getContext('2d');
-        var chart; // Define chart globally to update it
+        var barCtx = $('#service-type-chart').get(0).getContext('2d');
+        var pieCtx = $('#service-type-pie-chart').get(0).getContext('2d');
+        var barChart;
+        var pieChart;
 
-        // Helper function to generate a color
+        var colors = {};
+
         function getRandomColor() {
             var letters = '0123456789ABCDEF';
             var color = '#';
@@ -204,11 +160,11 @@ while ($row = $result->fetch_assoc()) {
             return color;
         }
 
-        function initChart(data) {
-            if (chart) {
-                chart.destroy(); // Destroy the existing chart instance before creating a new one
+        function initBarChart(data) {
+            if (barChart) {
+                barChart.destroy();
             }
-            chart = new Chart(ctx, {
+            barChart = new Chart(barCtx, {
                 type: 'bar',
                 data: {
                     labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
@@ -225,12 +181,126 @@ while ($row = $result->fetch_assoc()) {
                             stacked: true
                         }
                     },
-                    legend: {
-                        display: true,
-                        position: 'top'
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
                     },
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    onClick: function(evt, elements) {
+                        console.log("Bar chart clicked",
+                        elements); // Debugging: log clicked elements
+                        if (elements.length > 0) {
+                            var element = elements[0];
+                            var datasetIndex = element.datasetIndex;
+                            var datasetLabel = barChart.data.datasets[datasetIndex].label;
+                            console.log("Dataset label clicked: ",
+                            datasetLabel); // Debugging: log the dataset label
+                            updateTable(datasetLabel);
+                        }
+                    }
+                }
+            });
+        }
+
+        function initPieChart(data) {
+            if (pieChart) {
+                pieChart.destroy();
+            }
+            pieChart = new Chart(pieCtx, {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(data),
+                    datasets: [{
+                        data: Object.values(data),
+                        backgroundColor: Object.keys(data).map(serviceType => colors[
+                            serviceType]),
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        }
+                    },
+                    onClick: function(evt, elements) {
+                        console.log("Pie chart clicked",
+                        elements); // Debugging: log clicked elements
+                        if (elements.length > 0) {
+                            var element = elements[0];
+                            var index = element.index !== undefined ? element.index : element
+                            ._index;
+                            var label = pieChart.data.labels[index];
+                            console.log("Pie chart label clicked: ",
+                            label); // Debugging: log the label
+                            updateTable(label);
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateTable(serviceType) {
+            $.ajax({
+                url: 'fetch/fetch_serviceTable.php',
+                method: 'GET',
+                data: {
+                    service_type: serviceType
+                },
+                success: function(data) {
+                    console.log("Data fetched for table update: ", data); // Log the fetched data
+
+                    if (typeof data === 'string') {
+                        data = JSON.parse(data); // Parse if data is a JSON string
+                    }
+
+                    var rows = '';
+                    if (data.error) {
+                        console.error("Data error: ", data.error); // Log any errors
+                    } else if (Array.isArray(data)) {
+                        data.forEach(function(row) {
+                            var statusColor = '';
+                            switch (row.status) {
+                                case "Pending":
+                                    statusColor = 'badge-primary';
+                                    break;
+                                case "Approved":
+                                    statusColor = 'badge-warning';
+                                    break;
+                                case "In Progress":
+                                    statusColor = 'badge-dark';
+                                    break;
+                                case "Cancelled":
+                                    statusColor = 'badge-danger';
+                                    break;
+                                case "Completed":
+                                    statusColor = 'badge-success';
+                                    break;
+                            }
+                            rows += `
+                            <tr>
+                                <td>${row.request_id}</td>
+                                <td><span class="badge ${statusColor}">${row.status}</span></td>
+                                <td>${row.fname} ${row.lname}</td>
+                                <td>${row.service_type}</td>
+                                <td>${row.office_agency}</td>
+                            </tr>
+                        `;
+                        });
+                    } else {
+                        console.error("Unexpected data format: ", data);
+                    }
+                    $('#service-table tbody').html(rows);
+                },
+                error: function(xhr, status, error) {
+                    console.error("AJAX error: Status", status, "Error", error);
                 }
             });
         }
@@ -242,24 +312,41 @@ while ($row = $result->fetch_assoc()) {
                 data: {
                     year: year
                 },
-                success: function(data) {
-                    var datasets = [];
-                    Object.keys(data).forEach(function(serviceType) {
-                        var color =
-                            getRandomColor(); // Generate a unique color for each dataset
+                success: function(response) {
+                    console.log("Chart data fetched: ", response); // Log the fetched chart data
+
+                    if (typeof response === 'string') {
+                        response = JSON.parse(response); // Parse if response is a JSON string
+                    }
+
+                    var barData = [];
+                    var pieData = {};
+
+                    Object.keys(response).forEach(function(serviceType) {
+                        if (!colors[serviceType]) {
+                            colors[serviceType] = getRandomColor();
+                        }
                         var dataset = {
                             label: serviceType,
                             data: [],
-                            backgroundColor: color,
-                            borderColor: color,
+                            backgroundColor: colors[serviceType],
+                            borderColor: colors[serviceType],
                             borderWidth: 1
                         };
+                        var total = 0;
+
                         for (let i = 1; i <= 12; i++) {
-                            dataset.data.push(data[serviceType][i] || 0);
+                            var value = response[serviceType][i] || 0;
+                            dataset.data.push(value);
+                            total += value;
                         }
-                        datasets.push(dataset);
+
+                        barData.push(dataset);
+                        pieData[serviceType] = total;
                     });
-                    initChart(datasets); // Initialize the chart with fetched data
+
+                    initBarChart(barData);
+                    initPieChart(pieData);
                 },
                 error: function(xhr, status, error) {
                     console.error("AJAX error: Status", status, "Error", error);
@@ -267,19 +354,15 @@ while ($row = $result->fetch_assoc()) {
             });
         }
 
-        // Event listener for year change
         $('#year-select').change(function() {
             fetchData($(this).val());
         });
 
-        // Initialize chart with default year
         fetchData($('#year-select').val());
+
+        updateTable('');
     });
     </script>
-
-
-
-
 
 </body>
 
