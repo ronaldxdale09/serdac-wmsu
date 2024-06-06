@@ -34,30 +34,51 @@ if (isset($_POST['new'])) {
 }
 
 
-// Update User
-if (isset($_POST['update'])) {
-    // Retrieve user data and user_id from POST request
-    $user_id = mysqli_real_escape_string($con, $_POST['user_id']);
-    $name = mysqli_real_escape_string($con, $_POST['name']);
-    $contact_no = mysqli_real_escape_string($con, $_POST['contact_no']);
-    $username = mysqli_real_escape_string($con, $_POST['username']);
-    $password = mysqli_real_escape_string($con, $_POST['password']); // Consider encrypting the password
-    $userType = mysqli_real_escape_string($con, $_POST['userType']);
-   // Serialize or JSON-encode the userAccess array
-   $userAccess = isset($_POST['userAccess']) ? json_encode($_POST['userAccess']) : '';
+    if (isset($_POST['update'])) {
+        // Retrieve user data and user_id from POST request
+        $user_id = mysqli_real_escape_string($con, $_POST['user_id']);
+        $fname = mysqli_real_escape_string($con, $_POST['fname']);
+        $midname = mysqli_real_escape_string($con, $_POST['midname']);
+        $lname = mysqli_real_escape_string($con, $_POST['lname']);
+        $email = mysqli_real_escape_string($con, $_POST['email']);
+        $contact_no = mysqli_real_escape_string($con, $_POST['contact_no']);
+        $userType = mysqli_real_escape_string($con, $_POST['userType']);
+        $password = !empty($_POST['password']) ? password_hash(mysqli_real_escape_string($con, $_POST['password']), PASSWORD_DEFAULT) : null;
+        $userAccess = isset($_POST['userAccess']) ? json_encode($_POST['userAccess']) : '';
 
-   // Update query to include userAccess
-   $query = "UPDATE users SET name = '$name', contact_no = '$contact_no', username = '$username', password = '$password', userType = '$userType', userAccess = '$userAccess' WHERE user_id = '$user_id'";
+        // Create the SQL update query
+        $query = "UPDATE users SET 
+                    fname = ?, 
+                    midname = ?, 
+                    lname = ?, 
+                    email = ?, 
+                    contact_no = ?, 
+                    userType = ?, 
+                    adminAccess = ?";
+        if ($password) {
+            $query .= ", password = ?";
+        }
+        $query .= " WHERE user_id = ?";
 
+        // Prepare the statement
+        $stmt = $con->prepare($query);
 
-    // Execute the query
-    if (mysqli_query($con, $query)) {
-        header("Location: ../account_mngmt.php"); // Redirect location after updating
-    } else {
-        echo "ERROR: Could not execute $query. " . mysqli_error($con);
+        if ($password) {
+            $stmt->bind_param("ssssssssi", $fname, $midname, $lname, $email, $contact_no, $userType, $userAccess, $password, $user_id);
+        } else {
+            $stmt->bind_param("sssssssi", $fname, $midname, $lname, $email, $contact_no, $userType, $userAccess, $user_id);
+        }
+
+        // Execute the query
+        if ($stmt->execute()) {
+            header("Location: ../account_mngmt.php"); // Redirect location after updating
+        } else {
+            echo "ERROR: Could not execute query. " . mysqli_error($con);
+        }
+        $stmt->close();
+        $con->close();
+        exit();
     }
-    exit();
-}
 
 // Delete User
 if (isset($_POST['delete'])) {

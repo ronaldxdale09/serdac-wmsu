@@ -65,8 +65,8 @@
                                         </tr>
                                     </thead>
                                     <?php
-$results = mysqli_query($con, "SELECT * from users where accessType !='Client' ");
-?>
+                                        $results = mysqli_query($con, "SELECT * from users where accessType !='Client' ");
+                                        ?>
                                     <tbody>
                                         <?php while ($row = mysqli_fetch_array($results)) { 
                                                 $adminAccessArray = json_decode($row['adminAccess'], true);
@@ -96,7 +96,7 @@ $results = mysqli_query($con, "SELECT * from users where accessType !='Client' "
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-secondary btnEdit"
-                                                    data-access='<?php echo json_encode($row['userAccess']); ?>'>
+                                                    data-user='<?php echo json_encode($row); ?>'>
                                                     <i class="fa fa-edit"></i>
                                                 </button>
                                                 <button type="button" class="btn btn-sm btn-danger btnDelete"><i
@@ -132,6 +132,48 @@ $results = mysqli_query($con, "SELECT * from users where accessType !='Client' "
 
 
 <script>
+$(document).ready(function() {
+    $('.btnEdit').on('click', function() {
+        var user = $(this).data('user');
+
+        // Fill the form with user data
+        $('#updateUserId').val(user.user_id);
+        $('#updateFname').val(user.fname);
+        $('#updateMidname').val(user.midname);
+        $('#updateLname').val(user.lname);
+        $('#updateEmail').val(user.email);
+        $('#updateContactNo').val(user.contact_no);
+        $('#updateUserType').val(user.userType);
+
+        var userAccess = user.adminAccess ? JSON.parse(user.adminAccess) : [];
+        $('#updateUserForm .form-check-input').each(function() {
+            var checkbox = $(this);
+            checkbox.prop('checked', userAccess.includes(checkbox.val()));
+        });
+
+        if (userAccess.includes('superadmin')) {
+            $('#updateSuperadmin').prop('checked', true);
+            $('#updateUserForm .form-check-input:not(#updateSuperadmin)').prop('disabled', true);
+        } else {
+            $('#updateSuperadmin').prop('checked', false);
+            $('#updateUserForm .form-check-input:not(#updateSuperadmin)').prop('disabled', false);
+        }
+
+        // Show the modal
+        var modal = new bootstrap.Modal(document.getElementById('updateUserModal'));
+        modal.show();
+    });
+
+    $('#updateSuperadmin').on('change', function() {
+        if (this.checked) {
+            $('#updateUserForm .form-check-input:not(#updateSuperadmin)').prop('disabled', true);
+        } else {
+            $('#updateUserForm .form-check-input:not(#updateSuperadmin)').prop('disabled', false);
+        }
+    });
+});
+
+
 $('.btnDelete').on('click', function() {
 
     var $tr = $(this).closest('tr');

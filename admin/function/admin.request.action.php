@@ -78,58 +78,58 @@ if (mysqli_stmt_execute($stmt)) {
 
 
 
-function     sendServiceRequestSummaryEmail($recipientEmail, $serviceType, $officeAgency, $agencyClassification, $clientType, $purpose){
-    try {
-        $mail = new PHPMailer(true);
+// function     sendServiceRequestSummaryEmail($recipientEmail, $serviceType, $officeAgency, $agencyClassification, $clientType, $purpose){
+//     try {
+//         $mail = new PHPMailer(true);
 
-        // Server settings
-        $mail->isSMTP();
-        $mail->Host = 'smtp.hostinger.com';
-        $mail->SMTPAuth = true;
-        $mail->Port = 587;
-        $mail->Username = 'no-reply@serdac-wmsu.online'; // SMTP username
-        $mail->Password = 'Serdac@2024'; // SMTP password
+//         // Server settings
+//         $mail->isSMTP();
+//         $mail->Host = 'smtp.hostinger.com';
+//         $mail->SMTPAuth = true;
+//         $mail->Port = 587;
+//         $mail->Username = 'no-reply@serdac-wmsu.online'; // SMTP username
+//         $mail->Password = 'Serdac@2024'; // SMTP password
 
-        // Recipient
-        if (!PHPMailer::validateAddress($recipientEmail)) {
-            throw new Exception("Invalid email address");
-        }
+//         // Recipient
+//         if (!PHPMailer::validateAddress($recipientEmail)) {
+//             throw new Exception("Invalid email address");
+//         }
 
-        $mail->setFrom('no-reply@serdac-wmsu.online', 'SERDAC-WMSU');
-        $mail->addAddress($recipientEmail);
+//         $mail->setFrom('no-reply@serdac-wmsu.online', 'SERDAC-WMSU');
+//         $mail->addAddress($recipientEmail);
 
-        // Content
-        $mail->isHTML(true);
-        $mail->Subject = 'Service Request Received - Thank You';
-        $emailContent = "
-        <html>
-        <head>
-        </head>
-        <body>
-            <div class='content-wrapper'>
-                <h2>Your Service Request at SERDAC-WMSU</h2>
-                <p>Hello,</p>
-                <p>Thank you for submitting your service request. Here is a summary of your request details:</p>
-                <ul>
-                    <li><strong>Service Type:</strong> {$serviceType}</li>
-                    <li><strong>Office/Agency:</strong> {$officeAgency}</li>
-                    <li><strong>Agency Classification:</strong> {$agencyClassification}</li>
-                    <li><strong>Client Type:</strong> {$clientType}</li>
-                    <li><strong>Purpose of Request:</strong> {$purpose}</li>
-                </ul>
-                <p>We are currently processing your request and will send you an update soon. Please feel free to contact us if you have any further questions or need assistance.</p>
-                <p class='footer'>This is an automated message. Please do not reply to this email.<br>
-                For inquiries or assistance, visit <a href='http://www.serdac-wmsu.online/support'>www.serdac-wmsu.online/support</a>.</p>
-            </div>
-        </body>
-        </html>";
+//         // Content
+//         $mail->isHTML(true);
+//         $mail->Subject = 'Service Request Received - Thank You';
+//         $emailContent = "
+//         <html>
+//         <head>
+//         </head>
+//         <body>
+//             <div class='content-wrapper'>
+//                 <h2>Your Service Request at SERDAC-WMSU</h2>
+//                 <p>Hello,</p>
+//                 <p>Thank you for submitting your service request. Here is a summary of your request details:</p>
+//                 <ul>
+//                     <li><strong>Service Type:</strong> {$serviceType}</li>
+//                     <li><strong>Office/Agency:</strong> {$officeAgency}</li>
+//                     <li><strong>Agency Classification:</strong> {$agencyClassification}</li>
+//                     <li><strong>Client Type:</strong> {$clientType}</li>
+//                     <li><strong>Purpose of Request:</strong> {$purpose}</li>
+//                 </ul>
+//                 <p>We are currently processing your request and will send you an update soon. Please feel free to contact us if you have any further questions or need assistance.</p>
+//                 <p class='footer'>This is an automated message. Please do not reply to this email.<br>
+//                 For inquiries or assistance, visit <a href='http://www.serdac-wmsu.online/support'>www.serdac-wmsu.online/support</a>.</p>
+//             </div>
+//         </body>
+//         </html>";
 
-        $mail->Body = $emailContent;
+//         $mail->Body = $emailContent;
 
-        $mail->send();
-        return true;
-    } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
-        return false;
-    }
-}
+//         $mail->send();
+//         return true;
+//     } catch (Exception $e) {
+//         echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+//         return false;
+//     }
+// }

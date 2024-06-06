@@ -231,3 +231,192 @@ document.addEventListener('DOMContentLoaded', (event) => {
         </div>
     </div>
 </div>
+
+
+
+
+<!-- The Update Modal -->
+<div class="modal fade" id="updateUserModal" tabindex="-1" aria-labelledby="updateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="updateUserModalLabel">Update User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="updateUserForm" action="function/user.mngmnt.php" method="POST" class="row g-3">
+                    <input type="hidden" name="user_id" id="updateUserId">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="updateFname" class="form-label required">First Name:</label>
+                            <input type="text" class="form-control" name="fname" id="updateFname" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="updateMidname" class="form-label required">Mid Name:</label>
+                            <input type="text" class="form-control" name="midname" id="updateMidname" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="updateLname" class="form-label required">Last Name:</label>
+                            <input type="text" class="form-control" name="lname" id="updateLname" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="updateEmail" class="form-label required">Email:</label>
+                            <input type="email" class="form-control" name="email" id="updateEmail" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="updateContactNo" class="form-label">Contact #:</label>
+                            <input type="text" class="form-control" name="contact_no" id="updateContactNo" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="updateUserType" class="form-label">User Type:</label>
+                            <select class="form-control" id="updateUserType" name="userType" required>
+                                <option value="" disabled selected>Select a type</option>
+                                <option value="Administrator">Administrator</option>
+                                <option value="Staff">Staff</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="updateUserAccess" class="form-label">User Access:</label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="superadmin" id="updateSuperadmin">
+                                        <label class="form-check-label" for="updateSuperadmin">Super Admin</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="dashboard" id="updateAccessDashboard">
+                                        <label class="form-check-label" for="updateAccessDashboard">Dashboard</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="content_management" id="updateAccessContentManagement">
+                                        <label class="form-check-label" for="updateAccessContentManagement">Content
+                                            Management</label>
+                                    </div>
+                                    <div class="form-check ml-3">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="articles_create" id="updateAccessCreateArticles">
+                                        <label class="form-check-label" for="updateAccessCreateArticles">Create
+                                            Post</label>
+                                    </div>
+                                    <div class="form-check ml-3">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="articles_manage" id="updateAccessManageArticles">
+                                        <label class="form-check-label" for="updateAccessManageArticles">Manage
+                                            Post</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="services" id="updateAccessServices">
+                                        <label class="form-check-label" for="updateAccessServices">Services</label>
+                                    </div>
+                                    <div class="form-check ml-3">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="request_record" id="updateAccessRequestRecord">
+                                        <label class="form-check-label" for="updateAccessRequestRecord">Request
+                                            Record</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="repository" id="updateAccessRepository">
+                                        <label class="form-check-label" for="updateAccessRepository">Repository</label>
+                                    </div>
+                                    <div class="form-check ml-3">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="projects" id="updateAccessProjects">
+                                        <label class="form-check-label" for="updateAccessProjects">Projects</label>
+                                    </div>
+                                    <div class="form-check ml-3">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="e_books" id="updateAccessEBooks">
+                                        <label class="form-check-label" for="updateAccessEBooks">E-Books</label>
+                                    </div>
+                                    <div class="form-check ml-3">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="journals" id="updateAccessJournals">
+                                        <label class="form-check-label" for="updateAccessJournals">Journals</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="assessment" id="updateAccessAssessment">
+                                        <label class="form-check-label" for="updateAccessAssessment">Assessment</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="speaker_profile" id="updateAccessSpeakerProfile">
+                                        <label class="form-check-label" for="updateAccessSpeakerProfile">Speaker
+                                            Profile</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="schedules" id="updateAccessSchedules">
+                                        <label class="form-check-label" for="updateAccessSchedules">Schedules</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="account_management" id="updateAccessAccountManagement">
+                                        <label class="form-check-label" for="updateAccessAccountManagement">Account
+                                            Management</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="client_list" id="updateAccessClientList">
+                                        <label class="form-check-label" for="updateAccessClientList">Client List</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="activity_logs" id="updateAccessActivityLogs">
+                                        <label class="form-check-label" for="updateAccessActivityLogs">Activity
+                                            Logs</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="contact_messages" id="updateAccessContactMessages">
+                                        <label class="form-check-label" for="updateAccessContactMessages">Contact
+                                            Messages</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="userAccess[]"
+                                            value="summary_report" id="updateAccessSummaryReport">
+                                        <label class="form-check-label" for="updateAccessSummaryReport">Summary
+                                            Report</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" form="updateUserForm" class="btn btn-primary" name="update">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

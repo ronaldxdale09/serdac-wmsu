@@ -113,7 +113,7 @@
                         </button>
 
                         <?php if ($row['service_type'] == 'data-analysis'): ?>
-                        <button type="button" class="btn btn-sm btn-warning text-dark btnRequirement"
+                        <button type="button" class="btn btn-sm btn-warning text-dark btnComRequirement"
                             data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip" title="Requirements">
                             <i class="fas fa-tasks"></i> Documents
                         </button>
