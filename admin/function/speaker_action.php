@@ -23,4 +23,27 @@ if (isset($_POST['new'])) {
     exit();
 }
 
+if (isset($_POST['update'])) {
+    // Retrieve speaker data from POST request
+    $speaker_id = mysqli_real_escape_string($con, $_POST['speaker_id']);
+    $name = mysqli_real_escape_string($con, $_POST['name']);
+    $address = mysqli_real_escape_string($con, $_POST['address']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $contact = mysqli_real_escape_string($con, $_POST['contact']);
+
+    // Update query for the speaker_profile table
+    $query = "UPDATE speaker_profile SET 
+              name='$name', address='$address', email='$email', contact='$contact' 
+              WHERE speaker_id='$speaker_id'";
+
+    // Execute the query
+    if (mysqli_query($con, $query)) {
+        header("Location: ../speaker_profile.php"); // Change redirect location if needed
+        exit();
+    } else {
+        echo "ERROR: Could not execute the query. " . mysqli_error($con);
+    }
+    exit();
+}
+
 ?>

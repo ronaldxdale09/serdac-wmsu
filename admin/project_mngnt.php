@@ -52,9 +52,9 @@
                         <div class="card-body">
                             <div class="table-responsive custom-table-container">
                                 <?php
-        // Fetch data from the repo_projects table
-        $results = mysqli_query($con, "SELECT * FROM repo_projects");
-    ?>
+                // Fetch data from the repo_projects table
+                    $results = mysqli_query($con, "SELECT * FROM repo_projects");
+                ?>
                                 <table class="table table-hover" id="projects_table">
                                     <thead>
                                         <tr>

@@ -11,35 +11,34 @@
 
 <div class="table-responsive custom-table-container">
     <?php
-                            // Fetch data from the service_request table
-                            $results = mysqli_query($con, "SELECT 
-                            sr.request_id,
-                            sr.status,
-                            sr.service_type,
-                            sr.office_agency,
-                            sr.agency_classification,
-                            sr.client_type,
-                            sr.selected_purposes,
-                            sr.additional_purpose_details,
-                            sr.request_date,
-                            sr.scheduled_date,
-                            sr.ongoing_date,
-                            sr.inviteCode,
-                            sr.scheduled_remarks,
-                            sr.inprogress_remarks,
-                            sr.cancelled_remarks,
-                            u.fname,
-                            u.midname,
-                            u.lname,
-                            MAX(sm.date_time) AS latest_meeting_date
-                        FROM service_request sr
-                        LEFT JOIN users u ON sr.user_id = u.user_id
-                        LEFT JOIN sr_meeting sm ON sr.request_id = sm.request_id
-                        WHERE sr.status = 'Approved'
-                        GROUP BY sr.request_id
-                        ORDER BY latest_meeting_date DESC, sr.request_date DESC;  -- Order primarily by the latest meeting date, and secondarily by the request date
-                        
-                        ");
+                    $results = mysqli_query($con, "SELECT 
+                    sr.request_id,
+                    sr.status,
+                    sr.service_type,
+                    sr.office_agency,
+                    sr.agency_classification,
+                    sr.client_type,
+                    sr.selected_purposes,
+                    sr.additional_purpose_details,
+                    sr.request_date,
+                    sr.scheduled_date,
+                    sr.ongoing_date,
+                    sr.inviteCode,
+                    sr.scheduled_remarks,
+                    sr.inprogress_remarks,
+                    sr.cancelled_remarks,
+                    u.fname,
+                    u.midname,
+                    u.lname,
+                    u.email,
+                    MAX(sm.date_time) AS latest_meeting_date,
+                    COUNT(sm.meet_id) AS meeting_count
+                FROM service_request sr
+                LEFT JOIN users u ON sr.user_id = u.user_id
+                LEFT JOIN sr_meeting sm ON sr.request_id = sm.request_id
+                WHERE sr.status = 'Approved'
+                GROUP BY sr.request_id
+                ORDER BY latest_meeting_date DESC, sr.request_date DESC;");
                             ?>
     <table class="table table-hover" id='service_sched_table'>
         <thead>
@@ -111,9 +110,9 @@
                         </button>
                         <button type="button" class="btn btn-sm btn-secondary  btnMeeting"
                             data-request='<?php echo json_encode($row); ?>'>
-                            <i class="fas fa-calendar"></i> Meetings
+                            <i class="fas fa-calendar"></i> Meetings <span
+                                class="badge badge-light"><?php echo $row['meeting_count']; ?></span>
                         </button>
-
                         <?php if ($row['service_type'] == 'capability-training'): ?>
                         <button type="button" class="btn btn-sm btn-dark btnSpeaker"
                             data-request='<?php echo json_encode($row); ?>'> Speakers
@@ -143,335 +142,238 @@ $(document).ready(function() {
         buttons: ['excelHtml5', 'pdfHtml5', 'print']
     });
 });
-
-
 $(document).ready(function() {
 
 
 
+
+
+    // Proceed Button Click Handler
     $('.btnProceed').on('click', function() {
         var req = $(this).data('req');
-
         $('#d_req_id').val(req.request_id || 'N/A');
-
-
 
         var modal = new bootstrap.Modal(document.getElementById('serviceProceedModal'));
         modal.show();
-
     });
 
-
-
+    // View Button Click Handler
     $('.btnView').on('click', function() {
         var request = $(this).data('request');
 
-        $('#p_user_id').val(request.user_id);
-        $('#p_req_id').val(request.request_id);
-
-        $('#p_user-name').val(request.fname + ' ' + request.lname);
-        $('#service-type').val(request.service_type);
-        $('#office-agency').val(request.office_agency);
-        $('#agency-classification').val(request.agency_classification);
-        $('#client-type').val(request.client_type);
-
-        $('#from_date').val(request.sched_from_date);
-        $('#to_date').val(request.sched_to_date);
+        populateViewModal(request);
+        loadServiceSpecificContent(request.service_type);
+        fetchDataAnalysisDetails(request.service_type, request.request_id);
 
 
-        $('#purpose').val(request.selected_purposes);
-        $('#additional_details').val(request.additional_purpose_details);
-        $('#sched_remarks').val(request.scheduled_remarks);
-
-
-        // Clear previous service type content
-        $('#service-specific').empty();
-
-        // Load service-specific content based on service type
-        var serviceTypeUrl = '';
-        if (request.service_type === 'data-analysis') {
-            serviceTypeUrl = 'modal/md.data_analysis.php';
-        } else if (request.service_type === 'technical-assistance') {
-            serviceTypeUrl = 'modal/md.tech_assist.php';
-        } else if (request.service_type === 'technical-assistance') {
-            serviceTypeUrl = '';
-        }
-
-
-        // Append the service-specific form to the div
-        if (serviceTypeUrl) {
-            $('#service-specific').load(serviceTypeUrl, function(response, status, xhr) {
-                if (status === "error") {
-                    console.log("Error loading the page: " + xhr.status + " " + xhr.statusText);
-                }
-            });
-        }
-
-
-        serviceType = request.service_type;
-        $.ajax({
-            url: 'fetch/fetch.data_analysis.php', // Server-side script to return data
-            type: 'POST',
-            data: {
-                service_type: serviceType,
-                request_id: request.request_id
-            },
-            success: function(response) {
-                // Assume response is JSON
-                // Parse and populate more specific fields if necessary
-                if (serviceType === 'data-analysis') {
-                    var details = JSON.parse(response);
-                    $('#anaylsis-type').val(details.analysis_type);
-                    $('#research-overview').val(details.overview);
-                    $('#general-objective').val(details.g_objective);
-                    $('#specific-objective').val(details.s_objective);
-
-                    console.log(details)
-
-
-                }
-
-                var buttons = document.querySelectorAll('button');
-                buttons.forEach(function(button) {
-                    if (button.innerHTML.includes('Cancel Request') ||
-                        button.innerHTML.includes('Assign Schedule') ||
-                        button.innerHTML.includes('Confirm Request')) {
-                        button.style.display = 'none';
-                    }
-                });
-
-
-
-                // Show the modal
-                var modal = new bootstrap.Modal(document.getElementById(
-                    'serviceRequestDetailsModal'));
-                modal.show();
-            },
-            error: function() {
-                console.log('Error fetching details.');
-            }
-        });
-
+        enableModalElements('serviceRequestDetailsModal');
+        var modal = new bootstrap.Modal(document.getElementById('serviceRequestDetailsModal'));
+        modal.show();
     });
 
-
-
+    // Meeting Button Click Handler
     $('.btnMeeting').on('click', function() {
         var request = $(this).data('request');
 
-        $('#m_req_id').val(request.request_id);
-
-        $('#m_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
-            'N/A');
-        $('#m_service-type').val(request.service_type || 'N/A');
-        $('#m_office-agency').val(request.office_agency || 'N/A');
-        $('#m_agency-classification').val(request.agency_classification || 'N/A');
-        $('#m_client-type').val(request.client_type || 'N/A');
-
-        $('#m_from_date').val(request.sched_from_date || 'N/A');
-        $('#m_to_date').val(request.sched_to_date || 'N/A');
-
-        $('#m_purpose').val(request.selected_purposes || 'N/A');
+        populateMeetingModal(request);
+        fetchMeetingDetails(request.request_id);
 
 
-        request_id = request.request_id;
+        var modalId = 'serviceMeetingModal';
+        var modalElement = document.getElementById(modalId);
 
-        function fetch_meeting() {
-
-            $.ajax({
-                url: "table/table.meeting.php",
-                method: "POST",
-                data: {
-                    request_id: request_id,
-
-                },
-                success: function(data) {
-                    $('#meeting_table_modal').html(data);
-
-                }
-            });
-        }
-        fetch_meeting();
-
-
-
-        var modal = new bootstrap.Modal(document.getElementById('serviceMeetingModal'));
+        var modal = new bootstrap.Modal(modalElement);
         modal.show();
 
+        enableModalElements(modalId);
+
     });
 
-
-
+    // Save Meeting Form Handler
     $(document).on('click', '#btnSaveMeetingForm', function(e) {
-        // Prevent the default form submission
         e.preventDefault();
-        // Set the form action to the desired URL
-        $('#meeting_form').attr('action', 'function/service_action.meeting.php');
-
-        // Submit the form asynchronously using AJAX
-        $.ajax({
-            type: "POST",
-            url: $('#meeting_form').attr('action'),
-            data: $('#meeting_form').serialize(),
-            success: function(response) {
-                if (response.trim() === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Meeting Record Saved!',
-                    });
-
-
-                    var selectElement = document.getElementById('patient_name');
-                    $(selectElement).chosen('destroy');
-
-
-                    // Set all inputs to readonly
-                    $('#meeting_form input').prop('readonly', true);
-                    $('#meeting_form textarea').prop('readonly', true);
-                    $('#meeting_form select').prop('disabled',
-                        true); //use 'disabled' for select elements
-                    // Disable all buttons inside the form
-                    // Temporarily hide the buttons
-
-                    // $('#confirmPrenatalModal').modal('hide');
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: response,
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                // Handle the error response
-                // Display SweetAlert error popup
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Form submission failed!',
-                });
-            }
-        });
+        submitForm('meeting_form', 'function/service_action.meeting.php', 'Meeting Record Saved!');
     });
 
+    // Speaker Button Click Handler
+    $('.btnSpeaker').on('click', function() {
+        var request = $(this).data('request');
+
+        populateSpeakerModal(request);
+        fetchSpeakerDetails(request.request_id);
+        fetchTrainingDetails(request.service_type, request.request_id);
+
+        var modal = new bootstrap.Modal(document.getElementById('serviceSpeakerModal'));
+        modal.show();
+    });
+
+    // Save Speaker Form Handler
+    $(document).on('click', '#btnSaveSpeaker', function(e) {
+        e.preventDefault();
+        submitForm('speaker_form', 'function/service_action.speaker.php', 'Training Record Saved!');
+    });
 });
 
+// Functions to Populate Modals
+function populateViewModal(request) {
+    $('#p_user_id').val(request.user_id);
+    $('#p_req_id').val(request.request_id);
+    $('#p_user-name').val(request.fname + ' ' + request.lname);
+    $('#service-type').val(request.service_type);
+    $('#office-agency').val(request.office_agency);
+    $('#agency-classification').val(request.agency_classification);
+    $('#client-type').val(request.client_type);
+    $('#from_date').val(request.sched_from_date);
+    $('#to_date').val(request.sched_to_date);
+    $('#purpose').val(request.selected_purposes);
+    $('#additional_details').val(request.additional_purpose_details);
+    $('#sched_remarks').val(request.scheduled_remarks);
+    $('#service-specific').empty();
+}
 
+function populateMeetingModal(request) {
+    $('#m_req_id').val(request.request_id);
+    $('#m_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname : 'N/A');
+    $('#m_email').val(request.email);
 
-$('.btnSpeaker').on('click', function() {
-    var request = $(this).data('request');
+    $('#m_service-type').val(request.service_type || 'N/A');
+    $('#m_office-agency').val(request.office_agency || 'N/A');
+    $('#m_agency-classification').val(request.agency_classification || 'N/A');
+    $('#m_client-type').val(request.client_type || 'N/A');
+    $('#m_from_date').val(request.sched_from_date || 'N/A');
+    $('#m_to_date').val(request.sched_to_date || 'N/A');
+    $('#m_purpose').val(request.selected_purposes || 'N/A');
+}
 
+function populateSpeakerModal(request) {
     $('#sp_req_id').val(request.request_id);
-
-    $('#sp_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
-        'N/A');
+    $('#sp_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname : 'N/A');
     $('#sp_service-type').val(request.service_type || 'N/A');
     $('#sp_office-agency').val(request.office_agency || 'N/A');
     $('#sp_agency-classification').val(request.agency_classification || 'N/A');
     $('#sp_client-type').val(request.client_type || 'N/A');
-
     $('#sp_frosp_date').val(request.sched_frosp_date || 'N/A');
     $('#sp_to_date').val(request.sched_to_date || 'N/A');
-
     $('#sp_purpose').val(request.selected_purposes || 'N/A');
-    // $('#d_additional_details').val(request.additional_purpose_details || 'N/A');
+}
 
-    // $('#d_remarks').val(request.scheduled_remarks || 'N/A');
+// Functions to Load and Fetch Content
+function loadServiceSpecificContent(serviceType) {
+    var serviceTypeUrl = '';
+    if (serviceType === 'data-analysis') {
+        serviceTypeUrl = 'modal/md.data_analysis.php';
+    } else if (serviceType === 'technical-assistance') {
+        serviceTypeUrl = 'modal/md.tech_assist.php';
+    }
 
-
-    request_id = request.request_id;
-
-    function fetch_speaker() {
-
-        $.ajax({
-            url: "table/table_sr_speaker.php",
-            method: "POST",
-            data: {
-                request_id: request_id,
-
-            },
-            success: function(data) {
-                $('#speaker_list_table').html(data);
-
-
-
+    if (serviceTypeUrl) {
+        $('#service-specific').load(serviceTypeUrl, function(response, status, xhr) {
+            if (status === "error") {
+                console.error("Error loading the page: " + xhr.status + " " + xhr.statusText);
             }
         });
     }
-    fetch_speaker();
+}
 
+function fetchDataAnalysisDetails(serviceType, requestId) {
+    if (serviceType === 'data-analysis') {
+        $.ajax({
+            url: 'fetch/fetch.data_analysis.php',
+            type: 'POST',
+            data: {
+                service_type: serviceType,
+                request_id: requestId
+            },
+            success: function(response) {
+                var details = JSON.parse(response);
+                $('#anaylsis-type').val(details.analysis_type);
+                $('#research-overview').val(details.overview);
+                $('#general-objective').val(details.g_objective);
+                $('#specific-objective').val(details.s_objective);
 
-    serviceType = request.service_type;
+                console.log(details);
+
+                $('button').each(function() {
+                    if ($(this).text().includes('Cancel Request') || $(this).text().includes(
+                            'Assign Schedule') || $(this).text().includes('Confirm Request')) {
+                        $(this).hide();
+                    }
+                });
+            },
+            error: function() {
+                console.error('Error fetching details.');
+            }
+        });
+    }
+}
+
+function fetchMeetingDetails(requestId) {
     $.ajax({
-        url: 'fetch/fetch.training.php', // Server-side script to return data
+        url: "table/table.meeting.php",
+        method: "POST",
+        data: {
+            request_id: requestId
+        },
+        success: function(data) {
+            $('#meeting_table_modal').html(data);
+        }
+    });
+}
+
+function fetchSpeakerDetails(requestId) {
+    $.ajax({
+        url: "table/table_sr_speaker.php",
+        method: "POST",
+        data: {
+            request_id: requestId
+        },
+        success: function(data) {
+            $('#speaker_list_table').html(data);
+        }
+    });
+}
+
+function fetchTrainingDetails(serviceType, requestId) {
+    $.ajax({
+        url: 'fetch/fetch.training.php',
         type: 'POST',
         data: {
             service_type: serviceType,
-            request_id: request.request_id
+            request_id: requestId
         },
         success: function(response) {
-            // Assume response is JSON
-
             var details = JSON.parse(response);
-
             $('#service_title').val(details.title || '');
             $('#serviceVenue').val(details.venue || '');
-
             $('#fromDate').val(details.s_from || '');
             $('#toDate').val(details.s_to || '');
-
-            //makeReadOnly(); // Call this function here
-
         },
         error: function() {
-            console.log('Error fetching details.');
+            console.error('Error fetching details.');
         }
     });
+}
 
-
-
-    var modal = new bootstrap.Modal(document.getElementById('serviceSpeakerModal'));
-    modal.show();
-
-});
-
-
-
-$(document).on('click', '#btnSaveSpeaker', function(e) {
-    // Prevent the default form submission
-    e.preventDefault();
-
-    // Set the form action to the desired URL
-    $('#speaker_form').attr('action', 'function/service_action.speaker.php');
-
-    // Submit the form asynchronously using AJAX
+// Function to Submit Form
+function submitForm(formId, actionUrl, successMessage) {
+    $('#' + formId).attr('action', actionUrl);
     $.ajax({
         type: "POST",
-        url: $('#speaker_form').attr('action'),
-        data: $('#speaker_form').serialize(),
+        url: $('#' + formId).attr('action'),
+        data: $('#' + formId).serialize(),
         success: function(response) {
             if (response.trim() === 'success') {
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
-                    text: 'Training Record Saved!',
+                    text: successMessage,
                 });
 
 
-                var selectElement = document.getElementById('patient_name');
-                $(selectElement).chosen('destroy');
-
-
                 // Set all inputs to readonly
-                $('#speaker_form input').prop('readonly', true);
-                $('#speaker_form textarea').prop('readonly', true);
-                $('#speaker_form select').prop('disabled',
-                    true); //use 'disabled' for select elements
-                // Disable all buttons inside the form
-                // Temporarily hide the buttons
-
-                // $('#confirmPrenatalModal').modal('hide');
+                $('#' + formId + ' input').prop('readonly', true);
+                $('#' + formId + ' textarea').prop('readonly', true);
+                $('#' + formId + ' select').prop('disabled', true); // use 'disabled' for select elements
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -481,8 +383,6 @@ $(document).on('click', '#btnSaveSpeaker', function(e) {
             }
         },
         error: function(xhr, status, error) {
-            // Handle the error response
-            // Display SweetAlert error popup
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
@@ -490,5 +390,5 @@ $(document).on('click', '#btnSaveSpeaker', function(e) {
             });
         }
     });
-});
+}
 </script>

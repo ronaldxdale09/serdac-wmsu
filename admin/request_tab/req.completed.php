@@ -1,4 +1,3 @@
-
 <div class="row">
     <!-- Check Status Filter -->
     <div class="col-md-3 mb-3">
@@ -121,11 +120,11 @@
                         <?php endif; ?>
 
                         <?php if ($row['service_type'] == 'capability-training'): ?>
-                        <button type="button" class="btn btn-sm btn-dark btnSpeaker"
+                        <button type="button" class="btn btn-sm btn-dark btnComSpeaker"
                             data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip" title="Speaker">
                             <i class="fas fa-users"></i> Speakers
                         </button>
-                        <button type="button" class="btn btn-sm btn-danger btnParticiapnts"
+                        <button type="button" class="btn btn-sm btn-danger btnComParticiapnts"
                             data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip" title="Participants">
                             <i class="fas fa-user-friends"></i> Participants
                         </button>
@@ -142,6 +141,94 @@
             <?php } ?>
         </tbody>
     </table>
- 
+
 </div>
 
+
+
+
+<script>
+$(document).ready(function() {
+    var table = $('#service_progress').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['excelHtml5', 'pdfHtml5', 'print']
+    });
+});
+
+
+function disableModalElements(modalId) {
+    $('#' + modalId).find('input, select, textarea, button').not('[data-dismiss="modal"]').prop('disabled', true);
+}
+// Function to enable all buttons and inputs in a given modal
+function enableModalElements(modalId) {
+    $('#' + modalId).find('input, select, textarea, button').prop('disabled', false);
+}
+
+
+
+
+// Event handlers for the buttons
+$('.btnComMeeting').on('click', function() {
+    var request = $(this).data('request');
+
+    populateMeetingModal(request);
+    fetchMeetingDetails(request.request_id);
+
+
+    var modal = new bootstrap.Modal(document.getElementById('serviceMeetingModal'));
+    modal.show();
+
+    disableModalElements('serviceMeetingModal');
+
+});
+
+$('.btnComView').on('click', function() {
+    var request = $(this).data('request');
+
+    populateViewModal(request);
+    loadServiceSpecificContent(request.service_type);
+    fetchDataAnalysisDetails(request.service_type, request.request_id);
+
+    disableModalElements('serviceRequestDetailsModal');
+
+    var modal = new bootstrap.Modal(document.getElementById('serviceRequestDetailsModal'));
+    modal.show();
+});
+
+$('.btnComSpeaker').on('click', function() {
+    var request = $(this).data('request');
+
+    populateSpeakerModal(request);
+    fetchSpeakerDetails(request.request_id);
+    fetchTrainingDetails(request.service_type, request.request_id);
+
+    disableModalElements('serviceSpeakerModal');
+
+    var modal = new bootstrap.Modal(document.getElementById('serviceSpeakerModal'));
+    modal.show();
+});
+
+$('.btnComParticiapnts').on('click', function() {
+    var request = $(this).data('request');
+
+    populateParticipantsModal(request);
+    fetchParticipantsDetails(request);
+
+    disableModalElements('participantsModal');
+
+    var modal = new bootstrap.Modal(document.getElementById('participantsModal'));
+    modal.show();
+});
+
+$('.btnComRequirement').on('click', function() {
+    var request = $(this).data('request');
+
+    populateRequirementModal(request);
+    fetchRequirementFiles(request.request_id);
+
+    disableModalElements('anaylsisReqModal');
+
+    var modal = new bootstrap.Modal(document.getElementById('anaylsisReqModal'));
+    modal.show();
+});
+</script>

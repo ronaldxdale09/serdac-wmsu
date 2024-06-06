@@ -12,11 +12,18 @@
              <div class="modal-body">
                  <form id="createProjectForm" action="function/repo.projects.action.php" method="POST">
                      <div class="form-row">
-                         <div class="form-group col-md-6">
+                         <div class="form-group col">
+                             <label for="status">Status</label>
+                             <select class="form-control" id="status" name="status" required>
+                                 <option value="Ongoing">Ongoing</option>
+                                 <option value="Completed">Completed</option>
+                             </select>
+                         </div>
+                         <div class="form-group col">
                              <label for="programTitle">Program Title</label>
                              <input type="text" class="form-control" id="programTitle" name="programTitle" required>
                          </div>
-                         <div class="form-group col-md-6">
+                         <div class="form-group col">
                              <label for="projectTitle">Project Title</label>
                              <input type="text" class="form-control" id="projectTitle" name="projectTitle" required>
                          </div>
@@ -133,15 +140,6 @@
                          </div>
                      </div>
                      <div class="form-row">
-                         <div class="form-group col-md-12">
-                             <label for="status">Status</label>
-                             <select class="form-control" id="status" name="status" required>
-                                 <option value="Ongoing">Ongoing</option>
-                                 <option value="Completed">Completed</option>
-                             </select>
-                         </div>
-                     </div>
-                     <div class="form-row">
                          <div class="col-md-12 text-right">
                              <button type="submit" class="btn btn-primary">Save Project</button>
                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -168,12 +166,20 @@
              <div class="modal-body">
                  <form id="editProjectForm" action="function/repo.projects.action.php" method="POST">
                      <input type="hidden" id="editProjectID" name="projectID">
+
                      <div class="form-row">
-                         <div class="form-group col-md-6">
+                         <div class="form-group col">
+                             <label for="editStatus">Status</label>
+                             <select class="form-control" id="editStatus" name="status" required>
+                                 <option value="Ongoing">Ongoing</option>
+                                 <option value="Completed">Completed</option>
+                             </select>
+                         </div>
+                         <div class="form-group col">
                              <label for="editProgramTitle">Program Title</label>
                              <input type="text" class="form-control" id="editProgramTitle" name="programTitle" required>
                          </div>
-                         <div class="form-group col-md-6">
+                         <div class="form-group col">
                              <label for="editProjectTitle">Project Title</label>
                              <input type="text" class="form-control" id="editProjectTitle" name="projectTitle" required>
                          </div>
@@ -291,15 +297,7 @@
                              </select>
                          </div>
                      </div>
-                     <div class="form-row">
-                         <div class="form-group col-md-12">
-                             <label for="editStatus">Status</label>
-                             <select class="form-control" id="editStatus" name="status" required>
-                                 <option value="Ongoing">Ongoing</option>
-                                 <option value="Completed">Completed</option>
-                             </select>
-                         </div>
-                     </div>
+
                      <div class="form-row">
                          <div class="col-md-12 text-right">
                              <button type="submit" class="btn btn-primary">Save Changes</button>

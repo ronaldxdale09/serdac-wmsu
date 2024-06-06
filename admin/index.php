@@ -42,20 +42,18 @@ while ($row = $result->fetch_assoc()) {
             <div class="animated fadeIn">
                 <!-- Widgets  -->
                 <?php include('statistical_card/dashboard_card.php')?>
-                <div class="card">
-                    <div class="card-body">
-                        <!-- Requests by Client Type Card -->
-                        <div class="stat-card">
-                            <h4 class="stat-title">Requests by Client Type</h4>
-                            <?php foreach ($clientTypes as $type => $count): ?>
-                            <div class="stat-text"><?php echo $type; ?>: <?php echo $count; ?></div>
-                            <?php endforeach; ?>
-                            <div class="stat-icon">
-                                <i class="fa fa-users" aria-hidden="true"></i>
-                            </div>
-                        </div>
+
+                <!-- Requests by Client Type Card -->
+                <div class="stat-card">
+                    <h4 class="stat-title">Requests by Client Type</h4>
+                    <?php foreach ($clientTypes as $type => $count): ?>
+                    <div class="stat-text"><?php echo $type; ?>: <b> <?php echo $count; ?> </b></div>
+                    <?php endforeach; ?>
+                    <div class="stat-icon">
+                        <i class="fa fa-users" aria-hidden="true"></i>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
@@ -191,13 +189,13 @@ while ($row = $result->fetch_assoc()) {
                     maintainAspectRatio: false,
                     onClick: function(evt, elements) {
                         console.log("Bar chart clicked",
-                        elements); // Debugging: log clicked elements
+                            elements); // Debugging: log clicked elements
                         if (elements.length > 0) {
                             var element = elements[0];
                             var datasetIndex = element.datasetIndex;
                             var datasetLabel = barChart.data.datasets[datasetIndex].label;
                             console.log("Dataset label clicked: ",
-                            datasetLabel); // Debugging: log the dataset label
+                                datasetLabel); // Debugging: log the dataset label
                             updateTable(datasetLabel);
                         }
                     }
@@ -232,14 +230,14 @@ while ($row = $result->fetch_assoc()) {
                     },
                     onClick: function(evt, elements) {
                         console.log("Pie chart clicked",
-                        elements); // Debugging: log clicked elements
+                            elements); // Debugging: log clicked elements
                         if (elements.length > 0) {
                             var element = elements[0];
                             var index = element.index !== undefined ? element.index : element
-                            ._index;
+                                ._index;
                             var label = pieChart.data.labels[index];
                             console.log("Pie chart label clicked: ",
-                            label); // Debugging: log the label
+                                label); // Debugging: log the label
                             updateTable(label);
                         }
                     }

@@ -12,7 +12,7 @@
                
 
                 <div class="dropdown for-notification">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="notification"
+                    <button class="btn  dropdown-toggle" type="button" id="notification"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-bell"></i>
                         <span class="count bg-danger" id="notificationCount">0</span>
@@ -33,7 +33,7 @@
                 }
                 ?>
                 <div class="dropdown for-message">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="message" data-toggle="dropdown"
+                    <button class="btn  dropdown-toggle" type="button" id="message" data-toggle="dropdown"
                         aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-envelope"></i>
                         <span class="count bg-primary"><?php echo count($messages); ?></span>
@@ -78,7 +78,7 @@
         </div>
     </div>
 </header>
-<script>
+<!-- <script>
 $(document).ready(function() {
     function loadNotifications() {
         $.ajax({
@@ -114,5 +114,5 @@ $(document).ready(function() {
 
     // Load notifications on page load
     loadNotifications();
-});
+}); -->
 </script>

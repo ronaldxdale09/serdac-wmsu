@@ -8,6 +8,10 @@ if (isset($_POST['confirm'])) {
 
     // Handle file uploads
     if (!empty($_FILES['files']['name'][0])) {
+
+        $remarksArray = $_POST['remarks_file'];
+
+
         foreach ($_FILES['files']['name'] as $key => $filename) {
             $filename = $_FILES['files']['name'][$key];
             $fileTmpName = $_FILES['files']['tmp_name'][$key];
@@ -25,12 +29,13 @@ if (isset($_POST['confirm'])) {
                     // Prepare SQL statement to insert file info into the database
                     $date_uploaded = date('Y-m-d'); // Get the current date
 
-                    $query = "INSERT INTO sr_dataanalysis_files (request_id, filename, size, remarks, date_uploaded) VALUES (?, ?, ?, ?, ?)";
+                    $query = "INSERT INTO sr_dataanalysis_files (request_id, filename, size, remarks, date_uploaded,type) VALUES (?, ?, ?, ?, ?, ?)";
                     $stmt = mysqli_prepare($con, $query);
-                    $remarks = 'Uploaded'; // Customize this field based on your needs
-                    
+                    $remarks = isset($remarksArray[$key]) ? $remarksArray[$key] : ''; // Get the remarks for this file
+                    $type = 'client'; // Customize this field based on your needs
+
                     // Bind parameters and execute the statement
-                    mysqli_stmt_bind_param($stmt, 'issis', $request_id, $filename, $fileSize, $remarks, $date_uploaded);
+                    mysqli_stmt_bind_param($stmt, 'isssss', $request_id, $filename, $fileSize, $remarks, $date_uploaded,$type);
                     $result = mysqli_stmt_execute($stmt);
 
                     if (!$result) {

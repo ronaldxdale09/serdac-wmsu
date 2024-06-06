@@ -1,5 +1,4 @@
 <?php
-session_start();
 include 'db.php'; // Ensure this includes your database connection
 
 if (isset($_SESSION['userId_code'])) {
@@ -14,7 +13,6 @@ if (isset($_SESSION['userId_code'])) {
         $region = $_POST['region'];
         $city = $_POST['city'];
         $state = $_POST['state'];
-        $username = $_POST['username'];
         $password = $_POST['password'];
         $confirm_password = $_POST['confirm_password'];
 
@@ -34,12 +32,11 @@ if (isset($_SESSION['userId_code'])) {
                     region = ?, 
                     city = ?, 
                     province = ?, 
-                    username = ?, 
                     password = ? 
                 WHERE user_id = ?";
                 
         $stmt = $con->prepare($sql);
-        $stmt->bind_param('sssssssssi', 
+        $stmt->bind_param('ssssssssi', 
             $fname, 
             $midname, 
             $lname, 
@@ -47,7 +44,6 @@ if (isset($_SESSION['userId_code'])) {
             $region, 
             $city, 
             $state, 
-            $username, 
             $hashed_password, 
             $id
         );

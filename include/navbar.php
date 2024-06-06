@@ -47,7 +47,7 @@
 
                             </ul>
                         </li>
-                        <li class="scroll-to-section"><a href="#courses">ABOUT US</a></li>
+                        <!-- <li class="scroll-to-section"><a href="#courses">ABOUT US</a></li> -->
                         <li><a href="contact_us.php">Contact Us</a></li>
 
                         <?php

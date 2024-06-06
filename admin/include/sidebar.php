@@ -66,10 +66,10 @@ function hasAccess($accessList, $access) {
                         <li><i class="fas fa-project-diagram"></i><a href="project_mngnt.php"> Projects</a></li>
                         <?php endif; ?>
                         <?php if (hasAccess($userAccess, 'e_books')): ?>
-                        <li><i class="fas fa-book-open"></i><a href="request_record.php"> E-Book</a></li>
+                        <li><i class="fas fa-book-open"></i><a href="ebook_mngnt.php"> E-Book</a></li>
                         <?php endif; ?>
                         <?php if (hasAccess($userAccess, 'journals')): ?>
-                        <li><i class="fas fa-scroll"></i><a href="request_record.php"> Journals</a></li>
+                        <!-- <li><i class="fas fa-scroll"></i><a href="request_record.php"> Journals</a></li> -->
                         <?php endif; ?>
                     </ul>
                 </li>
@@ -101,7 +101,7 @@ function hasAccess($accessList, $access) {
 
                 <?php if (hasAccess($userAccess, 'client_list')): ?>
                 <li>
-                    <a href="account_mngmt.php"><i class="menu-icon fa fa-users"></i> Client List </a>
+                    <a href="client_list.php"><i class="menu-icon fa fa-users"></i> Client List </a>
                 </li>
                 <?php endif; ?>
 

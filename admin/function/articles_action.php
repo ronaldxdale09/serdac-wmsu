@@ -24,7 +24,7 @@ function handleNewArticleSubmission($con) {
         }
 
         // SQL query to insert article data
-        $query = "INSERT INTO articles (title, subtitle, content, published_at, published_by, is_draft, type, image_path) 
+        $query = "INSERT INTO articles (title, subtitle, content, published_at, author, is_draft, type, image_path) 
         VALUES ('$title', '$subtitle', '$content', NOW(), '$publishedBy', '$isDraft', '$type', '$imageName')";
         
         // Execute the query

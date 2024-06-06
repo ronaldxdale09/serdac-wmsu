@@ -3,7 +3,7 @@ include('db.php');
 require 'PHPMailer/PHPMailerAutoload.php';
 
 // Fetch POST data
-$user_id = $_POST['user_id'];
+$user_id = $_SESSION['userId_code'];
 $req_id = $_POST['req_id'];
 $current_date = date("Y-m-d");
 

@@ -10,6 +10,7 @@
             <tr>
                 <th scope="col">ID</th>
                 <th scope="col">Status</th>
+                <th scope="col">Client</th>
 
                 <th scope="col">Date Cancelled</th>
                 <th scope="col">Service Type</th>
@@ -29,30 +30,40 @@
                     case "Cancelled":
                         $status_color = 'badge-danger';
                         break;
-                }
+                }  
+                 $client = $row['fname'].' '.$row['lname'];
+
+                 $type_color = '';
+                 if ($row['service_type'] === "data-analysis") {
+                     $type_color = 'badge-success';
+                 } elseif ($row['service_type'] === "capability-training") {
+                     $type_color = 'badge-primary';
+                 } elseif ($row['service_type'] === "technical-assistance") {
+                     $type_color = 'badge-dark';
+                 }
             ?>
             <tr>
                 <td><?php echo $row['request_id']; ?></td>
                 <td><span class="badge <?php echo $status_color; ?>">
                         <?php echo $row['status']; ?>
                     </span></td>
+                <td><?php echo $client ?></td>
 
                 <td class="nowrap"><?php echo date('M j, Y, h:i A', strtotime($row['cancelled_date'])); ?></td>
 
-                <td><?php echo $row['service_type']; ?></td>
+                <td><span class="badge <?php echo $type_color; ?>">
+                        <?php echo $row['service_type']; ?>
+                    </span>
+                </td>
                 <td><?php echo $row['office_agency']; ?></td>
 
-                <td><?php echo $row['scheduled_remarks']; ?></td>
+                <td><?php echo $row['cancelled_remarks']; ?></td>
 
                 <td>
 
                     <button type="button" class="btn btn-sm btn-primary mb-1 btnView"
                         data-request='<?php echo json_encode($row); ?>'>
                         <i class="fas fa-book"></i>
-                    </button>
-                    <button type="button" class="btn btn-sm btn-dark mb-1 btnParticiapnts"
-                        data-req='<?php echo json_encode($row); ?>'>
-                        <i class="fas fa-user"></i>
                     </button>
                 </td>
             </tr>

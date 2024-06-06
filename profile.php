@@ -104,22 +104,26 @@ if (isset($_SESSION["userId_code"])) {
                         <div class="col-lg-12">
                             <div class="card z-depth-3">
                                 <div class="card-body details-card">
+
                                     <ul class="nav nav-pills nav-pills-primary nav-justified">
                                         <li class="nav-item">
                                             <a href="javascript:void();" data-target="#profile" data-toggle="pill"
-                                                class="nav-link active show"><i class="icon-user"></i> <span
-                                                    class="hidden-xs">Profile</span></a>
+                                                class="nav-link active show">
+                                                <i class="fas fa-user"></i> <span class="hidden-xs">Profile</span>
+                                            </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="javascript:void();" data-target="#messages" data-toggle="pill"
-                                                class="nav-link"><i class="icon-envelope-open"></i> <span
-                                                    class="hidden-xs">REQUEST <span class="badge bg-danger text-light">
-                                                        <?php echo  $req_count ?> </span></span></a>
+                                                class="nav-link">
+                                                <i class="fas fa-envelope-open"></i> <span class="hidden-xs">SERVICE REQUEST <span class="badge bg-danger text-light">
+                                                        <?php echo $req_count ?> </span></span>
+                                            </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="javascript:void();" data-target="#edit" data-toggle="pill"
-                                                class="nav-link"><i class="icon-note"></i> <span
-                                                    class="hidden-xs">DOWNLOAD</span></a>
+                                                class="nav-link">
+                                                <i class="fas fa-edit"></i> <span class="hidden-xs">TRAININGS</span>
+                                            </a>
                                         </li>
                                     </ul>
                                     <div class="tab-content p-3 tab-min-height">
@@ -131,6 +135,7 @@ if (isset($_SESSION["userId_code"])) {
                                             <?php include('user/request.php'); ?>
                                         </div>
                                         <div class="tab-pane" id="edit">
+                                        <?php include('user/training.php'); ?>
 
                                         </div>
                                     </div>

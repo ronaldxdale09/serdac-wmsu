@@ -69,10 +69,6 @@
 
                         <div id='service-specific'> </div>
 
-
-
-
-
                         <hr>
 
                         <div class="selected_schedule"></div>
@@ -89,12 +85,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="printModalContent()"><i class="fas fa-print"></i>
-                    Print</button>
+                <!-- <button type="button" class="btn btn-primary" onclick="printModalContent()"><i class="fas fa-print"></i>
+                    Print</button> -->
 
 
-                <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times-circle"></i>
-                    Cancel Request</button>
+                <button type="button" class="btn btn-danger btnCancelRequest" data-toggle="modal"
+                    data-target="#cancelServiceRequestModal" data-request-id="123">
+                    <i class="fas fa-times-circle"></i> Cancel Request
+                </button>
                 <button type="button" class="btn btn-success assign_sched" id="assign-sched"><i
                         class="fas fa-calendar-alt"></i> Assign Schedule</button>
                 <button type="submit" name="confirm" hidden class="btn btn-warning text-dark" id="submit-request"><i
@@ -144,6 +142,36 @@ function printModalContent() {
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="confirm-schedule">Confirm Schedule</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Service Request Modal -->
+<div class="modal fade" id="cancelServiceRequestModal" tabindex="-1" role="dialog"
+    aria-labelledby="cancelServiceRequestModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="cancelServiceRequestModalLabel">Cancel Service Request</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="function/request.action.php" method="post">
+                    <p>Are you sure you want to cancel this service request?</p>
+                    <input type="hidden" id="cancelRequestId" name="request_id">
+                    <div class="form-group">
+                        <label for="cancelRemarks">Cancellation Remarks:</label>
+                        <textarea class="form-control" id="cancelRemarks" name="remarks" rows="3" required></textarea>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" name="cancel" class="btn btn-danger" id="confirmCancelRequest">Confirm
+                    Cancel</button>
+            </div>
+            </form>
         </div>
     </div>
 </div>

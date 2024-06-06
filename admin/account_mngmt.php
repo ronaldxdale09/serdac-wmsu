@@ -58,16 +58,20 @@
                                             <th scope="col">Name</th>
                                             <th scope="col">Contact #</th>
                                             <th scope="col">Username</th>
-                                         
-                                            <th width="15%" scope="col">Access</th>
+
+                                            <th width="25%" scope="col">Access</th>
                                             <th>User Type</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <?php
-                                $results = mysqli_query($con, "SELECT * from users where accessType !='Client' "); ?>
+$results = mysqli_query($con, "SELECT * from users where accessType !='Client' ");
+?>
                                     <tbody>
-                                        <?php while ($row = mysqli_fetch_array($results)) { ?>
+                                        <?php while ($row = mysqli_fetch_array($results)) { 
+                                                $adminAccessArray = json_decode($row['adminAccess'], true);
+                                                $adminAccessFormatted = implode(', ', $adminAccessArray); // Format the array as a comma-separated string
+                                            ?>
                                         <tr>
                                             <td>
                                                 <?php echo $row['user_id']; ?>
@@ -82,7 +86,10 @@
                                                 <?php echo $row['email']; ?>
                                             </td>
                                             <td>
-                                                <?php echo $row['adminAccess']; ?>
+                                                <?php foreach ($adminAccessArray as $access) { ?>
+                                                <span
+                                                    class="badge badge-info"><?php echo htmlspecialchars($access); ?></span>
+                                                <?php } ?>
                                             </td>
                                             <td>
                                                 <?php echo $row['accessType']; ?>
@@ -92,11 +99,13 @@
                                                     data-access='<?php echo json_encode($row['userAccess']); ?>'>
                                                     <i class="fa fa-edit"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-sm  btn-danger btnDelete"><i class="fa fa-trash"></i></button>
+                                                <button type="button" class="btn btn-sm btn-danger btnDelete"><i
+                                                        class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
                                         <?php } ?>
                                     </tbody>
+
                                 </table>
                             </div>
                         </div>

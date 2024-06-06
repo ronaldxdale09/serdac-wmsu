@@ -3,8 +3,8 @@ include('db.php');
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $form_id = 99; // Replace this with the actual form_id you are using
-    $user_id = 1; // Replace this with the actual user_id from your session or context
+    $form_id = $_POST['form_id']; 
+    $user_id = $_POST['user_id']; 
 
     $answers = $_POST['answers'];
     $errors = [];

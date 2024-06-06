@@ -32,3 +32,10 @@ include('function/db.php'); // Path to your database connection
     <link rel="stylesheet" href="assets/css/lightbox.css">
 
 </head>
+
+<style>
+.modal-xl {
+    max-width: 1200px  !important;
+    /* You can set this to the width you require */
+}
+</style>

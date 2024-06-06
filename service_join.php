@@ -7,12 +7,13 @@ if (!isset($_SESSION["userId_code"])) {
 }
 
 $id = preg_replace('~\D~', '', $_SESSION['userId_code']);
-$code = preg_replace('~\D~', '', $_GET['inv']);
+$code = $_GET['inv'];
 
 // Initialize variables
 $user = [];
 $service = [];
 $training = [];
+$speakers = [];
 $scheduleDate = "Not scheduled";
 
 // Fetch user information
@@ -20,38 +21,51 @@ $userQuery = $con->prepare("SELECT * FROM users WHERE user_id = ?");
 $userQuery->bind_param("i", $id);
 $userQuery->execute();
 $userResult = $userQuery->get_result();
-
 if ($userResult->num_rows > 0) {
     $user = $userResult->fetch_assoc();
 }
+$userQuery->close();
 
 // Fetch service request information
 $serviceQuery = $con->prepare("SELECT * FROM service_request WHERE inviteCode = ?");
-$serviceQuery->bind_param("i", $code);
+$serviceQuery->bind_param("s", $code);
 $serviceQuery->execute();
 $serviceResult = $serviceQuery->get_result();
-
 if ($serviceResult->num_rows > 0) {
     $service = $serviceResult->fetch_assoc();
     $req_id = $service['request_id'];
-    
+
     // Fetch training information
-    $trainingQuery = $con->prepare("SELECT s_from, s_to FROM sr_training WHERE request_id = ?");
+    $trainingQuery = $con->prepare("SELECT s_from, s_to, title, venue FROM sr_training WHERE request_id = ?");
     $trainingQuery->bind_param("i", $req_id);
     $trainingQuery->execute();
     $trainingResult = $trainingQuery->get_result();
-
     if ($trainingResult->num_rows > 0) {
         $training = $trainingResult->fetch_assoc();
-
         $formattedFromDate = new DateTime($training['s_from']);
         $formattedToDate = new DateTime($training['s_to']);
         $fromDate = $formattedFromDate->format('F j, Y');
         $toDate = $formattedToDate->format('F j, Y');
-
         $scheduleDate = ($fromDate == $toDate) ? $fromDate : $fromDate . ' - ' . $toDate;
     }
+    $trainingQuery->close();
+
+    // Fetch speakers and their topics
+    $speakersQuery = $con->prepare("
+        SELECT sp.name, sr.topic 
+        FROM sr_speaker sr 
+        LEFT JOIN speaker_profile sp ON sp.speaker_id = sr.speaker_id 
+        WHERE sr.request_id = ?
+    ");
+    $speakersQuery->bind_param("i", $req_id);
+    $speakersQuery->execute();
+    $speakersResult = $speakersQuery->get_result();
+    while ($row = $speakersResult->fetch_assoc()) {
+        $speakers[] = $row;
+    }
+    $speakersQuery->close();
 }
+$serviceQuery->close();
 
 $fullName = trim(($user['fname'] ?? '') . ' ' . ($user['midname'] ?? '') . ' ' . ($user['lname'] ?? ''));
 $requestDate = $service['request_date'] ?? 'N/A';
@@ -62,8 +76,15 @@ $agencyClassification = $service['agency_classification'] ?? 'N/A';
 $clientType = $service['client_type'] ?? 'N/A';
 $email = $user['email'] ?? 'N/A';
 $contactNo = $user['contact_no'] ?? 'N/A';
-?>
+$title = $training['title'] ?? 'N/A';
+$venue = $training['venue'] ?? 'N/A';
 
+// Check if participants are allowed
+$allowParticipants = $service['allowParticipants'] ?? 1;
+$participants = $service['participants'] ?? 0;
+$participantsQuota = $service['participants_quota'] ?? null;
+$quotaMet = $participantsQuota !== null && $participants >= $participantsQuota;
+?>
 
 <body>
 
@@ -79,36 +100,80 @@ $contactNo = $user['contact_no'] ?? 'N/A';
                             <div class="row d-flex justify-content-center">
                                 <div class="col-xl-12 col-lg-12">
                                     <div class="card b-0">
+                                        <?php if ($allowParticipants == 0): ?>
+                                        <fieldset class="show">
+                                            <div class="form-card text-center">
+                                                <h5 class="sub-heading mb-4">Training Closed or Ended</h5>
+                                                <p class="message">We regret to inform you that this training session is
+                                                    either closed or has already ended. For further inquiries, please
+                                                    contact the administrator.</p>
+                                                <div class="icon-container">
+                                                </div>
+                                                <div class="main-button-red">
+                                                    <a href="index.php">Return to User Portal</a>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <?php elseif ($quotaMet): ?>
+                                        <fieldset class="show">
+                                            <div class="form-card text-center">
+                                                <h5 class="sub-heading mb-4">Participant Quota Met</h5>
+                                                <p class="message">We regret to inform you that the participant quota
+                                                    for this training session has been met. For further inquiries,
+                                                    please contact the administrator.</p>
+                                                <div class="icon-container">
+                                                </div>
+                                                <div class="main-button-red">
+                                                    <a href="index.php">Return to User Portal</a>
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                        <?php else: ?>
                                         <fieldset class="show">
                                             <div class="form-card">
                                                 <h5 class="sub-heading mb-4">REQUEST DETAILS</h5>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">Title:</label>
+                                                            <input type="text" readonly class="form-control"
+                                                                value="<?php echo htmlspecialchars($title); ?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group">
+                                                            <label class="form-control-label">Venue:</label>
+                                                            <input type="text" readonly class="form-control"
+                                                                value="<?php echo htmlspecialchars($venue); ?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
                                                 <div class="row mb-3">
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="form-control-label">Request Date:</label>
                                                             <input type="text" class="form-control" readonly
-                                                                value="<?php echo $service['request_date']; ?>">
+                                                                value="<?php echo htmlspecialchars($requestDate); ?>">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="form-control-label">Status:</label>
                                                             <input type="text" class="form-control" readonly
-                                                                value="<?php echo $service['status']; ?>">
+                                                                value="<?php echo htmlspecialchars($status); ?>">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="form-control-label">Selected Purposes:</label>
                                                             <input type="text" class="form-control" readonly
-                                                                value="<?php echo $service['selected_purposes']; ?>">
+                                                                value="<?php echo htmlspecialchars($selectedPurposes); ?>">
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <h5 class="sub-heading mb-4">SERVICE DETAILS</h5>
                                                 <div class="row px-1 radio-group text-center">
-                                                    <?php if ($service['service_type'] == 'data-analysis'): ?>
+                                                    <?php if (isset($service['service_type']) && $service['service_type'] == 'data-analysis'): ?>
                                                     <div class="card-block flex-fill m-2" data-option="data-analysis">
                                                         <div class="image-icon">
                                                             <img class="icon icon1"
@@ -117,7 +182,7 @@ $contactNo = $user['contact_no'] ?? 'N/A';
                                                         <p class="sub-desc">DATA ANALYSIS</p>
                                                     </div>
                                                     <?php endif; ?>
-                                                    <?php if ($service['service_type'] == 'capability-training'): ?>
+                                                    <?php if (isset($service['service_type']) && $service['service_type'] == 'capability-training'): ?>
                                                     <div class="card-block flex-fill m-2"
                                                         data-option="capability-training">
                                                         <div class="image-icon">
@@ -126,7 +191,7 @@ $contactNo = $user['contact_no'] ?? 'N/A';
                                                         <p class="sub-desc">CAPABILITY TRAINING</p>
                                                     </div>
                                                     <?php endif; ?>
-                                                    <?php if ($service['service_type'] == 'technical-assistance'): ?>
+                                                    <?php if (isset($service['service_type']) && $service['service_type'] == 'technical-assistance'): ?>
                                                     <div class="card-block flex-fill m-2"
                                                         data-option="technical-assistance">
                                                         <div class="image-icon">
@@ -144,63 +209,53 @@ $contactNo = $user['contact_no'] ?? 'N/A';
                                                 </div>
                                                 <hr>
                                                 <div class="row">
-                                                    <div class="col">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-control-label">Office/Agency:</label>
                                                             <input type="text" readonly id="agency" class="form-control"
-                                                                value="<?php echo $service['office_agency']; ?>">
+                                                                value="<?php echo htmlspecialchars($officeAgency); ?>">
                                                         </div>
                                                     </div>
-                                                    <div class="col">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-control-label">Agency
                                                                 Classification:</label>
                                                             <input type="text" id="agency_class" readonly
                                                                 class="form-control"
-                                                                value="<?php echo $service['agency_classification']; ?>">
+                                                                value="<?php echo htmlspecialchars($agencyClassification); ?>">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-6">
+                                                    <div class="col-md-6">
                                                         <div class="form-group">
                                                             <label class="form-control-label">Type of Client:</label>
                                                             <input type="text" id="client_type" readonly
                                                                 class="form-control"
-                                                                value="<?php echo $service['client_type']; ?>">
+                                                                value="<?php echo htmlspecialchars($clientType); ?>">
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <hr>
-                                                <h5 class="sub-heading mb-4">Personal Details</h5>
-                                                <input type="hidden" name="user_id" value="<?php echo $id ?>">
-                                                <input type="hidden" name="req_id" value="<?php echo $req_id ?>">
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">Name:</label>
-                                                            <input type="text" id="fname" class="form-control" readonly
-                                                                value="<?php echo $fullName; ?>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">Email:</label>
-                                                            <input type="text" id="email" name="email"
-                                                                class="form-control" readonly
-                                                                value="<?php echo $user['email']; ?>">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col">
-                                                        <div class="form-group">
-                                                            <label class="form-control-label">Contact:</label>
-                                                            <input type="text" id="contact" name="mob"
-                                                                class="form-control" readonly
-                                                                value="<?php echo $user['contact_no']; ?>">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
+                                                <h5 class="sub-heading mb-4">SPEAKER LIST</h5>
+                                                <table class="table table-bordered table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Speaker Name</th>
+                                                            <th>Topic</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php foreach ($speakers as $speaker): ?>
+                                                        <tr>
+                                                            <td><?php echo htmlspecialchars($speaker['name']); ?></td>
+                                                            <td><?php echo htmlspecialchars($speaker['topic']); ?></td>
+                                                        </tr>
+                                                        <?php endforeach; ?>
+                                                    </tbody>
+                                                </table>
+                                                <input type="hidden" name="req_id"
+                                                    value="<?php echo htmlspecialchars($req_id); ?>">
                                                 <hr>
                                                 <div class="button-container text-center">
                                                     <button id="next3" class="btn btn-success submit">JOIN <span
@@ -208,21 +263,21 @@ $contactNo = $user['contact_no'] ?? 'N/A';
                                                 </div>
                                             </div>
                                         </fieldset>
+                                        <?php endif; ?>
                                         <fieldset>
                                             <div class="form-card text-center">
-                                                <h5 class="sub-heading mb-4">Request Submitted Successfully!</h5>
-                                                <p class="message">Your request for our services has been received. We
-                                                    will review the details and get back to you shortly with the next
-                                                    steps. Confirmation has been sent to your email address and contact
-                                                    number. Thank you for trusting us with your needs.</p>
-                                                <div class="check">
-                                                    <img class="fit-image check-img" style="width:600px"
-                                                        src="https://i.imgur.com/QH6Zd6Y.gif">
-                                                </div>
-                                                <br>
-                                                <div class="main-button-red">
-                                                    <a href="index.php">Return to User Portal</a>
-                                                </div>
+                                                <h5 class="sub-heading mb-4">Request to Join Successful!</h5>
+                                                <p class="message">Thank you! Your request to join has been successfully
+                                                    received. Please expect a confirmation email shortly. We appreciate
+                                                    your interest and look forward to having you with us.</p>
+                                            </div>
+                                            <div class="check">
+                                                <img class="fit-image check-img" style="width:600px"
+                                                    src="https://i.imgur.com/QH6Zd6Y.gif">
+                                            </div>
+                                            <br>
+                                            <div class="main-button-red">
+                                                <a href="index.php">Return to User Portal</a>
                                             </div>
                                         </fieldset>
                                     </div>

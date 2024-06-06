@@ -127,7 +127,13 @@
             </div>
         </div>
     </div>
+    <div class="col-md-12text-center">
+        <a class="btn btn-maroon text-white border-0 btn-sm" href="request.php">
+            <i class="fas fa-chart-line"></i> <span>REQUEST SERVICE</span>
+        </a>
 
+    </div>
+    <br>
     <div class="table-responsive custom-table-container">
         <table class="table table-hover" id='service_request_table'>
             <thead>
@@ -154,9 +160,11 @@
                     $service_technical_assistance = 0;
 
                     // Fetch data from the service_request table
-                    $results = mysqli_query($con, "SELECT * FROM service_request
-                    LEFT JOIN users ON users.user_id = service_request.user_id
-                    WHERE users.user_id=$id ");
+                    $results = mysqli_query($con, "SELECT sr.*, u.fname, u.lname, u.midname, 
+                    (SELECT COUNT(*) FROM sr_meeting WHERE sr_meeting.request_id = sr.request_id) AS meeting_count
+                    FROM service_request AS sr
+                    LEFT JOIN users AS u ON u.user_id = sr.user_id
+                    WHERE u.user_id = $id");
 
                     if(mysqli_num_rows($results) > 0){
                         while ($row = mysqli_fetch_array($results)) { 
@@ -241,10 +249,10 @@
                             <button type="button" class="btn btn-sm btn-secondary btnMeeting"
                                 data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip"
                                 title="Progress Meeting">
-                                <i class="fas fa-calendar"></i> Meetings
+                                <i class="fas fa-calendar"></i> Meetings <span
+                                    class="badge badge-light"><?php echo $row['meeting_count']; ?></span>
                             </button>
                             <?php } ?>
-
                             <!-- Conditionally displayed Requirements button for 'data-analysis' services in 'In Progress' status -->
                             <?php if ($row['service_type'] === "data-analysis" && ($row['status'] === "In Progress" || $row['status'] === "Completed" )) { ?>
                             <button type="button" class="btn btn-sm btn-dark btnRequirement"

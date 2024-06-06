@@ -15,7 +15,8 @@
         
         // Creating the SQL query
 
-        $query = "UPDATE service_request SET scheduled_remarks='$remarks',status='Approved',inviteCode='$inviteCode', scheduled_date='$sched_date'
+        $query = "UPDATE service_request SET scheduled_remarks='$remarks',status='Approved',
+        inviteCode='$inviteCode', scheduled_date='$sched_date', participants_quota='50', allowParticipants='1',participants='1'
         WHERE request_id   = '$request_id'";
   
         // Executing the query
@@ -25,7 +26,7 @@
 
             // Insert new meeting 
             $insertSql = "INSERT INTO sr_meeting (request_id, meeting_type, date_time,mode) 
-            VALUES ('$request_id', '5',NOW(),'face2face')";
+            VALUES ('$request_id', '1',NOW(),'face2face')";
             // Executing the query
             $results = mysqli_query($con, $insertSql);
     
@@ -101,7 +102,7 @@
         
 
         
-           // header("Location: ../request_record.php?tab=5");  // Change this to your desired location
+          header("Location: ../request_record.php?tab=5");  // Change this to your desired location
             exit();
         } else {
             echo "ERROR: Could not be able to execute the query. " . mysqli_error($con);
@@ -109,6 +110,21 @@
         exit();
     }
     
-
-   
-?>
+    if (isset($_POST['cancel'])) {
+    
+        $request_id = $_POST['request_id'];
+        $remarks = $_POST['remarks'];
+    
+        // Update the service_request status
+        $updateQuery = "UPDATE service_request SET status='Cancelled', cancelled_remarks='$remarks', cancelled_date=NOW() WHERE request_id = '$request_id'";
+        $updateResult = mysqli_query($con, $updateQuery);
+            
+        if ($updateResult) {
+            header("Location: ../request_record.php?tab=4");  // Change this to your desired location
+            exit();
+        } else {
+            echo "ERROR: Could not execute the query. " . mysqli_error($con);
+        }
+        exit();
+    }
+    ?>

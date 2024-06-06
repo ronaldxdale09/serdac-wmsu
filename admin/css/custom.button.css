@@ -1,0 +1,108 @@
+/* Custom Vibrant Pastel Theme Button Colors */
+
+.btn-primary {
+    background-color: #5DADE2 !important;
+    /* Vibrant Pastel Blue */
+    border-color: #5DADE2 !important;
+    color: #fff !important;
+}
+
+.btn-secondary {
+    background-color: #A9A9A9 !important;
+    /* Vibrant Pastel Gray */
+    border-color: #A9A9A9 !important;
+    color: #fff !important;
+}
+
+.btn-success {
+    background-color: #58D68D !important;
+    /* Vibrant Pastel Green */
+    border-color: #58D68D !important;
+    color: #fff !important;
+}
+
+.btn-danger {
+    background-color: #E74C3C !important;
+    /* Vibrant Pastel Red */
+    border-color: #E74C3C !important;
+    color: #fff !important;
+}
+
+.btn-warning {
+    background-color: #F4D03F !important;
+    /* Vibrant Pastel Yellow */
+    border-color: #F4D03F !important;
+    color: #fff !important;
+}
+
+.btn-info {
+    background-color: #5DADE2 !important;
+    /* Vibrant Pastel Teal */
+    border-color: #5DADE2 !important;
+    color: #fff !important;
+}
+
+.btn-light {
+    background-color: #FAD7A0 !important;
+    /* Vibrant Pastel Light Orange */
+    border-color: #FAD7A0 !important;
+    color: #fff !important;
+}
+
+.btn-dark {
+    background-color: #5F6A6A !important;
+    /* Vibrant Pastel Dark Gray */
+    border-color: #5F6A6A !important;
+    color: #fff !important;
+}
+
+
+/* Ensure text contrast is adequate */
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #5499C7 !important;
+    border-color: #5499C7 !important;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: #8C8C8C !important;
+    border-color: #8C8C8C !important;
+}
+
+.btn-success:hover,
+.btn-success:focus {
+    background-color: #52BE80 !important;
+    border-color: #52BE80 !important;
+}
+
+.btn-danger:hover,
+.btn-danger:focus {
+    background-color: #CD6155 !important;
+    border-color: #CD6155 !important;
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+    background-color: #F1C40F !important;
+    border-color: #F1C40F !important;
+}
+
+.btn-info:hover,
+.btn-info:focus {
+    background-color: #48C9B0 !important;
+    border-color: #48C9B0 !important;
+}
+
+.btn-light:hover,
+.btn-light:focus {
+    background-color: #F8C471 !important;
+    border-color: #F8C471 !important;
+}
+
+.btn-dark:hover,
+.btn-dark:focus {
+    background-color: #4D5656 !important;
+    border-color: #4D5656 !important;
+}

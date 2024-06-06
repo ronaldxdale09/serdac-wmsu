@@ -190,7 +190,6 @@ $completed_count = $res['Total'];
                                     </button>
                                     In Progress Request
                                 </div>
-                                <hr>
                                 <?php include('request_tab/req.progress.php'); ?>
                             </div>
 

@@ -290,7 +290,7 @@ if (!window.fileInputHandlerSet) {
             remarksInput.type = 'text';
             remarksInput.placeholder = 'Enter remarks';
             remarksInput.className = 'remarks-input';
-            remarksInput.name = 'remarks[]';
+            remarksInput.name = 'remarks_file[]';
             li.appendChild(remarksInput);
 
             // Progress bar

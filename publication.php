@@ -1,4 +1,17 @@
-<?php include('include/header.php'); ?>
+<?php include('include/header.php'); 
+
+// Fetch data from the repo_ebooks table
+$query = "SELECT book_id, book_title, author, year_published, cover_page FROM repo_ebooks";
+$result = mysqli_query($con, $query);
+
+$publications = [];
+while ($row = mysqli_fetch_assoc($result)) {
+    $publications[] = $row;
+}
+
+// Convert PHP array to JSON
+$publications_json = json_encode($publications);
+?>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
@@ -73,68 +86,23 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script>
     $(document).ready(function() {
-        // Dummy data for publications
-        const publications = [{
-                id: 1,
-                title: 'eBook 1',
-                category: 'ebook',
-                thumbnail: 'https://via.placeholder.com/150',
-                author: 'Author 1',
-                views: 123,
-                description: 'Description for eBook 1'
-            },
-            {
-                id: 2,
-                title: 'Journal 1',
-                category: 'journal',
-                thumbnail: 'https://via.placeholder.com/150',
-                author: 'Author 2',
-                views: 234,
-                description: 'Description for Journal 1'
-            },
-            {
-                id: 3,
-                title: 'eBook 2',
-                category: 'ebook',
-                thumbnail: 'https://via.placeholder.com/150',
-                author: 'Author 3',
-                views: 345,
-                description: 'Description for eBook 2'
-            },
-            {
-                id: 4,
-                title: 'Journal 2',
-                category: 'journal',
-                thumbnail: 'https://via.placeholder.com/150',
-                author: 'Author 4',
-                views: 456,
-                description: 'Description for Journal 2'
-            },
-            {
-                id: 5,
-                title: 'eBook 3',
-                category: 'ebook',
-                thumbnail: 'https://via.placeholder.com/150',
-                author: 'Author 5',
-                views: 567,
-                description: 'Description for eBook 3'
-            }
-        ];
+        // Get publications data from PHP
+        const publications = <?php echo $publications_json; ?>;
 
         function displayPublications(publications) {
             $('#publications-list').empty();
             publications.forEach(pub => {
                 $('#publications-list').append(`
-                    <div class="col-md-4">
-                        <div class="card">
-                            <img class="card-img-top" src="${pub.thumbnail}" alt="${pub.title}">
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="admin/images/ebook_cover/${pub.cover_page}" alt="${pub.book_title}">
                             <div class="card-body">
-                                <h5 class="card-title">${pub.title}</h5>
-                                <p class="card-text">${pub.description}</p>
+                                <h5 class="card-title">${pub.book_title}</h5>
+                                <p class="card-text">Year Published: ${pub.year_published}</p>
                             </div>
                             <div class="card-footer">
                                 <p class="author">Author: ${pub.author}</p>
-                                <p class="view-count"><i class="fa fa-eye"></i> ${pub.views} views</p>
+                                <p class="view-count"><i class="fa fa-eye"></i> Views</p>
                             </div>
                         </div>
                     </div>
@@ -148,8 +116,8 @@
         // Search functionality
         $('#search').on('keyup', function() {
             const searchTerm = $(this).val().toLowerCase();
-            const filteredPublications = publications.filter(pub => pub.title.toLowerCase().includes(
-                searchTerm));
+            const filteredPublications = publications.filter(pub => pub.book_title.toLowerCase()
+                .includes(searchTerm));
             displayPublications(filteredPublications);
         });
 

@@ -1,6 +1,5 @@
-<div class="row">
+<!-- <div class="row">
 
-    <!-- Check Status Filter -->
     <div class="col-md-3 mb-3">
         <label for="filterStatus"> Service Type:</label>
         <select id="filterStatus" class="form-control">
@@ -13,7 +12,6 @@
     </div>
 
 
-    <!-- Month Filter -->
     <div class="col-md-3 mb-3">
         <label for="filterMonth">Month:</label>
         <select id="filterMonth" class="form-control">
@@ -39,7 +37,7 @@
         </select>
     </div>
 
-</div>
+</div> -->
 
 <div class="table-responsive custom-table-container">
     <?php
@@ -123,155 +121,127 @@
 
 <script>
 $(document).ready(function() {
+    // Cancel Request Button Click Handler
+    $('.btnCancelRequest').on('click', function() {
+        var request = $('#p_req_id').val();
+        $('#cancelRequestId').val(request);
+    });
+
+    // Function to handle the Edit button click
     $('.btnEdit').on('click', function() {
         var request = $(this).data('request');
 
-
+        // Populate form fields with request data
         $('#p_user_id').val(request.user_id);
         $('#p_req_id').val(request.request_id);
-
         $('#p_user-name').val(request.fname + ' ' + request.lname);
         $('#service-type').val(request.service_type);
         $('#office-agency').val(request.office_agency);
         $('#agency-classification').val(request.agency_classification);
         $('#client-type').val(request.client_type);
-
         $('#from_date').val(request.sched_from_date);
         $('#to_date').val(request.sched_to_date);
-
-
         $('#purpose').val(request.selected_purposes);
         $('#additional_details').val(request.additional_purpose_details);
-
 
         // Clear previous service type content
         $('#service-specific').empty();
 
-
-
-
-        // Load service-specific content based on service type
+        // Determine the service-specific URL
         var serviceTypeUrl = '';
         if (request.service_type === 'data-analysis') {
             serviceTypeUrl = 'modal/md.data_analysis.php';
         } else if (request.service_type === 'technical-assistance') {
             serviceTypeUrl = 'modal/md.tech_assist.php';
-        } else if (request.service_type === 'technical-assistance') {
-            serviceTypeUrl = '';
         }
 
-
-        // Append the service-specific form to the div
+        // Load service-specific content if URL is defined
         if (serviceTypeUrl) {
             $('#service-specific').load(serviceTypeUrl, function(response, status, xhr) {
                 if (status === "error") {
-                    console.log("Error loading the page: " + xhr.status + " " + xhr.statusText);
+                    console.error("Error loading the page: " + xhr.status + " " + xhr
+                        .statusText);
                 }
             });
         }
 
-
-
-
-
-        serviceType = request.service_type;
-        $.ajax({
-            url: 'fetch/fetch.data_analysis.php', // Server-side script to return data
-            type: 'POST',
-            data: {
-                service_type: serviceType,
-                request_id: request.request_id
-            },
-            success: function(response) {
-                // Assume response is JSON
-                // Parse and populate more specific fields if necessary
-                if (serviceType === 'data-analysis') {
+        // Fetch additional details for data analysis
+        if (request.service_type === 'data-analysis') {
+            $.ajax({
+                url: 'fetch/fetch.data_analysis.php',
+                type: 'POST',
+                data: {
+                    service_type: request.service_type,
+                    request_id: request.request_id
+                },
+                success: function(response) {
                     var details = JSON.parse(response);
                     $('#anaylsis-type').val(details.analysis_type);
                     $('#research-overview').val(details.overview);
                     $('#general-objective').val(details.g_objective);
                     $('#specific-objective').val(details.s_objective);
 
-                    console.log(details)
+                    console.log(details);
 
+                    // Show relevant buttons
+                    $('button').each(function() {
+                        if ($(this).text().includes('Cancel Request') || $(this)
+                            .text().includes('Assign Schedule')) {
+                            $(this).show();
+                        }
+                    });
 
+                },
+                error: function() {
+                    console.error('Error fetching details.');
                 }
-
-
-
-                document.querySelectorAll('button').forEach(function(button) {
-                    if (button.innerHTML.includes('Cancel Request') ||
-                        button.innerHTML.includes('Assign Schedule')) {
-                        button.style.display = 'inline-block'; // Show the buttons
-                    }
-                });
-                // Show the modal
-                var modal = new bootstrap.Modal(document.getElementById(
-                    'serviceRequestDetailsModal'));
-                modal.show();
-            },
-            error: function() {
-                console.log('Error fetching details.');
-            }
-        });
-
-
-
-
-    });
-
-
-
-
-
-    $(document).ready(function() {
-        var serviceRequestModal = new bootstrap.Modal(document.getElementById(
+            });
+        }
+        // Show the modal
+        var modal = new bootstrap.Modal(document.getElementById(
             'serviceRequestDetailsModal'));
-        var scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
-
-        document.getElementById('assign-sched').addEventListener('click', function() {
-            console.log("Hiding service request modal and showing schedule modal.");
-            serviceRequestModal.hide();
-            scheduleModal.show();
-        });
-
-        document.getElementById('confirm-schedule').addEventListener('click', function() {
-            var selectedDateTime = document.getElementById('schedule-date').value;
-            console.log("Selected DateTime: " + selectedDateTime);
-
-            if (selectedDateTime) {
-                var formattedDateTime = new Date(selectedDateTime).toLocaleString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-
-                document.getElementById('p_sched_date').value = selectedDateTime;
-                document.querySelector('.selected_schedule').innerHTML =
-                    '<h5>Selected Schedule</h5><p>' + formattedDateTime + '</p>';
-
-                var submitBtn = document.getElementById('submit-request');
-                submitBtn.removeAttribute('hidden');
-                console.log("Submit button should now be visible.");
-
-                scheduleModal.hide();
-            } else {
-                alert('Please select a date and time.');
-            }
-        });
+        modal.show();
     });
 
+    // Handle the modal toggle for scheduling
+    var serviceRequestModal = new bootstrap.Modal(document.getElementById('serviceRequestDetailsModal'));
+    var scheduleModal = new bootstrap.Modal(document.getElementById('scheduleModal'));
 
-
-    $(document).ready(function() {
-        var table = $('#service_request_table').DataTable({
-            dom: 'Bfrtip',
-            buttons: ['excelHtml5', 'pdfHtml5', 'print']
-        });
+    $('#assign-sched').on('click', function() {
+        console.log("Hiding service request modal and showing schedule modal.");
+        serviceRequestModal.hide();
+        scheduleModal.show();
     });
 
+    $('#confirm-schedule').on('click', function() {
+        var selectedDateTime = $('#schedule-date').val();
+        console.log("Selected DateTime: " + selectedDateTime);
 
+        if (selectedDateTime) {
+            var formattedDateTime = new Date(selectedDateTime).toLocaleString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            $('#p_sched_date').val(selectedDateTime);
+            $('.selected_schedule').html('<h5>Selected Schedule</h5><p>' + formattedDateTime + '</p>');
+
+            $('#submit-request').removeAttr('hidden');
+            console.log("Submit button should now be visible.");
+
+            scheduleModal.hide();
+        } else {
+            alert('Please select a date and time.');
+        }
+    });
+
+    // Initialize DataTable with buttons
+    $('#service_request_table').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['excelHtml5', 'pdfHtml5', 'print']
+    });
 });
 </script>

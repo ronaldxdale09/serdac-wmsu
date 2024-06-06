@@ -80,9 +80,9 @@
                 $responseCount = mysqli_fetch_assoc($responseCountResult)['response_count'];
 
                 // Format start and end dates
-                $startDate = date('Y-m-d', strtotime($row['start_date']));
-                $endDate = date('Y-m-d', strtotime($row['end_date']));
-
+                $startDate = date('F j, Y', strtotime($row['start_date']));
+                $endDate = date('F j, Y', strtotime($row['end_date'])); 
+                
                 // Display response count alongside quota
                 $responsesWithQuota = $responseCount . '/' . $row['quota'];
             ?>

@@ -48,7 +48,7 @@
                             <div class="inventory-table">
                                 <button type="button" class="btn btn-sm btn-dark text-white" data-toggle="modal"
                                     data-target="#createSpeakerModal">
-                                    <i class="fa fa-user"></i>  NEW SPEAKER
+                                    <i class="fa fa-user"></i> NEW SPEAKER
                                 </button>
                                 <hr>
                                 <table class="table table-bordered table-hover table-striped" id='speaker_profile'>
@@ -73,8 +73,9 @@
                                             <td><?php echo $row['email']; ?></td>
                                             <td><?php echo $row['contact']; ?></td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-secondary btnEdit">
-                                                    <i class="fa fa-edit"></i>
+                                                <button type="button" class="btn btn-sm btn-dark btnEdit"
+                                                    data-speaker='<?php echo json_encode($row); ?>'>
+                                                    <i class="fa fa-edit"></i> Details
                                                 </button>
                                                 <button type="button" class="btn btn-sm  btn-danger btnDelete"><i
                                                         class="fa fa-trash"></i></button>
@@ -104,10 +105,38 @@
 
 <?php include('include/footer.php');?>
 
+<?php include('include/datatables.php');?>
+
 
 
 
 <script>
+$('.btnEdit').on('click', function() {
+    var speaker = $(this).data('speaker');
+
+    $('#updateSpeakerId').val(speaker.speaker_id);
+    $('#updateSpeakerName').val(speaker.name);
+    $('#updateSpeakerAddress').val(speaker.address);
+    $('#updateSpeakerEmail').val(speaker.email);
+    $('#updateSpeakerContact').val(speaker.contact);
+
+
+    $.ajax({
+        url: "table/speaker_list_talk.php",
+        method: "POST",
+        data: {
+            speaker_id: speaker.speaker_id
+        },
+        success: function(data) {
+            $('#speaker_list_talk').html(data);
+        }
+    });
+
+
+
+    var modal = new bootstrap.Modal(document.getElementById('updateSpeakerModal'));
+    modal.show();
+});
 $('.btnDelete').on('click', function() {
 
     var $tr = $(this).closest('tr');
