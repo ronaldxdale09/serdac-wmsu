@@ -26,7 +26,7 @@
 
             // Insert new meeting 
             $insertSql = "INSERT INTO sr_meeting (request_id, meeting_type, date_time,mode) 
-            VALUES ('$request_id', '1',NOW(),'face2face')";
+            VALUES ('$request_id', '1',$sched_date,'face2face')";
             // Executing the query
             $results = mysqli_query($con, $insertSql);
     
@@ -92,8 +92,13 @@
         $request_id = $_POST['request_id'];
         $remarks = $_POST['remarks'];
 
+        $payment_status = $_POST['payment_status'];
+        $payment_amount = $_POST['payment_amount'];
+
+
           // Update the service_request status
-          $updateQuery = "UPDATE service_request SET status='Completed',completed_remarks='$remarks', ongoing_date=NOW() 
+          $updateQuery = "UPDATE service_request SET status='Completed',completed_remarks='$remarks',
+           ongoing_date=NOW(),payment_status='$payment_status',payment_amount='$payment_amount'
           WHERE request_id = '$request_id'";
         $updateResult = mysqli_query($con, $updateQuery);
             

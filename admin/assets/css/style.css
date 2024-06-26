@@ -444,11 +444,23 @@ Googel Fonts  */
     transition: all 0.3s ease;
 }
 
-body {
+
+/* body {
     display: table;
     font-family: "Open Sans", sans-serif;
     font-size: 16px;
     width: 100%;
+} */
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f7f7f7;
+    /* Adjust background color if needed */
+    -webkit-overflow-scrolling: touch;
+    /* For smooth scrolling on iOS */
 }
 
 p {

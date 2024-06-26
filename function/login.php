@@ -12,7 +12,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
-    echo json_encode(["success" => false, "message" => "Invalid email or password!"]);
+    echo json_encode(["success" => false, "message" => "User account for  $email  does not exist"]);
 } else {
     $user = $result->fetch_assoc();
 
@@ -34,6 +34,7 @@ if ($result->num_rows === 0) {
         $_SESSION["userId_code"] = $user['user_id'];
         $_SESSION["accessType"] = $user['accessType'];
         $_SESSION["adminAccess"] = $user['adminAccess'];
+        $_SESSION["isLogin"] = 1;
 
         // Token generation and storage can be enabled here
 

@@ -1,17 +1,19 @@
 <?php include('include/header.php');?>
 <style>
+/* General styles for the carousel container */
 .carousel-container {
     position: relative;
     width: 100%;
     overflow: hidden;
 }
 
-
+/* Each slide should be hidden by default and take up the full width */
 .carousel-slide {
     display: none;
     width: 100%;
 }
 
+/* Controls for the carousel */
 .carousel-control-prev,
 .carousel-control-next {
     cursor: pointer;
@@ -32,21 +34,19 @@
     right: 10px;
 }
 
+/* Set a fixed height for the carousel images and make them responsive */
 .h-500 {
-    height: 1000px;
-    /* Set the height you want */
+    height: 500px;
+    /* Adjust the height to be responsive */
     width: 100%;
-    /* This will make the image responsive and cover the full width */
     object-fit: cover;
-    /* This will cover the height of the container without stretching the image */
     object-position: center;
-    /* This will center the image in the container */
 }
 
+/* Style the article links */
 .article-link {
     color: white;
     text-decoration: none;
-    /* Removes the underline */
 }
 
 @media screen and (max-width: 767px) {}
@@ -79,10 +79,10 @@
 
 
                 <!-- School logos container -->
-                <div class="logos-container">
+                <!-- <div class="logos-container">
                     <img src="assets/images/serdac.png" alt="School Logo 1" class="school-logo" />
                     <img src="assets/images/wmsu.png" alt="School Logo 2" class="school-logo" />
-                </div>
+                </div> -->
 
                 <div class="video-overlay header-text">
                     <div class="container">
@@ -144,55 +144,9 @@
         <a class="carousel-control-next" onclick="moveSlide(1)">&#10095;</a>
     </section>
 
-    <!-- ***** Main Banner Area End ***** -->
-    <!-- <section class="services">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="owl-service-item owl-carousel">
-
-                        <div class="item">
-                            <div class="icon">
-                                <img src="assets/images/analysis.png" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Training and Consultancy</h4>
-                                <p>The center provides trainings and workshops to initiate research capability building
-                                    activities.</p>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="icon">
-                                <img src="assets/images/predictive-chart.png" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Data Analytics</h4>
-                                <p>The center offers in-depth data analytics services, providing socio-economic and
-                                    statistical analysis to support robust research outcomes.</p>
-                            </div>
-                        </div>
-
-                        <div class="item">
-                            <div class="icon">
-                                <img src="assets/images/online-library.png" alt="">
-                            </div>
-                            <div class="down-content">
-                                <h4>Publications</h4>
-                                <p>Selected books and journals on socio-economics, econometrics, statistics, and related
-                                    subjects are available.</p>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> -->
 
     <section class="services">
-        <div class="bg-light py-5 service-11">
+        <div class="bg-light py-2 service-11">
             <div class="container">
                 <div class="section-title">
                     <h2>What We Offer</h2>
@@ -202,8 +156,6 @@
                         data-driven insights, our services are designed to elevate your research and inform impactful
                         decision-making.</p>
                 </div>
-
-
 
                 <!-- Row  -->
                 <div class="row">

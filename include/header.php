@@ -27,7 +27,7 @@ include('function/db.php'); // Path to your database connection
 
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="assets/css/fontawesome.css">
-    <link rel="stylesheet" href="assets/css/homepage.css">
+    <link rel="stylesheet" href="assets/css/homepage.css?v=1.0.0"> <!-- Versioning for cache-busting -->
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/lightbox.css">
 

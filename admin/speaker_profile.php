@@ -1,6 +1,5 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link rel="stylesheet" href="css/assmt.form.view.css">
 
 <body>
     <!-- Left Panel -->
@@ -11,30 +10,7 @@
         <!-- Header-->
         <?php include('include/navbar.php')?>
 
-        <!-- Content -->
-        <div class="breadcrumbs">
-            <div class="breadcrumbs-inner">
-                <div class="row m-0">
-                    <div class="col-sm-4">
-                        <div class="page-header float-left">
-                            <div class="page-title">
-                                <h1>Speaker Profile Management</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="page-header float-right">
-                            <div class="page-title">
-                                <ol class="breadcrumb text-right">
-                                    <li><a href="#">Dashboard</a></li>
-                                    <li class="active">Accounts</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+      
 
         <div class="content">
             <div class="row">
@@ -103,10 +79,19 @@
 
 <?php include('modal/speaker_profile.modal.php');?>
 
-<?php include('include/footer.php');?>
 
+<?php include('include/footer.php');?>
 <?php include('include/datatables.php');?>
 
+
+<script>
+$(document).ready(function() {
+    var table = $('#speaker_profile').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['excelHtml5', 'pdfHtml5', 'print']
+    });
+});
+</script>
 
 
 

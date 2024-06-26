@@ -240,6 +240,7 @@ $(document).ready(function() {
 
     // Initialize DataTable with buttons
     $('#service_request_table').DataTable({
+        "scrollX": true,
         dom: 'Bfrtip',
         buttons: ['excelHtml5', 'pdfHtml5', 'print']
     });

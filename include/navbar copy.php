@@ -1,6 +1,3 @@
-<style>
-
-</style>
 <div class="sub-header">
     <div class="container">
         <div class="row">
@@ -12,7 +9,7 @@
             <div class="col-lg-4 col-sm-4">
                 <div class="right-icons">
                     <ul>
-                        <li><a href="https://www.facebook.com/satellite.serdac.wmsu" target="_blank"><i class="fa fa-facebook"></i></a>
+                        <li><a href="https://www.facebook.com/satellite.serdac.wmsu"><i class="fa fa-facebook"></i></a>
                         </li>
                     </ul>
                 </div>
@@ -20,6 +17,7 @@
         </div>
     </div>
 </div>
+
 
 <header class="header-area header-sticky">
     <div class="container">

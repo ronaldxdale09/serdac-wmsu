@@ -76,6 +76,7 @@
 <script>
 $(document).ready(function() {
     var table = $('#service_cancelled_table').DataTable({
+        "scrollX": true,
         dom: 'Bfrtip',
         buttons: ['excelHtml5', 'pdfHtml5', 'print']
     });

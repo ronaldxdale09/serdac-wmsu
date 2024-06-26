@@ -1,0 +1,110 @@
+<?php include('include/header.php');
+
+$tab = '';
+if (isset($_GET['tab'])) {
+    $tab = filter_var($_GET['tab']);
+}
+?>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="css/assmt.form.view.css">
+<link rel='stylesheet' href='css/tab-report.css'>
+
+<body>
+    <!-- Left Panel -->
+    <?php include('include/sidebar.php')?>
+    <!-- /#left-panel -->
+    <!-- Right Panel -->
+    <div id="right-panel" class="right-panel">
+        <!-- Header-->
+        <?php include('include/navbar.php')?>
+
+        <!-- Content -->
+        <div class="breadcrumbs">
+            <div class="breadcrumbs-inner">
+                <div class="row m-0">
+                    <div class="col-sm-4">
+                        <div class="page-header float-left">
+                            <div class="page-title">
+                                <h1>Activity Log Management</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <div class="page-header float-right">
+                            <div class="page-title">
+                                <ol class="breadcrumb text-right">
+                                    <li><a href="#">Dashboard</a></li>
+                                    <li class="active">Activity Logs</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="inventory-table">
+                    <div class="wrapper" id="myTab">
+                        <input type="radio" name="slider" id="home" <?php if ($tab == '') {
+                                                                                echo 'checked';
+                                                                            } else {
+                                                                                echo '';
+                                                                            } ?>>
+                        <input type="radio" name="slider" id="blog" <?php if ($tab == '2') {
+                                                                                echo 'checked';
+                                                                            } else {
+                                                                                echo '';
+                                                                            } ?>>
+
+                        <nav>
+                            <!-- Pending Approval -->
+                            <label for="home" class="home">
+                                <i class="fas fa-hourglass-half"></i> Summary Report
+                                <span class="badge bg-danger text-light"></span>
+                            </label>
+
+                            <!-- Scheduled -->
+                            <label for="blog" class="blog">
+                                <i class="fas fa-calendar-alt"></i> Graphical Report
+                                <span class="badge bg-danger text-light"></span>
+                            </label>
+
+
+
+                            <div class="slider"></div>
+                        </nav>
+                        <section>
+                            <div class="content content-1">
+                            <?php include('statistical_card/report_card.php'); ?>
+                            <?php include('report/summary_report.php'); ?>
+
+                            </div>
+                            <div class="content content-2">
+
+                                <div class="title"
+                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
+                                    Scheduled Request</div>
+                                <hr>
+
+                            </div>
+                         
+                        </section>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <?php include('include/footer.php');?>
+
+    <?php include('include/datatables.php');?>
+</body>
+
+
+</html>

@@ -74,7 +74,7 @@
                                             <td><?php echo $row['subject']; ?></td>
                                             <td><?php echo $row['message']; ?></td>
                                             <td><?php echo $row['submitted_at']; ?></td>
-                                          
+
                                         </tr>
                                         <?php } ?>
                                     </tbody>
@@ -93,8 +93,18 @@
 
     </div>
     <?php include('include/footer.php');?>
+    <?php include('include/datatables.php');?>
 
 
+    <script>
+    $(document).ready(function() {
+        var table = $('#contact_messages_table').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['excelHtml5', 'pdfHtml5', 'print']
+        });
+    });
+    </script>
 </body>
+
 
 </html>

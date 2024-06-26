@@ -41,7 +41,7 @@
 
                 <div class="col-md-12">
                     <div class="card">
-                    
+
                         <div class="card-header">
                             <strong class="card-title">Activity Log List</strong>
                         </div>
@@ -68,7 +68,7 @@
                                             <td><?php echo $row['activity_type']; ?></td>
                                             <td><?php echo $row['activity_description']; ?></td>
                                             <td><?php echo $row['activity_timestamp']; ?></td>
-                                           
+
                                         </tr>
                                         <?php } ?>
                                     </tbody>
@@ -83,8 +83,18 @@
 
     </div>
 
+    <?php include('include/footer.php');?>
+    <?php include('include/datatables.php');?>
 
 
+    <script>
+    $(document).ready(function() {
+        var table = $('#activity_log').DataTable({
+            dom: 'Bfrtip',
+            buttons: ['excelHtml5', 'pdfHtml5', 'print']
+        });
+    });
+    </script>
 </body>
 
 

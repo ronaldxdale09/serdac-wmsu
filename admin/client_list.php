@@ -102,8 +102,17 @@
 <?php include('modal/account.modal.php');?>
 
 <?php include('include/footer.php');?>
+<?php include('include/datatables.php');?>
 
 
+<script>
+$(document).ready(function() {
+    var table = $('#client_record').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['excelHtml5', 'pdfHtml5', 'print']
+    });
+});
+</script>
 
 
 <script>

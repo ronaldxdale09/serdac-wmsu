@@ -51,7 +51,7 @@
                                     <i class="fa fa-user"> </i> NEW ADMIN
                                 </button>
                                 <hr>
-                                <table class="table table-bordered table-hover table-striped" id='patient_record'>
+                                <table class="table table-bordered table-hover table-striped" id='acc_record'>
                                     <thead>
                                         <tr>
                                             <th scope="col">#</th>
@@ -127,7 +127,17 @@
 <?php include('modal/account.modal.php');?>
 
 <?php include('include/footer.php');?>
+<?php include('include/datatables.php');?>
 
+
+<script>
+$(document).ready(function() {
+    var table = $('#acc_record').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['excelHtml5', 'pdfHtml5', 'print']
+    });
+});
+</script>
 
 
 

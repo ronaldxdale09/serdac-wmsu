@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>SERDAC</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="apple-touch-icon" href="../assets/images/serdac.ico">
     <link rel="shortcut icon" href="../assets/images/serdac.ico">
@@ -16,9 +16,18 @@
     <link rel="stylesheet" href="css/chosen.min.css">
     <link rel="stylesheet" href="css/custom.button.css">
 
+ 
+
     <?php include('include/bootstrap.php');?>
 
+    <!-- Custom CSS -->
     <style>
+        /* Additional custom styles here if needed */
+    </style>
+</head>
+
+
+<style>
     #weatherWidget .currentDesc {
         color: #ffffff !important;
     }
@@ -60,8 +69,6 @@
         height: 160px;
     }
     </style>
-</head>
-
 
 <script>
 function formatDate(dateStr) {

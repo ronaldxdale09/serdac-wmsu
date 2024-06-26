@@ -20,6 +20,22 @@
                         <textarea class="form-control" name="remarks" rows="3"
                             placeholder="Enter any final comments or important notes here."></textarea>
                     </div>
+
+                    <!-- Payment Status Dropdown -->
+                    <div class="form-group">
+                        <label for="payment_status">Payment Status:</label>
+                        <select class="form-control" name="payment_status" id="payment_status" readonly>
+                            <option value="paid" selected>Paid</option>
+                        </select>
+                    </div>
+
+                    <!-- Payment Amount Input -->
+                    <div class="form-group">
+                        <label for="payment_amount">Payment Amount:</label>
+                        <input type="number" class="form-control" name="payment_amount" id="payment_amount"
+                            placeholder="Enter the payment amount" step="0.01">
+                    </div>
+
                     <!-- Hidden Request ID -->
                     <input type="hidden" name="request_id" id="c_req_id">
 

@@ -161,6 +161,12 @@ $(document).ready(function() {
 
     // Add new meeting panel
     $('#addMeeting').click(function() {
+        var button = $(this);
+        button.prop('disabled', true); // Disable the button
+        setTimeout(function() {
+            button.prop('disabled', false); // Enable the button after 1 second
+        }, 1000);
+
         var newIndex = $('.meeting-panel')
             .length; // Fetch new index in case other meetings were added or removed
 
@@ -192,7 +198,6 @@ $(document).ready(function() {
         $(this).closest('.meeting-panel').remove();
     });
 
-    // Initialize Bootstrap collapse functionality if needed
     // This ensures that dynamically added accordion components work properly
     $(document).on('show.bs.collapse', '.collapse', function() {
         $(this).siblings('.meeting-header').find('.meeting-toggle').attr('aria-expanded', 'true');
@@ -202,7 +207,6 @@ $(document).ready(function() {
         $(this).siblings('.meeting-header').find('.meeting-toggle').attr('aria-expanded', 'false');
     });
 
-    // Confirm Meeting Button Click Handler in serviceMeetingModal
     $('#btnSaveMeetingForm').on('click', function(e) {
         e.preventDefault();
 
@@ -217,58 +221,58 @@ $(document).ready(function() {
                     icon: 'success',
                     title: 'Meeting Record Successful',
                     text: 'The meeting has been successfully recorded.',
+                    showConfirmButton: false,
+                    timer: 1500,
                     allowOutsideClick: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Populate the email notification modal with the meeting details
-                        var meetingType = $('#m_service-type').val();
-                        var meetingDateTime = $(
-                            '#meeting_form input[name="date_time[]"]').val();
-                        var meetingMode = $('#meeting_form select[name="mode[]"]')
-                            .val(); // Get the value of the selected option
-                        var meetingRemarks = $(
-                            '#meeting_form textarea[name="remarks[]"]').val();
-                        var clientName = $('#m_user-name').val();
-                        var clientEmail = $('#m_email')
-                            .val(); // Ensure this element exists in your form
+                }).then(() => {
+                    // Close the current modal
+                    $('#serviceMeetingModal').modal('hide');
 
-                        var meetingContent = `
-                            Dear ${clientName},
+                    // Populate the email notification modal with the meeting details
+                    var meetingType = $('#m_service-type').val();
+                    var meetingDateTime = $(
+                        '#meeting_form input[name="date_time[]"]').val();
+                    var meetingMode = $('#meeting_form select[name="mode[]"]')
+                .val(); // Get the value of the selected option
+                    var meetingRemarks = $(
+                        '#meeting_form textarea[name="remarks[]"]').val();
+                    var clientName = $('#m_user-name').val();
+                    var clientEmail = $('#m_email')
+                .val(); // Ensure this element exists in your form
 
-                            We are pleased to inform you about an upcoming meeting. Below are the details:
+                    var meetingContent = `
+                    Dear ${clientName},
 
-                            Type: ${meetingType}
-                            Date and Time: ${new Date(meetingDateTime).toLocaleString('en-US', {
-                                year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit'
-                            })}
-                            Mode: ${meetingMode}
-                            Remarks: ${meetingRemarks}
+                    We are pleased to inform you about an upcoming meeting. Below are the details:
 
-                            Please make sure to be available and prepared for this meeting. Should you have any questions or require further information, feel free to contact us.
+                    Type: ${meetingType}
+                    Date and Time: ${new Date(meetingDateTime).toLocaleString('en-US', {
+                        year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute:'2-digit'
+                    })}
+                    Mode: ${meetingMode}
+                    Remarks: ${meetingRemarks}
 
-                            Best regards,
-                            SERDAC-WMSU
-                        `;
+                    Please make sure to be available and prepared for this meeting. Should you have any questions or require further information, feel free to contact us.
 
-                        $('#recipient-name').val(clientName);
-                        $('#recipient-email').val(clientEmail);
-                        $('#meeting-content').val(meetingContent);
+                    Best regards,
+                    SERDAC-WMSU
+                `;
 
-                        // Manually hide all currently visible modals
-                        $("[data-dismiss=modal]").trigger({
-                            type: "click"
-                        });
+                    $('#recipient-name').val(clientName);
+                    $('#recipient-email').val(clientEmail);
+                    $('#meeting-content').val(meetingContent);
 
-                        setTimeout(() => {
-                            var modal = new bootstrap.Modal(document
-                                .getElementById(
-                                    'notifyEmailModal'));
-                            modal.show();
-                        }, 500);
-                    }
+                    // Manually hide all currently visible modals
+                    $("[data-dismiss=modal]").trigger({
+                        type: "click"
+                    });
+
+                    setTimeout(() => {
+                        var modal = new bootstrap.Modal(document
+                            .getElementById('notifyEmailModal'));
+                        modal.show();
+                    }, 500);
                 });
-
-
             },
             error: function(xhr, status, error) {
                 Swal.fire({
@@ -280,6 +284,8 @@ $(document).ready(function() {
             }
         });
     });
+
+
 
     // Notify Email Form Submission Handler
     $('#notifyEmailForm').on('submit', function(e) {

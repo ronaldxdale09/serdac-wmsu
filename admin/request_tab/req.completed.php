@@ -150,6 +150,7 @@
 <script>
 $(document).ready(function() {
     var table = $('#service_progress').DataTable({
+        "scrollX": true,
         dom: 'Bfrtip',
         buttons: ['excelHtml5', 'pdfHtml5', 'print']
     });

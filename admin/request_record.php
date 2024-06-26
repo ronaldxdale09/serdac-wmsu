@@ -1,6 +1,6 @@
-<?php include('include/header.php');
+<?php 
 
-
+include('include/header.php');
 
 $tab = '';
 if (isset($_GET['tab'])) {
@@ -50,6 +50,30 @@ $completed_count = $res['Total'];
     font-family: Arial, sans-serif;
     color: #666;
 }
+
+
+/* Basic styling for the modal backdrop */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    /* Semi-transparent background */
+    z-index: 1040;
+    /* Lower than modal but higher than other content */
+}
+
+/* Styling for the modal itself */
+.modal {
+    position: fixed;
+    z-index: 999999;
+  
+    overflow: hidden;
+    outline: none;
+}
+
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -78,24 +102,6 @@ $completed_count = $res['Total'];
         <?php include('modal/service_analysis.req.php');?>
         <?php include('modal/new_service.php');?>
 
-        <!-- Content -->
-        <div class="breadcrumbs">
-            <div class="breadcrumbs-inner">
-                <div class="row m-0">
-                    <div class="col-sm-8">
-                        <div class="page-header float-left">
-                            <div class="page-title">
-                                <ol class="breadcrumb text-right">
-                                    <li><a href="#">Dashboard</a></li>
-                                    <li><a href="#">Services</a></li>
-                                    <li class="active">Request Record</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="content">
             <div class="container-fluid">

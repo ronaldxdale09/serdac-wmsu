@@ -1,12 +1,24 @@
 <!DOCTYPE html>
 <html>
-<?php 
+<?php
 
+
+
+// Existing code
 include('function/db.php');
+
+if (isset($_SESSION["isLogin"])) {
+    if ($_SESSION["isLogin"] == 1) {
+        header("Location: index.php");
+        exit();
+    }
+    // If isLogin is not 1 (e.g., 0), allow login
+}
+
+
 $codeExists = false;
 
 if (isset($_GET["code"])) {
-
     $activationCode = $_GET['code'];
     // Prepare a statement to avoid SQL injection
     $stmt = $con->prepare("SELECT * FROM users WHERE activationCode = ?");
@@ -18,17 +30,16 @@ if (isset($_GET["code"])) {
         // Valid activation code
         $codeExists = true;
 
-        $stmt = $con->prepare("UPDATE users SET  `isActive` = 1 WHERE activationCode = ?");
+        $stmt = $con->prepare("UPDATE users SET `isActive` = 1 WHERE activationCode = ?");
         $stmt->bind_param("s", $activationCode);
         $stmt->execute();
     }
     $stmt->close();
 }
 $con->close();
-
-// After closing the PHP tag, place your HTML outside of PHP
 ?>
 
+<!-- After closing the PHP tag, place your HTML outside of PHP -->
 <?php if ($codeExists): ?>
 <script>
 window.onload = function() {
@@ -36,12 +47,6 @@ window.onload = function() {
 };
 </script>
 <?php endif; ?>
-
-.
-
-
-
-
 
 <head>
     <title>SERDAC-WMSU</title>
