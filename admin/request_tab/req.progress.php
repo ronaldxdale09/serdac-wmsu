@@ -9,7 +9,7 @@
                 LEFT JOIN users u ON u.user_id = sr.user_id
                 WHERE sr.status = 'In Progress' ");
                 ?>
-    <table class="table table-hover" id='service_prog_table'>
+    <table class="table table-hover" id='service_prog_table' style="width: 100% !important;">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -115,13 +115,26 @@
 <script>
 $(document).ready(function() {
     var table = $('#service_prog_table').DataTable({
-        "scrollX": true,
-        dom: 'Bfrtip',
-        buttons: ['excelHtml5', 'pdfHtml5', 'print']
+        responsive: true,
+        scrollX: false,
+        autoWidth: false,
+        dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        buttons: ['excelHtml5', 'pdfHtml5', 'print'],
+        columnDefs: [{
+                width: '60px',
+                targets: 0
+            }, // Assuming ID is the first column
+            {
+                width: 'auto',
+                targets: '_all'
+            }
+        ]
+    });
+
+    $(window).on('resize', function() {
+        table.columns.adjust().draw();
     });
 });
-
-
 
 $('.btnCompleteService').on('click', function() {
     var req = $(this).data('req');

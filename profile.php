@@ -45,6 +45,7 @@ if (isset($_SESSION["userId_code"])) {
 
 <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
 
+
 <body>
     <?php include('include/navbar.php');?>
     <!-- ***** Header Area End ***** -->
@@ -115,7 +116,8 @@ if (isset($_SESSION["userId_code"])) {
                                         <li class="nav-item">
                                             <a href="javascript:void();" data-target="#messages" data-toggle="pill"
                                                 class="nav-link">
-                                                <i class="fas fa-envelope-open"></i> <span class="hidden-xs">SERVICE REQUEST <span class="badge bg-danger text-light">
+                                                <i class="fas fa-envelope-open"></i> <span class="hidden-xs">SERVICE
+                                                    REQUEST <span class="badge bg-danger text-light">
                                                         <?php echo $req_count ?> </span></span>
                                             </a>
                                         </li>
@@ -135,7 +137,7 @@ if (isset($_SESSION["userId_code"])) {
                                             <?php include('user/request.php'); ?>
                                         </div>
                                         <div class="tab-pane" id="edit">
-                                        <?php include('user/training.php'); ?>
+                                            <?php include('user/training.php'); ?>
 
                                         </div>
                                     </div>
@@ -151,13 +153,23 @@ if (isset($_SESSION["userId_code"])) {
         <script src="vendor/jquery/jquery.min.js"></script>
         <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-        <script src="assets/js/isotope.min.js"></script>
-        <script src="assets/js/owl-carousel.js"></script>
-        <script src="assets/js/lightbox.js"></script>
-        <script src="assets/js/tabs.js"></script>
-        <script src="assets/js/video.js"></script>
-        <script src="assets/js/slick-slider.js"></script>
-        <script src="assets/js/custom.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.24/css/jquery.dataTables.css">
+        <link rel="stylesheet" type="text/css"
+            href="https://cdn.datatables.net/buttons/1.7.0/css/buttons.dataTables.min.css">
+        <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.js">
+        </script>
+        <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/buttons/1.7.0/js/dataTables.buttons.min.js"></script>
+        <script type="text/javascript" charset="utf8"
+            src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+        <script type="text/javascript" charset="utf8"
+            src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+        <script type="text/javascript" charset="utf8"
+            src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+        <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.html5.min.js"></script>
+        <script type="text/javascript" charset="utf8"
+            src="https://cdn.datatables.net/buttons/1.7.0/js/buttons.print.min.js"></script>
         <br>
     </section>
 

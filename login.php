@@ -91,12 +91,12 @@ window.onload = function() {
                     <input type="checkbox" id="checkbox">
                     <label for="checkbox">Remember me</label>
                 </div>
-                <a href="#">Forget password?</a>
+                <a href="reset_pass.php">Forget password?</a>
             </div>
             <button type="submit" class="btn">LOGIN</button>
             <div class="account-exist">
                 Create a new account? <a href="registration.php" id="signup">Signup</a>
-                <button onclick="location.href='index.php';" class="btn-dashboard">Return to Dashboard</button>
+                <button onclick="location.href='index.php';" class="btn-dashboard">Return to Homepage</button>
 
             </div>
         </form>

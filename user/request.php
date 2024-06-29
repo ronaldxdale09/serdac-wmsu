@@ -132,13 +132,49 @@
             <i class="fas fa-chart-line"></i> <span>REQUEST SERVICE</span>
         </a>
 
+    </div> <br>
+    <div class="row mb-3">
+        <!-- Date Range Filter -->
+        <div class="col-md-3 mb-3">
+            <label for="filterDateFrom">From Date:</label>
+            <input type="date" id="filterDateFrom" class="form-control">
+        </div>
+        <div class="col-md-3 mb-3">
+            <label for="filterDateTo">To Date:</label>
+            <input type="date" id="filterDateTo" class="form-control">
+        </div>
+
+        <!-- Service Type Filter -->
+        <div class="col-md-3 mb-3">
+            <label for="filterServiceType">Service Type:</label>
+            <select id="filterServiceType" class="form-control">
+                <option value="">All</option>
+                <option value="data-analysis">Data Analysis</option>
+                <option value="capability-training">Capability Training</option>
+                <option value="technical-assistance">Technical Assistance</option>
+            </select>
+        </div>
+
+        <!-- Status Filter -->
+        <div class="col-md-3 mb-3">
+            <label for="filterStatus">Status:</label>
+            <select id="filterStatus" class="form-control">
+                <option value="">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Cancelled">Cancelled</option>
+                <option value="Completed">Completed</option>
+            </select>
+        </div>
     </div>
-    <br>
+
     <div class="table-responsive custom-table-container">
-        <table class="table table-hover" id='service_request_table'>
+        <table class="table table-hover" id='client_req_table'>
             <thead>
                 <tr>
                     <th scope="col">ID</th>
+                    <th scope="col">Date Requested</th>
                     <th scope="col">Service</th>
                     <th scope="col">Office</th>
                     <th scope="col">Purpose</th>
@@ -230,6 +266,9 @@
                 <tr>
                     <td><?php echo $row['request_id']; ?></td>
                     <td>
+                        <?php echo date('M j, Y', strtotime($row['request_date'])); ?>
+                    </td>
+                    <td>
                         <?php echo $row['service_type']; ?>
                     </td>
                     <td><?php echo $row['office_agency']; ?></td>
@@ -275,10 +314,71 @@
 
     <?php include('modal/service_analysis.req.php'); ?>
 </div>
-
-
-
 <script>
+$(document).ready(function() {
+    $.fn.dataTable.ext.search.push(
+        function(settings, data, dataIndex) {
+            var dateFrom = $('#filterDateFrom').val();
+            var dateTo = $('#filterDateTo').val();
+            var serviceType = $('#filterServiceType').val();
+            var status = $('#filterStatus').val();
+
+            var rowDate = new Date(data[0]); // Date is now in the first column
+            var rowServiceType = data[2]; // Service type is now in the third column
+            var rowStatus = data[5]; // Status is now in the sixth column
+
+            var dateCheck = (!dateFrom || !dateTo || (rowDate >= new Date(dateFrom) && rowDate <= new Date(
+                dateTo)));
+
+            if (
+                dateCheck &&
+                (serviceType === "" || rowServiceType.includes(serviceType)) &&
+                (status === "" || rowStatus.includes(status))
+            ) {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    var table = $('#client_req_table').DataTable({
+        responsive: true,
+        scrollX: false,
+        autoWidth: false,
+        dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        buttons: ['excelHtml5', 'pdfHtml5', 'print'],
+        columnDefs: [{
+                width: '100px',
+                targets: 0
+            }, // Date column
+            {
+                width: '60px',
+                targets: 1
+            }, // ID column
+            {
+                width: 'auto',
+                targets: '_all'
+            },
+            {
+                orderable: false,
+                targets: 6
+            } // Disable sorting for the actions column
+        ],
+        order: [
+            [0, 'desc']
+        ] // Sort by date in descending order
+    });
+
+    $('#filterDateFrom, #filterDateTo, #filterServiceType, #filterStatus').change(function() {
+        table.draw();
+    });
+
+    $(window).on('resize', function() {
+        table.columns.adjust().draw();
+    });
+});
+
+
 // Update the statistical cards with PHP variables
 document.getElementById('status-pending').innerText = <?php echo $status_pending; ?>;
 document.getElementById('status-approved').innerText = <?php echo $status_approved; ?>;

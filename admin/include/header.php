@@ -12,63 +12,64 @@
     <link rel="apple-touch-icon" href="../assets/images/serdac.ico">
     <link rel="shortcut icon" href="../assets/images/serdac.ico">
     <link rel="icon" type="image/x-icon" href="../assets/images/serdac.ico">
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
-    <link rel="stylesheet" href="css/chosen.min.css">
-    <link rel="stylesheet" href="css/custom.button.css">
 
- 
 
-    <?php include('include/bootstrap.php');?>
-
-    <!-- Custom CSS -->
-    <style>
-        /* Additional custom styles here if needed */
-    </style>
 </head>
 
+<!-- jQuery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
+
+<?php include('include/bootstrap.php');?>
+
+
+
+<link rel="stylesheet" href="css/custom.button.css">
 <style>
-    #weatherWidget .currentDesc {
-        color: #ffffff !important;
-    }
+#weatherWidget .currentDesc {
+    color: #ffffff !important;
+}
 
-    .traffic-chart {
-        min-height: 335px;
-    }
+.traffic-chart {
+    min-height: 335px;
+}
 
-    #flotPie1 {
-        height: 150px;
-    }
+#flotPie1 {
+    height: 150px;
+}
 
-    #flotPie1 td {
-        padding: 3px;
-    }
+#flotPie1 td {
+    padding: 3px;
+}
 
-    #flotPie1 table {
-        top: 20px !important;
-        right: -10px !important;
-    }
+#flotPie1 table {
+    top: 20px !important;
+    right: -10px !important;
+}
 
-    .chart-container {
-        display: table;
-        min-width: 270px;
-        text-align: left;
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
+.chart-container {
+    display: table;
+    min-width: 270px;
+    text-align: left;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
 
-    #flotLine5 {
-        height: 105px;
-    }
+#flotLine5 {
+    height: 105px;
+}
 
-    #flotBarChart {
-        height: 150px;
-    }
+#flotBarChart {
+    height: 150px;
+}
 
-    #cellPaiChart {
-        height: 160px;
-    }
-    </style>
+#cellPaiChart {
+    height: 160px;
+}
+</style>
 
 <script>
 function formatDate(dateStr) {
@@ -83,10 +84,6 @@ function formatDate(dateStr) {
         minute: 'numeric',
         hour12: true
     };
-    return dateObj.toLocaleDateString('en-US', options) ;
+    return dateObj.toLocaleDateString('en-US', options);
 }
-
-
-
-
 </script>

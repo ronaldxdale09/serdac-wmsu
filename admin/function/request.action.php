@@ -98,7 +98,7 @@
 
           // Update the service_request status
           $updateQuery = "UPDATE service_request SET status='Completed',completed_remarks='$remarks',
-           ongoing_date=NOW(),payment_status='$payment_status',payment_amount='$payment_amount'
+           ongoing_date=NOW(),payment_status='$payment_status',payment_amount='$payment_amount',completed_date=NOW()
           WHERE request_id = '$request_id'";
         $updateResult = mysqli_query($con, $updateQuery);
             

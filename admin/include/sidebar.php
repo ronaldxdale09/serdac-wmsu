@@ -117,18 +117,18 @@ function hasAccess($accessList, $access) {
                         <i class="menu-icon fa fa-file"></i>Reports
                     </a>
                     <ul class="sub-menu children dropdown-menu">
-                        <?php if (hasAccess($userAccess, 'activities_events_reports')): ?>
-                        <li><i class="fa fa-calendar"></i><a href="activities_events_reports.php">Activities/Events</a>
+                        <?php if (hasAccess($userAccess, 'report_client')): ?>
+                        <li><i class="fa fa-calendar"></i><a href="report_activities_events.php">Service Report</a>
                         </li>
                         <?php endif; ?>
-                        <?php if (hasAccess($userAccess, 'registered_users_client_reports')): ?>
-                        <li><i class="menu-icon fa fa-users"></i><a
-                                href="registered_users_client_reports.php">Registered Users/Client</a></li>
+                        <?php if (hasAccess($userAccess, 'report_client')): ?>
+                        <li><i class="fa fa-calendar"></i><a href="report_activities_events.php">Summary Report</a>
+                        </li>
                         <?php endif; ?>
-                        <?php if (hasAccess($userAccess, 'services_rendered_reports')): ?>
-                        <li><i class="menu-icon fa fa-cogs"></i><a href="services_rendered_reports.php">Services
-                                Rendered</a></li>
+                        <?php if (hasAccess($userAccess, 'report_client')): ?>
+                        <li><i class="menu-icon fa fa-users"></i><a href="report_client.php">Client Report</a></li>
                         <?php endif; ?>
+
                         <?php if (hasAccess($userAccess, 'assessments_reports')): ?>
                         <li><i class="menu-icon fa fa-check"></i><a href="assessments_reports.php">Assessments</a></li>
                         <?php endif; ?>
@@ -157,11 +157,7 @@ function hasAccess($accessList, $access) {
                 </li>
                 <?php endif; ?>
 
-                <?php if (hasAccess($userAccess, 'summary_report')): ?>
-                <li>
-                    <a href="report.php"><i class="menu-icon fas fa-chart-pie"></i> Summary Report </a>
-                </li>
-                <?php endif; ?>
+
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>

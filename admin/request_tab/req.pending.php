@@ -1,43 +1,8 @@
-<!-- <div class="row">
-
-    <div class="col-md-3 mb-3">
-        <label for="filterStatus"> Service Type:</label>
-        <select id="filterStatus" class="form-control">
-            <option value="">All</option>
-            <option value="Shipped Out">Capability Training</option>
-            <option value="Sold">Data Analysis</option>
-            <option value="In Progress">In Progress</option>
-
-        </select>
-    </div>
-
-
-    <div class="col-md-3 mb-3">
-        <label for="filterMonth">Month:</label>
-        <select id="filterMonth" class="form-control">
-            <option value="">All</option>
-            <?php
-            for ($i = 1; $i <= 12; $i++) {
-                echo '<option value="' . $i . '">' . date("F", mktime(0, 0, 0, $i, 10)) . '</option>';
-            }
-            ?>
-        </select>
-    </div>
-    <div class="col-md-3 mb-3">
-        <label for="filterYear">Year:</label>
-        <select id="filterYear" class="form-control">
-            <option value="">All</option>
-            <?php
-            $currentYear = date("Y");
-            $startYear = 2022;
-            for ($i = $startYear; $i <= $currentYear; $i++) {
-                echo '<option value="' . $i . '">' . $i . '</option>';
-            }
-            ?>
-        </select>
-    </div>
-
-</div> -->
+<style>
+#service_sched_table {
+    width: 100%;
+}
+</style>
 
 <div class="table-responsive custom-table-container">
     <?php

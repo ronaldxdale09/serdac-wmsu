@@ -153,11 +153,20 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                 <div class="form-group col-md-6">
                                                     <label for="formType">Form Type</label>
                                                     <select id="formType" name="form_type" class="form-control">
-                                                        <option value="" selected disabled>Select Form Type</option>
-                                                        <option value="survey">Survey</option>
-                                                        <option value="post_assessment">Post Assessment</option>
-                                                        <option value="pre_assessment">Pre Assessment</option>
-                                                        <!-- Add more options as needed -->
+                                                        <option value="" selected >Select Form Type</option>
+                                                        <?php
+                                                            // Fetch form types from the asmt_form_type table
+                                                            $sql = "SELECT * FROM asmt_form_type";
+                                                            $result = $con->query($sql);
+                                                            
+                                                            if ($result->num_rows > 0) {
+                                                                while($row = $result->fetch_assoc()) {
+                                                                    echo "<option value='".htmlspecialchars($row["form_type"])."'>".htmlspecialchars($row["form_type"])."</option>";
+                                                                }
+                                                            } else {
+                                                                echo "<option value='' disabled>No form types available</option>";
+                                                            }
+                                                            ?>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">

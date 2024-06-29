@@ -40,7 +40,7 @@
                 GROUP BY sr.request_id
                 ORDER BY latest_meeting_date DESC, sr.request_date DESC;");
                             ?>
-    <table class="table table-hover" id='service_sched_table'>
+    <table class="table table-hover" id='service_sched_table' style="width: 100% !important;">
         <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -136,17 +136,31 @@
 
 
 <script>
+
+
 $(document).ready(function() {
     var table = $('#service_sched_table').DataTable({
-        "scrollX": true,
-        dom: 'Bfrtip',
-        buttons: ['excelHtml5', 'pdfHtml5', 'print']
+        responsive: true,
+        scrollX: false,
+        autoWidth: false,
+        dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        buttons: ['excelHtml5', 'pdfHtml5', 'print'],
+        columnDefs: [{
+                width: '60px',
+                targets: 0
+            }, // Assuming ID is the first column
+            {
+                width: 'auto',
+                targets: '_all'
+            }
+        ]
+    });
+
+    $(window).on('resize', function() {
+        table.columns.adjust().draw();
     });
 });
 $(document).ready(function() {
-
-
-
 
 
     // Proceed Button Click Handler

@@ -91,7 +91,7 @@
 
                 <button type="button" class="btn btn-danger btnCancelRequest" data-toggle="modal"
                     data-target="#cancelServiceRequestModal" data-request-id="123">
-                    <i class="fas fa-times-circle"></i> Cancel Request
+                    <i class="fas fa-times-circle"></i> Decline Request
                 </button>
                 <button type="button" class="btn btn-success assign_sched" id="assign-sched"><i
                         class="fas fa-calendar-alt"></i> Assign Schedule</button>

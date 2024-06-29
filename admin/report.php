@@ -67,7 +67,7 @@ if (isset($_GET['tab'])) {
 
                             <!-- Scheduled -->
                             <label for="blog" class="blog">
-                                <i class="fas fa-calendar-alt"></i> Graphical Report
+                                <i class="fas fa-calendar-alt"></i> Service Detailed Report
                                 <span class="badge bg-danger text-light"></span>
                             </label>
 
@@ -77,19 +77,15 @@ if (isset($_GET['tab'])) {
                         </nav>
                         <section>
                             <div class="content content-1">
-                            <?php include('statistical_card/report_card.php'); ?>
-                            <?php include('report/summary_report.php'); ?>
+                                <?php include('report/summary_report.php'); ?>
 
                             </div>
                             <div class="content content-2">
+                                <?php include('report/detailed_report.php'); ?>
 
-                                <div class="title"
-                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    Scheduled Request</div>
-                                <hr>
 
                             </div>
-                         
+
                         </section>
                     </div>
 
@@ -105,6 +101,5 @@ if (isset($_GET['tab'])) {
 
     <?php include('include/datatables.php');?>
 </body>
-
 
 </html>

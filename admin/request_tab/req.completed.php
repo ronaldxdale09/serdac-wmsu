@@ -1,16 +1,24 @@
-<div class="row">
-    <!-- Check Status Filter -->
+<div class="row mb-3">
+    <!-- Status Filter -->
     <div class="col-md-3 mb-3">
-        <label for="filterStatus"> Service Type:</label>
+        <label for="filterStatus">Status:</label>
         <select id="filterStatus" class="form-control">
             <option value="">All</option>
-            <option value="Shipped Out">Capability Training</option>
-            <option value="Sold">Data Analysis</option>
-            <option value="In Progress">In Progress</option>
-
+            <option value="Completed">Completed</option>
+            <!-- Add other status options as needed -->
         </select>
     </div>
 
+    <!-- Service Type Filter -->
+    <div class="col-md-3 mb-3">
+        <label for="filterServiceType">Service Type:</label>
+        <select id="filterServiceType" class="form-control">
+            <option value="">All</option>
+            <option value="data-analysis">Data Analysis</option>
+            <option value="capability-training">Capability Training</option>
+            <option value="technical-assistance">Technical Assistance</option>
+        </select>
+    </div>
 
     <!-- Month Filter -->
     <div class="col-md-3 mb-3">
@@ -24,6 +32,8 @@
             ?>
         </select>
     </div>
+
+    <!-- Year Filter -->
     <div class="col-md-3 mb-3">
         <label for="filterYear">Year:</label>
         <select id="filterYear" class="form-control">
@@ -37,7 +47,6 @@
             ?>
         </select>
     </div>
-
 </div>
 
 <div class="table-responsive custom-table-container">
@@ -56,6 +65,7 @@
 
                 <th scope="col">Service Type</th>
                 <th scope="col">Agency</th>
+                <th scope="col">Date Completed</th>
 
                 <th scope="col">Remarks</th>
 
@@ -96,6 +106,7 @@
                         <?php echo $row['service_type']; ?>
                     </span></td>
                 <td><?php echo $row['office_agency']; ?></td>
+                <td><?php echo $row['completed_date']; ?></td>
 
 
                 <td><?php echo $row['inprogress_remarks']; ?></td>
@@ -149,10 +160,60 @@
 
 <script>
 $(document).ready(function() {
-    var table = $('#service_progress').DataTable({
-        "scrollX": true,
-        dom: 'Bfrtip',
-        buttons: ['excelHtml5', 'pdfHtml5', 'print']
+
+  
+
+
+
+    $.fn.dataTable.ext.search.push(
+        function(settings, data, dataIndex) {
+            var status = $('#filterStatus').val();
+            var serviceType = $('#filterServiceType').val();
+            var month = parseInt($('#filterMonth').val(), 10);
+            var year = parseInt($('#filterYear').val(), 10);
+
+            var rowStatus = data[1]; // Assuming status is in the second column
+            var rowServiceType = data[3]; // Assuming service type is in the fourth column
+            var rowDate = new Date(data[5]);
+
+            if (
+                (status === "" || rowStatus.includes(status)) &&
+                (serviceType === "" || rowServiceType.includes(serviceType)) &&
+                (isNaN(month) || rowDate.getMonth() + 1 === month) &&
+                (isNaN(year) || rowDate.getFullYear() === year)
+            ) {
+                return true;
+            }
+            return false;
+        }
+    );
+
+    var table = $('#service_completed_table').DataTable({
+        responsive: true,
+        scrollX: false,
+        autoWidth: false,
+        dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>rt<"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
+        buttons: ['excelHtml5', 'pdfHtml5', 'print'],
+        columnDefs: [{
+                width: '60px',
+                targets: 0
+            }, // ID column
+            {
+                width: 'auto',
+                targets: '_all'
+            }
+        ],
+        order: [
+            [0, 'desc']
+        ] // Sort by ID in descending order
+    });
+
+    $('#filterStatus, #filterServiceType, #filterMonth, #filterYear').change(function() {
+        table.draw();
+    });
+
+    $(window).on('resize', function() {
+        table.columns.adjust().draw();
     });
 });
 

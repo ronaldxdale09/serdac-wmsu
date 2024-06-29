@@ -1,6 +1,8 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="css/assmt.form.view.css">
 <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 
 <body>
     <!-- Left Panel -->
@@ -42,9 +44,14 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <strong class="card-title">Assessment Form List</strong>
-                            <a href="form_builder.php" class="btn btn-primary btn-sm" id="addNewFormBtn">
-                                <i class="fas fa-plus"></i> New Form
-                            </a>
+                            <div>
+                                <a href="form_builder.php" class="btn btn-primary btn-sm" id="addNewFormBtn">
+                                    <i class="fas fa-plus"></i> New Form
+                                </a>
+                                <button class="btn btn-primary btn-sm" id="manageFormTypesBtn">
+                                    <i class="fas fa-cog"></i> Manage Form Types
+                                </button>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive custom-table-container">
@@ -150,6 +157,7 @@
 
     <?php include('modal/response.form.modal.php');?>
     <?php include('modal/assessment.invite.php');?>
+    <?php include('modal/assessment.form_type.php');?>
 
     <script>
     $(document).ready(function() {
@@ -250,6 +258,131 @@
             });
 
             $('#emailModal').modal('show');
+        });
+    });
+
+    $(document).ready(function() {
+        $('#manageFormTypesBtn').click(function() {
+            var modal = new bootstrap.Modal(document.getElementById('formTypeModal'));
+            modal.show();
+            loadFormTypes();
+        });
+
+        $('#addFormTypeBtn').click(function() {
+            showFormTypeForm();
+        });
+
+        $('#cancelFormType').click(function(e) {
+            e.preventDefault();
+            hideFormTypeForm();
+        });
+
+        $('#formTypeForm').submit(function(e) {
+            e.preventDefault();
+            saveFormType();
+        });
+
+        function showFormTypeForm() {
+            $('#addFormTypeBtn').hide();
+            $('#formTypeForm').show();
+        }
+
+        function hideFormTypeForm() {
+            $('#addFormTypeBtn').show();
+            $('#formTypeForm').hide();
+            $('#formTypeId').val('');
+            $('#formType').val('');
+        }
+
+        function loadFormTypes() {
+            $.ajax({
+                url: 'function/assessment.form_type.php',
+                type: 'GET',
+                data: {
+                    action: 'read'
+                },
+                success: function(response) {
+                    $('#formTypeTableBody').html(response);
+                }
+            });
+        }
+
+        function saveFormType() {
+            var formData = $('#formTypeForm').serialize();
+            var action = $('#formTypeId').val() ? 'update' : 'create';
+
+            $.ajax({
+                url: 'function/assessment.form_type.php',
+                type: 'POST',
+                data: formData + '&action=' + action,
+                success: function(response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response,
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                    loadFormTypes();
+                    hideFormTypeForm();
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    });
+                }
+            });
+        }
+
+        $(document).on('click', '.edit-form-type', function() {
+            var id = $(this).data('id');
+            var formType = $(this).data('form-type');
+            $('#formTypeId').val(id);
+            $('#formType').val(formType);
+            showFormTypeForm();
+        });
+
+        $(document).on('click', '.delete-form-type', function() {
+            var id = $(this).data('id');
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'function/assessment.form_type.php',
+                        type: 'POST',
+                        data: {
+                            action: 'delete',
+                            formTypeId: id
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: response,
+                                timer: 1500,
+                                showConfirmButton: false
+                            });
+                            loadFormTypes();
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Oops...',
+                                text: 'Something went wrong!',
+                            });
+                        }
+                    });
+                }
+            });
         });
     });
     </script>
