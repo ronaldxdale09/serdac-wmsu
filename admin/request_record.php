@@ -225,7 +225,6 @@ $completed_count = $res['Total'];
     </div>
     <?php include('include/footer.php');?>
 
-    <?php include('include/datatables.php');?>
 
 </body>
 

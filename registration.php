@@ -42,6 +42,28 @@
 .data-privacy .checkbox label {
     font-size: 12px;
 }
+
+.password-requirements {
+    margin-top: 5px;
+    font-size: 0.8em;
+}
+
+.requirement {
+    color: #ff0000;
+    margin: 2px 0;
+}
+
+.requirement::before {
+    content: '✗ ';
+}
+
+.requirement.met {
+    color: #00ff00;
+}
+
+.requirement.met::before {
+    content: '✓ ';
+}
 </style>
 
 <body>
@@ -56,26 +78,57 @@
                             </div>
                             <div class="steps-content">
                                 <h3>Step <span class="step-number">1</span></h3>
-                                <p class="step-number-content active">Enter your personal information to get closer to
+                                <p class="step-number-content active">Please review and accept our data privacy
+                                    agreement.</p>
+                                <p class="step-number-content d-none">Enter your personal information to get closer to
                                     companies.</p>
-                                <p class="step-number-content d-none">Get to know better by adding your
-                                    diploma,certificate
-                                    and education life.</p>
-                                <p class="step-number-content d-none">Help companies get to know you better by telling
-                                    then
-                                    about your past experiences.</p>
-                                <p class="step-number-content d-none">Add your profile piccture and let companies find
-                                    youy
-                                    fast.</p>
+                                <p class="step-number-content d-none">Inform companies about your current address.</p>
+                                <p class="step-number-content d-none">Set up your account information.</p>
                             </div>
                             <ul class="progress-bar">
-                                <li class="active">Personal Information</li>
+                                <li class="active">Data Privacy</li>
+                                <li>Personal Information</li>
                                 <li>Address</li>
                                 <li>Account Info</li>
                             </ul>
                     </div>
                     <div class="right-side">
+
                         <div class="main active">
+                            <small>
+                                <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
+                                    class="school-logo" />
+                            </small>
+                            <div class="text">
+                                <h2>Data Privacy Agreement</h2>
+                                <p>Please review our data privacy policy before proceeding.</p>
+                            </div>
+                            <div class="data-privacy">
+                                <p>
+                                    All information will remain secured and confidential within the organization and
+                                    only authorized personnel shall have access to them. This is guided and in
+                                    compliance with the Data Privacy
+                                    Act of 2012. The act includes the right to object to the processing of your data,
+                                    the right to access
+                                    your data, the right to correct any inaccurate data, and the right to erasure or
+                                    blocking of data.
+                                </p>
+                                <div class="checkbox">
+                                    <input type="checkbox" id="agree" name="agree">
+                                    <label for="agree">By clicking I Agree and proceeding with this online registration,
+                                        you are
+                                        giving us consent to collect your data.</label>
+                                </div>
+                            </div> <br>
+                            <div class="buttons">
+
+
+                                <button class="next_button" id="agreeButton">I Agree</button>
+                            </div>
+                        </div>
+
+
+                        <div class="main">
                             <small> <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
                                     class="school-logo" />
                             </small>
@@ -89,7 +142,7 @@
                                     <span>First Name</span>
                                 </div>
                                 <div class="input-div">
-                                    <input type="text" required name="midname">
+                                    <input type="text" name="midname">
                                     <span>Middle Name</span>
                                 </div>
                                 <div class="input-div">
@@ -102,30 +155,26 @@
                                     <input type="text" id="contact_no" name="contact_no" required maxlength="11"
                                         pattern="\d{11}" inputmode="numeric" title="Please enter exactly 11 digits"
                                         oninput="this.value = this.value.replace(/\D/g, '')">
-
                                     <span>Phone number</span>
 
                                 </div>
                                 <div class="input-div">
-                                    <select name="sex">
+                                    <select name="sex" required>
                                         <option selected disabled>Select Sex...</option>
 
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
-                                        <option value="Prefer not to say">Prefer not to say</option>
-                                        <option value="Prefer to self-describe">Prefer to self-describe</option>
 
                                     </select>
                                 </div>
                                 <div class="input-div">
-                                    <select name="gender">
+                                    <select name="gender" required>
                                         <option selected disabled>Select Gender...</option>
                                         <option value="Man">Man</option>
                                         <option value="Woman">Woman</option>
                                         <option value="Non-Binary">Non-Binary</option>
                                         <option value="Transgender">Transgender</option>
                                         <option value="Intersex">Intersex</option>
-                                        <option value="Prefer not to say">Prefer not to say</option>
                                     </select>
                                 </div>
 
@@ -162,6 +211,7 @@
                             </div>
 
                             <div class="buttons">
+                                <button class="back_button">Back</button>
                                 <button class="next_button">Next Step</button>
                             </div>
                         </div>
@@ -202,7 +252,7 @@
                             </div>
                         </div>
 
-                        <div class="main">
+                        <div class="main ">
                             <div class="text">
                                 <h2>Account Information</h2>
                             </div>
@@ -218,31 +268,20 @@
                                 <div class="input-div">
                                     <input type="password" class="form-control" name="password" id="password" required>
                                     <span>Password: *</span>
+                                    <div class="password-requirements">
+                                        <p id="length-check" class="requirement">At least 6 characters</p>
+                                        <p id="number-check" class="requirement">Contains a number</p>
+                                        <p id="symbol-check" class="requirement">Contains a symbol</p>
+                                    </div>
                                 </div>
                                 <div class="input-div">
                                     <input type="password" class="form-control" name="confirm_pass"
                                         id="confirm-password" required>
                                     <span>Confirm Password: *</span>
+                                    <p id="password-match" class="requirement">Passwords match</p>
                                 </div>
                             </div>
 
-                            <div class="data-privacy">
-                                <p>
-                                    All information will remain secured and confidential within the organization and
-                                    only authorized personnel
-                                    shall have access to them. This is guided and in compliance with the Data Privacy
-                                    Act of 2012. The act
-                                    includes the right to object to the processing of your data, the right to access
-                                    your data, the right to
-                                    correct any inaccurate data, and the right to erasure or blocking of data.
-                                </p>
-                                <div class="checkbox">
-                                    <input type="checkbox" id="agree" name="agree">
-                                    <label for="agree">By clicking I Agree and proceeding with this online registration, you are
-                                        giving us consent to
-                                        collect your data.</label>
-                                </div>
-                            </div>
                             <br>
 
                             <div class="buttons button_space">
@@ -367,31 +406,149 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-
-
 <script>
-$(document).ready(function() {
-    var next_click = document.querySelectorAll(".next_button");
-    var main_form = document.querySelectorAll(".main");
-    var step_list = document.querySelectorAll(".progress-bar li");
-    var num = document.querySelector(".step-number");
-    let formnumber = 0;
+document.addEventListener('DOMContentLoaded', function() {
+    // DOM element references
+    const form = document.getElementById('regForm');
+    const nextButtons = document.querySelectorAll(".next_button");
+    const backButtons = document.querySelectorAll(".back_button");
+    const submitButton = document.querySelector(".submit_button");
+    const mainForms = document.querySelectorAll(".main");
+    const stepList = document.querySelectorAll(".progress-bar li");
+    const stepNumber = document.querySelector(".step-number");
+    const stepNumContent = document.querySelectorAll(".step-number-content");
+    const agreeCheckbox = document.getElementById('agree');
+    const agreeButton = document.getElementById('agreeButton');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const lengthCheck = document.getElementById('length-check');
+    const numberCheck = document.getElementById('number-check');
+    const symbolCheck = document.getElementById('symbol-check');
+    const passwordMatch = document.getElementById('password-match');
 
-    next_click.forEach(function(next_click_form) {
-        next_click_form.addEventListener('click', function() {
-            if (!validateform()) {
-                return false
+    // Global variables
+    let formnumber = 0;
+    const symbolRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+
+    // Utility functions
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    function isValidPassword(password) {
+        return password.length >= 6 && /\d/.test(password) && symbolRegex.test(password);
+    }
+
+    function showAlert(icon, title, text) {
+        Swal.fire({
+            icon,
+            title,
+            text
+        });
+    }
+
+    // Password validation functions
+    function updatePasswordRequirements() {
+        const password = passwordInput.value;
+        lengthCheck.classList.toggle('met', password.length >= 6);
+        numberCheck.classList.toggle('met', /\d/.test(password));
+        symbolCheck.classList.toggle('met', symbolRegex.test(password));
+        checkPasswordMatch();
+    }
+
+    function checkPasswordMatch() {
+        passwordMatch.classList.toggle('met',
+            passwordInput.value === confirmPasswordInput.value && passwordInput.value !== '');
+    }
+
+    // Form navigation functions
+    function updateform() {
+        mainForms.forEach(form => form.classList.remove('active'));
+        mainForms[formnumber].classList.add('active');
+    }
+
+    function progress_forward() {
+        stepNumber.innerHTML = formnumber + 1;
+        stepList[formnumber].classList.add('active');
+    }
+
+    function progress_backward() {
+        stepList[formnumber].classList.remove('active');
+        stepNumber.innerHTML = formnumber;
+    }
+
+    function contentchange() {
+        stepNumContent.forEach(content => {
+            content.classList.remove('active');
+            content.classList.add('d-none');
+        });
+        stepNumContent[formnumber].classList.remove('d-none');
+        stepNumContent[formnumber].classList.add('active');
+    }
+
+    // Form validation function
+    function validateform() {
+        let isValid = true;
+        const currentForm = mainForms[formnumber];
+        const inputs = currentForm.querySelectorAll("input[required], select[required]");
+
+        inputs.forEach(input => {
+            input.classList.remove('warning');
+            if (input.value.trim() === '' || (input.tagName === 'SELECT' && input.value === '')) {
+                isValid = false;
+                input.classList.add('warning');
             }
-            formnumber++;
-            updateform();
-            progress_forward();
-            contentchange();
+        });
+
+        if (formnumber === 3) { // Account Information step
+            const emailInput = currentForm.querySelector("input[type='email']");
+            if (emailInput && !isValidEmail(emailInput.value)) {
+                isValid = false;
+                emailInput.classList.add('warning');
+                showAlert('warning', 'Invalid Email', 'Please enter a valid email address.');
+            }
+
+            if (!isValidPassword(passwordInput.value)) {
+                isValid = false;
+                passwordInput.classList.add('warning');
+                showAlert('warning', 'Invalid Password',
+                    'Password must be at least 6 characters long and contain at least one number and one symbol.'
+                    );
+            } else if (passwordInput.value !== confirmPasswordInput.value) {
+                isValid = false;
+                confirmPasswordInput.classList.add('warning');
+                showAlert('warning', 'Password Mismatch', 'Passwords do not match.');
+            }
+        }
+
+        return isValid;
+    }
+
+    // Event listeners
+    passwordInput.addEventListener('input', updatePasswordRequirements);
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+    nextButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (formnumber === 0 && !agreeCheckbox.checked) {
+                showAlert('warning', 'Agreement Required',
+                    'You must agree to the terms and conditions before proceeding.');
+                return false;
+            }
+            if (validateform()) {
+                formnumber++;
+                updateform();
+                progress_forward();
+                contentchange();
+            }
         });
     });
 
-    var back_click = document.querySelectorAll(".back_button");
-    back_click.forEach(function(back_click_form) {
-        back_click_form.addEventListener('click', function() {
+    backButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
             formnumber--;
             updateform();
             progress_backward();
@@ -399,160 +556,49 @@ $(document).ready(function() {
         });
     });
 
-    var username = document.querySelector("#user_name");
-    var shownname = document.querySelector(".shown_name");
+    submitButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (!validateform()) return;
 
+        Swal.fire({
+            title: 'Processing...',
+            text: 'Please wait while we complete your registration.',
+            allowOutsideClick: false,
+            didOpen: () => Swal.showLoading()
+        });
 
-    document.querySelectorAll(".submit_button").forEach(function(submit_click_form) {
-        submit_click_form.addEventListener('click', function(e) {
-            e.preventDefault();
-
-            // Validate if the agreement checkbox is checked
-            if (!document.getElementById('agree').checked) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Agreement Required',
-                    text: 'You must agree to the terms and conditions before proceeding.',
-                });
-                return; // Prevent form submission
-            }
-
-            // Validate if password and confirm password match
-            var password = document.getElementById('password').value;
-            var confirmPassword = document.getElementById('confirm-password').value;
-
-            if (password !== confirmPassword) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Password Mismatch',
-                    text: 'Password and Confirm Password do not match.',
-                });
-                return; // Prevent form submission
-            }
-
-            // Show loading screen
-            Swal.fire({
-                title: 'Processing...',
-                text: 'Please wait while we complete your registration.',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
+        const formData = new FormData(form);
+        fetch('function/registration.action.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(response => {
+                Swal.close();
+                if (response.trim() === 'success') {
+                    showAlert('success', 'Success', 'Registration Completed!');
+                    formnumber++;
+                    updateform();
+                    const shownname = document.querySelector(".shown_name");
+                    const username = document.getElementById('user_name');
+                    if (shownname && username) shownname.textContent = username.value;
+                } else if (response.trim() === 'Email is already registered') {
+                    showAlert('info', 'Email is already registered', response);
+                } else {
+                    showAlert('error', 'Error', response);
                 }
+            })
+            .catch(() => {
+                showAlert('error', 'Error', 'Form submission failed!');
             });
-
-            // Set the form action to the desired URL
-            $('#regForm').attr('action',
-            'function/registration.action.php'); // Corrected form ID
-
-            // Submit the form asynchronously using AJAX
-            $.ajax({
-                type: "POST",
-                url: $('#regForm').attr('action'), // Corrected form ID
-                data: $('#regForm').serialize(), // Corrected form ID
-                success: function(response) {
-                    Swal.close(); // Close the loading overlay
-
-                    if (response.trim() === 'success') {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Registration Completed!',
-                        });
-                        formnumber++; // Ensure this variable is defined elsewhere
-                        shownname.innerHTML = username
-                        .value; // Ensure 'username' is defined
-
-                        updateform(); // Ensure this function is defined
-                    } else if (response.trim() === 'Email is already registered') {
-                        Swal.fire({
-                            icon: 'info',
-                            title: 'Email is already registered',
-                            text: response,
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: response,
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Form submission failed!',
-                    });
-                }
-            });
-        });
     });
 
-
-
-    var heart = document.querySelector(".fa-heart");
-    heart.addEventListener('click', function() {
-        heart.classList.toggle('heart');
+    agreeCheckbox.addEventListener('change', function() {
+        agreeButton.disabled = !this.checked;
     });
 
-
-    var share = document.querySelector(".fa-share-alt");
-    share.addEventListener('click', function() {
-        share.classList.toggle('share');
-    });
-
-
-
-    function updateform() {
-        main_form.forEach(function(mainform_number) {
-            mainform_number.classList.remove('active');
-        })
-        main_form[formnumber].classList.add('active');
-    }
-
-    function progress_forward() {
-        // step_list.forEach(list => {
-
-        //     list.classList.remove('active');
-
-        // }); 
-
-
-        num.innerHTML = formnumber + 1;
-        step_list[formnumber].classList.add('active');
-    }
-
-    function progress_backward() {
-        var form_num = formnumber + 1;
-        step_list[form_num].classList.remove('active');
-        num.innerHTML = form_num;
-    }
-
-    var step_num_content = document.querySelectorAll(".step-number-content");
-
-    function contentchange() {
-        step_num_content.forEach(function(content) {
-            content.classList.remove('active');
-            content.classList.add('d-none');
-        });
-        step_num_content[formnumber].classList.add('active');
-    }
-
-
-    function validateform() {
-        validate = true;
-        var validate_inputs = document.querySelectorAll(".main.active input");
-        validate_inputs.forEach(function(vaildate_input) {
-            vaildate_input.classList.remove('warning');
-            if (vaildate_input.hasAttribute('require')) {
-                if (vaildate_input.value.length == 0) {
-                    validate = false;
-                    vaildate_input.classList.add('warning');
-                }
-            }
-        });
-        return validate;
-
-    }
+    // Initialize
+    updatePasswordRequirements();
+    agreeButton.disabled = true;
 });
 </script>

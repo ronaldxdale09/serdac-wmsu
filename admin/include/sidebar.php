@@ -35,10 +35,10 @@ function hasAccess($accessList, $access) {
                     </a>
                     <ul class="sub-menu children dropdown-menu">
                         <?php if (hasAccess($userAccess, 'articles_create')): ?>
-                        <li><i class="fa fa-pencil"></i><a href="new_article.php">Create Post</a></li>
+                        <li><a href="new_article.php">Create Post</a></li>
                         <?php endif; ?>
                         <?php if (hasAccess($userAccess, 'articles_manage')): ?>
-                        <li><i class="fa fa-id-badge"></i><a href="articles.php">Manage Post</a></li>
+                        <li><a href="articles.php">Manage Post</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>
@@ -52,10 +52,10 @@ function hasAccess($accessList, $access) {
                     </a>
                     <ul class="sub-menu children dropdown-menu">
                         <?php if (hasAccess($userAccess, 'request_record')): ?>
-                        <li><i class="fa fa-book"></i><a href="request_record.php">Request Record</a></li>
+                        <li><a href="request_record.php">Request Record</a></li>
                         <?php endif; ?>
                         <?php if (hasAccess($userAccess, 'assessment')): ?>
-                        <li><i class="menu-icon fa fa-check-circle"></i><a href="assessment.php">Assessment</a></li>
+                        <li><a href="assessment.php">Assessment</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>
@@ -69,18 +69,17 @@ function hasAccess($accessList, $access) {
                     </a>
                     <ul class="sub-menu children dropdown-menu">
                         <?php if (hasAccess($userAccess, 'projects')): ?>
-                        <li><i class="fas fa-project-diagram"></i><a href="project_mngnt.php"> Projects</a></li>
+                        <li><a href="project_mngnt.php"> Projects</a></li>
                         <?php endif; ?>
                         <?php if (hasAccess($userAccess, 'e_books')): ?>
-                        <li><i class="fas fa-book-open"></i><a href="ebook_mngnt.php"> E-Book</a></li>
+                        <li><a href="ebook_mngnt.php"> E-Book</a></li>
                         <?php endif; ?>
                         <?php if (hasAccess($userAccess, 'journals')): ?>
-                        <!-- <li><i class="fas fa-scroll"></i><a href="request_record.php"> Journals</a></li> -->
+                        <!-- <li><a href="request_record.php"> Journals</a></li> -->
                         <?php endif; ?>
                     </ul>
                 </li>
                 <?php endif; ?>
-
 
                 <?php if (hasAccess($userAccess, 'profile')): ?>
                 <li class="menu-item-has-children dropdown">
@@ -90,25 +89,17 @@ function hasAccess($accessList, $access) {
                     </a>
                     <ul class="sub-menu children dropdown-menu">
                         <?php if (hasAccess($userAccess, 'speaker_profile')): ?>
-                        <li>
-                            <a href="speaker_profile.php"><i class="menu-icon fa fa-users"></i> Speaker Profile </a>
-                        </li>
+                        <li><a href="speaker_profile.php">Speaker Profile</a></li>
                         <?php endif; ?>
                         <?php if (hasAccess($userAccess, 'client_list')): ?>
-                        <li>
-                            <a href="client_list.php"><i class="menu-icon fa fa-users"></i> Client List </a>
-                        </li>
+                        <li><a href="client_list.php">Client List</a></li>
                         <?php endif; ?>
-
                         <?php if (hasAccess($userAccess, 'account_management')): ?>
-                        <li>
-                            <a href="account_mngmt.php"><i class="menu-icon ti-user"></i>Account Management </a>
-                        </li>
+                        <li><a href="account_mngmt.php">Account Management</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>
                 <?php endif; ?>
-
 
                 <?php if (hasAccess($userAccess, 'reports')): ?>
                 <li class="menu-item-has-children dropdown">
@@ -118,32 +109,23 @@ function hasAccess($accessList, $access) {
                     </a>
                     <ul class="sub-menu children dropdown-menu">
                         <?php if (hasAccess($userAccess, 'report_client')): ?>
-                        <li><i class="fa fa-calendar"></i><a href="report_activities_events.php">Service Report</a>
-                        </li>
+                        <li><a href="report.php">Services Report</a></li>
                         <?php endif; ?>
                         <?php if (hasAccess($userAccess, 'report_client')): ?>
-                        <li><i class="fa fa-calendar"></i><a href="report_activities_events.php">Summary Report</a>
-                        </li>
+                        <li><a href="report_client.php">Client Report</a></li>
                         <?php endif; ?>
-                        <?php if (hasAccess($userAccess, 'report_client')): ?>
-                        <li><i class="menu-icon fa fa-users"></i><a href="report_client.php">Client Report</a></li>
-                        <?php endif; ?>
-
                         <?php if (hasAccess($userAccess, 'assessments_reports')): ?>
-                        <li><i class="menu-icon fa fa-check"></i><a href="assessments_reports.php">Assessments</a></li>
+                        <li><a href="assessments_reports.php">Assessments</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>
                 <?php endif; ?>
-
 
                 <?php if (hasAccess($userAccess, 'schedules')): ?>
                 <li>
                     <a href="schedules.php"><i class="menu-icon ti-calendar"></i>Schedules </a>
                 </li>
                 <?php endif; ?>
-
-
 
                 <?php if (hasAccess($userAccess, 'activity_logs')): ?>
                 <li>
@@ -156,7 +138,6 @@ function hasAccess($accessList, $access) {
                     <a href="contact_messages.php"><i class="menu-icon ti-comments"></i>Contact Messages </a>
                 </li>
                 <?php endif; ?>
-
 
             </ul>
         </div><!-- /.navbar-collapse -->

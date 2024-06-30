@@ -81,7 +81,6 @@
 
 
 <?php include('include/footer.php');?>
-<?php include('include/datatables.php');?>
 
 
 <script>

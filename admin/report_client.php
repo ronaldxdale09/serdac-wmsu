@@ -119,7 +119,6 @@
     </div>
     <?php include('include/footer.php');?>
 
-    <?php include('include/datatables.php');?>
     <script>
     // user_report.js
     $(document).ready(function() {

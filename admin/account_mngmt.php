@@ -127,7 +127,6 @@
 <?php include('modal/account.modal.php');?>
 
 <?php include('include/footer.php');?>
-<?php include('include/datatables.php');?>
 
 
 <script>
@@ -137,8 +136,94 @@ $(document).ready(function() {
         buttons: ['excelHtml5', 'pdfHtml5', 'print']
     });
 });
-</script>
 
+
+$(document).ready(function() {
+    $('#newUserForm').on('submit', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: 'function/user.mngmnt.php',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response.message,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'account_mngmt.php';
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: response.message,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An unexpected error occurred. Please try again.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+});
+
+$(document).ready(function() {
+    $('#updateUserForm').on('submit', function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: 'function/user.mngmnt.php',
+            data: $(this).serialize(),
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response.message,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = 'account_mngmt.php';
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: response.message,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("AJAX Error:", textStatus, errorThrown);
+                console.log("Response Text:", jqXHR.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An unexpected error occurred. Please check the console for more details.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+});
+</script>
 
 
 <script>

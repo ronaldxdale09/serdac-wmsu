@@ -32,7 +32,7 @@
 
                     <ul class="nav">
                         <li><a href="index.php" class="active">Home</a></li>
-                        <li><a href="meetings.php">News</a></li>
+                        <li><a href="news.php">News</a></li>
                         <li class="has-sub servnav">
                             <a href="javascript:void(0)">Repository</a>
                             <ul class="sub-menu">

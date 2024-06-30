@@ -15,7 +15,7 @@ if (isset($_GET['id'])) {
     $image_path = $record['image_path'];
     $content = $record['content'];
     $published_at = $record['published_at'];
-    $published_by = $record['published_by'];
+    $author = $record['author'];
     $type = $record['type'];
 
   }
@@ -24,6 +24,33 @@ if (isset($_GET['id'])) {
 
 ?>
 
+<style>
+.share ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+}
+
+.share ul li a {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 10px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    transition: background-color 0.3s ease;
+}
+
+.share ul li a:hover {
+    background-color: #e0e0e0;
+}
+
+.share ul li a i {
+    margin-right: 5px;
+}
+</style>
 
 <body>
 
@@ -44,61 +71,81 @@ if (isset($_GET['id'])) {
     <section class="meetings-page" id="meetings">
         <div class="container">
             <div class="row">
-                <div class="col-lg-12">
+                < class="col-lg-12">
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="meeting-single-item">
                                 <div class="thumb">
                                     <div class="price">
-                                        <span><?php echo $type; ?></span>
+                                        <span><?php echo htmlspecialchars($type); ?></span>
                                     </div>
                                     <div class="date">
                                         <h6><?= date("M", strtotime($published_at)); ?>
                                             <span><?= date("d", strtotime($published_at)); ?></span>
                                         </h6>
                                     </div>
-                                    <a href="article-details.php?id=<?= $id; ?>"><img
-                                            src="admin/images/article/<?php echo $image_path; ?>" alt=""></a>
+                                    <a href="article-details.php?id=<?= $id; ?>">
+                                        <img src="admin/images/article/<?php echo htmlspecialchars($image_path); ?>"
+                                            alt="<?php echo htmlspecialchars($title); ?>">
+                                    </a>
                                 </div>
                                 <div class="down-content">
-                                    <a href="meeting-details.html">
-                                        <h4><?php echo $title; ?></h4>
+                                    <a href="article-details.php?id=<?= $id; ?>">
+                                        <h4><?php echo htmlspecialchars($title); ?></h4>
                                     </a>
-                                    <p><?php echo $subtitle; ?></p>
-                                    <p class="description">
-                                  
-                                      <?php echo $content; ?>
-                                    </p>
+                                    <p><?php echo htmlspecialchars($subtitle); ?></p>
+                                    <div class="description">
+                                        <?php echo $content; ?>
+                                    </div>
                                     <div class="row">
-                                       
                                         <div class="col-lg-12">
                                             <div class="share">
                                                 <h5>Share:</h5>
+                                                <?php
+                                                // Debugging: Output the current URL
+                                                $current_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+                                   
+                                                $encoded_url = urlencode($current_url);
+                                                $encoded_title = urlencode($title);
+                                              
+                                                ?>
                                                 <ul>
-                                                    <li><a href="#">Facebook</a>,</li>
-                                                    <li><a href="#">Twitter</a>,</li>
-                                                    <li><a href="#">Linkedin</a>,</li>
-                                                    <li><a href="#">Behance</a></li>
+                                                    <li>
+                                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $encoded_url; ?>"
+                                                            target="_blank" rel="noopener noreferrer" class="facebook">
+                                                            <i class="fab fa-facebook-f"></i> Facebook
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="https://twitter.com/intent/tweet?url=<?php echo $encoded_url; ?>&text=<?php echo $encoded_title; ?>"
+                                                            target="_blank" rel="noopener noreferrer" class="twitter">
+                                                            <i class="fab fa-twitter"></i> Twitter
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo $encoded_url; ?>&title=<?php echo $encoded_title; ?>"
+                                                            target="_blank" rel="noopener noreferrer" class="linkedin">
+                                                            <i class="fab fa-linkedin-in"></i> LinkedIn
+                                                        </a>
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="main-button-red">
-                                <a href="index.php">Back To Homepage</a>
+                            <div class="col-lg-12">
+                                <div class="main-button-red">
+                                    <a href="index.php">Back To Homepage</a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div> <br> <br>
-        <?php include('include/footer.php');?>
-
+            <br> <br>
+            <?php include('include/footer.php');?>
     </section>
-
 
     <!-- Scripts -->
     <!-- Bootstrap core JavaScript -->

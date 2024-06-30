@@ -114,7 +114,6 @@
     <?php include('include/footer.php');?>
     <?php include('modal/repo_project.modal.php');?>
 
-    <?php include('include/datatables.php');?>
     <script>
     $(document).ready(function() {
         $(document).ready(function() {
