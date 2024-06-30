@@ -1206,7 +1206,7 @@ aside.left-panel:hover {
     left: 0;
     right: 0;
     top: 0;
-    z-index: 999;
+    z-index: 199;
 }
 
 .right-panel .navbar-brand {

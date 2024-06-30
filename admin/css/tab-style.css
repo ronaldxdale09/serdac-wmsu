@@ -40,7 +40,7 @@
     text-align: center;
     cursor: pointer;
     padding: 10px 15px;
-    z-index: 9999;
+    z-index: 5;
     /* Keeping this higher ensures labels are always on top */
     color: #1c1c1c;
     background-color: #f7f7f7;

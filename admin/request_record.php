@@ -61,14 +61,14 @@ $completed_count = $res['Total'];
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     /* Semi-transparent background */
-    z-index: 1040;
+    z-index: 200;
     /* Lower than modal but higher than other content */
 }
 
 /* Styling for the modal itself */
 .modal {
     position: fixed;
-    z-index: 999999;
+    z-index: 201;
   
     overflow: hidden;
     outline: none;
