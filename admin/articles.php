@@ -1,7 +1,6 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 <style>
 .article-card {
     border: none;
@@ -243,19 +242,26 @@
             </div>
         </div>
 
-
-        <div class="clearfix"></div>
         <!-- Footer -->
+    <?php include('modal/article.modal.php');?>
 
     </div>
     <?php include('include/footer.php');?>
-    <?php include('modal/article.modal.php');?>
 
 
 
 
     <script>
-    CKEDITOR.replace('edit_content');
+
+    tinymce.init({
+            selector: '#edit_content',
+            plugins: 'lists wordcount',
+            toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | removeformat',
+            menubar: false,
+            statusbar: false,
+            height: 300,
+            content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }'
+        });
 
     $('.btnEdit').on('click', function() {
         var article = $(this).data('article');
@@ -266,7 +272,7 @@
         $('#edit_subtitle').val(article.subtitle);
         $('#edit_image_preview').attr('src', 'images/article/' + article.image_path);
 
-        CKEDITOR.instances['edit_content'].setData(article.content);
+        tinymce.get('edit_content').setContent(article.content);
 
         var modal = new bootstrap.Modal(document.getElementById('editArticleModal'));
         modal.show();

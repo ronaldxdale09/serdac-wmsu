@@ -108,31 +108,39 @@ while ($row = mysqli_fetch_assoc($result)) {
                                     <form id="myForm">
                                         <div class="form-section">
                                             <!-- New Settings Section -->
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <div class="form-row row">
-
-                                                        <div class="form-group col-md-6">
-                                                            <label for="startDate">Start Date</label>
-                                                            <input type="date" id="startDate" name="start_date"
-                                                                class="form-control">
+                                            <div class="settings-panel mb-4">
+                                                <div class="settings-header" data-toggle="collapse"
+                                                    data-target="#formSettingsCollapse" aria-expanded="true">
+                                                    <h5> <i class="fas fa-cog"></i> Form Settings</h5>
+                                                    <i class="fas fa-chevron-down"></i>
+                                                </div>
+                                                <div id="formSettingsCollapse" class="collapse ">
+                                                    <div class="settings-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="startDate">Start Date</label>
+                                                                <input type="date" id="startDate" name="start_date"
+                                                                    class="form-control">
+                                                            </div>
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="endDate">End Date</label>
+                                                                <input type="date" id="endDate" name="end_date"
+                                                                    class="form-control">
+                                                            </div>
                                                         </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label for="endDate">End Date</label>
-                                                            <input type="date" id="endDate" name="end_date"
-                                                                class="form-control">
-                                                        </div>
-
-                                                        <div class="form-group col-md-6">
-                                                            <label for="quota">Quota</label>
-                                                            <input type="number" id="quota" name="quota"
-                                                                class="form-control" placeholder="Enter Quota">
-                                                        </div>
-                                                        <div class="form-group col-md-6">
-                                                            <label for="responseLimit">Response Limit per User</label>
-                                                            <input type="number" id="responseLimit"
-                                                                name="response_limit" class="form-control"
-                                                                placeholder="Enter Limit" value="1">
+                                                        <div class="row">
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="quota">Quota</label>
+                                                                <input type="number" id="quota" name="quota"
+                                                                    class="form-control" placeholder="Enter Quota">
+                                                            </div>
+                                                            <div class="col-md-6 mb-3">
+                                                                <label for="responseLimit">Response Limit per
+                                                                    User</label>
+                                                                <input type="number" id="responseLimit"
+                                                                    name="response_limit" class="form-control"
+                                                                    placeholder="Enter Limit" value="1">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -152,7 +160,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                 <div class="form-group col-md-6">
                                                     <label for="formType">Form Type</label>
                                                     <select id="formType" name="form_type" class="form-control">
-                                                        <option value="" selected >Select Form Type</option>
+                                                        <option value="" selected>Select Form Type</option>
                                                         <?php
                                                             // Fetch form types from the asmt_form_type table
                                                             $sql = "SELECT * FROM asmt_form_type";
@@ -174,12 +182,14 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                         <option value="" selected disabled>Select Service Type</option>
                                                         <?php
                                                         // Fetch service types from the service_request table
-                                                        $sql = "SELECT * FROM service_request";
+                                                        $sql = "SELECT request_id, service_type, completed_date, ongoing_date FROM service_request";
                                                         $result = $con->query($sql);
 
                                                         if ($result->num_rows > 0) {
                                                             while($row = $result->fetch_assoc()) {
-                                                                echo "<option value='".$row["request_id"]."'>Req ID:".$row["request_id"]." - ".$row["service_type"]."</option>";
+                                                                $date = !empty($row["completed_date"]) ? $row["completed_date"] : $row["ongoing_date"];
+                                                                $dateLabel = !empty($row["completed_date"]) ? "Completed" : "Ongoing";
+                                                                echo "<option value='".$row["request_id"]."'>ID:".$row["request_id"]." - ".$row["service_type"]." - ".$dateLabel.": ".date('Y-m-d', strtotime($date))."</option>";
                                                             }
                                                         } else {
                                                             echo "<option value='' disabled>No services available</option>";

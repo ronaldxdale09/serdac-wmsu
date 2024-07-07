@@ -34,13 +34,13 @@ if (isset($_SESSION["userId_code"])) {
         exit;
     }
 ?>
-   <style>
-        .form-check-label {
-            margin-left: 8px;
-            /* Adjust as needed for spacing */
-            font-weight: normal;
-        }
-        </style>
+<style>
+.form-check-label {
+    margin-left: 8px;
+    /* Adjust as needed for spacing */
+    font-weight: normal;
+}
+</style>
 
 <body>
     <?php include('include/navbar.php');?>
@@ -157,12 +157,12 @@ if (isset($_SESSION["userId_code"])) {
 
                                                         <br>
 
-                                                        <button id="next2"
-                                                            class="btn  btn-sm btn-primary  next">NEXT<span
-                                                                class="fa fa-long-arrow-right"></span></button>
 
                                                         <button class="btn btn-sm btn-secondary prev"><span
                                                                 class="fa fa-long-arrow-left"></span>PREVIOUS</button>
+                                                        <button id="next2"
+                                                            class="btn  btn-sm btn-primary  next">NEXT<span
+                                                                class="fa fa-long-arrow-right"></span></button>
 
 
                                                     </div>
@@ -175,12 +175,12 @@ if (isset($_SESSION["userId_code"])) {
 
                                                     <div id="service-content"> </div>
 
-                                                    <button id="next3"
-                                                        class="btn  btn-sm btn-success  submit">Submit<span
-                                                            class="fa fa-long-arrow-right"></span></button>
 
                                                     <button class="btn btn-sm btn-secondary prev"><span
                                                             class="fa fa-long-arrow-left"></span>PREVIOUS</button>
+                                                    <button id="next3"
+                                                        class="btn  btn-sm btn-success  submit">Submit<span
+                                                            class="fa fa-long-arrow-right"></span></button>
 
                                                 </fieldset>
 

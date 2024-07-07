@@ -32,6 +32,19 @@ if (isset($_SESSION["userId_code"])) {
         $sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE user_id='$id'");
         $res = mysqli_fetch_array($sql);
         $req_count = $res['Total'];
+
+        $sql = mysqli_query($con, "SELECT COUNT(*) as Total 
+                           FROM service_request sr
+                           JOIN service_participant sp ON sr.request_id = sp.request_id
+                           WHERE sp.user_id = '$id' 
+                           AND sr.service_type = 'capability-training'
+                           AND sr.status IN ('In Progress', 'Scheduled')");
+
+        $res = mysqli_fetch_array($sql);
+        $current_trainings_count = $res['Total'];
+
+
+
     } else {
         header("Location: login.php");
         exit;
@@ -124,7 +137,9 @@ if (isset($_SESSION["userId_code"])) {
                                         <li class="nav-item">
                                             <a href="javascript:void();" data-target="#edit" data-toggle="pill"
                                                 class="nav-link">
-                                                <i class="fas fa-edit"></i> <span class="hidden-xs">TRAININGS</span>
+                                                <i class="fas fa-edit"></i> <span class="hidden-xs">TRAININGS <span
+                                                        class="badge bg-danger text-light">
+                                                        <?php echo $current_trainings_count ?> </span></span>
                                             </a>
                                         </li>
                                     </ul>

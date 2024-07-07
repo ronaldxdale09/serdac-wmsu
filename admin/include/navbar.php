@@ -1,3 +1,16 @@
+<style>
+.dropdown-menu {
+    display: none;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown {
+    position: relative;
+}
+</style>
 <header id="header" class="header">
     <div class="top-left">
         <div class="navbar-header">
@@ -9,11 +22,11 @@
     <div class="top-right">
         <div class="header-menu">
             <div class="header-left">
-               
+
 
                 <div class="dropdown for-notification">
-                    <button class="btn  dropdown-toggle" type="button" id="notification"
-                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button class="btn  dropdown-toggle" type="button" id="notification" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-bell"></i>
                         <span class="count bg-danger" id="notificationCount">0</span>
                     </button>
@@ -23,7 +36,6 @@
                     </div>
                 </div>
                 <?php 
-                // Fetch the latest 4 messages
                 $query = "SELECT name, message, submitted_at FROM contact_messages ORDER BY submitted_at DESC LIMIT 4";
                 $result = mysqli_query($con, $query);
 
@@ -114,5 +126,5 @@ $(document).ready(function() {
 
     // Load notifications on page load
     loadNotifications();
-}); -->
-</script>
+});
+</script> -->

@@ -1,0 +1,126 @@
+.carousel-container {
+    position: relative;
+    width: 100%;
+    height: 500px;
+    overflow: hidden;
+}
+
+.carousel-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.carousel-slide.active {
+    opacity: 1;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 36px;
+    text-decoration: none;
+    transition: all 0.3s;
+    z-index: 10;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.carousel-control:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-control-prev {
+    left: 20px;
+}
+
+.carousel-control-next {
+    right: 20px;
+}
+
+.carousel-control::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: -1;
+    transition: all 0.3s;
+}
+
+.carousel-control:hover::before {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.caption {
+    max-width: 80%;
+}
+
+.caption h6 {
+    font-size: 14px;
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+
+.caption h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.caption p {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+@media screen and (max-width: 767px) {
+    .caption h2 {
+        font-size: 24px;
+    }
+    .caption p {
+        font-size: 14px;
+    }
+    .carousel-control {
+        font-size: 24px;
+    }
+    .carousel-control::before {
+        width: 40px;
+        height: 40px;
+    }
+    .carousel-control:hover::before {
+        width: 50px;
+        height: 50px;
+    }
+}

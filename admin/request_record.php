@@ -32,6 +32,10 @@ $sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE s
 $res = mysqli_fetch_array($sql);
 $completed_count = $res['Total'];
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 ?>
 <style>
 /* ... other styles ... */
@@ -69,11 +73,10 @@ $completed_count = $res['Total'];
 .modal {
     position: fixed;
     z-index: 201;
-  
+
     overflow: hidden;
     outline: none;
 }
-
 </style>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -92,15 +95,6 @@ $completed_count = $res['Total'];
 
         <!-- Header-->
         <?php include('include/navbar.php')?>
-        <?php include('modal/pending.modal.php');?>
-        <?php include('modal/approved.modal.php');?>
-        <?php include('modal/progress.modal.php');?>
-        <?php include('modal/service_meeting.php');?>
-
-        <?php include('modal/service_participants.php');?>
-        <?php include('modal/service_speaker.php');?>
-        <?php include('modal/service_analysis.req.php');?>
-        <?php include('modal/new_service.php');?>
 
 
         <div class="content">
@@ -186,19 +180,22 @@ $completed_count = $res['Total'];
                                 <?php include('request_tab/req.approved.php'); ?>
 
                             </div>
+
                             <div class="content content-3">
-                                <div class="title"
-                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif; position: relative;">
-                                    <button
-                                        style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); padding: 10px 15px; font-size: 14px; background-color: maroon; color: white; border: none; border-radius: 5px; cursor: pointer;"
-                                        data-toggle="modal" data-target="#serviceRequestModal">
+                                <div class="content-header"
+                                    style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; flex-wrap: wrap;">
+                                    <button class="new-service-btn" data-toggle="modal"
+                                        data-target="#serviceRequestModal"
+                                        style="padding: 10px 15px; font-size: 14px; background-color: maroon; color: white; border: none; border-radius: 5px; cursor: pointer;">
                                         <i class="fas fa-plus"></i> New Service
                                     </button>
-                                    In Progress Request
+                                    <div class="content-title"
+                                        style="font-size: 24px; font-weight: bold; color: maroon; font-family: Arial, sans-serif; text-align: center; flex-grow: 1;">
+                                        In Progress Request
+                                    </div>
                                 </div>
                                 <?php include('request_tab/req.progress.php'); ?>
                             </div>
-
                             <div class="content content-4">
                                 <div class="title"
                                     style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
@@ -223,40 +220,19 @@ $completed_count = $res['Total'];
         <!-- Footer -->
 
     </div>
-    <?php include('include/footer.php');?>
-
 
 </body>
+<?php include('modal/pending.modal.php');?>
+<?php include('modal/approved.modal.php');?>
+<?php include('modal/progress.modal.php');?>
+<?php include('modal/service_meeting.php');?>
+
+<?php include('modal/service_participants.php');?>
+<?php include('modal/service_speaker.php');?>
+<?php include('modal/service_analysis.req.php');?>
+<?php include('modal/new_service.php');?>
+
+<?php include('include/footer.php');?>
+
 
 </html>
-
-<script>
-$(document).ready(function() {
-    // $('.btnEdit').on('click', function() {
-    //     var request = $(this).data('request');
-
-
-    //     $('#user-id').val(request.fname);
-
-    //     var modal = new bootstrap.Modal(document.getElementById('serviceRequestDetailsModal'));
-    //     modal.show();
-
-    // });
-
-
-    // // Handling click event for Delete button
-    // $('.btnDelete').on('click', function() {
-
-    //     var $tr = $(this).closest('tr');
-    //     var data = $tr.children("td").map(function() {
-    //         return $.trim($(this).text()); // Trimming the text content of each 'td'
-    //     }).get();
-
-
-    //     $('#deleteUserId').val(data[0]);
-
-    //     // Show the Delete User modal
-    //     $('#deleteUserModal').modal('show');
-    // });
-});
-</script>

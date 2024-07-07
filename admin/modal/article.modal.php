@@ -47,9 +47,13 @@
                             <label for="edit_content">Content:</label>
                             <textarea class="form-control" id="edit_content" name="content" rows="8"></textarea>
                         </div>
-                        <button type="submit" name='updateArticle' class="btn btn-primary">Save changes</button>
-                    </form>
+
                 </div>
+                <div class="modal-footer">
+
+                    <button type="submit" name='updateArticle' class="btn btn-primary">Save changes</button>
+                </div>
+                </form>
             </div>
         </div>
     </div>
@@ -74,7 +78,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" name="deleteArticle" class="btn btn-danger" id="confirmDelete">Delete</button>
+                        <button type="submit" name="deleteArticle" class="btn btn-danger"
+                            id="confirmDelete">Delete</button>
                     </div>
                 </form>
             </div>

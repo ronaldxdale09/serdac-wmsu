@@ -11,13 +11,14 @@ $purpose_options = $_POST['purpose_options'];
 $selected_purposes = implode(", ", $purpose_options);
 $additional_purpose_details = $_POST['additional_purpose_details'];
 $status = "In Progress";
+$inviteCode = substr(str_shuffle(md5(microtime())), 0, 12);
 
 // Insert into service_request table
-$query = "INSERT INTO service_request (request_date, user_id, service_type, office_agency, agency_classification, client_type, selected_purposes, additional_purpose_details, status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+$query = "INSERT INTO service_request (inviteCode,request_date, user_id, service_type, office_agency, agency_classification, client_type, selected_purposes, additional_purpose_details, status)
+          VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?)";
 $request_date = date('Y-m-d H:i:s'); // Formats the date and time as Year-Month-Day Hours:Minutes:Seconds
 $stmt = mysqli_prepare($con, $query);
-mysqli_stmt_bind_param($stmt, "sisssssss", $request_date, $user_id, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes, $additional_purpose_details, $status);
+mysqli_stmt_bind_param($stmt, "ssisssssss", $inviteCode, $request_date, $user_id, $service_type, $office_agency, $agency_classification, $client_type, $selected_purposes, $additional_purpose_details, $status);
 
 if (mysqli_stmt_execute($stmt)) {
     $last_id = mysqli_insert_id($con);

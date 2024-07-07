@@ -21,7 +21,7 @@
                             <strong class="card-title">Speaker List</strong>
                         </div>
                         <div class="card-body">
-                            <div class="inventory-table">
+                            <div class="table-responsive">
                                 <button type="button" class="btn btn-sm btn-dark text-white" data-toggle="modal"
                                     data-target="#createSpeakerModal">
                                     <i class="fa fa-user"></i> NEW SPEAKER
@@ -34,6 +34,9 @@
                                             <th scope="col">Name</th>
                                             <th scope="col">Address</th>
                                             <th scope="col">Email</th>
+                                            <th scope="col">Specialization</th>
+                                            <th scope="col">Occupation</th>
+
                                             <th scope="col">Contact #</th>
                                             <th scope="col">Action</th>
                                         </tr>
@@ -47,11 +50,14 @@
                                             <td><?php echo $row['name']; ?></td>
                                             <td><?php echo $row['address']; ?></td>
                                             <td><?php echo $row['email']; ?></td>
+                                            <td><?php echo $row['specialization']; ?></td>
+                                            <td><?php echo $row['occupation']; ?></td>
+
                                             <td><?php echo $row['contact']; ?></td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-dark btnEdit"
                                                     data-speaker='<?php echo json_encode($row); ?>'>
-                                                    <i class="fa fa-edit"></i> Details
+                                                    <i class="fa fa-book"></i> 
                                                 </button>
                                                 <button type="button" class="btn btn-sm  btn-danger btnDelete"><i
                                                         class="fa fa-trash"></i></button>

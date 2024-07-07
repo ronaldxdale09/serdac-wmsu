@@ -1,6 +1,5 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="css/assmt.form.view.css">
-<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
 
@@ -14,29 +13,6 @@
         <?php include('include/navbar.php')?>
 
         <!-- Content -->
-        <div class="breadcrumbs">
-            <div class="breadcrumbs-inner">
-                <div class="row m-0">
-                    <div class="col-sm-4">
-                        <div class="page-header float-left">
-                            <div class="page-title">
-                                <h1>Dashboard</h1>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-8">
-                        <div class="page-header float-right">
-                            <div class="page-title">
-                                <ol class="breadcrumb text-right">
-                                    <li><a href="index.php">Dashboard</a></li>
-                                    <li class="active">Assessment Form</li>
-                                </ol>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <div class="content">
             <div class="row">
@@ -55,10 +31,46 @@
                         </div>
                         <div class="card-body">
                             <div class="table-responsive custom-table-container">
+                                <div class="row mb-3">
+                                    <div class="col-md-3">
+                                        <label for="formTypeFilter">Form Type:</label>
+                                        <select id="formTypeFilter" class="form-control">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="serviceTypeFilter">Training:</label>
+                                        <select id="serviceTypeFilter" class="form-control">
+                                            <option value="">All</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Date Range:</label>
+                                        <div class="input-group">
+                                            <input type="date" id="startDate" class="form-control">
+                                            <div class="input-group-prepend input-group-append">
+                                                <span class="input-group-text">to</span>
+                                            </div>
+                                            <input type="date" id="endDate" class="form-control">
+                                            <div class="input-group-append">
+                                                <button id="applyDateFilter" class="btn btn-primary">Apply</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <?php
-    // Fetch data from the asmt_forms table
-    $results = mysqli_query($con, "SELECT * FROM asmt_forms");
-    ?>
+                                    // Update the query to include both training title and service type
+                                    $query = "SELECT af.*, sr.request_id, sr.service_type, srt.title as training_title 
+                                            FROM asmt_forms af
+                                            LEFT JOIN service_request sr ON af.request_id = sr.request_id
+                                            LEFT JOIN sr_training srt ON sr.request_id = srt.request_id";
+                                    $results = mysqli_query($con, $query);
+
+                                    if (!$results) {
+                                        die("Query failed: " . mysqli_error($con));
+                                    }
+                                    ?>
+
                                 <table class="table table-hover" id="assessment_form_table">
                                     <thead>
                                         <tr>
@@ -66,6 +78,7 @@
                                             <th scope="col">Title</th>
                                             <th scope="col">Type</th>
                                             <th scope="col">Description</th>
+                                            <th scope="col">Training</th>
                                             <th scope="col">Questions</th>
                                             <th scope="col">Responses</th>
                                             <th scope="col">Dates</th>
@@ -74,33 +87,35 @@
                                     </thead>
                                     <tbody>
                                         <?php 
-            while ($row = mysqli_fetch_array($results)) { 
-                // Fetch the number of questions for each form
-                $form_id = $row['form_id'];
-                $questionCountResult = mysqli_query($con, "SELECT COUNT(*) as question_count FROM asmt_questions WHERE form_id = $form_id");
-                $questionCount = mysqli_fetch_assoc($questionCountResult)['question_count'];
+                                        while ($row = mysqli_fetch_array($results)) { 
+                                            // Existing code for fetching question count and response count
+                                            $form_id = $row['form_id'];
+                                            $questionCountResult = mysqli_query($con, "SELECT COUNT(*) as question_count FROM asmt_questions WHERE form_id = $form_id");
+                                            $questionCount = mysqli_fetch_assoc($questionCountResult)['question_count'];
 
-                // Fetch the number of responses per user for each form
-                $responseCountResult = mysqli_query($con, "SELECT COUNT(DISTINCT user_id) as response_count FROM asmt_responses WHERE form_id = $form_id");
-                $responseCount = mysqli_fetch_assoc($responseCountResult)['response_count'];
+                                            $responseCountResult = mysqli_query($con, "SELECT COUNT(DISTINCT user_id) as response_count FROM asmt_responses WHERE form_id = $form_id");
+                                            $responseCount = mysqli_fetch_assoc($responseCountResult)['response_count'];
 
-                // Format start and end dates
-                $startDate = date('F j, Y', strtotime($row['start_date']));
-                $endDate = date('F j, Y', strtotime($row['end_date'])); 
-                
-                // Display response count alongside quota
-                $responsesWithQuota = $responseCount . '/' . $row['quota'];
-            ?>
+                                            $startDate = date('F j, Y', strtotime($row['start_date']));
+                                            $endDate = date('F j, Y', strtotime($row['end_date'])); 
+                                            
+                                            $responsesWithQuota = $responseCount . '/' . $row['quota'];
+
+                                            // Determine whether to display training title or service type
+                                            $displayTitle = !empty($row['training_title']) ? $row['training_title'] : $row['service_type'];
+                                        ?>
                                         <tr>
                                             <td><?php echo $row['form_id']; ?></td>
                                             <td><?php echo $row['title']; ?></td>
                                             <td><?php echo $row['form_type']; ?></td>
                                             <td><?php echo $row['description']; ?></td>
+                                            <td><?php echo $displayTitle ?? 'N/A'; ?></td>
                                             <td><?php echo $questionCount; ?></td>
                                             <td><?php echo $responsesWithQuota; ?></td>
                                             <td><?php echo $startDate . ' to ' . $endDate; ?></td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Form Actions">
+                                                    <!-- Your existing action buttons -->
                                                     <a href="../assmnt.form.php?form_id=<?php echo $row['form_id']; ?>"
                                                         target="_blank" class="btn btn-sm btn-secondary btnView"
                                                         title="View Form">
@@ -127,7 +142,6 @@
                                                     </button>
                                                 </div>
                                             </td>
-
                                         </tr>
                                         <?php } ?>
                                     </tbody>
@@ -143,13 +157,82 @@
 
 
     <?php include('include/footer.php');?>
-  
+
 
     <script>
     $(document).ready(function() {
         var table = $('#assessment_form_table').DataTable({
-            dom: 'Bfrtip',
-            buttons: ['excelHtml5', 'pdfHtml5', 'print']
+            "pageLength": 10,
+            "columns": [{
+                    "data": "form_id"
+                },
+                {
+                    "data": "title"
+                },
+                {
+                    "data": "form_type"
+                },
+                {
+                    "data": "description"
+                },
+                {
+                    "data": "training"
+                },
+                {
+                    "data": "questions"
+                },
+                {
+                    "data": "responses"
+                },
+                {
+                    "data": "dates"
+                },
+                {
+                    "data": "actions",
+                    "orderable": false
+                }
+            ],
+            initComplete: function() {
+                this.api().columns([2, 4]).every(function(colIdx) {
+                    var column = this;
+                    var select = $('#' + (colIdx === 2 ? 'formTypeFilter' :
+                            'serviceTypeFilter'))
+                        .on('change', function() {
+                            var val = $.fn.dataTable.util.escapeRegex($(this).val());
+                            column.search(val ? '^' + val + '$' : '', true, false)
+                                .draw();
+                        });
+
+                    column.data().unique().sort().each(function(d, j) {
+                        select.append('<option value="' + d + '">' + d +
+                            '</option>');
+                    });
+                });
+            }
+        });
+
+        // Date range filter
+        $('#applyDateFilter').on('click', function() {
+            var startDate = $('#startDate').val();
+            var endDate = $('#endDate').val();
+
+            $.fn.dataTable.ext.search.push(
+                function(settings, data, dataIndex) {
+                    var date = new Date(data[7].split(" to ")[
+                        0]); // Assuming the date is in the 8th column
+                    var start = new Date(startDate);
+                    var end = new Date(endDate);
+                    return (isNaN(start) && isNaN(end)) ||
+                        (isNaN(start) && date <= end) ||
+                        (start <= date && isNaN(end)) ||
+                        (start <= date && date <= end);
+                }
+            );
+
+            table.draw();
+
+            // Clear the custom filter after drawing
+            $.fn.dataTable.ext.search.pop();
         });
     });
     </script>
@@ -212,7 +295,17 @@
     $(document).ready(function() {
         // Send Invite button
         $('.btnSendInvite').on('click', function() {
-            CKEDITOR.replace('emailBody');
+
+            tinymce.init({
+                selector: '#emailBody',
+                plugins: 'lists wordcount',
+                toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | removeformat',
+                menubar: false,
+                statusbar: false,
+                height: 300,
+                content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }'
+            });
+
 
             var form_id = $(this).data('form-id');
             var title = $(this).data('title');
@@ -256,7 +349,8 @@
                 }
             });
 
-            $('#emailModal').modal('show');
+            var modal = new bootstrap.Modal(document.getElementById('emailModal'));
+            modal.show();
         });
     });
 

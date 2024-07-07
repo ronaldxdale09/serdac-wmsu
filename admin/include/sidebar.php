@@ -139,6 +139,12 @@ function hasAccess($accessList, $access) {
                 </li>
                 <?php endif; ?>
 
+                <?php if (hasAccess($userAccess, 'settings')): ?>
+                <li>
+                    <a href="settings.php"><i class="menu-icon fas fa-cog"></i>Settings </a>
+                </li>
+                <?php endif; ?>
+
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>

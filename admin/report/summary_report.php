@@ -25,8 +25,8 @@
                     <div class="mb-3">
                         <label for="filterType" class="form-label">Filter By</label>
                         <select id="filterType" name="filterType" class="form-control">
-                            <option value="activity">Category of Activity</option>
-                            <option value="participants">Category of Participants</option>
+                            <option value="activity">Activity</option>
+                            <option value="participants">Participants</option>
                             <option value="status">Status</option>
                         </select>
                     </div>

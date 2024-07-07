@@ -215,7 +215,6 @@ function copyCode() {
     alert("Invite code copied to clipboard!"); // Replace with more subtle feedback in production
 }
 </script>
-<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 
 <!-- The Modal -->
 <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel"
@@ -288,8 +287,16 @@ function copyCode() {
 
 <script>
 $(document).ready(function() {
-    CKEDITOR.replace('emailBody');
 
+    tinymce.init({
+        selector: '#emailBody',
+        plugins: 'lists wordcount',
+        toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | removeformat',
+        menubar: false,
+        statusbar: false,
+        height: 300,
+        content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }'
+    });
     $('#email_inv').click(function() {
 
         $("[data-dismiss=modal]").trigger({
@@ -388,7 +395,6 @@ $(document).ready(function() {
                         $('#emailList').val(emails);
                         console.log(emails)
 
-                        // Dynamically update CKEditor content
                         var message = `
                         <p>Dear Participant,</p>
                         <p>We are pleased to invite you to our upcoming event, scheduled to take place from <strong>${fromDisplay}</strong> to <strong>${toDisplay}</strong> at <strong>${serviceVenue}</strong>. This event will offer you the opportunity to engage with industry leaders and enhance your skills.</p>
@@ -398,8 +404,7 @@ $(document).ready(function() {
                         <p>We look forward to your participation.</p>
                         <p>Best regards,<br>SERDAC-WMSU</p>
                     `;
-                        CKEDITOR.instances['emailBody'].setData(
-                            message); // Set the dynamic data
+                        tinymce.get('emailBody').setContent(message);
 
                         // Hide any open modal and show the email modal
                         $('.modal').modal('hide'); // Hide any open modal
@@ -423,7 +428,7 @@ $(document).ready(function() {
     function sendEmail() {
         var emails = $('#emailList').val().trim();
         var subject = $('#emailSubject').val().trim();
-        var body = CKEDITOR.instances.emailBody.getData().trim();
+        var body = tinymce.get('emailBody').getContent().trim();
 
         // Show loading screen
         Swal.fire({

@@ -18,7 +18,7 @@
                     <div class="col-sm-4">
                         <div class="page-header float-left">
                             <div class="page-title">
-                                <h1>Schedules</h1>
+                                <h1>Accounts</h1>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,6 @@
 
         <div class="content">
             <div class="row">
-
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
@@ -58,60 +57,54 @@
                                             <th scope="col">Name</th>
                                             <th scope="col">Contact #</th>
                                             <th scope="col">Username</th>
-
                                             <th width="25%" scope="col">Access</th>
                                             <th>User Type</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
                                     <?php
-                                        $results = mysqli_query($con, "SELECT * from users where accessType !='Client' ");
-                                        ?>
+                    $results = mysqli_query($con, "SELECT * from users where accessType !='Client' ");
+                    $current_user_id = $_SESSION["userId_code"]; // Assuming you store the logged-in user's ID in session
+                    ?>
                                     <tbody>
                                         <?php while ($row = mysqli_fetch_array($results)) { 
-                                                $adminAccessArray = json_decode($row['adminAccess'], true);
-                                                $adminAccessFormatted = implode(', ', $adminAccessArray); // Format the array as a comma-separated string
-                                            ?>
-                                        <tr>
+                            $adminAccessArray = json_decode($row['adminAccess'], true);
+                            $adminAccessFormatted = implode(', ', $adminAccessArray);
+                            $is_current_user = ($row['user_id'] == $current_user_id);
+                        ?>
+                                        <tr <?php echo $is_current_user ? 'class="table-primary"' : ''; ?>>
                                             <td>
                                                 <?php echo $row['user_id']; ?>
+                                                <?php if ($is_current_user) echo ' <span class="badge badge-success">Current User</span>'; ?>
                                             </td>
-                                            <td>
-                                                <?php echo $row['fname'].' '.$row['midname'].' '.$row['lname']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $row['contact_no']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo $row['email']; ?>
-                                            </td>
+                                            <td><?php echo $row['fname'].' '.$row['midname'].' '.$row['lname']; ?></td>
+                                            <td><?php echo $row['contact_no']; ?></td>
+                                            <td><?php echo $row['email']; ?></td>
                                             <td>
                                                 <?php foreach ($adminAccessArray as $access) { ?>
                                                 <span
                                                     class="badge badge-info"><?php echo htmlspecialchars($access); ?></span>
                                                 <?php } ?>
                                             </td>
-                                            <td>
-                                                <?php echo $row['accessType']; ?>
-                                            </td>
+                                            <td><?php echo $row['accessType']; ?></td>
                                             <td>
                                                 <button type="button" class="btn btn-sm btn-secondary btnEdit"
                                                     data-user='<?php echo json_encode($row); ?>'>
                                                     <i class="fa fa-edit"></i>
                                                 </button>
-                                                <button type="button" class="btn btn-sm btn-danger btnDelete"><i
-                                                        class="fa fa-trash"></i></button>
+                                                <button type="button" class="btn btn-sm btn-danger btnDelete"
+                                                    <?php echo $is_current_user ? 'disabled' : ''; ?>>
+                                                    <i class="fa fa-trash"></i>
+                                                </button>
                                             </td>
                                         </tr>
                                         <?php } ?>
                                     </tbody>
-
                                 </table>
                             </div>
                         </div>
                     </div>
                 </div>
-
 
             </div><!-- .animated -->
         </div><!-- .content -->
@@ -128,20 +121,15 @@
 
 <?php include('include/footer.php');?>
 
-
 <script>
 $(document).ready(function() {
     var table = $('#acc_record').DataTable({
         dom: 'Bfrtip',
         buttons: ['excelHtml5', 'pdfHtml5', 'print']
     });
-});
 
-
-$(document).ready(function() {
     $('#newUserForm').on('submit', function(e) {
         e.preventDefault();
-
         $.ajax({
             type: 'POST',
             url: 'function/user.mngmnt.php',
@@ -178,60 +166,10 @@ $(document).ready(function() {
             }
         });
     });
-});
-
-$(document).ready(function() {
-    $('#updateUserForm').on('submit', function(e) {
-        e.preventDefault();
-
-        $.ajax({
-            type: 'POST',
-            url: 'function/user.mngmnt.php',
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(response) {
-                if (response.status === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: response.message,
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = 'account_mngmt.php';
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: response.message,
-                        confirmButtonText: 'OK'
-                    });
-                }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-                console.error("AJAX Error:", textStatus, errorThrown);
-                console.log("Response Text:", jqXHR.responseText);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'An unexpected error occurred. Please check the console for more details.',
-                    confirmButtonText: 'OK'
-                });
-            }
-        });
-    });
-});
-</script>
 
 
-<script>
-$(document).ready(function() {
     $('.btnEdit').on('click', function() {
         var user = $(this).data('user');
-
-        // Fill the form with user data
         $('#updateUserId').val(user.user_id);
         $('#updateFname').val(user.fname);
         $('#updateMidname').val(user.midname);
@@ -254,7 +192,6 @@ $(document).ready(function() {
             $('#updateUserForm .form-check-input:not(#updateSuperadmin)').prop('disabled', false);
         }
 
-        // Show the modal
         var modal = new bootstrap.Modal(document.getElementById('updateUserModal'));
         modal.show();
     });
@@ -266,22 +203,20 @@ $(document).ready(function() {
             $('#updateUserForm .form-check-input:not(#updateSuperadmin)').prop('disabled', false);
         }
     });
-});
 
+    $('.btnDelete').on('click', function() {
+        if (!$(this).prop('disabled')) {
+            var $tr = $(this).closest('tr');
+            var data = $tr.children("td").map(function() {
+                return $.trim($(this).text());
+            }).get();
 
-$('.btnDelete').on('click', function() {
+            $('#deleteUserId').val(data[0]);
 
-    var $tr = $(this).closest('tr');
-    var data = $tr.children("td").map(function() {
-        return $.trim($(this).text()); // Trimming the text content of each 'td'
-    }).get();
-
-
-    $('#deleteUserId').val(data[0]);
-
-    // Show the Delete User modal
-    var modal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
-    modal.show();
+            var modal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+            modal.show();
+        }
+    });
 });
 </script>
 

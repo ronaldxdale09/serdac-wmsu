@@ -19,14 +19,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
+    <script src="https://cdn.tiny.cloud/1/i4wkwvc9nr31mvrwas0kz0vto4ixdbzytmc79eqbij6y332r/tinymce/7/tinymce.min.js"
+    referrerpolicy="origin"></script>
 
 </head>
 
 
 
-
 <link rel="stylesheet" href="css/custom.button.css">
+
+<link rel="stylesheet" href="css/modal.css">
 <style>
 #weatherWidget .currentDesc {
     color: #ffffff !important;

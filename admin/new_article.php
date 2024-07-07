@@ -18,7 +18,7 @@
 }
 </style>
 
-<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+
 
 <body>
     <!-- Left Panel -->
@@ -108,6 +108,11 @@
                                     <div class="form-group">
                                         <label for="content">Content:</label>
                                         <textarea class="form-control" id="content" name="content" rows="8"></textarea>
+                                        <!-- <div id="content" >
+                                            <p>Hello World!</p>
+                                            <p>Some initial <strong>bold</strong> text</p>
+                                            <p><br /></p>
+                                        </div> -->
                                     </div>
                                     <button type="button" id="publishBtn" class="btn btn-sm btn-success"><i
                                             class="fa fa-arrow-right"></i> Publish</button>
@@ -127,63 +132,120 @@
         </div><!-- .content -->
         <div class="clearfix"></div>
         <!-- Footer -->
-        <script>
-        CKEDITOR.replace('content');
-        </script>
 
     </div>
     <?php include('include/footer.php');?>
     <script>
-    document.getElementById('image').addEventListener('change', function() {
-        var fileName = document.getElementById('image').files[0].name;
-        document.getElementById('file-chosen').textContent = fileName;
-    });
+    $(document).ready(function() {
+        // Initialize TinyMCE
+        tinymce.init({
+            selector: '#content',
+            plugins: 'lists wordcount',
+            toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | removeformat',
+            menubar: false,
+            statusbar: false,
+            height: 300,
+            content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }'
+        });
 
+        // Update file input label when a file is selected
+        $('#image').on('change', function() {
+            var fileName = this.files[0] ? this.files[0].name : 'No file chosen';
+            $('#file-chosen').text(fileName);
+        });
 
-    $(document).on('click', '#publishBtn', function(e) {
-        e.preventDefault();
+        // Function to validate form
+        function validateForm() {
+            var title = $('#title').val().trim();
+            var author = $('#author').val().trim();
+            var subtitle = $('#subtitle').val().trim();
+            var image = $('#image')[0].files[0];
+            var content = tinymce.get('content').getContent().trim();
 
-        var form = document.getElementById('articlePost');
-        var formData = new FormData(form);
-        // Update content from CKEditor before appending to formData
-        formData.set('content', CKEDITOR.instances.content.getData());
+            if (!title) {
+                Swal.fire('Error', 'Please enter a title', 'info');
+                return false;
+            }
+            if (!author) {
+                Swal.fire('Error', 'Please enter an author', 'info');
+                return false;
+            }
+            if (!subtitle) {
+                Swal.fire('Error', 'Please enter a subtitle', 'info');
+                return false;
+            }
+            if (!image) {
+                Swal.fire('Error', 'Please select an image', 'info');
+                return false;
+            }
+            if (!content) {
+                Swal.fire('Error', 'Please enter some content', 'info');
+                return false;
+            }
+            return true;
+        }
 
-        // Check if it's a draft or publish
-        formData.append('isDraft', this.id === 'draft');
+        // Handle form submission
+        $('#publishBtn, #draft').on('click', function(e) {
+            e.preventDefault();
 
-        $.ajax({
-            type: "POST",
-            url: 'function/articles_action.php',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (response.trim() === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: 'Article successful published!',
-                    });
+            if (!validateForm()) {
+                return;
+            }
 
-                    // Set all inputs to readonly
-                    $('#articlePost input, #articlePost textarea, #articlePost select').prop(
-                        'readonly', true);
-                    $('#articlePost input[type="file"]').prop('disabled', true);
-                } else {
+            var form = $('#articlePost')[0];
+            var formData = new FormData(form);
+
+            // Update content from TinyMCE before appending to formData
+            formData.set('content', tinymce.get('content').getContent());
+
+            // Check if it's a draft or publish
+            formData.append('isDraft', this.id === 'draft');
+
+            $.ajax({
+                type: "POST",
+                url: 'function/articles_action.php',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.trim() === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Article successfully ' + (formData.get(
+                                'isDraft') === 'true' ? 'saved as draft!' :
+                                'published!'),
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Disable form elements
+                                $('#articlePost input, #articlePost textarea, #articlePost select')
+                                    .prop('readonly', true);
+                                $('#articlePost input[type="file"]').prop(
+                                    'disabled', true);
+                                $('#publishBtn, #draft').prop('disabled', true);
+                                tinymce.get('content').setMode('readonly');
+
+                                // Optionally, redirect to a different page or reload
+                                // window.location.href = 'articles_list.php';
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: response,
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: response,
+                        text: 'Form submission failed: ' + error,
                     });
                 }
-            },
-            error: function(xhr, status, error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Form submission failed!',
-                });
-            }
+            });
         });
     });
     </script>

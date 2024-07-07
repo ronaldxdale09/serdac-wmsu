@@ -11,7 +11,7 @@
 
 
         
-        $inviteCode = substr(str_shuffle(md5(microtime())), 0, 6);
+        $inviteCode = substr(str_shuffle(md5(microtime())), 0, 12);
         
         // Creating the SQL query
 

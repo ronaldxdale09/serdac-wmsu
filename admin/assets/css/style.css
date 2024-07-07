@@ -768,7 +768,6 @@ aside.left-panel {
     left: 0;
     bottom: 0;
     top: 55px;
-    z-index: 999;
 }
 
 aside.left-panel:hover {
