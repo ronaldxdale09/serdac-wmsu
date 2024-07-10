@@ -1,10 +1,18 @@
 <?php 
 include('include/header.php');
 
-if (isset($_GET["form_id"])) {
-    $form_id = $_GET['form_id'];
-    $form_id = preg_replace('~\D~', '', $form_id);
+
+if (!isset($_SESSION["userId_code"])) {
+    // Store the current URL in the session
+    $_SESSION['redirect_after_login'] = "assmnt.form.php?form_id=" . $_GET['form_id'];
+    
+    header("Location: login.php");
+    exit;
 }
+
+$form_id = $_GET['form_id'];
+$form_id = preg_replace('~\D~', '', $form_id);
+
 
 // Retrieve user details from session
 $user_id = isset($_SESSION["userId_code"]) ? $_SESSION["userId_code"] : 0;

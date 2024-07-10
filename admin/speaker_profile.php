@@ -59,8 +59,6 @@
                                                     data-speaker='<?php echo json_encode($row); ?>'>
                                                     <i class="fa fa-book"></i> 
                                                 </button>
-                                                <button type="button" class="btn btn-sm  btn-danger btnDelete"><i
-                                                        class="fa fa-trash"></i></button>
                                             </td>
                                         </tr>
                                         <?php } ?>

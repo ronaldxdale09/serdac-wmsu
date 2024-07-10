@@ -94,7 +94,7 @@
                     <i class="fas fa-times-circle"></i> Decline Request
                 </button>
                 <button type="button" class="btn btn-success assign_sched" id="assign-sched"><i
-                        class="fas fa-calendar-alt"></i> Assign Schedule</button>
+                        class="fas fa-calendar-alt"></i> Assign Meeting Schedule</button>
                 <button type="submit" name="confirm" hidden class="btn btn-warning text-dark" id="submit-request"><i
                         class="fas fa-check"></i> Confirm Request</button>
             </div>

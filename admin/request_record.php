@@ -184,11 +184,17 @@ error_reporting(E_ALL);
                             <div class="content content-3">
                                 <div class="content-header"
                                     style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; flex-wrap: wrap;">
-                                    <button class="new-service-btn" data-toggle="modal"
-                                        data-target="#serviceRequestModal"
-                                        style="padding: 10px 15px; font-size: 14px; background-color: maroon; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                                        <i class="fas fa-plus"></i> New Service
-                                    </button>
+                                    <div style="display: flex; gap: 10px;">
+                                        <button class="new-service-btn" data-toggle="modal"
+                                            data-target="#serviceRequestModal"
+                                            style="padding: 10px 15px; font-size: 14px; background-color: maroon; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-plus"></i> New Service
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="viewEmailLogsBtn"
+                                            style="padding: 10px 15px; font-size: 14px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                                            <i class="fas fa-envelope-open-text"></i> View Email Logs
+                                        </button>
+                                    </div>
                                     <div class="content-title"
                                         style="font-size: 24px; font-weight: bold; color: maroon; font-family: Arial, sans-serif; text-align: center; flex-grow: 1;">
                                         In Progress Request
@@ -234,5 +240,93 @@ error_reporting(E_ALL);
 
 <?php include('include/footer.php');?>
 
+
+<!-- Email Logs Modal -->
+<div class="modal fade" id="emailLogsModal" tabindex="-1" aria-labelledby="emailLogsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="emailLogsModalLabel">Email Logs</h5>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover" id="emailLogsTable">
+                        <thead>
+                            <tr>
+                                <th>Date Sent</th>
+                                <th>Service Type</th>
+                                <th>Recipients</th>
+                                <th>Subject</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Email logs will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(document).ready(function() {
+    $('#viewEmailLogsBtn').click(function() {
+        loadEmailLogs();
+    });
+
+    function loadEmailLogs() {
+        $.ajax({
+            url: 'fetch/fetch_email_logs.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function(response) {
+                if (response.logs && Array.isArray(response.logs)) {
+                    populateEmailLogsTable(response.logs);
+                    var emailLogs = new bootstrap.Modal(document
+                        .getElementById(
+                            'emailLogsModal'));
+                    emailLogs.show(); // Show the next modal
+                } else {
+                    console.error("Invalid response format:", response);
+                    alert("Failed to load email logs. Invalid data received.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching email logs:", error);
+                alert("Failed to load email logs. Please try again.");
+            }
+        });
+    }
+
+    function populateEmailLogsTable(logs) {
+        const tbody = $('#emailLogsTable tbody');
+        tbody.empty();
+
+        if (logs.length === 0) {
+            tbody.append('<tr><td colspan="4" class="text-center">No email logs found.</td></tr>');
+        } else {
+            logs.forEach(log => {
+                const row = `<tr>
+                   <td>${new Date(log.sent_at).toLocaleString()}</td>
+                    <td>${log.service_type}</td>
+                    <td>${log.recipients}</td>
+                    <td>${log.subject}</td>
+                </tr>`;
+                tbody.append(row);
+            });
+        }
+    }
+
+    $(document).on('click', '.view-email', function() {
+        const logId = $(this).data('log-id');
+        // Implement logic to fetch and display full email content
+        // This could open another modal or expand the row to show details
+        alert('Viewing email log with ID: ' + logId);
+    });
+});
+</script>
 
 </html>

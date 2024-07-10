@@ -51,4 +51,21 @@ if (isset($_POST['update'])) {
     exit();
 }
 
+
+if (isset($_POST['delete'])) {
+    // Retrieve speaker ID from POST request
+    $speaker_id = mysqli_real_escape_string($con, $_POST['speaker_id']);
+
+    // Delete query for the speaker_profile table
+    $query = "DELETE FROM speaker_profile WHERE speaker_id='$speaker_id'";
+
+    // Execute the query
+    if (mysqli_query($con, $query)) {
+        header("Location: ../speaker_profile.php"); // Change redirect location if needed
+        exit();
+    } else {
+        echo "ERROR: Could not execute the delete query. " . mysqli_error($con);
+    }
+    exit();
+}
 ?>

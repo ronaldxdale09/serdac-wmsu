@@ -48,7 +48,12 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 $output .= '</tbody></table>
-<button type="button" class="btn btn-primary" id="addSpeaker">Add New Speaker</button>';
+<a href="speaker_profile.php" type="button" class="btn btn-dark" target="_blank">
+  <i class="fas fa-user-cog"></i> Manage Speaker
+</a>
+<button type="button" class="btn btn-primary" id="addSpeaker">
+  <i class="fas fa-user-plus"></i> Add Speaker
+</button>';
 
 echo $output;
 ?>
@@ -61,9 +66,12 @@ $(document).ready(function() {
     $('#addSpeaker').click(function() {
         var newRow = $('<tr>').append(
             $('<td>').html(selectHTML),
-            $('<td>').html('<input type="text" style="border: 1px solid #00235e;" class="form-control" name="topic[]">'),
             $('<td>').html(
-                '<button type="button" class="btn btn-sm btn-danger remove-item"><i class="fa fa-trash"></i></button>')
+                '<input type="text" style="border: 1px solid #00235e;" class="form-control" name="topic[]">'
+                ),
+            $('<td>').html(
+                '<button type="button" class="btn btn-sm btn-danger remove-item"><i class="fa fa-trash"></i></button>'
+                )
         );
         $('#speakerTable tbody').append(newRow);
     });

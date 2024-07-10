@@ -46,7 +46,7 @@ if (mysqli_stmt_num_rows($emailCheckStmt) > 0) {
     if (mysqli_stmt_execute($stmt)) {
         echo "success";
         // Send activation email
-        $activationLink = 'https://serdac-wmsu.online/llogin.php?code='.$activationCode; // Replace with actual activation link
+        $activationLink = 'https://serdac-wmsu.online/login.php?code='.$activationCode; // Replace with actual activation link
         $userEmail = $email;
         sendActivationEmail($userEmail, $activationLink);
     } else {

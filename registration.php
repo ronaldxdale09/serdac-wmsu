@@ -19,15 +19,16 @@
 <style>
 /* Data privacy styles */
 .data-privacy {
+    font-family: 'Poppins', sans-serif;
     margin-top: 20px;
-    font-size: 14px;
+    font-size: 13px;
     color: #555;
 }
 
 .data-privacy p {
-    font-size: 11px;
+    font-size: 13px;
     line-height: 1.5;
-    margin-bottom: 10px;
+    margin-bottom: 50px;
 }
 
 .data-privacy .checkbox {
@@ -40,7 +41,7 @@
 }
 
 .data-privacy .checkbox label {
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .password-requirements {
@@ -124,11 +125,12 @@
 
 
                                 <button class="next_button" id="agreeButton">I Agree</button>
+
                             </div>
                         </div>
 
 
-                        <div class="main">
+                        <div class="main ">
                             <small> <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
                                     class="school-logo" />
                             </small>
@@ -138,7 +140,7 @@
                             </div>
                             <div class="input-text">
                                 <div class="input-div">
-                                    <input type="text" required require id="user_name" name="fname">
+                                    <input type="text" required id="user_name" name="fname">
                                     <span>First Name</span>
                                 </div>
                                 <div class="input-div">
@@ -158,26 +160,38 @@
                                     <span>Phone number</span>
 
                                 </div>
+
+                            </div>
+
+                            <div class="input-text">
                                 <div class="input-div">
-                                    <select name="sex" required>
-                                        <option selected disabled>Select Sex...</option>
+                                    <label for="sex-select">Sex*</label>
+                                    <select id="sex-select" name="sex" required>
+                                        <option value="" selected disabled>- Sex -</option>
 
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
 
                                     </select>
+
                                 </div>
                                 <div class="input-div">
-                                    <select name="gender" required>
-                                        <option selected disabled>Select Gender...</option>
+                                    <label for="gender-select">Gender*</label>
+                                    <select name="gender" id="gender-select" required>
+                                        <option value="" selected disabled>- Gender -</option>
                                         <option value="Man">Man</option>
                                         <option value="Woman">Woman</option>
                                         <option value="Non-Binary">Non-Binary</option>
                                         <option value="Transgender">Transgender</option>
                                         <option value="Intersex">Intersex</option>
+                                        <option value="other">Other</option>
                                     </select>
                                 </div>
-
+                                <div class="input-div" id="custom-gender-div" style="display: none;">
+                                    <label for="custom-gender">Specify Gender</label>
+                                    <input type="text" id="custom-gender" name="custom_gender"
+                                        placeholder="Enter your gender">
+                                </div>
                             </div>
 
                             <div class="input-text">
@@ -215,7 +229,7 @@
                                 <button class="next_button">Next Step</button>
                             </div>
                         </div>
-                        <div class="main">
+                        <div class="main ">
                             <small> <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
                                     class="school-logo" />
                             </small>
@@ -325,18 +339,32 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const regionSelect = document.getElementById('region-select');
-    const provinceSelect = document.getElementById('province-select');
-    const citySelect = document.getElementById('city-select');
-
     const barangaySelect = document.getElementById('barangay-select');
+    const citySelect = document.getElementById('city-select');
+    const provinceSelect = document.getElementById('province-select');
+    const regionSelect = document.getElementById('region-select');
 
-    let regions = [];
-    let provinces = [];
-    let cities = [];
     let barangays = [];
+    let cities = [];
+    let provinces = [];
+    let regions = [];
 
     // Load initial data
+    fetch('js/ph-json/barangay.json')
+        .then(response => response.json())
+        .then(data => barangays = data)
+        .catch(error => console.error('Error loading barangay data:', error));
+
+    fetch('js/ph-json/city.json')
+        .then(response => response.json())
+        .then(data => cities = data)
+        .catch(error => console.error('Error loading city data:', error));
+
+    fetch('js/ph-json/province.json')
+        .then(response => response.json())
+        .then(data => provinces = data)
+        .catch(error => console.error('Error loading province data:', error));
+
     fetch('js/ph-json/region.json')
         .then(response => response.json())
         .then(data => {
@@ -345,29 +373,13 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => console.error('Error loading region data:', error));
 
-    fetch('js/ph-json/province.json')
-        .then(response => response.json())
-        .then(data => provinces = data)
-        .catch(error => console.error('Error loading province data:', error));
+    citySelect.addEventListener('change', function() {
+        // Find the selected city's city_code
+        const selectedCityCode = cities.find(city => city.city_name === this.value)?.city_code;
 
-    fetch('js/ph-json/city.json')
-        .then(response => response.json())
-        .then(data => cities = data)
-        .catch(error => console.error('Error loading city data:', error));
-
-    fetch('js/ph-json/barangay.json')
-        .then(response => response.json())
-        .then(data => barangays = data)
-        .catch(error => console.error('Error loading barangay data:', error));
-
-
-    regionSelect.addEventListener('change', function() {
-        const selectedRegionCode = regions.find(region => region.region_name === this.value)
-            ?.region_code;
-        const filteredProvinces = provinces.filter(province => province.region_code ===
-            selectedRegionCode);
-        populateSelect(provinceSelect, filteredProvinces, 'province_name');
-        citySelect.innerHTML = '<option value="">Select City</option>'; // Reset city select
+        // Filter the barangays based on the selected city_code
+        const filteredBarangays = barangays.filter(barangay => barangay.city_code === selectedCityCode);
+        populateSelect(barangaySelect, filteredBarangays, 'brgy_name');
     });
 
     provinceSelect.addEventListener('change', function() {
@@ -380,20 +392,20 @@ document.addEventListener('DOMContentLoaded', function() {
         populateSelect(citySelect, filteredCities, 'city_name');
     });
 
-    citySelect.addEventListener('change', function() {
-        // Find the selected city's city_code
-        const selectedCityCode = cities.find(city => city.city_name === this.value)?.city_code;
-
-        // Filter the barangays based on the selected city_code
-        const filteredBarangays = barangays.filter(barangay => barangay.city_code === selectedCityCode);
-        populateSelect(barangaySelect, filteredBarangays, 'brgy_name');
+    regionSelect.addEventListener('change', function() {
+        const selectedRegionCode = regions.find(region => region.region_name === this.value)
+            ?.region_code;
+        const filteredProvinces = provinces.filter(province => province.region_code ===
+            selectedRegionCode);
+        populateSelect(provinceSelect, filteredProvinces, 'province_name');
+        citySelect.innerHTML = '<option value="">Select City</option>'; // Reset city select
     });
 
-    // Placeholder for barangay select event listener
-    // ...
+
 
     function populateSelect(selectElement, data, key) {
         selectElement.innerHTML = `<option value="">Select ${selectElement.id.split('-')[0]}</option>`;
+        data.sort((a, b) => a[key].localeCompare(b[key])); // Sort alphabetically
         data.forEach(item => {
             const option = document.createElement('option');
             option.value = item[key];
@@ -403,8 +415,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
-
-
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -425,26 +435,26 @@ document.addEventListener('DOMContentLoaded', function() {
     const numberCheck = document.getElementById('number-check');
     const symbolCheck = document.getElementById('symbol-check');
     const passwordMatch = document.getElementById('password-match');
+    const genderSelect = document.getElementById('gender-select');
+    const customGenderDiv = document.getElementById('custom-gender-div');
+    const customGenderInput = document.getElementById('custom-gender');
 
     // Global variables
-    let formnumber = 0;
+    let currentStep = 0;
     const symbolRegex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 
     // Utility functions
-    function isValidEmail(email) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        return emailRegex.test(email);
-    }
-
-    function isValidPassword(password) {
-        return password.length >= 6 && /\d/.test(password) && symbolRegex.test(password);
-    }
+    const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const isValidPassword = (password) => password.length >= 6 && /\d/.test(password) && symbolRegex.test(
+        password);
 
     function showAlert(icon, title, text) {
-        Swal.fire({
+        return Swal.fire({
             icon,
             title,
-            text
+            text,
+            confirmButtonColor: '#3085d6',
+            confirmButtonText: 'OK'
         });
     }
 
@@ -458,71 +468,92 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function checkPasswordMatch() {
-        passwordMatch.classList.toggle('met',
-            passwordInput.value === confirmPasswordInput.value && passwordInput.value !== '');
+        const isMatching = passwordInput.value === confirmPasswordInput.value && passwordInput.value !== '';
+        passwordMatch.classList.toggle('met', isMatching);
+        return isMatching;
     }
 
     // Form navigation functions
-    function updateform() {
-        mainForms.forEach(form => form.classList.remove('active'));
-        mainForms[formnumber].classList.add('active');
+    function updateFormVisibility() {
+        mainForms.forEach((form, index) => form.classList.toggle('active', index === currentStep));
     }
 
-    function progress_forward() {
-        stepNumber.innerHTML = formnumber + 1;
-        stepList[formnumber].classList.add('active');
+    function updateProgressBar() {
+        stepNumber.textContent = currentStep + 1;
+        stepList.forEach((step, index) => step.classList.toggle('active', index <= currentStep));
     }
 
-    function progress_backward() {
-        stepList[formnumber].classList.remove('active');
-        stepNumber.innerHTML = formnumber;
-    }
-
-    function contentchange() {
-        stepNumContent.forEach(content => {
-            content.classList.remove('active');
-            content.classList.add('d-none');
+    function updateStepContent() {
+        stepNumContent.forEach((content, index) => {
+            content.classList.toggle('active', index === currentStep);
+            content.classList.toggle('d-none', index !== currentStep);
         });
-        stepNumContent[formnumber].classList.remove('d-none');
-        stepNumContent[formnumber].classList.add('active');
     }
 
-    // Form validation function
-    function validateform() {
-        let isValid = true;
-        const currentForm = mainForms[formnumber];
+    // Updated Form validation function
+    function validateForm() {
+        const currentForm = mainForms[currentStep];
         const inputs = currentForm.querySelectorAll("input[required], select[required]");
+        let isValid = true;
 
         inputs.forEach(input => {
             input.classList.remove('warning');
-            if (input.value.trim() === '' || (input.tagName === 'SELECT' && input.value === '')) {
+            if (input.value.trim() === '' || (input.tagName.toLowerCase() === 'select' && input
+                    .value === '')) {
                 isValid = false;
                 input.classList.add('warning');
             }
         });
 
-        if (formnumber === 3) { // Account Information step
-            const emailInput = currentForm.querySelector("input[type='email']");
-            if (emailInput && !isValidEmail(emailInput.value)) {
-                isValid = false;
-                emailInput.classList.add('warning');
-                showAlert('warning', 'Invalid Email', 'Please enter a valid email address.');
-            }
+        if (!isValid) {
+            showAlert('warning', 'Incomplete Form', 'Please fill in all required fields.');
+            return false;
+        }
 
-            if (!isValidPassword(passwordInput.value)) {
-                isValid = false;
-                passwordInput.classList.add('warning');
-                showAlert('warning', 'Invalid Password',
-                    'Password must be at least 6 characters long and contain at least one number and one symbol.'
-                    );
-            } else if (passwordInput.value !== confirmPasswordInput.value) {
-                isValid = false;
-                confirmPasswordInput.classList.add('warning');
-                showAlert('warning', 'Password Mismatch', 'Passwords do not match.');
+        // Specific check for the Address step
+        if (currentForm.querySelector('h2').textContent.trim().toLowerCase() === 'address') {
+            const barangaySelect = document.getElementById('barangay-select');
+            if (!barangaySelect || barangaySelect.value === '') {
+                barangaySelect.classList.add('warning');
+                showAlert('warning', 'Incomplete Address', 'Please select a barangay before proceeding.');
+                return false;
             }
         }
 
-        return isValid;
+        // Custom gender validation
+        if (genderSelect && genderSelect.value === 'other') {
+            if (!customGenderInput.value.trim()) {
+                customGenderInput.classList.add('warning');
+                showAlert('warning', 'Incomplete Information', 'Please specify your gender.');
+                return false;
+            }
+        }
+
+        // Account Information step validation
+        if (currentForm.querySelector('h2').textContent.trim().toLowerCase() === 'account information') {
+            const emailInput = currentForm.querySelector("input[type='email']");
+            if (emailInput && !isValidEmail(emailInput.value)) {
+                emailInput.classList.add('warning');
+                showAlert('warning', 'Invalid Email', 'Please enter a valid email address.');
+                return false;
+            }
+
+            if (!isValidPassword(passwordInput.value)) {
+                passwordInput.classList.add('warning');
+                showAlert('warning', 'Invalid Password',
+                    'Password must be at least 6 characters long and contain at least one number and one symbol.'
+                );
+                return false;
+            }
+
+            if (!checkPasswordMatch()) {
+                confirmPasswordInput.classList.add('warning');
+                showAlert('warning', 'Password Mismatch', 'Passwords do not match.');
+                return false;
+            }
+        }
+
+        return true;
     }
 
     // Event listeners
@@ -532,16 +563,11 @@ document.addEventListener('DOMContentLoaded', function() {
     nextButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
-            if (formnumber === 0 && !agreeCheckbox.checked) {
-                showAlert('warning', 'Agreement Required',
-                    'You must agree to the terms and conditions before proceeding.');
-                return false;
-            }
-            if (validateform()) {
-                formnumber++;
-                updateform();
-                progress_forward();
-                contentchange();
+            if (validateForm()) {
+                currentStep++;
+                updateFormVisibility();
+                updateProgressBar();
+                updateStepContent();
             }
         });
     });
@@ -549,16 +575,16 @@ document.addEventListener('DOMContentLoaded', function() {
     backButtons.forEach(button => {
         button.addEventListener('click', function(e) {
             e.preventDefault();
-            formnumber--;
-            updateform();
-            progress_backward();
-            contentchange();
+            currentStep--;
+            updateFormVisibility();
+            updateProgressBar();
+            updateStepContent();
         });
     });
 
     submitButton.addEventListener('click', function(e) {
         e.preventDefault();
-        if (!validateform()) return;
+        if (!validateForm()) return;
 
         Swal.fire({
             title: 'Processing...',
@@ -568,37 +594,79 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         const formData = new FormData(form);
+        // Handle custom gender
+        if (genderSelect.value === 'other') {
+            formData.set('gender', customGenderInput.value.trim());
+        }
+
         fetch('function/registration.action.php', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.text())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
             .then(response => {
                 Swal.close();
-                if (response.trim() === 'success') {
-                    showAlert('success', 'Success', 'Registration Completed!');
-                    formnumber++;
-                    updateform();
-                    const shownname = document.querySelector(".shown_name");
-                    const username = document.getElementById('user_name');
-                    if (shownname && username) shownname.textContent = username.value;
-                } else if (response.trim() === 'Email is already registered') {
-                    showAlert('info', 'Email is already registered', response);
-                } else {
-                    showAlert('error', 'Error', response);
+                switch (response.trim()) {
+                    case 'success':
+                        showAlert('success', 'Success', 'Registration Completed!');
+                        currentStep++;
+                        updateFormVisibility();
+                        const shownname = document.querySelector(".shown_name");
+                        const username = document.getElementById('user_name');
+                        if (shownname && username) shownname.textContent = username.value;
+                        break;
+                    case 'Email is already registered':
+                        showAlert('info', 'Email Already Registered', response);
+                        break;
+                    default:
+                        throw new Error(response);
                 }
             })
-            .catch(() => {
-                showAlert('error', 'Error', 'Form submission failed!');
+            .catch((error) => {
+                console.error('Error:', error);
+                showAlert('error', 'Error', 'Form submission failed. Please try again.');
             });
     });
 
     agreeCheckbox.addEventListener('change', function() {
         agreeButton.disabled = !this.checked;
+        agreeButton.style.backgroundColor = this.checked ? '' : '#ccc';
+        agreeButton.style.cursor = this.checked ? 'pointer' : 'not-allowed';
     });
+
+    agreeButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (agreeCheckbox.checked) {
+            currentStep = 1; // Set to 1 to move to Personal Information
+            updateFormVisibility();
+            updateProgressBar();
+            updateStepContent();
+        }
+    });
+
+    // New event listener for gender select
+    if (genderSelect) {
+        genderSelect.addEventListener('change', function() {
+            if (this.value === 'other') {
+                customGenderDiv.style.display = 'block';
+                customGenderInput.required = true;
+            } else {
+                customGenderDiv.style.display = 'none';
+                customGenderInput.required = false;
+                customGenderInput.value = ''; // Clear the custom input when not selected
+            }
+        });
+    }
 
     // Initialize
     updatePasswordRequirements();
     agreeButton.disabled = true;
+    agreeButton.style.backgroundColor = '#ccc';
+    agreeButton.style.cursor = 'not-allowed';
 });
 </script>

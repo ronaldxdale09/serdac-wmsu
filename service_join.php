@@ -1,11 +1,17 @@
 <?php
 include('include/header.php');
 
+
 if (!isset($_SESSION["userId_code"])) {
+    // Store the current URL in the session
+    $_SESSION['redirect_after_login'] = "service_join.php?inv=" . $_GET['inv'];
+    
     header("Location: login.php");
     exit;
 }
 
+
+// Rest of your service join code...
 $id = preg_replace('~\D~', '', $_SESSION['userId_code']);
 $code = $_GET['inv'];
 

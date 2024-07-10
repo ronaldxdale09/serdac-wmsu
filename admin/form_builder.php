@@ -1,7 +1,4 @@
 <?php include('include/header.php');
-
-    ?>
-<?php
 if (isset($_GET["form_id"])) {
     $form_id =  $_GET['form_id'];
     $formQuery = "SELECT * FROM asmt_forms WHERE form_id = $form_id";
@@ -9,6 +6,7 @@ if (isset($_GET["form_id"])) {
 
     if ($formResult && mysqli_num_rows($formResult) > 0) {
         $formRecord = mysqli_fetch_assoc($formResult);
+        $isQuiz = $formRecord['is_quiz'];
         echo "
         <script>
             $(document).ready(function() {
@@ -16,14 +14,13 @@ if (isset($_GET["form_id"])) {
                 $('textarea[name=description]').val('{$formRecord['description']}');
                 $('select[name=form_type]').val('{$formRecord['form_type']}');
                 $('select[name=request_id]').val('{$formRecord['request_id']}');
-
                 $('input[name=start_date]').val('{$formRecord['start_date']}');
                 $('input[name=end_date]').val('{$formRecord['end_date']}');
                 $('input[name=quota]').val('{$formRecord['quota']}');
                 $('input[name=response_limit]').val('{$formRecord['response_limit']}');
+                $('#isQuiz').prop('checked', " . ($isQuiz ? 'true' : 'false') . ");
 
-
-                fetchQuestions($form_id);
+                fetchQuestions($form_id, $isQuiz);
             });
         </script>
         ";
@@ -32,7 +29,7 @@ if (isset($_GET["form_id"])) {
     echo "
     <script>
         $(document).ready(function() {
-            fetchQuestions(0); // No form_id, load default or empty form
+            fetchQuestions(0, false);
         });
     </script>
     ";
@@ -50,9 +47,6 @@ $serviceOptions = [];
 while ($row = mysqli_fetch_assoc($result)) {
     $serviceOptions[] = $row['service_type'];
 }
-
-
-
 
 ?>
 
@@ -76,7 +70,7 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <div class="col-sm-4">
                         <div class="page-header float-left">
                             <div class="page-title">
-                                <h1>Dashboard</h1>
+                                <h1>Form Builder</h1>
                             </div>
                         </div>
                     </div>
@@ -84,9 +78,8 @@ while ($row = mysqli_fetch_assoc($result)) {
                         <div class="page-header float-right">
                             <div class="page-title">
                                 <ol class="breadcrumb text-right">
-                                    <li><a href="#">Dashboard</a></li>
-                                    <li><a href="#">Table</a></li>
-                                    <li class="active">Data table</li>
+                                    <li><a href="assessment.php">Assessment List</a></li>
+                                    <li class="active">Form Builder</li>
                                 </ol>
                             </div>
                         </div>
@@ -134,14 +127,21 @@ while ($row = mysqli_fetch_assoc($result)) {
                                                                 <input type="number" id="quota" name="quota"
                                                                     class="form-control" placeholder="Enter Quota">
                                                             </div>
-                                                            <div class="col-md-6 mb-3">
-                                                                <label for="responseLimit">Response Limit per
-                                                                    User</label>
-                                                                <input type="number" id="responseLimit"
-                                                                    name="response_limit" class="form-control"
-                                                                    placeholder="Enter Limit" value="1">
-                                                            </div>
+                                                                    <div class="col-md-6 mb-3">
+                                                                        <label for="responseLimit">Response Limit per
+                                                                            User</label>
+                                                                        <input type="number" id="responseLimit"
+                                                                            name="response_limit" class="form-control"
+                                                                            placeholder="Enter Limit" value="1">
+                                                                    </div>
                                                         </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" id="isQuiz" name="is_quiz" value="1">
+                                                            <label class="form-check-label" for="isQuiz">
+                                                                This is a quiz form
+                                                            </label>
+                                                        </div>
+                                                
                                                     </div>
                                                 </div>
                                             </div>
@@ -247,30 +247,56 @@ while ($row = mysqli_fetch_assoc($result)) {
     <?php include('include/footer.php');?>
 
     <script>
-    $(document).ready(function() {
-        function fetchQuestions(form_id) {
-            $.ajax({
-                url: 'table/form.build.php',
-                method: 'POST',
-                data: {
-                    form_id: form_id
-                },
-                success: function(data) {
-                    $('#question_list_container').html(data);
-                    // Re-initialize event listeners or other functionalities if needed
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error('Error fetching questions:', textStatus, errorThrown);
-                }
+
+$(document).on('click', '#saveFormButton', function(e) {
+                e.preventDefault();
+                var modal = new bootstrap.Modal(document.getElementById('saveModal'));
+                modal.show();
             });
-        }
-
-        var formId = <?php echo isset($form_id) ? $form_id : 'null'; ?>;
-
-        fetchQuestions(formId || 0);
 
 
+            $(document).on('click', '#saveFormButton', function(e) {
+        e.preventDefault();
+        var modal = new bootstrap.Modal(document.getElementById('saveModal'));
+        modal.show();
     });
+
+    $(document).on('click', '#updateFormButton', function(e) {
+        e.preventDefault();
+        $('#is_update').val(1);
+        saveForm();
+    });
+
+    $(document).on('click', '#saveAsNewFormButton', function(e) {
+        e.preventDefault();
+        $('#is_update').val(0);
+        saveForm();
+    });
+
+    $(document).ready(function() {
+    function fetchQuestions(form_id, isQuiz) {
+        $.ajax({
+            url: 'table/form.build.php',
+            method: 'POST',
+            data: {
+                form_id: form_id,
+                is_quiz: isQuiz
+            },
+            success: function(data) {
+                $('#question_list_container').html(data);
+                // Re-initialize event listeners or other functionalities if needed
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error('Error fetching questions:', textStatus, errorThrown);
+            }
+        });
+    }
+
+    var formId = <?php echo isset($form_id) ? $form_id : 'null'; ?>;
+    var isQuiz = <?php echo isset($isQuiz) ? $isQuiz : 'false'; ?>;
+
+    fetchQuestions(formId || 0, isQuiz);    
+});
     </script>
 
 

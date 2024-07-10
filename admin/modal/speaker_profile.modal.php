@@ -110,6 +110,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="submit" form="updateSpeakerForm" class="btn btn-primary" name="update">Update</button>
+                <button type="submit" form="updateSpeakerForm" class="btn btn-danger" name="delete">Remove</button>
+
             </div>
         </div>
     </div>

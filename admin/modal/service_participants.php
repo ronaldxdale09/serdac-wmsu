@@ -285,8 +285,16 @@ function copyCode() {
     </div>
 </div>
 
+
+
+
+
+
 <script>
 $(document).ready(function() {
+
+
+
 
     tinymce.init({
         selector: '#emailBody',
@@ -423,12 +431,13 @@ $(document).ready(function() {
 
 });
 
-
 $(document).ready(function() {
     function sendEmail() {
         var emails = $('#emailList').val().trim();
         var subject = $('#emailSubject').val().trim();
         var body = tinymce.get('emailBody').getContent().trim();
+        var requestId = $('#s_req_id')
+            .val(); // Make sure this element exists and contains the correct request_id
 
         // Show loading screen
         Swal.fire({
@@ -442,12 +451,13 @@ $(document).ready(function() {
 
         // Implement AJAX call to send the emails
         $.ajax({
-            url: 'function/email_participants.php', // Your endpoint for sending emails
+            url: 'function/email_participants.php',
             type: 'POST',
             data: {
                 emails: emails,
                 subject: subject,
-                body: body
+                body: body,
+                request_id: requestId
             },
             success: function(response) {
                 // Hide loading dialog
@@ -461,8 +471,6 @@ $(document).ready(function() {
                     confirmButtonText: 'Ok'
                 });
                 $("[data-dismiss=modal]").trigger("click");
-
-                // Optionally hide the modal after successful sending
             },
             error: function(xhr, status, error) {
                 // Hide loading dialog

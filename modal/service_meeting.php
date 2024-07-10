@@ -55,8 +55,6 @@
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" onclick="printModalContent()"><i class="fas fa-print"></i>
-                    Print</button>
 
             </div>
 

@@ -314,7 +314,7 @@
             // Set up the modal with the relevant form details
             $('#formTitle').val(title);
             $('#formDescription').val(description);
-            var inviteLink = 'http://serdac-wmsu.online/assmnt.form?form_id=' + form_id;
+            var inviteLink = 'http://serdac-wmsu.online/assmnt.form.php?form_id=' + form_id;
             $('#inviteLink').val(inviteLink);
 
             // Generate the message dynamically

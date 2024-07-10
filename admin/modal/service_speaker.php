@@ -69,10 +69,6 @@
                                     style="border-radius: 0.35rem; border-color: #d1d3e2; font-size: 1.25rem; text-align: center;">
                             </div>
                         </div>
-
-
-
-
                         <!-- Date Type Selection -->
                         <div class="row mb-3">
                             <div class="col-12 col-md-6">
@@ -85,34 +81,28 @@
                                 </select>
                             </div>
                         </div>
-
-                        <!-- Date Inputs -->
                         <div class="form-row">
-                            <!-- From Date -->
                             <!-- From Date -->
                             <div class="form-group col-md-6">
                                 <label class="form-control-label" style="font-weight: bold;">From Date:</label>
                                 <input type="datetime-local" id="fromDate" name="from_date" class="form-control"
                                     style="border-radius: 0.35rem; border-color: #d1d3e2;">
                             </div>
-
                             <!-- To Date -->
                             <div class="form-group col-md-6" id="toDateGroup">
                                 <label class="form-control-label" style="font-weight: bold;">To Date:</label>
                                 <input type="datetime-local" id="toDate" name="to_date" class="form-control"
                                     style="border-radius: 0.35rem; border-color: #d1d3e2;">
                             </div>
-
                         </div>
-
                         <div id="speaker_list_table"></div>
                     </div>
             </div>
 
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" name="confirm" id="btnSaveSpeaker" class="btn btn-warning text-dark"><i
-                        class="fas fa-check"></i> Confirm Training</button>
+                <button type="submit" name="confirm" id="btnSaveSpeaker" class="btn btn-dark text-dark"><i
+                        class="fas fa-check"></i> Save Training Details</button>
                 </form>
 
             </div>
