@@ -221,19 +221,19 @@ function copyCode() {
     aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-dark text-white">
+            <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="emailModalLabel">Send Invitational Email</h5>
             </div>
             <div class="modal-body">
                 <!-- Form inside the modal -->
                 <div class="form-row">
                     <!-- Client Type -->
-                    <div class="form-group  col-md-12">
+                    <div class="form-group  col-md-6">
                         <label for="client-type">Service Title</label>
                         <input type="text" id="e_service_title" class="form-control" readonly
                             style=" border-color: #d1d3e2; font-size: 1.25rem; text-align: center;">
                     </div>
-                    <div class="form-group  col-md-12">
+                    <div class="form-group  col-md-6">
                         <label for="client-type">Training Venue:</label>
                         <input type="text" id="e_serviceVenue" class="form-control" readonly
                             style="border-color: #d1d3e2; font-size: 1.25rem; text-align: center;">
@@ -255,6 +255,10 @@ function copyCode() {
                     </div>
 
                 </div>
+                <button class="btn btn-dark btn-sm mb-2" id="openEmailSelectionModal">
+                    Select Emails
+                </button>
+
 
                 <form id="emailForm">
                     <div class="form-group">
@@ -286,13 +290,124 @@ function copyCode() {
 </div>
 
 
-
-
+<!-- Email selection modal -->
+<div class="modal fade" id="emailSelectionModal" tabindex="-1" role="dialog" aria-labelledby="emailSelectionModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-l" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="emailSelectionModalLabel">Select Client Emails</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <input type="text" class="form-control mb-2" id="emailFilter" placeholder="Filter clients...">
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered" id="clientTable">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="selectAllEmails">
+                                        <label class="form-check-label" for="selectAllEmails">Select All</label>
+                                    </div>
+                                </th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Address</th>
+                                <th>Occupation</th>
+                            </tr>
+                        </thead>
+                        <tbody id="clientList">
+                            <!-- Client data will be dynamically added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="confirmEmailSelection">Confirm Selection</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>
 $(document).ready(function() {
 
+    $('#openEmailSelectionModal').click(function() {
+        loadClients();
+        var modal = new bootstrap.Modal(document
+            .getElementById('emailSelectionModal'));
+        modal.show(); // Show the next modal
+    });
+
+    $('#selectAllEmails').change(function() {
+        $('.client-checkbox').prop('checked', $(this).is(':checked'));
+    });
+
+    $('#emailFilter').on('input', function() {
+        filterClients($(this).val());
+    });
+
+    $('#confirmEmailSelection').click(function() {
+        const selectedEmails = $('.client-checkbox:checked').map(function() {
+            return $(this).val();
+        }).get();
+
+        $('#emailList').val(selectedEmails.join(', '));
+        // Try these methods to close the modal
+        $('#emailSelectionModal').modal('hide');
+        $('#emailSelectionModal').hide();
+        $('.modal-backdrop').remove();
+    });
+
+
+    function loadClients() {
+        $.ajax({
+            url: 'fetch/fetch_selected_par_emails.php',
+            method: 'GET',
+            success: function(response) {
+                const clients = JSON.parse(response);
+                let clientListHtml = '';
+                clients.forEach(client => {
+                    clientListHtml += `
+                    <tr>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input client-checkbox" type="checkbox" value="${client.email}" id="client-${client.user_id}">
+                            </div>
+                        </td>
+                        <td>${client.fullName}</td>
+                        <td>${client.email}</td>
+                        <td>${client.address}</td>
+                        <td>${client.occupation}</td>
+                    </tr>
+                `;
+                });
+                $('#clientList').html(clientListHtml);
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching clients:", error);
+            }
+        });
+    }
+
+
+    function filterClients(filterText) {
+        $("#clientTable tbody tr").each(function() {
+            const rowText = $(this).text().toLowerCase();
+            if (rowText.includes(filterText.toLowerCase())) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
 
 
 
@@ -305,6 +420,8 @@ $(document).ready(function() {
         height: 300,
         content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }'
     });
+
+
     $('#email_inv').click(function() {
 
         $("[data-dismiss=modal]").trigger({
