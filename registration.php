@@ -67,6 +67,28 @@
 }
 </style>
 
+<?php 
+include('function/db.php'); 
+function getOptions($table, $valueColumn, $textColumn) {
+    global $con;
+    $options = "";
+    $sql = "SELECT $valueColumn, $textColumn FROM $table ORDER BY $textColumn ASC";
+    $result = $con->query($sql);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $options .= "<option value='" . htmlspecialchars($row[$valueColumn]) . "'>" . htmlspecialchars($row[$textColumn]) . "</option>";
+        }
+    }
+    return $options;
+}
+
+$genderOptions = getOptions("r_genders", "id", "gender");
+$occupationOptions = getOptions("r_occupations", "id", "occupation");
+$educationOptions = getOptions("r_education_levels", "id", "education_level");
+
+$con->close();
+?>
+
 <body>
     <div class="wrapper">
         <div class="container">
@@ -154,11 +176,8 @@
                             </div>
                             <div class="input-text">
                                 <div class="input-div">
-                                    <input type="text" id="contact_no" name="contact_no" required maxlength="11"
-                                        pattern="\d{11}" inputmode="numeric" title="Please enter exactly 11 digits"
-                                        oninput="this.value = this.value.replace(/\D/g, '')">
+                                    <input type="text" id="contact_no" name="contact_no" required>
                                     <span>Phone number</span>
-
                                 </div>
 
                             </div>
@@ -179,12 +198,8 @@
                                     <label for="gender-select">Gender*</label>
                                     <select name="gender" id="gender-select" required>
                                         <option value="" selected disabled>- Gender -</option>
-                                        <option value="Man">Man</option>
-                                        <option value="Woman">Woman</option>
-                                        <option value="Non-Binary">Non-Binary</option>
-                                        <option value="Transgender">Transgender</option>
-                                        <option value="Intersex">Intersex</option>
-                                        <option value="other">Other</option>
+                                        <?php echo $genderOptions; ?>
+                                        <option value="other">Other</option>  
                                     </select>
                                 </div>
                                 <div class="input-div" id="custom-gender-div" style="display: none;">
@@ -199,13 +214,8 @@
                                     <label for="occupation-select">Occupation*</label>
                                     <select id="occupation-select" name="occupation" required>
                                         <option value="" selected disabled>- Occupation -</option>
-                                        <option value="student">Student</option>
-                                        <option value="employed_ft">Employed (Full-time)</option>
-                                        <option value="employed_pt">Employed (Part-time)</option>
-                                        <option value="self_employed">Self-employed</option>
-                                        <option value="homemaker">Homemaker</option>
-                                        <option value="retired">Retired</option>
-                                        <option value="others">Others</option>
+                                        <?php echo $occupationOptions; ?>
+
                                     </select>
 
                                 </div>
@@ -213,12 +223,7 @@
                                     <label for="education-level-select">Educational Level*</label>
                                     <select id="education-level-select" name="education_level" required>
                                         <option value="" selected disabled>- Educational Level -</option>
-                                        <option value="no_schooling">No schooling</option>
-                                        <option value="elementary">Elementary</option>
-                                        <option value="high_school">High School</option>
-                                        <option value="vocational">Vocational</option>
-                                        <option value="college">College</option>
-                                        <option value="postgraduate">Postgraduate</option>
+                                        <?php echo $educationOptions; ?>
                                     </select>
 
                                 </div>
@@ -338,6 +343,25 @@
 
 
 <script>
+document.getElementById('contact_no').addEventListener('input', function (e) {
+    // Remove non-digit characters
+    let input = this.value.replace(/\D/g, '');
+
+    
+    // Limit to 11 digits
+    input = input.slice(0, 11);
+    
+    // Format the number as 09XX-XXX-XXXX
+    if (input.length > 4) {
+        input = input.slice(0,4) + '-' + input.slice(4);
+    }
+    if (input.length > 8) {
+        input = input.slice(0,8) + '-' + input.slice(8);
+    }
+    
+    this.value = input;
+});
+
 document.addEventListener('DOMContentLoaded', function() {
     const barangaySelect = document.getElementById('barangay-select');
     const citySelect = document.getElementById('city-select');

@@ -22,11 +22,11 @@
                             <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile"
-                                        role="tab">Profile</a>
+                                        role="tab">CMS</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="security-tab" data-toggle="tab" href="#security"
-                                        role="tab">Security</a>
+                                        role="tab">Registration Settings</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="notifications-tab" data-toggle="tab" href="#notifications"
