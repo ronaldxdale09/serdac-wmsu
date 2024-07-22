@@ -30,7 +30,7 @@
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="notifications-tab" data-toggle="tab" href="#notifications"
-                                        role="tab">Notifications</a>
+                                        role="tab">Service Request</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="appearance-tab" data-toggle="tab" href="#appearance"
@@ -42,38 +42,12 @@
                                   <?php include('settings/content_update.php'); ?>
                                 </div>
                                 <div class="tab-pane fade" id="security" role="tabpanel">
-                                    <h3>Security Settings</h3>
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="currentPassword">Current Password</label>
-                                            <input type="password" class="form-control" id="currentPassword">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="newPassword">New Password</label>
-                                            <input type="password" class="form-control" id="newPassword">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="confirmPassword">Confirm New Password</label>
-                                            <input type="password" class="form-control" id="confirmPassword">
-                                        </div>
-                                        <button type="submit" class="btn btn-primary">Change Password</button>
-                                    </form>
+                                <?php include('settings/registration_dropdowns.php'); ?>
+
                                 </div>
                                 <div class="tab-pane fade" id="notifications" role="tabpanel">
-                                    <h3>Notification Preferences</h3>
-                                    <form>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="emailNotifications">
-                                            <label class="form-check-label" for="emailNotifications">Receive email
-                                                notifications</label>
-                                        </div>
-                                        <div class="form-check">
-                                            <input type="checkbox" class="form-check-input" id="smsNotifications">
-                                            <label class="form-check-label" for="smsNotifications">Receive SMS
-                                                notifications</label>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary mt-3">Save Preferences</button>
-                                    </form>
+                                    <h3>Service Request Dropdown</h3>
+                                    <?php include('settings/request_dropdown.php'); ?>
                                 </div>
                                 <div class="tab-pane fade" id="appearance" role="tabpanel">
                                     <h3>Appearance Settings</h3>
