@@ -47,9 +47,9 @@
                         <div class="card-body">
                             <div class="table-responsive custom-table-container">
                                 <?php
-                        // Fetch data from the contact_messages table
-                        $results = mysqli_query($con, "SELECT * FROM contact_messages ORDER BY submitted_at DESC");
-                        ?>
+        // Fetch data from the contact_messages table
+        $results = mysqli_query($con, "SELECT * FROM contact_messages ORDER BY submitted_at DESC");
+        ?>
                                 <table class="table table-hover" id="contact_messages_table">
                                     <thead>
                                         <tr>
@@ -62,10 +62,21 @@
                                             <th scope="col">Timestamp</th>
                                         </tr>
                                     </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Mobile</th>
+                                            <th scope="col">Subject</th>
+                                            <th scope="col">Message</th>
+                                            <th scope="col">Timestamp</th>
+                                        </tr>
+                                    </tfoot>
                                     <tbody>
                                         <?php 
-                                while ($row = mysqli_fetch_array($results)) { 
-                                ?>
+                while ($row = mysqli_fetch_array($results)) {
+                ?>
                                         <tr>
                                             <td><?php echo $row['id']; ?></td>
                                             <td><?php echo $row['name']; ?></td>
@@ -74,13 +85,13 @@
                                             <td><?php echo $row['subject']; ?></td>
                                             <td><?php echo $row['message']; ?></td>
                                             <td><?php echo $row['submitted_at']; ?></td>
-
                                         </tr>
                                         <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -93,16 +104,47 @@
 
     </div>
     <?php include('include/footer.php');?>
-  
 
     <script>
     $(document).ready(function() {
+        // Setup - add a text input to each footer cell
+        $('#contact_messages_table tfoot th').each(function() {
+            var title = $(this).text();
+            $(this).html(
+                '<input type="text" class="form-control form-control-sm" placeholder="Filter ' +
+                title + '" />');
+        });
+
         var table = $('#contact_messages_table').DataTable({
             dom: 'Bfrtip',
-            buttons: ['excelHtml5', 'pdfHtml5', 'print']
+            buttons: ['excelHtml5', 'pdfHtml5', 'print'],
+            initComplete: function() {
+                // Apply the search
+                this.api().columns().every(function() {
+                    var that = this;
+                    $('input', this.footer()).on('keyup change clear', function() {
+                        if (that.search() !== this.value) {
+                            that
+                                .search(this.value)
+                                .draw();
+                        }
+                    });
+                });
+            }
         });
+
+        // Move the footer with filters to the top of the table
+        $('#contact_messages_table tfoot tr').appendTo('#contact_messages_table thead');
     });
     </script>
+
+    <style>
+    #contact_messages_table thead input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+    </style>
 </body>
 
 

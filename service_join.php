@@ -1,17 +1,17 @@
 <?php
 include('include/header.php');
 
+function is_logged_in() {
+    return isset($_SESSION["userId_code"]) && isset($_SESSION["session_token"]);
+}
 
-if (!isset($_SESSION["userId_code"])) {
-    // Store the current URL in the session
+// Simple login check
+if (!is_logged_in()) {
     $_SESSION['redirect_after_login'] = "service_join.php?inv=" . $_GET['inv'];
-    
     header("Location: login.php");
     exit;
 }
 
-
-// Rest of your service join code...
 $id = preg_replace('~\D~', '', $_SESSION['userId_code']);
 $code = $_GET['inv'];
 
@@ -21,16 +21,7 @@ $service = [];
 $training = [];
 $speakers = [];
 $scheduleDate = "Not scheduled";
-
-// Fetch user information
-$userQuery = $con->prepare("SELECT * FROM users WHERE user_id = ?");
-$userQuery->bind_param("i", $id);
-$userQuery->execute();
-$userResult = $userQuery->get_result();
-if ($userResult->num_rows > 0) {
-    $user = $userResult->fetch_assoc();
-}
-$userQuery->close();
+$alreadyJoined = false;
 
 // Fetch service request information
 $serviceQuery = $con->prepare("SELECT * FROM service_request WHERE inviteCode = ?");
@@ -40,6 +31,17 @@ $serviceResult = $serviceQuery->get_result();
 if ($serviceResult->num_rows > 0) {
     $service = $serviceResult->fetch_assoc();
     $req_id = $service['request_id'];
+
+    // Check if user has already joined this training
+    $joinCheckQuery = $con->prepare("SELECT * FROM service_participant WHERE user_id = ? AND request_id = ?");
+    $joinCheckQuery->bind_param("ii", $id, $req_id);
+    $joinCheckQuery->execute();
+    $joinCheckResult = $joinCheckQuery->get_result();
+    
+    if ($joinCheckResult->num_rows > 0) {
+        $alreadyJoined = true;
+    }
+    $joinCheckQuery->close();
 
     // Fetch training information
     $trainingQuery = $con->prepare("SELECT s_from, s_to, title, venue FROM sr_training WHERE request_id = ?");
@@ -72,6 +74,16 @@ if ($serviceResult->num_rows > 0) {
     $speakersQuery->close();
 }
 $serviceQuery->close();
+
+// Fetch user information
+$userQuery = $con->prepare("SELECT * FROM users WHERE user_id = ?");
+$userQuery->bind_param("i", $id);
+$userQuery->execute();
+$userResult = $userQuery->get_result();
+if ($userResult->num_rows > 0) {
+    $user = $userResult->fetch_assoc();
+}
+$userQuery->close();
 
 $fullName = trim(($user['fname'] ?? '') . ' ' . ($user['midname'] ?? '') . ' ' . ($user['lname'] ?? ''));
 $requestDate = $service['request_date'] ?? 'N/A';
@@ -106,7 +118,19 @@ $quotaMet = $participantsQuota !== null && $participants >= $participantsQuota;
                             <div class="row d-flex justify-content-center">
                                 <div class="col-xl-12 col-lg-12">
                                     <div class="card b-0">
-                                        <?php if ($allowParticipants == 0): ?>
+                                               <?php if ($alreadyJoined): ?>
+                                    <fieldset class="show">
+                                        <div class="form-card text-center">
+                                            <h5 class="sub-heading mb-4">Already Joined</h5>
+                                            <p class="message">You have already joined this training session. If you have any questions or need further assistance, please contact the administrator.</p>
+                                            <div class="icon-container">
+                                            </div>
+                                            <div class="main-button-red">
+                                                <a href="index.php">Return to User Portal</a>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                        <?php elseif ($allowParticipants == 0): ?>
                                         <fieldset class="show">
                                             <div class="form-card text-center">
                                                 <h5 class="sub-heading mb-4">Training Closed or Ended</h5>
@@ -116,7 +140,7 @@ $quotaMet = $participantsQuota !== null && $participants >= $participantsQuota;
                                                 <div class="icon-container">
                                                 </div>
                                                 <div class="main-button-red">
-                                                    <a href="index.php">Return to User Portal</a>
+                                                    <a href="profile.php">Return to User Portal</a>
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -130,7 +154,7 @@ $quotaMet = $participantsQuota !== null && $participants >= $participantsQuota;
                                                 <div class="icon-container">
                                                 </div>
                                                 <div class="main-button-red">
-                                                    <a href="index.php">Return to User Portal</a>
+                                                    <a href="profile.php">Return to User Portal</a>
                                                 </div>
                                             </div>
                                         </fieldset>
@@ -283,7 +307,7 @@ $quotaMet = $participantsQuota !== null && $participants >= $participantsQuota;
                                             </div>
                                             <br>
                                             <div class="main-button-red">
-                                                <a href="index.php">Return to User Portal</a>
+                                                <a href="profile.php">Return to User Portal</a>
                                             </div>
                                         </fieldset>
                                     </div>

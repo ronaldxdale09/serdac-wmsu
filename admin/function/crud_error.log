@@ -1,0 +1,15 @@
+[24-Jul-2024 08:29:05 Europe/Berlin] [2024-07-24 08:29:05] Received POST request: {"action":"add","table":"r_education_levels","value":"a"}
+[24-Jul-2024 08:29:05 Europe/Berlin] [2024-07-24 08:29:05] Action: add, Table: r_education_levels
+[24-Jul-2024 08:29:05 Europe/Berlin] [2024-07-24 08:29:05] Error: Duplicate entry 'a' for key 'education_level'
+[24-Jul-2024 08:30:20 Europe/Berlin] [2024-07-24 08:30:20] Received POST request: {"action":"add","table":"r_education_levels","value":"as"}
+[24-Jul-2024 08:30:20 Europe/Berlin] [2024-07-24 08:30:20] Action: add, Table: r_education_levels
+[24-Jul-2024 08:30:20 Europe/Berlin] [2024-07-24 08:30:20] Successfully added new item with ID: 21 to table: r_education_levels
+[24-Jul-2024 08:30:31 Europe/Berlin] [2024-07-24 08:30:31] Received POST request: {"action":"add","table":"r_agency_classification","value":"test"}
+[24-Jul-2024 08:30:31 Europe/Berlin] [2024-07-24 08:30:31] Action: add, Table: r_agency_classification
+[24-Jul-2024 08:30:31 Europe/Berlin] [2024-07-24 08:30:31] Invalid table name: r_agency_classification
+[24-Jul-2024 08:32:15 Europe/Berlin] [2024-07-24 08:32:15] Received POST request: {"action":"add","table":"r_education_levels","value":"asd"}
+[24-Jul-2024 08:32:15 Europe/Berlin] [2024-07-24 08:32:15] Action: add, Table: r_education_levels
+[24-Jul-2024 08:32:15 Europe/Berlin] [2024-07-24 08:32:15] Error: This value already exists. Please enter a unique value.
+[24-Jul-2024 08:32:44 Europe/Berlin] [2024-07-24 08:32:44] Received POST request: {"action":"add","table":"r_education_levels","value":"dsa"}
+[24-Jul-2024 08:32:44 Europe/Berlin] [2024-07-24 08:32:44] Action: add, Table: r_education_levels
+[24-Jul-2024 08:32:44 Europe/Berlin] [2024-07-24 08:32:44] Successfully added new item with ID: 22 to table: r_education_levels

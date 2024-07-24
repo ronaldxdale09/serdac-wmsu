@@ -19,10 +19,10 @@ if (!$con) {
 }
 
 // Get agency classifications
-$agencyClassifications = getOptions($con, "r_agency_classification", "id", "classification");
+$agencyClassifications = getOptions($con, "r_agency_classification", "classification", "classification");
 
 // Get client types
-$clientTypes = getOptions($con, "r_client_type", "id", "type");
+$clientTypes = getOptions($con, "r_client_type", "type", "type");
 
 // Get purposes of request
 $purposesQuery = "SELECT id, purpose FROM r_purpose_of_request ORDER BY purpose";

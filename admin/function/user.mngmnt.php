@@ -6,17 +6,26 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
 // Function to create a new user
+
 function createUser($con) {
     try {
-        // Retrieve user data from POST request
         $fname = mysqli_real_escape_string($con, $_POST['fname']);
         $midname = mysqli_real_escape_string($con, $_POST['midname']);
         $lname = mysqli_real_escape_string($con, $_POST['lname']);
         $email = mysqli_real_escape_string($con, $_POST['email']);
         $contact_no = mysqli_real_escape_string($con, $_POST['contact_no']);
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $password = $_POST['password'];
+        $confirmPassword = $_POST['confirmPassword'];
         $userType = mysqli_real_escape_string($con, $_POST['userType']);
         $userAccess = isset($_POST['userAccess']) ? json_encode($_POST['userAccess']) : '';
+
+        // Validate password match
+        if ($password !== $confirmPassword) {
+            return array(
+                "status" => "error",
+                "message" => "Passwords do not match. Please try again."
+            );
+        }
 
         // Check if email already exists
         $checkEmail = "SELECT * FROM users WHERE email = ?";
@@ -31,12 +40,13 @@ function createUser($con) {
                 "message" => "Email already exists. Please use a different email address."
             );
         } else {
-            // If email doesn't exist, proceed with insertion
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            
             $query = "INSERT INTO users (fname, midname, lname, email, contact_no, password, accessType, adminAccess, isActive) 
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1)";
 
             $stmt = $con->prepare($query);
-            $stmt->bind_param("ssssssss", $fname, $midname, $lname, $email, $contact_no, $password, $userType, $userAccess);
+            $stmt->bind_param("ssssssss", $fname, $midname, $lname, $email, $contact_no, $hashedPassword, $userType, $userAccess);
 
             if ($stmt->execute()) {
                 return array(
@@ -44,14 +54,14 @@ function createUser($con) {
                     "message" => "User created successfully!"
                 );
             } else {
-                throw new Exception("Execute failed: " . $stmt->error);
+                throw new Exception("Database error: " . $stmt->error);
             }
         }
     } catch (Exception $e) {
         error_log("Error in user creation: " . $e->getMessage());
         return array(
             "status" => "error",
-            "message" => "An error occurred: " . $e->getMessage()
+            "message" => "An error occurred while creating the user: " . $e->getMessage()
         );
     }
 }
@@ -145,31 +155,57 @@ function deleteUser($con) {
     }
 }
 
+
+function toggleUserActive($con) {
+    try {
+        $user_id = mysqli_real_escape_string($con, $_POST['user_id']);
+        $new_status = $_POST['new_status'];
+
+        $query = "UPDATE users SET isActive = ? WHERE user_id = ?";
+        $stmt = $con->prepare($query);
+        $stmt->bind_param("ii", $new_status, $user_id);
+        
+        if ($stmt->execute()) {
+            $status_text = $new_status ? "activated" : "deactivated";
+            return array(
+                "status" => "success",
+                "message" => "User account has been $status_text successfully."
+            );
+        } else {
+            throw new Exception("Database error: " . $stmt->error);
+        }
+    } catch (Exception $e) {
+        error_log("Error in toggling user active status: " . $e->getMessage());
+        return array(
+            "status" => "error",
+            "message" => "An error occurred while updating the user status: " . $e->getMessage()
+        );
+    }
+}
+
+
+
 // Main logic to handle different actions
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $response = array();
 
-    if (isset($_POST['email']) && !isset($_POST['user_id'])) {
-        // Create new user
+    if (isset($_POST['action']) && $_POST['action'] == 'toggleActive') {
+        $response = toggleUserActive($con);
+    } elseif (isset($_POST['email']) && !isset($_POST['user_id'])) {
         $response = createUser($con);
     } elseif (isset($_POST['user_id']) && !isset($_POST['delete'])) {
-        // Update existing user
         $response = updateUser($con);
     } elseif (isset($_POST['delete'])) {
-        // Delete user
         $response = deleteUser($con);
     } else {
         $response = array(
             "status" => "error",
-            "message" => "Invalid request."
+            "message" => "Invalid request. Please ensure all required fields are filled."
         );
     }
 
-    // Send JSON response
     header('Content-Type: application/json');
     echo json_encode($response);
-    header("Location: ../account_mngmt.php"); // Change redirect location if needed
-
     exit();
 }
 ?>

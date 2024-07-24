@@ -303,14 +303,12 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
 
         validateForm: function() {
             var isValid = true;
-            var errorMessages = [];
 
             // Check required fields
-            $('input[name="title"], textarea[name="description"], #formType, #serviceType').each(function() {
+            $('input[required], select[required], textarea[required]').each(function() {
                 if ($(this).val() === '') {
                     isValid = false;
                     $(this).addClass('is-invalid');
-                    errorMessages.push($(this).attr('name').replace('_', ' ') + ' is required');
                 } else {
                     $(this).removeClass('is-invalid');
                 }
@@ -324,20 +322,22 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
                 isValid = false;
                 if (!startDate) $('#startDate').addClass('is-invalid');
                 if (!endDate) $('#endDate').addClass('is-invalid');
-                errorMessages.push('Please set both start and end dates');
+                Swal.fire('Validation Error', 'Please set both start and end dates.', 'error');
+                return false;
             } else {
                 $('#startDate, #endDate').removeClass('is-invalid');
-                if (new Date(endDate) <= new Date(startDate)) {
-                    isValid = false;
-                    $('#endDate').addClass('is-invalid');
-                    errorMessages.push('End date must be after start date');
-                }
             }
 
-        
+            // Check if end date is after start date
+            if (new Date(endDate) <= new Date(startDate)) {
+                isValid = false;
+                $('#endDate').addClass('is-invalid');
+                Swal.fire('Validation Error', 'End date must be after start date.', 'error');
+                return false;
+            }
 
             if (!isValid) {
-                Swal.fire('Validation Error', errorMessages.join('<br>'), 'error');
+                Swal.fire('Validation Error', 'Please fill in all required fields correctly.', 'error');
             }
 
             return isValid;
@@ -362,14 +362,13 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
         }
     };
 
+    // Document ready function
     $(document).ready(function() {
         // Event listener for opening the save modal
         $('#saveFormButton').click(function(e) {
             e.preventDefault();
-            if (FormManager.validateForm()) {
-                var modal = new bootstrap.Modal(document.getElementById('saveModal'));
-                modal.show();
-            }
+            var modal = new bootstrap.Modal(document.getElementById('saveModal'));
+            modal.show();
         });
 
         // Event listener for updating the form
@@ -399,12 +398,6 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
 
         $('#formSettingsCollapse').on('hide.bs.collapse', function() {
             $('.settings-header i.fas').removeClass('fa-chevron-up').addClass('fa-chevron-down');
-        });
-
-        // Event listener for the quiz checkbox
-        $('#isQuiz').change(function() {
-            var isQuiz = $(this).is(':checked');
-            FormManager.fetchQuestions(formId || 0, isQuiz);
         });
     });
     </script>

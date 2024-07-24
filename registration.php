@@ -45,21 +45,20 @@
 }
 
 .password-requirements {
-    margin-top: 5px;
+    margin-top: 10px;
     font-size: 0.8em;
 }
 
 .requirement {
-    color: #ff0000;
     margin: 2px 0;
 }
 
 .requirement::before {
-    content: '✗ ';
+    content: '• ';
 }
 
 .requirement.met {
-    color: #00ff00;
+    color: #32a852;
 }
 
 .requirement.met::before {
@@ -82,9 +81,9 @@ function getOptions($table, $valueColumn, $textColumn) {
     return $options;
 }
 
-$genderOptions = getOptions("r_genders", "id", "gender");
-$occupationOptions = getOptions("r_occupations", "id", "occupation");
-$educationOptions = getOptions("r_education_levels", "id", "education_level");
+$genderOptions = getOptions("r_genders", "gender", "gender");
+$occupationOptions = getOptions("r_occupations", "occupation", "occupation");
+$educationOptions = getOptions("r_education_levels", "education_level", "education_level");
 
 $con->close();
 ?>
@@ -117,7 +116,7 @@ $con->close();
                     </div>
                     <div class="right-side">
 
-                        <div class="main active">
+                        <div class="main ">
                             <small>
                                 <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
                                     class="school-logo" />
@@ -152,7 +151,7 @@ $con->close();
                         </div>
 
 
-                        <div class="main ">
+                        <div class="main active">
                             <small> <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
                                     class="school-logo" />
                             </small>
@@ -199,7 +198,7 @@ $con->close();
                                     <select name="gender" id="gender-select" required>
                                         <option value="" selected disabled>- Gender -</option>
                                         <?php echo $genderOptions; ?>
-                                        <option value="other">Other</option>  
+                                        <option value="other">Other</option>
                                     </select>
                                 </div>
                                 <div class="input-div" id="custom-gender-div" style="display: none;">
@@ -297,7 +296,10 @@ $con->close();
                                     <input type="password" class="form-control" name="confirm_pass"
                                         id="confirm-password" required>
                                     <span>Confirm Password: *</span>
-                                    <p id="password-match" class="requirement">Passwords match</p>
+                                    <div class="password-requirements">
+                                        <p id="password-match" class="requirement">Passwords match</p>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -343,22 +345,22 @@ $con->close();
 
 
 <script>
-document.getElementById('contact_no').addEventListener('input', function (e) {
+document.getElementById('contact_no').addEventListener('input', function(e) {
     // Remove non-digit characters
     let input = this.value.replace(/\D/g, '');
 
-    
+
     // Limit to 11 digits
     input = input.slice(0, 11);
-    
+
     // Format the number as 09XX-XXX-XXXX
     if (input.length > 4) {
-        input = input.slice(0,4) + '-' + input.slice(4);
+        input = input.slice(0, 4) + '-' + input.slice(4);
     }
     if (input.length > 8) {
-        input = input.slice(0,8) + '-' + input.slice(8);
+        input = input.slice(0, 8) + '-' + input.slice(8);
     }
-    
+
     this.value = input;
 });
 
@@ -392,8 +394,43 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('js/ph-json/region.json')
         .then(response => response.json())
         .then(data => {
-            regions = data;
-            populateSelect(regionSelect, regions, 'region_name');
+            const romanOrder = {
+                'I': 1,
+                'II': 2,
+                'III': 3,
+                'IV': 4,
+                'V': 5,
+                'VI': 6,
+                'VII': 7,
+                'VIII': 8,
+                'IX': 9,
+                'X': 10,
+                'XI': 11,
+                'XII': 12,
+                'XIII': 13
+            };
+
+            regions = data.sort((a, b) => {
+                const aName = a.region_name,
+                    bName = b.region_name;
+                const aFirstLetter = aName[0],
+                    bFirstLetter = bName[0];
+                // First, sort by the first letter
+                if (aFirstLetter !== bFirstLetter) {
+                    return aFirstLetter.localeCompare(bFirstLetter);
+                }
+                // If first letters are the same, sort regions with Roman numerals
+                const aMatch = a.region_code.match(/Region\s+(\w+)/);
+                const bMatch = b.region_code.match(/Region\s+(\w+)/);
+                if (aMatch && bMatch) {
+                    return (romanOrder[aMatch[1]] || 0) - (romanOrder[bMatch[1]] || 0);
+                }
+
+                // For non-Roman numeral regions, maintain their relative order
+                return data.indexOf(a) - data.indexOf(b);
+            });
+
+            populateRegion(regionSelect, regions, 'region_name');
         })
         .catch(error => console.error('Error loading region data:', error));
 
@@ -427,9 +464,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    function populateSelect(selectElement, data, key) {
-        selectElement.innerHTML = `<option value="">Select ${selectElement.id.split('-')[0]}</option>`;
-        data.sort((a, b) => a[key].localeCompare(b[key])); // Sort alphabetically
+
+    function populateRegion(selectElement, data, key) {
+        const type = selectElement.id.split('-')[0];
+        selectElement.innerHTML =
+            `<option value="">Select ${type.charAt(0).toUpperCase() + type.slice(1)}</option>`;
         data.forEach(item => {
             const option = document.createElement('option');
             option.value = item[key];
@@ -437,6 +476,21 @@ document.addEventListener('DOMContentLoaded', function() {
             selectElement.appendChild(option);
         });
     }
+
+    function populateSelect(selectElement, data, key) {
+        const type = selectElement.id.split('-')[0];
+        data.sort((a, b) => a[key].localeCompare(b[key]));
+        selectElement.innerHTML =
+            `<option value="">Select ${type.charAt(0).toUpperCase() + type.slice(1)}</option>`;
+        data.forEach(item => {
+            const option = document.createElement('option');
+            option.value = item[key];
+            option.textContent = item[key];
+            selectElement.appendChild(option);
+        });
+    }
+
+
 });
 </script>
 
@@ -631,24 +685,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.text();
+                return response.json(); // Expecting a JSON response from the server
             })
             .then(response => {
                 Swal.close();
-                switch (response.trim()) {
-                    case 'success':
-                        showAlert('success', 'Success', 'Registration Completed!');
-                        currentStep++;
-                        updateFormVisibility();
-                        const shownname = document.querySelector(".shown_name");
-                        const username = document.getElementById('user_name');
-                        if (shownname && username) shownname.textContent = username.value;
-                        break;
-                    case 'Email is already registered':
-                        showAlert('info', 'Email Already Registered', response);
-                        break;
-                    default:
-                        throw new Error(response);
+                if (response.status === 'success') {
+                    showAlert('success', 'Success', 'Registration Completed!');
+                    currentStep++;
+                    updateFormVisibility();
+                    const shownname = document.querySelector(".shown_name");
+                    const username = document.getElementById('user_name');
+                    if (shownname && username) shownname.textContent = username.value;
+                } else {
+                    showAlert('info', 'Registration Failed', response.message);
                 }
             })
             .catch((error) => {
@@ -656,7 +705,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 showAlert('error', 'Error', 'Form submission failed. Please try again.');
             });
     });
-
     agreeCheckbox.addEventListener('change', function() {
         agreeButton.disabled = !this.checked;
         agreeButton.style.backgroundColor = this.checked ? '' : '#ccc';

@@ -2,6 +2,23 @@
 <link rel="stylesheet" href="css/assmt.form.view.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
+<style>
+.date-range {
+    display: flex;
+    flex-direction: column;
+}
+
+.start-date,
+.end-date {
+    white-space: nowrap;
+}
+
+.start-date::after {
+    content: " to";
+    font-style: italic;
+    color: #888;
+}
+</style>
 
 <body>
     <!-- Left Panel -->
@@ -30,7 +47,7 @@
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive custom-table-container">
+                            <div class="table-responsive">
                                 <div class="row mb-3">
                                     <div class="col-md-3">
                                         <label for="formTypeFilter">Form Type:</label>
@@ -79,67 +96,98 @@
                                             <th scope="col">Type</th>
                                             <th scope="col">Description</th>
                                             <th scope="col">Training</th>
-                                            <th scope="col">Questions</th>
                                             <th scope="col">Responses</th>
                                             <th scope="col">Dates</th>
+                                            <th scope="col">Status</th>
                                             <th scope="col">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php 
-                                        while ($row = mysqli_fetch_array($results)) { 
-                                            // Existing code for fetching question count and response count
-                                            $form_id = $row['form_id'];
-                                            $questionCountResult = mysqli_query($con, "SELECT COUNT(*) as question_count FROM asmt_questions WHERE form_id = $form_id");
-                                            $questionCount = mysqli_fetch_assoc($questionCountResult)['question_count'];
+        while ($row = mysqli_fetch_array($results)) { 
+            $form_id = $row['form_id'];
+            $questionCountResult = mysqli_query($con, "SELECT COUNT(*) as question_count FROM asmt_questions WHERE form_id = $form_id");
+            $questionCount = mysqli_fetch_assoc($questionCountResult)['question_count'];
 
-                                            $responseCountResult = mysqli_query($con, "SELECT COUNT(DISTINCT user_id) as response_count FROM asmt_responses WHERE form_id = $form_id");
-                                            $responseCount = mysqli_fetch_assoc($responseCountResult)['response_count'];
+            $responseCountResult = mysqli_query($con, "SELECT COUNT(DISTINCT user_id) as response_count FROM asmt_responses WHERE form_id = $form_id");
+            $responseCount = mysqli_fetch_assoc($responseCountResult)['response_count'];
 
-                                            $startDate = date('F j, Y', strtotime($row['start_date']));
-                                            $endDate = date('F j, Y', strtotime($row['end_date'])); 
-                                            
-                                            $responsesWithQuota = $responseCount . '/' . $row['quota'];
+            $startDate = date('F j, Y', strtotime($row['start_date']));
+            $endDate = date('F j, Y', strtotime($row['end_date'])); 
+            
+            $responsesWithQuota = $responseCount . '/' . $row['quota'];
 
-                                            // Determine whether to display training title or service type
-                                            $displayTitle = !empty($row['training_title']) ? $row['training_title'] : $row['service_type'];
-                                        ?>
+            $displayTitle = !empty($row['training_title']) ? $row['training_title'] : $row['service_type'];
+
+            // Determine status
+            $currentDate = new DateTime();
+            $formEndDate = new DateTime($row['end_date']);
+            $status = ($currentDate > $formEndDate) ? 'Completed' : 'Ongoing';
+            $statusClass = ($status === 'Completed') ? 'text-success' : 'text-primary';
+        ?>
                                         <tr>
                                             <td><?php echo $row['form_id']; ?></td>
                                             <td><?php echo $row['title']; ?></td>
                                             <td><?php echo $row['form_type']; ?></td>
                                             <td><?php echo $row['description']; ?></td>
                                             <td><?php echo $displayTitle ?? 'N/A'; ?></td>
-                                            <td><?php echo $questionCount; ?></td>
                                             <td><?php echo $responsesWithQuota; ?></td>
-                                            <td><?php echo $startDate . ' to ' . $endDate; ?></td>
                                             <td>
-                                                <div class="btn-group" role="group" aria-label="Form Actions">
-                                                    <!-- Your existing action buttons -->
-                                                    <a href="../assmnt.form.php?form_id=<?php echo $row['form_id']; ?>"
-                                                        target="_blank" class="btn btn-sm btn-secondary btnView"
-                                                        title="View Form">
-                                                        <i class="fa fa-eye"></i>
-                                                    </a>
-                                                    <a href="form_builder.php?form_id=<?php echo $row['form_id']; ?>"
-                                                        target="_blank" class="btn btn-sm btn-dark btnView"
-                                                        title="Edit Form">
-                                                        <i class="fa fa-pen"></i>
-                                                    </a>
-                                                    <button type="button"
-                                                        class="btn btn-sm btn-primary btnViewResponses"
-                                                        data-form-id="<?php echo $row['form_id']; ?>"
-                                                        title="View Responses">
-                                                        <i class="fa fa-list"></i>
+                                                <div class="date-range">
+                                                    <div class="start-date"><?php echo $startDate; ?></div>
+                                                    <div class="end-date"><?php echo $endDate; ?></div>
+                                                </div>
+                                            </td>
+                                            <td><span class="<?php echo $statusClass; ?>"><?php echo $status; ?></span>
+                                            </td>
+                                            <td>
+                                                <div class="dropdown">
+                                                    <button class="btn btn-secondary btn-sm dropdown-toggle"
+                                                        type="button"
+                                                        id="dropdownMenuButton-<?php echo $row['form_id']; ?>"
+                                                        data-toggle="dropdown" aria-expanded="false">
+                                                        Actions
                                                     </button>
-                                                    <button type="button" class="btn btn-sm btn-warning btnSendInvite"
-                                                        data-form-id="<?php echo $row['form_id']; ?>"
-                                                        data-title="<?php echo $row['title']; ?>"
-                                                        data-description="<?php echo $row['description']; ?>"
-                                                        data-toggle="modal" data-target="#emailModal"
-                                                        title="Send Invite">
-                                                        <i class="fa fa-envelope"></i>
-                                                    </button>
+                                                    <ul class="dropdown-menu"
+                                                        aria-labelledby="dropdownMenuButton-<?php echo $row['form_id']; ?>">
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="../assmnt.form.php?form_id=<?php echo $row['form_id']; ?>"
+                                                                target="_blank">
+                                                                <i class="fas fa-eye"></i> View Form
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="form_builder.php?form_id=<?php echo $row['form_id']; ?>"
+                                                                target="_blank">
+                                                                <i class="fas fa-pen"></i> Edit Form
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item btnViewResponses" href="#"
+                                                                data-form-id="<?php echo $row['form_id']; ?>"
+                                                                data-is-quiz="<?php echo $row['is_quiz']; ?>">
+                                                                <i class="fas fa-list"></i> View Responses
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item btnSendInvite" href="#"
+                                                                data-form-id="<?php echo $row['form_id']; ?>"
+                                                                data-title="<?php echo htmlspecialchars($row['title']); ?>"
+                                                                data-description="<?php echo htmlspecialchars($row['description']); ?>"
+                                                                data-toggle="modal" data-bs-target="#emailModal">
+                                                                <i class="fas fa-envelope"></i> Send Invite
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item btnDeleteForm" href="#"
+                                                                data-form-id="<?php echo $row['form_id']; ?>"
+                                                                data-title="<?php echo htmlspecialchars($row['title']); ?>">
+                                                                <i class="fas fa-trash-alt"></i> Delete Form
+                                                            </a>
+                                                        </li>
+                                                    </ul>
                                                 </div>
                                             </td>
                                         </tr>
@@ -161,6 +209,7 @@
 
     <script>
     $(document).ready(function() {
+
         var table = $('#assessment_form_table').DataTable({
             "pageLength": 10,
             "columns": [{
@@ -211,6 +260,61 @@
             }
         });
 
+        $(document).on('click', '.btnDeleteForm', function(e) {
+            e.preventDefault();
+            var formId = $(this).data('form-id');
+            var formTitle = $(this).data('title');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `You are about to delete the form "${formTitle}". This action cannot be undone.`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Send AJAX request to delete the form
+                    $.ajax({
+                        url: 'function/assessment.form.delete.php', // Create this PHP file to handle the deletion
+                        method: 'POST',
+                        data: {
+                            form_id: formId
+                        },
+                        dataType: 'json',
+                        success: function(response) {
+                            if (response.success) {
+                                Swal.fire(
+                                    'Deleted!',
+                                    'The form has been deleted.',
+                                    'success'
+                                ).then(() => {
+                                    // Reload the page or remove the row from the table
+                                    location.reload();
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Error!',
+                                    'There was an error deleting the form.',
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function() {
+                            Swal.fire(
+                                'Error!',
+                                'There was an error connecting to the server.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
+
+
+
         // Date range filter
         $('#applyDateFilter').on('click', function() {
             var startDate = $('#startDate').val();
@@ -243,24 +347,43 @@
 
     <script>
     $(document).ready(function() {
+        var responsesTable = null;
+
         // View responses button
         $('.btnViewResponses').on('click', function() {
             var form_id = $(this).data('form-id');
+            var is_quiz = $(this).data('is-quiz');
 
             $.ajax({
                 url: 'fetch/fetch_responses.php',
                 type: 'GET',
                 data: {
-                    form_id: form_id
+                    form_id: form_id,
+                    is_quiz: is_quiz
                 },
                 success: function(data) {
                     $('#responsesContent').html(data);
+
+                    // Check if DataTable is already initialized
+                    if ($.fn.DataTable.isDataTable('#responsesTable')) {
+                        $('#responsesTable').DataTable().destroy();
+                    }
+
+                    // Initialize DataTable
+                    responsesTable = $('#responsesTable').DataTable({
+                        responsive: true,
+                        order: [
+                            [2, 'desc']
+                        ]
+                    });
+
                     var modal = new bootstrap.Modal(document.getElementById(
                         'responsesModal'));
                     modal.show();
                 },
                 error: function() {
-                    alert('Failed to fetch responses. Please try again.');
+                    Swal.fire('Error', 'Failed to fetch responses. Please try again.',
+                        'error');
                 }
             });
         });
@@ -269,13 +392,15 @@
         $(document).on('click', '.btnViewResponseSummary', function() {
             var user_id = $(this).data('user-id');
             var form_id = $(this).data('form-id');
+            var is_quiz = $(this).data('is-quiz');
 
             $.ajax({
                 url: 'fetch/fetch_response_summary.php',
                 type: 'GET',
                 data: {
                     user_id: user_id,
-                    form_id: form_id
+                    form_id: form_id,
+                    is_quiz: is_quiz
                 },
                 success: function(data) {
                     $('#responseSummaryContent').html(data);
@@ -284,7 +409,8 @@
                     modal.show();
                 },
                 error: function() {
-                    alert('Failed to fetch response summary. Please try again.');
+                    Swal.fire('Error',
+                        'Failed to fetch response summary. Please try again.', 'error');
                 }
             });
         });

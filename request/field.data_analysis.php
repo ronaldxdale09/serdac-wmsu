@@ -19,10 +19,10 @@ if (!$con) {
 }
 
 // Get agency classifications
-$agencyClassifications = getOptions($con, "r_agency_classification", "id", "classification");
+$agencyClassifications = getOptions($con, "r_agency_classification", "classification", "classification");
 
 // Get client types
-$clientTypes = getOptions($con, "r_client_type", "id", "type");
+$clientTypes = getOptions($con, "r_client_type", "type", "type");
 
 // Get purposes of request
 $purposesQuery = "SELECT id, purpose FROM r_purpose_of_request ORDER BY purpose";
@@ -153,7 +153,7 @@ if (!$purposes) {
                                 <div class='col-sm-6 col-md-4'>
                                     <div class='form-check'>
                                         <input class='form-check-input' type='checkbox' name='purpose_options[]'
-                                            id='purpose-{$id}' value='{$id}'>
+                                            id='purpose-{$id}' value='{$purpose}'>
                                         <label class='form-check-label ml-2' for='purpose-{$id}'
                                             style='font-weight: normal;'>{$purpose}</label>
                                     </div>

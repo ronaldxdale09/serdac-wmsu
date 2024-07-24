@@ -35,7 +35,8 @@ mysqli_stmt_execute($emailCheckStmt);
 mysqli_stmt_store_result($emailCheckStmt);
 
 if (mysqli_stmt_num_rows($emailCheckStmt) > 0) {
-    echo "Email is already registered.";
+    $response['status'] = 'error';
+    $response['message'] = 'Email is already registered.';
 } else {
     // Prepare insert query
     $query = "INSERT INTO users (sex, activationCode, fname, midname, lname, contact_no, email, password, occupation, education_level, accessType, gender, zipcode, region, province, city, barangay, userType, isActive,registration_date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -44,17 +45,20 @@ if (mysqli_stmt_num_rows($emailCheckStmt) > 0) {
     mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss", $sex, $activationCode, $fname, $midname, $lname, $contact_no, $email, $password, $occupation, $education_level, $accessType, $gender, $zipcode, $region, $province, $city, $barangay, $userType, $isActive,$current_date_dmy);
 
     if (mysqli_stmt_execute($stmt)) {
-        echo "success";
+        $response['status'] = 'success';
         // Send activation email
         $activationLink = 'https://serdac-wmsu.online/login.php?code='.$activationCode; // Replace with actual activation link
         $userEmail = $email;
         sendActivationEmail($userEmail, $activationLink);
     } else {
-        echo "Error: " . mysqli_error($con);
+        $response['status'] = 'error';
+        $response['message'] = 'Error: ' . mysqli_error($con);
     }
 }
 
-
+// Return response as JSON
+header('Content-Type: application/json');
+echo json_encode($response);
 
 
 function sendActivationEmail($recipientEmail, $activationLink) {

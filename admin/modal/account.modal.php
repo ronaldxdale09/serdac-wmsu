@@ -22,8 +22,8 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="userMidName" class="form-label required">Mid Name:</label>
-                            <input type="text" class="form-control" name="midname" required>
+                            <label for="userMidName" class="form-label">Middle Name:</label>
+                            <input type="text" class="form-control" name="midname" >
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -32,16 +32,22 @@
                             <input type="text" class="form-control" name="lname" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="userEmail" class="form-label required">Email:</label>
                             <input type="email" class="form-control" name="email" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="userPassword" class="form-label">Password:</label>
-                            <input type="password" class="form-control" name="password" required>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="userConfirmPassword" class="form-label">Confirm Password:</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
                         </div>
                     </div>
                     <div class="col-md-6">

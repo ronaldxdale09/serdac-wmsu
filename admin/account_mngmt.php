@@ -50,57 +50,80 @@
                                     <i class="fa fa-user"> </i> NEW ADMIN
                                 </button>
                                 <hr>
-                                <table class="table table-bordered table-hover table-striped" id='acc_record'>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Contact #</th>
-                                            <th scope="col">Username</th>
-                                            <th width="25%" scope="col">Access</th>
-                                            <th>User Type</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <?php
+                                <div class="table-responsive custom-table-container">
+
+                                    <table class="table table-bordered table-hover table-striped" id='acc_record'>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Contact #</th>
+                                                <th scope="col">Username</th>
+                                                <th width="25%" scope="col">Access</th>
+                                                <th>User Type</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <?php
                     $results = mysqli_query($con, "SELECT * from users where accessType !='Client' ");
                     $current_user_id = $_SESSION["userId_code"]; // Assuming you store the logged-in user's ID in session
                     ?>
-                                    <tbody>
-                                        <?php while ($row = mysqli_fetch_array($results)) { 
+                                        <tbody>
+                                            <?php while ($row = mysqli_fetch_array($results)) { 
                             $adminAccessArray = json_decode($row['adminAccess'], true);
                             $adminAccessFormatted = implode(', ', $adminAccessArray);
                             $is_current_user = ($row['user_id'] == $current_user_id);
                         ?>
-                                        <tr <?php echo $is_current_user ? 'class="table-primary"' : ''; ?>>
-                                            <td>
-                                                <?php echo $row['user_id']; ?>
-                                                <?php if ($is_current_user) echo ' <span class="badge badge-success">Current User</span>'; ?>
-                                            </td>
-                                            <td><?php echo $row['fname'].' '.$row['midname'].' '.$row['lname']; ?></td>
-                                            <td><?php echo $row['contact_no']; ?></td>
-                                            <td><?php echo $row['email']; ?></td>
-                                            <td>
-                                                <?php foreach ($adminAccessArray as $access) { ?>
-                                                <span
-                                                    class="badge badge-info"><?php echo htmlspecialchars($access); ?></span>
-                                                <?php } ?>
-                                            </td>
-                                            <td><?php echo $row['accessType']; ?></td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-secondary btnEdit"
-                                                    data-user='<?php echo json_encode($row); ?>'>
-                                                    <i class="fa fa-edit"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-danger btnDelete"
-                                                    <?php echo $is_current_user ? 'disabled' : ''; ?>>
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
+                                            <tr <?php echo $is_current_user ? 'class="table-primary"' : ''; ?>>
+                                                <td>
+                                                    <?php echo $row['user_id']; ?>
+                                                    <?php if ($is_current_user) echo ' <span class="badge badge-success">Current User</span>'; ?>
+                                                </td>
+                                                <td><?php echo $row['fname'].' '.$row['midname'].' '.$row['lname']; ?>
+                                                </td>
+                                                <td><?php echo $row['contact_no']; ?></td>
+                                                <td><?php echo $row['email']; ?></td>
+                                                <td>
+                                                    <?php foreach ($adminAccessArray as $access) { ?>
+                                                    <span
+                                                        class="badge badge-info"><?php echo htmlspecialchars($access); ?></span>
+                                                    <?php } ?>
+                                                </td>
+                                                <td><?php echo $row['accessType']; ?></td>
+                                                <td>
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-primary dropdown-toggle" type="button"
+                                                            id="dropdownMenuButton<?php echo $row['user_id']; ?>"
+                                                            data-toggle="dropdown" aria-haspopup="true"
+                                                            aria-expanded="false">
+                                                            Actions
+                                                        </button>
+                                                        <div class="dropdown-menu"
+                                                            aria-labelledby="dropdownMenuButton<?php echo $row['user_id']; ?>">
+                                                            <a class="dropdown-item btnEdit" href="#"
+                                                                data-user='<?php echo json_encode($row); ?>'>
+                                                                <i class="fa fa-edit"></i> Edit
+                                                            </a>
+                                                            <?php if (!$is_current_user) : ?>
+                                                            <a class="dropdown-item btnDelete" href="#">
+                                                                <i class="fa fa-trash"></i> Delete
+                                                            </a>
+                                                            <a class="dropdown-item btnToggleActive" href="#"
+                                                                data-user-id="<?php echo $row['user_id']; ?>"
+                                                                data-is-active="<?php echo $row['isActive']; ?>">
+                                                                <i
+                                                                    class="fa <?php echo $row['isActive'] ? 'fa-ban' : 'fa-check'; ?>"></i>
+                                                                <?php echo $row['isActive'] ? 'Deactivate' : 'Activate'; ?>
+                                                            </a>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -128,8 +151,89 @@ $(document).ready(function() {
         buttons: ['excelHtml5', 'pdfHtml5', 'print']
     });
 
+    $('.btnToggleActive').on('click', function() {
+        var userId = $(this).data('user-id');
+        var isActive = $(this).data('is-active');
+        var newStatus = isActive ? 0 : 1;
+        var $button = $(this);
+
+        $.ajax({
+            url: 'function/user.mngmnt.php',
+            type: 'POST',
+            data: {
+                action: 'toggleActive',
+                user_id: userId,
+                new_status: newStatus
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: response.message,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Update button appearance
+                            $button.data('is-active', newStatus);
+                            if (newStatus) {
+                                $button.removeClass('btn-success').addClass(
+                                    'btn-warning');
+                                $button.html(
+                                    '<i class="fa fa-ban"></i> Deactivate');
+                                $button.closest('tr').find('.badge').removeClass(
+                                        'badge-danger').addClass('badge-success')
+                                    .text('Active');
+                            } else {
+                                $button.removeClass('btn-warning').addClass(
+                                    'btn-success');
+                                $button.html(
+                                    '<i class="fa fa-check"></i> Activate');
+                                $button.closest('tr').find('.badge').removeClass(
+                                        'badge-success').addClass('badge-danger')
+                                    .text('Inactive');
+                            }
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: response.message,
+                        confirmButtonText: 'OK'
+                    });
+                }
+            },
+            error: function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An unexpected error occurred. Please try again.',
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+
+
+
     $('#newUserForm').on('submit', function(e) {
         e.preventDefault();
+
+        var password = $('#password').val();
+        var confirmPassword = $('#confirmPassword').val();
+
+        if (password !== confirmPassword) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Password Mismatch',
+                text: 'The passwords you entered do not match. Please try again.',
+                confirmButtonText: 'OK'
+            });
+            return;
+        }
+
         $.ajax({
             type: 'POST',
             url: 'function/user.mngmnt.php',
@@ -156,11 +260,12 @@ $(document).ready(function() {
                     });
                 }
             },
-            error: function() {
+            error: function(xhr, status, error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'An unexpected error occurred. Please try again.',
+                    text: 'An unexpected error occurred. Please try again. Error details: ' +
+                        error,
                     confirmButtonText: 'OK'
                 });
             }

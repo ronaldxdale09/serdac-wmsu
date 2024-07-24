@@ -73,7 +73,8 @@ try {
     $_SESSION["adminAccess"] = $user['adminAccess'];
     $_SESSION["isLogin"] = 1;
     $_SESSION["session_token"] = $session_token;
-    $_SESSION["last_activity"] = $current_time;
+    $_SESSION["last_activity"] = time();
+
 
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 

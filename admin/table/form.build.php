@@ -144,7 +144,7 @@ function getCheckboxesForMultipleAnswers($questionIndex, $correctAnswers) {
 
 <script>
 $(document).ready(function() {
-   
+
 
     const QuestionCardManager = {
         addQuestionCard: function() {
@@ -211,9 +211,10 @@ $(document).ready(function() {
             if (type !== 'paragraph') {
                 container.append(this.getOptionInput(type, questionCard.data('question-index')));
             } else {
-                container.append('<textarea class="form-control" rows="3" placeholder="Your answer"></textarea>');
+                container.append(
+                    '<textarea class="form-control" rows="3" placeholder="Your answer"></textarea>');
             }
-            
+
             if ($('#isQuiz').is(':checked')) {
                 this.updateCorrectAnswerField(questionCard, type);
             }
@@ -222,15 +223,18 @@ $(document).ready(function() {
         updateCorrectAnswerField: function(questionCard, type) {
             let correctAnswerField = questionCard.find('.correct-answer-field');
             if (correctAnswerField.length === 0) {
-                correctAnswerField = $('<div class="form-group correct-answer-field"><label>Correct Answer:</label></div>');
+                correctAnswerField = $(
+                    '<div class="form-group correct-answer-field"><label>Correct Answer:</label></div>'
+                    );
                 questionCard.find('.question-body').append(correctAnswerField);
             }
             correctAnswerField.find('select, input[type="text"], .form-check').remove();
-            correctAnswerField.append(this.getCorrectAnswerInput(type, questionCard.data('question-index')));
+            correctAnswerField.append(this.getCorrectAnswerInput(type, questionCard.data(
+                'question-index')));
         },
 
         getCorrectAnswerInput: function(type, questionIndex) {
-            switch(type) {
+            switch (type) {
                 case 'paragraph':
                     return `<input type="text" name="questions[correct_answer][${questionIndex}]" class="form-control">`;
                 case 'multiple_choice_single':
@@ -278,7 +282,7 @@ $(document).ready(function() {
         const questionIndex = questionCard.data('question-index');
         const newOption = QuestionCardManager.getOptionInput(questionType, questionIndex);
         $(this).closest('.input-group').after(newOption);
-        
+
         if ($('#isQuiz').is(':checked')) {
             QuestionCardManager.updateCorrectAnswerField(questionCard, questionType);
         }
@@ -287,7 +291,7 @@ $(document).ready(function() {
     $('#question_list_container').on('click', '.delete-option', function() {
         const questionCard = $(this).closest('.question-card');
         $(this).closest('.input-group').remove();
-        
+
         if ($('#isQuiz').is(':checked')) {
             const questionType = questionCard.find('.question-type').val();
             QuestionCardManager.updateCorrectAnswerField(questionCard, questionType);
@@ -307,7 +311,7 @@ $(document).ready(function() {
     });
 
     $('#isQuiz').change(function() {
-        if(this.checked) {
+        if (this.checked) {
             $('.question-card').each(function() {
                 const type = $(this).find('.question-type').val();
                 QuestionCardManager.updateCorrectAnswerField($(this), type);
@@ -317,25 +321,9 @@ $(document).ready(function() {
         }
     });
 
-    $('#saveFormButton').click(function(e) {
-        e.preventDefault();
-        var modal = new bootstrap.Modal(document.getElementById('saveModal'));
-        modal.show();
-    });
-
-    $('#updateFormButton').click(function(e) {
-        e.preventDefault();
-        FormManager.saveForm(true);
-    });
-
-    $('#saveAsNewFormButton').click(function(e) {
-        e.preventDefault();
-        FormManager.saveForm(false);
-    });
-
     // Initialize
     function initializeForm(isQuiz) {
-        if(isQuiz) {
+        if (isQuiz) {
             $('#isQuiz').prop('checked', true).change();
         }
         $('.question-card').each(function() {
