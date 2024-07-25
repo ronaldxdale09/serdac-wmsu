@@ -1,5 +1,6 @@
 <?php 
 include('../../function/db.php');
+include('client_notification.php'); // Include the new function
 
 // Check connection
 if (!$con) {
@@ -57,12 +58,23 @@ function processMeetingRecords($con, $request_id) {
             if (!mysqli_stmt_execute($updateStmt)) {
                 die('Error updating meeting record: ' . mysqli_error($con));
             }
+
+            $user_id = fetch_user_id_from_request($con, $request_id);
+            $message = "A meeting for your service request (ID: $request_id) has been updated. New date/time: $date_time";
+            insert_notification($con, $user_id, $request_id, 'meeting_updated', $message);
+
         } else {
             // Insert new record
             mysqli_stmt_bind_param($insertStmt, "sssss", $request_id, $meeting_type, $date_time, $mode, $remark);
             if (!mysqli_stmt_execute($insertStmt)) {
                 die('Error inserting new meeting record: ' . mysqli_error($con));
             }
+                // Add notification for new meeting
+                $user_id = fetch_user_id_from_request($con, $request_id);
+                $message = "A new meeting has been scheduled for your service request (ID: $request_id). Date/time: $date_time";
+                insert_notification($con, $user_id, $request_id, 'meeting_scheduled', $message);
+
+                
         }
     }
 

@@ -1,6 +1,7 @@
 <?php 
 include('../../function/db.php');
 include('email_notification.php');
+include('client_notification.php'); // Include the new function
 
 // Function to sanitize input
 function sanitize_input($input) {
@@ -31,6 +32,11 @@ if (isset($_POST['confirm'])) {
         $stmt = mysqli_prepare($con, $insertSql);
         mysqli_stmt_bind_param($stmt, "ss", $request_id, $sched_date);
         mysqli_stmt_execute($stmt);
+
+           // Add notification
+           $user_id = fetch_user_id_from_request($con, $request_id); // You need to implement this function
+           $message = "Your service request (ID: $request_id) has been approved and scheduled for $sched_date.";
+           insert_notification($con, $user_id, $request_id, 'request_approved', $message);
 
         header("Location: ../request_record.php?tab=2");
         exit();
@@ -70,6 +76,9 @@ if (isset($_POST['progress'])) {
                 if ($serviceType == 'data-analysis') {
                     dataAnalysisDocument($recipientEmail);
                 }
+                $message = "Your service request (ID: $request_id) is now in progress.";
+                insert_notification($con, $data['user_id'], $request_id, 'request_in_progress', $message);
+
 
                 mysqli_commit($con);
                 header("Location: ../request_record.php?tab=3");
@@ -100,6 +109,12 @@ if (isset($_POST['complete'])) {
     $updateResult = mysqli_stmt_execute($stmt);
         
     if ($updateResult) {
+
+        $user_id = fetch_user_id_from_request($con, $request_id);
+        $message = "Your service request (ID: $request_id) has been completed.";
+        insert_notification($con, $user_id, $request_id, 'request_completed', $message);
+
+
         header("Location: ../request_record.php?tab=5");
         exit();
     } else {
@@ -117,6 +132,12 @@ if (isset($_POST['cancel'])) {
     $updateResult = mysqli_stmt_execute($stmt);
         
     if ($updateResult) {
+
+        $user_id = fetch_user_id_from_request($con, $request_id);
+        $message = "Your service request (ID: $request_id) has been cancelled.";
+        insert_notification($con, $user_id, $request_id, 'request_cancelled', $message);
+
+        
         header("Location: ../request_record.php?tab=4");
         exit();
     } else {

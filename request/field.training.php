@@ -98,7 +98,7 @@ if (!$purposes) {
                                 <div class='col-sm-6 col-md-4'>
                                     <div class='form-check'>
                                         <input class='form-check-input' type='checkbox' name='purpose_options[]'
-                                            id='purpose-{$id}' value='{$id}'>
+                                            id='purpose-{$id}' value='{$purpose}'>
                                         <label class='form-check-label ml-2' for='purpose-{$id}'
                                             style='font-weight: normal;'>{$purpose}</label>
                                     </div>
