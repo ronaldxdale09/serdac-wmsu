@@ -14,8 +14,24 @@ if (isset($_SESSION['userId_code']) && !empty($_SESSION['userId_code'])) {
         echo "<thead><tr><th>Date</th><th>Message</th></tr></thead>";
         echo "<tbody>";
         while ($row = mysqli_fetch_assoc($result)) {
+            $date = new DateTime($row['created_at']);
+            $now = new DateTime();
+            $interval = $now->diff($date);
+            
+            if ($interval->days == 0) {
+                if ($interval->h == 0) {
+                    $time = $interval->i . " minutes ago";
+                } else {
+                    $time = $interval->h . " hours ago";
+                }
+            } elseif ($interval->days == 1) {
+                $time = "Yesterday at " . $date->format('g:i A');
+            } else {
+                $time = $date->format('M j, Y') . " at " . $date->format('g:i A');
+            }
+            
             echo "<tr>";
-            echo "<td>" . date('M j, Y H:i', strtotime($row['created_at'])) . "</td>";
+            echo "<td>" . $time . "</td>";
             echo "<td>" . htmlspecialchars($row['message']) . "</td>";
             echo "</tr>";
         }
