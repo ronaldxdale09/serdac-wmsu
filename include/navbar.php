@@ -1,5 +1,5 @@
 <style>
-li {
+.notificon {
     position: relative;
     display: flex;
     align-items: center;
@@ -161,7 +161,7 @@ if (isset($_SESSION["userId_code"]) && !empty($_SESSION["userId_code"])) {
     if (($_SESSION["accessType"]) == 'Administrator') {
         echo '<li><a href="admin/index.php"><i class="fas fa-user"></i> PORTAL </a>';
     } else {
-        echo '<li><a href="profile.php"><i class="fas fa-user"></i> PROFILE </a>';
+        echo '<li class="notificon"><a href="profile.php"><i class="fas fa-user"></i> PROFILE </a>';
     }
     
     // Add notification icon and dropdown

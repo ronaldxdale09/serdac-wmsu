@@ -76,8 +76,10 @@ if (isset($_POST['progress'])) {
                 if ($serviceType == 'data-analysis') {
                     dataAnalysisDocument($recipientEmail);
                 }
+
+                $user_id = fetch_user_id_from_request($con, $request_id); // You need to implement this function
                 $message = "Your service request (ID: $request_id) is now in progress.";
-                insert_notification($con, $data['user_id'], $request_id, 'request_in_progress', $message);
+                insert_notification($con, $user_id, $request_id, 'request_in_progress', $message);
 
 
                 mysqli_commit($con);

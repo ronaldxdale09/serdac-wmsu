@@ -1,0 +1,176 @@
+/* Custom Bootstrap Modal Styles */
+
+
+/* Ensure modal is centered and takes appropriate space */
+
+.modal-dialog {
+    display: flex !important;
+    align-items: center !important;
+    min-height: calc(100% - 1rem) !important;
+    margin: 0.5rem auto !important;
+}
+
+
+/* Responsive width adjustments */
+
+@media (min-width: 576px) {
+    .modal-dialog {
+        max-width: 500px !important;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        max-width: 700px !important;
+    }
+}
+
+@media (min-width: 992px) {
+    .modal-dialog {
+        max-width: 800px !important;
+    }
+}
+
+@media (min-width: 1200px) {
+    .modal-dialog {
+        max-width: 900px !important;
+    }
+}
+
+
+/* Full width on very small screens */
+
+@media (max-width: 575.98px) {
+    .modal-dialog {
+        max-width: calc(100% - 1rem) !important;
+        margin: 0.5rem !important;
+    }
+}
+
+
+/* Modal content styling */
+
+.modal-content {
+    border: none !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+}
+
+
+/* Header styling */
+
+.modal-header {
+    border-bottom: 1px solid #e9ecef !important;
+    padding: 1.5rem !important;
+    background-color: #f8f9fa !important;
+    border-top-left-radius: 0.5rem !important;
+    border-top-right-radius: 0.5rem !important;
+}
+
+.modal-title {
+    font-weight: 600 !important;
+    color: #333 !important;
+}
+
+
+/* Body styling */
+
+.modal-body {
+    padding: 1.5rem !important;
+}
+
+
+/* Footer styling */
+
+.modal-footer {
+    border-top: 1px solid #e9ecef !important;
+    padding: 1.5rem !important;
+    background-color: #f8f9fa !important;
+    border-bottom-left-radius: 0.5rem !important;
+    border-bottom-right-radius: 0.5rem !important;
+}
+
+
+/* Close button styling */
+
+.modal-header .close {
+    padding: 1.5rem !important;
+    margin: -1.5rem -1.5rem -1.5rem auto !important;
+}
+
+
+/* Ensure modal is on top of other elements */
+
+.modal {
+    z-index: 1050 !important;
+}
+
+.modal-backdrop {
+    z-index: 1040 !important;
+}
+
+
+/* Custom scrollbar for webkit browsers */
+
+.modal-body::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+.modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background: #888 !important;
+    border-radius: 3px !important;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+    background: #555 !important;
+}
+
+
+/* Ensure content is scrollable if it exceeds modal height */
+
+.modal-body {
+    max-height: calc(100vh - 210px) !important;
+    overflow-y: auto !important;
+}
+
+
+/* Custom sizing classes */
+
+.modal-xl {
+    max-width: 1140px !important;
+}
+
+.modal-lg {
+    max-width: 800px !important;
+}
+
+.modal-md {
+    max-width: 500px !important;
+}
+
+.modal-sm {
+    max-width: 300px !important;
+}
+
+@media (max-width: 1200px) {
+    .modal-xl {
+        max-width: 95% !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .modal-lg {
+        max-width: 90% !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-md,
+    .modal-sm {
+        max-width: 95% !important;
+    }
+}

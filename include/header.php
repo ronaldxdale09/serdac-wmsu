@@ -30,12 +30,6 @@ include('function/db.php'); // Path to your database connection
     <link rel="stylesheet" href="assets/css/homepage.css?v=1.0.0"> <!-- Versioning for cache-busting -->
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/lightbox.css">
+    <link rel="stylesheet" href="css/modal.css">
 
 </head>
-
-<style>
-.modal-xl {
-    max-width: 1200px  !important;
-    /* You can set this to the width you require */
-}
-</style>
