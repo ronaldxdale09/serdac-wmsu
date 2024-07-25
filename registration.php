@@ -116,7 +116,7 @@ $con->close();
                     </div>
                     <div class="right-side">
 
-                        <div class="main ">
+                        <div class="main active">
                             <small>
                                 <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
                                     class="school-logo" />
@@ -151,7 +151,7 @@ $con->close();
                         </div>
 
 
-                        <div class="main active">
+                        <div class="main ">
                             <small> <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
                                     class="school-logo" />
                             </small>

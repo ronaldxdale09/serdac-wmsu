@@ -44,7 +44,7 @@ while ($row = $result->fetch_assoc()) {
                 <?php include('statistical_card/dashboard_card.php')?>
 
                 <!-- Requests by Client Type Card -->
-                <div class="stat-card">
+                <!-- <div class="stat-card">
                     <h4 class="stat-title">Requests by Client Type</h4>
                     <?php foreach ($clientTypes as $type => $count): ?>
                     <div class="stat-text"><?php echo $type; ?>: <b> <?php echo $count; ?> </b></div>
@@ -52,7 +52,7 @@ while ($row = $result->fetch_assoc()) {
                     <div class="stat-icon">
                         <i class="fa fa-users" aria-hidden="true"></i>
                     </div>
-                </div>
+                </div> -->
 
                 <div class="row">
                     <div class="col-lg-12">

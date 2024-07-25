@@ -32,10 +32,10 @@
                                     <a class="nav-link" id="notifications-tab" data-toggle="tab" href="#notifications"
                                         role="tab">Service Request</a>
                                 </li>
-                                <li class="nav-item">
+                                <!-- <li class="nav-item">
                                     <a class="nav-link" id="appearance-tab" data-toggle="tab" href="#appearance"
                                         role="tab">Appearance</a>
-                                </li>
+                                </li> -->
                             </ul>
                             <div class="tab-content mt-3" id="settingsTabContent">
                                 <div class="tab-pane fade show active" id="profile" role="tabpanel">
