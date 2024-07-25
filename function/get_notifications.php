@@ -15,23 +15,10 @@ if (isset($_SESSION['userId_code']) && !empty($_SESSION['userId_code'])) {
         echo "<tbody>";
         while ($row = mysqli_fetch_assoc($result)) {
             $date = new DateTime($row['created_at']);
-            $now = new DateTime();
-            $interval = $now->diff($date);
-            
-            if ($interval->days == 0) {
-                if ($interval->h == 0) {
-                    $time = $interval->i . " minutes ago";
-                } else {
-                    $time = $interval->h . " hours ago";
-                }
-            } elseif ($interval->days == 1) {
-                $time = "Yesterday at " . $date->format('g:i A');
-            } else {
-                $time = $date->format('M j, Y') . " at " . $date->format('g:i A');
-            }
+            $formattedDate = $date->format('m/d/Y h:i A');
             
             echo "<tr>";
-            echo "<td>" . $time . "</td>";
+            echo "<td>" . $formattedDate . "</td>";
             echo "<td>" . htmlspecialchars($row['message']) . "</td>";
             echo "</tr>";
         }
