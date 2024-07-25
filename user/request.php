@@ -79,6 +79,12 @@
 
 .btn:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}.modal.fade .modal-dialog {
+    transition: transform 0.3s ease-out;
+    transform: translate(0, -50px);
+}
+.modal.show .modal-dialog {
+    transform: none;
 }
 </style>
 <div class="container">
@@ -127,11 +133,13 @@
             </div>
         </div>
     </div>
-    <div class="col-md-12text-center">
-        <a class="btn btn-maroon text-white border-0 btn-sm" href="request.php">
+    <div class="col-md-12 text-center">
+        <a class="btn btn-maroon text-white border-0 btn-sm me-2" href="request.php">
             <i class="fas fa-chart-line"></i> <span>REQUEST SERVICE</span>
         </a>
-
+        <button class="btn btn-maroon text-white border-0 btn-sm" id="notificationBtn">
+            <i class="fas fa-bell"></i> <span>NOTIFICATIONS</span>
+        </button>
     </div> <br>
     <div class="row mb-3">
         <!-- Date Range Filter -->
@@ -311,11 +319,58 @@
             </tbody>
         </table>
     </div>
-
+ 
     <?php include('modal/service_analysis.req.php'); ?>
+
+
+
+
+
 </div>
 <script>
 $(document).ready(function() {
+
+
+    $(document).ready(function() {
+        var notificationModal = new bootstrap.Modal(document.getElementById('notificationModal'), {
+            backdrop: 'static', // Prevent closing on outside click
+            keyboard: false // Prevent closing with Esc key
+        });
+
+        $('#notificationBtn').on('click', function() {
+            // Show loading indicator
+            $('#notificationTableContainer').html(
+                '<p class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading notifications...</p>'
+                );
+
+            // Show the modal immediately
+            notificationModal.show();
+
+            // Fetch notifications after a short delay
+            setTimeout(function() {
+                fetchNotifications();
+            }, 300); // 300ms delay
+        });
+
+        function fetchNotifications() {
+            $.ajax({
+                url: "function/get_notifications.php",
+                method: "GET",
+                cache: false,
+                success: function(data) {
+                    $('#notificationTableContainer').html(data);
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching notifications:", error);
+                    $('#notificationTableContainer').html(
+                        '<p class="text-center text-danger">Error loading notifications. Please try again.</p>'
+                        );
+                }
+            });
+        }
+    });
+
+
     $.fn.dataTable.ext.search.push(
         function(settings, data, dataIndex) {
             var dateFrom = $('#filterDateFrom').val();

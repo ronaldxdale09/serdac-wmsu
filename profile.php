@@ -43,7 +43,11 @@ if (isset($_SESSION["userId_code"])) {
         $res = mysqli_fetch_array($sql);
         $current_trainings_count = $res['Total'];
 
-
+        $tab = isset($_GET['tab']) ? $_GET['tab'] : 'profile';
+        $validTabs = ['profile', 'request', 'training'];
+        if (!in_array($tab, $validTabs)) {
+            $tab = 'profile';
+        }
 
     } else {
         header("Location: login.php");
@@ -85,7 +89,6 @@ if (isset($_SESSION["userId_code"])) {
                                             <div class="col-md-9">
                                                 <div class="user-info">
                                                     <h5 class="mb-1"><?php echo $name ?></h5>
-                                                    <h6 class="text-muted">Account Created March 01, 2024</h6>
                                                 </div>
                                                 <ul class="list-group shadow-none mt-3">
                                                     <li class="list-group-item d-flex align-items-center">
@@ -118,43 +121,46 @@ if (isset($_SESSION["userId_code"])) {
                         <div class="col-lg-12">
                             <div class="card z-depth-3">
                                 <div class="card-body details-card">
-
                                     <ul class="nav nav-pills nav-pills-primary nav-justified">
                                         <li class="nav-item">
-                                            <a href="javascript:void();" data-target="#profile" data-toggle="pill"
-                                                class="nav-link active show">
+                                            <a href="?tab=profile"
+                                                class="nav-link <?php echo $tab === 'profile' ? 'active' : ''; ?>">
                                                 <i class="fas fa-user"></i> <span class="hidden-xs">Profile</span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="javascript:void();" data-target="#messages" data-toggle="pill"
-                                                class="nav-link">
+                                            <a href="?tab=request"
+                                                class="nav-link <?php echo $tab === 'request' ? 'active' : ''; ?>">
                                                 <i class="fas fa-envelope-open"></i> <span class="hidden-xs">SERVICE
-                                                    REQUEST <span class="badge bg-danger text-light">
-                                                        <?php echo $req_count ?> </span></span>
+                                                    REQUEST
+                                                    <span
+                                                        class="badge bg-danger text-light"><?php echo $req_count ?></span></span>
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="javascript:void();" data-target="#edit" data-toggle="pill"
-                                                class="nav-link">
-                                                <i class="fas fa-edit"></i> <span class="hidden-xs">TRAININGS <span
-                                                        class="badge bg-danger text-light">
-                                                        <?php echo $current_trainings_count ?> </span></span>
+                                            <a href="?tab=training"
+                                                class="nav-link <?php echo $tab === 'training' ? 'active' : ''; ?>">
+                                                <i class="fas fa-edit"></i> <span class="hidden-xs">TRAININGS
+                                                    <span
+                                                        class="badge bg-danger text-light"><?php echo $current_trainings_count ?></span></span>
                                             </a>
                                         </li>
                                     </ul>
                                     <div class="tab-content p-3 tab-min-height">
-                                        <div class="tab-pane active show" id="profile">
+                                        <?php if ($tab === 'profile' || $tab === ''): ?>
+                                        <div class="tab-pane active" id="profile">
                                             <h5 class="mb-3">User Profile</h5>
                                             <?php include('user/profile.php'); ?>
                                         </div>
-                                        <div class="tab-pane" id="messages">
+                                        <?php elseif ($tab === 'request'): ?>
+                                        <div class="tab-pane active" id="request">
                                             <?php include('user/request.php'); ?>
                                         </div>
-                                        <div class="tab-pane" id="edit">
+                                        <?php elseif ($tab === 'training'): ?>
+                                        <div class="tab-pane active" id="training">
                                             <?php include('user/training.php'); ?>
-
                                         </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -194,7 +200,24 @@ if (isset($_SESSION["userId_code"])) {
 
     <?php include('include/footer.php');?>
 
-
+    <div class="modal fade" id="notificationModal" tabindex="-1" aria-labelledby="notificationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Notifications</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="notificationTableContainer">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

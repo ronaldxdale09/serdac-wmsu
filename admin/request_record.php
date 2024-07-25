@@ -6,9 +6,6 @@ $tab = '';
 if (isset($_GET['tab'])) {
     $tab = filter_var($_GET['tab']);
 
-
-
-
 }
 
 $sql = mysqli_query($con, "SELECT COUNT(*) as Total FROM service_request WHERE status='Pending'  ");
