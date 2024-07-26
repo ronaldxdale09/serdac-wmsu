@@ -2,7 +2,30 @@
 <html>
 
 <head>
-    <?php include('../function/db.php');?>
+    <?php include('../function/db.php');
+    
+    
+function checkSession($timeout = 3600) {
+    session_start();
+
+    // Check if user is not logged in or session is expired
+    if (!isset($_SESSION['isLogin']) || 
+        !isset($_SESSION['userId_code']) || 
+        !isset($_SESSION['last_activity']) || 
+        (time() - $_SESSION['last_activity'] > $timeout)) {
+        
+        // Destroy session and redirect to login page
+        session_destroy();
+        header("Location: ../login.php");
+        exit();
+    }
+
+    // Update last activity time
+    $_SESSION['last_activity'] = time();
+}
+
+
+?>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

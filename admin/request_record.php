@@ -179,6 +179,10 @@ error_reporting(E_ALL);
                             </div>
 
                             <div class="content content-3">
+                            <div class="content-title"
+                                        style="font-size: 24px; font-weight: bold; color: maroon; font-family: Arial, sans-serif; text-align: center; flex-grow: 1;">
+                                        In Progress Request
+                                    </div>
                                 <div class="content-header"
                                     style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; flex-wrap: wrap;">
                                     <div style="display: flex; gap: 10px;">
@@ -192,10 +196,7 @@ error_reporting(E_ALL);
                                             <i class="fas fa-envelope-open-text"></i> View Email Logs
                                         </button>
                                     </div>
-                                    <div class="content-title"
-                                        style="font-size: 24px; font-weight: bold; color: maroon; font-family: Arial, sans-serif; text-align: center; flex-grow: 1;">
-                                        In Progress Request
-                                    </div>
+                             
                                 </div>
                                 <?php include('request_tab/req.progress.php'); ?>
                             </div>

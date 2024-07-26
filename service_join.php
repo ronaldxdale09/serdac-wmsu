@@ -1,9 +1,6 @@
 <?php
 include('include/header.php');
 
-function is_logged_in() {
-    return isset($_SESSION["userId_code"]) && isset($_SESSION["session_token"]);
-}
 
 // Simple login check
 if (!is_logged_in()) {

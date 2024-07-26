@@ -320,14 +320,73 @@
         </table>
     </div>
  
-    <?php include('modal/service_analysis.req.php'); ?>
-
 
 
 
 
 </div>
 <script>
+
+    
+$(document).ready(function() {
+    $('.btnRequirement').on('click', function() {
+        var request = $(this).data('request');
+
+        $('#r_req_id').val(request.request_id);
+
+        $('#r_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
+            'N/A');
+        $('#r_service-type').val(request.service_type || 'N/A');
+        // Show or hide the button based on the request status
+        if (request.status.toLowerCase() === 'completed') {
+            $('#btnUploadDoc').hide();
+            $('.file-uploader').hide();
+
+        } else {
+            $('#btnUploadDoc').show();
+            $('.file-uploader').show();
+
+        }
+        request_id = request.request_id;
+
+        function fetch_files() {
+
+            $.ajax({
+                url: "table_fetch/anaylsis_files_fetch.php",
+                method: "POST",
+                data: {
+                    request_id: request_id,
+
+                },
+                success: function(data) {
+                    $('#upload_document_list').html(data);
+
+                }
+            });
+        }
+        fetch_files();
+
+        function fetch_result() {
+            $.ajax({
+                url: "table_fetch/anaylsis_files_fetch_result.php",
+                method: "POST",
+                data: {
+                    request_id: request_id,
+
+                },
+                success: function(data) {
+                    $('#upload_document_result').html(data);
+
+                }
+            });
+        }
+        fetch_result();
+        var modal = new bootstrap.Modal(document.getElementById('anaylsisReqModal'));
+        modal.show();
+    });
+});
+
+
 $(document).ready(function() {
 
 

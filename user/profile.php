@@ -63,21 +63,23 @@
             <input class="form-control" type="password" id="confirm-password" value="11111122333">
         </div>
     </div> -->
-    <hr>
-    <div class="form-group row">
-        <label class="col-lg-3 col-form-label form-control-label"></label>
-        <div class="col-lg-9">
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-primary btn-submit">
+    <hr><div class="form-group">
+    <div class="row">
+        <div class="col-md-3 mb-3 mb-md-0">
+            <label class="form-control-label"><!-- Label text if needed --></label>
+        </div>
+        <div class="col-md-9">
+            <div class="d-flex flex-column flex-md-row">
+                <button type="button" class="btn btn-primary btn-submit mb-2 mb-md-0 me-md-2">
                     <i class="fas fa-save"></i> Save Changes
                 </button>
-                <button type="button" class="btn btn-secondary ml-2" data-toggle="modal"
-                    data-target="#changePasswordModal">
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                     <i class="fas fa-key"></i> Change Password
                 </button>
             </div>
         </div>
     </div>
+</div>
 
 
 
@@ -174,63 +176,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <script>
-$(document).ready(function() {
-    $('.btnRequirement').on('click', function() {
-        var request = $(this).data('request');
-
-        $('#r_req_id').val(request.request_id);
-
-        $('#r_user-name').val(request.fname && request.lname ? request.fname + ' ' + request.lname :
-            'N/A');
-        $('#r_service-type').val(request.service_type || 'N/A');
-        // Show or hide the button based on the request status
-        if (request.status.toLowerCase() === 'completed') {
-            $('#btnUploadDoc').hide();
-            $('.file-uploader').hide();
-
-        } else {
-            $('#btnUploadDoc').show();
-            $('.file-uploader').show();
-
-        }
-        request_id = request.request_id;
-
-        function fetch_files() {
-
-            $.ajax({
-                url: "table_fetch/anaylsis_files_fetch.php",
-                method: "POST",
-                data: {
-                    request_id: request_id,
-
-                },
-                success: function(data) {
-                    $('#upload_document_list').html(data);
-
-                }
-            });
-        }
-        fetch_files();
-
-        function fetch_result() {
-            $.ajax({
-                url: "table_fetch/anaylsis_files_fetch_result.php",
-                method: "POST",
-                data: {
-                    request_id: request_id,
-
-                },
-                success: function(data) {
-                    $('#upload_document_result').html(data);
-
-                }
-            });
-        }
-        fetch_result();
-        var modal = new bootstrap.Modal(document.getElementById('anaylsisReqModal'));
-        modal.show();
-    });
-});
 
 
 $('.btn-submit').click(function(e) {

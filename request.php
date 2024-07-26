@@ -220,6 +220,8 @@ if (isset($_SESSION["userId_code"])) {
         </form>
         <?php include('include/footer.php');?>
 
+        <?php include('modal/service_analysis.req.php'); ?>
+
     </section>
 
 
