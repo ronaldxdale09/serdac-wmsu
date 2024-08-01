@@ -64,6 +64,13 @@
 .requirement.met::before {
     content: '✓ ';
 }
+
+.password-requirements-label {
+    display: block;
+    font-size: 0.85em;
+    color: #666;
+    margin-bottom: 5px;
+}
 </style>
 
 <?php 
@@ -116,7 +123,7 @@ $con->close();
                     </div>
                     <div class="right-side">
 
-                        <div class="main active">
+                        <div class="main active ">
                             <small>
                                 <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
                                     class="school-logo" />
@@ -282,11 +289,15 @@ $con->close();
                                 </div>
                             </div>
 
+
+                            <label for="password" class="password-requirements-label">Password must be at least
+                                6 characters long, contain a number, and a symbol.</label>
                             <div class="input-text">
                                 <div class="input-div">
+                        
                                     <input type="password" class="form-control" name="password" id="password" required>
                                     <span>Password: *</span>
-                                    <div class="password-requirements">
+                                    <div class="password-requirements" style="display: none;">
                                         <p id="length-check" class="requirement">At least 6 characters</p>
                                         <p id="number-check" class="requirement">Contains a number</p>
                                         <p id="symbol-check" class="requirement">Contains a symbol</p>
@@ -296,13 +307,11 @@ $con->close();
                                     <input type="password" class="form-control" name="confirm_pass"
                                         id="confirm-password" required>
                                     <span>Confirm Password: *</span>
-                                    <div class="password-requirements">
+                                    <div class="password-requirements" style="display: none;">
                                         <p id="password-match" class="requirement">Passwords match</p>
                                     </div>
-
                                 </div>
                             </div>
-
                             <br>
 
                             <div class="buttons button_space">
@@ -516,6 +525,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const genderSelect = document.getElementById('gender-select');
     const customGenderDiv = document.getElementById('custom-gender-div');
     const customGenderInput = document.getElementById('custom-gender');
+    const passwordRequirements = document.querySelector('.password-requirements');
+    const confirmPasswordRequirements = document.querySelector(
+        '.input-div:nth-child(2) .password-requirements');
 
     // Global variables
     let currentStep = 0;
@@ -523,8 +535,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Utility functions
     const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    const isValidPassword = (password) => password.length >= 6 && /\d/.test(password) && symbolRegex.test(
-        password);
 
     function showAlert(icon, title, text) {
         return Swal.fire({
@@ -549,6 +559,51 @@ document.addEventListener('DOMContentLoaded', function() {
         const isMatching = passwordInput.value === confirmPasswordInput.value && passwordInput.value !== '';
         passwordMatch.classList.toggle('met', isMatching);
         return isMatching;
+    }
+
+    function validatePassword() {
+        const password = passwordInput.value;
+        let isValid = true;
+        let unmetRequirements = [];
+
+        if (password.length < 6) {
+            isValid = false;
+            unmetRequirements.push('At least 6 characters');
+        }
+        if (!/\d/.test(password)) {
+            isValid = false;
+            unmetRequirements.push('Contains a number');
+        }
+        if (!symbolRegex.test(password)) {
+            isValid = false;
+            unmetRequirements.push('Contains a symbol');
+        }
+        if (password !== confirmPasswordInput.value) {
+            isValid = false;
+            unmetRequirements.push('Passwords match');
+        }
+
+        return {
+            isValid,
+            unmetRequirements
+        };
+    }
+
+
+
+    function showUnmetRequirements(unmetRequirements) {
+        passwordRequirements.style.display = 'block';
+        confirmPasswordRequirements.style.display = 'block';
+
+        document.querySelectorAll('.requirement').forEach(req => {
+            const requirementText = req.textContent.trim();
+            if (unmetRequirements.includes(requirementText)) {
+                req.style.display = 'block';
+                req.classList.remove('met');
+            } else {
+                req.style.display = 'none';
+            }
+        });
     }
 
     // Form navigation functions
@@ -616,17 +671,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 return false;
             }
 
-            if (!isValidPassword(passwordInput.value)) {
+            const { isValid, unmetRequirements } = validatePassword();
+            if (!isValid) {
                 passwordInput.classList.add('warning');
-                showAlert('warning', 'Invalid Password',
-                    'Password must be at least 6 characters long and contain at least one number and one symbol.'
-                );
-                return false;
-            }
-
-            if (!checkPasswordMatch()) {
                 confirmPasswordInput.classList.add('warning');
-                showAlert('warning', 'Password Mismatch', 'Passwords do not match.');
+                showUnmetRequirements(unmetRequirements);
+                showAlert('warning', 'Invalid Password', 'Please check the password requirements.');
                 return false;
             }
         }
@@ -705,6 +755,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 showAlert('error', 'Error', 'Form submission failed. Please try again.');
             });
     });
+
     agreeCheckbox.addEventListener('change', function() {
         agreeButton.disabled = !this.checked;
         agreeButton.style.backgroundColor = this.checked ? '' : '#ccc';

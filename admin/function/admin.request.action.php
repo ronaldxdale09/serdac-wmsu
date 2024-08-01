@@ -11,7 +11,7 @@ $purpose_options = $_POST['purpose_options'];
 $selected_purposes = implode(", ", $purpose_options);
 $additional_purpose_details = $_POST['additional_purpose_details'];
 $status = "In Progress";
-$inviteCode = substr(str_shuffle(md5(microtime())), 0, 12);
+$inviteCode = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5));
 
 // Insert into service_request table
 $query = "INSERT INTO service_request (inviteCode,request_date, user_id, service_type, office_agency, agency_classification, client_type, selected_purposes, additional_purpose_details, status)

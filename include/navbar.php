@@ -147,6 +147,8 @@ function getUnreadNotifications($con, $userId, $limit = 5) {
                             <a href="javascript:void(0)">SERVICES</a>
                             <ul class="sub-menu">
                                 <li><a href="request.php"><i class="fas fa-chalkboard-teacher"></i> REQUEST SERVICE</a>
+                                <li><a href="service_join.php"><i class="fas fa-user-plus"></i> JOIN TRAINING</a></li>
+
                                 </li>
                             </ul>
                         </li>

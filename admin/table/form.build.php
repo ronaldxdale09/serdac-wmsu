@@ -153,9 +153,8 @@ $(document).ready(function() {
 
             const questionCard = $('#question_list_container .question-card').last();
             const questionTypeSelect = questionCard.find('.question-type');
-            questionTypeSelect.val('multiple_choice_single').change();
+            questionTypeSelect.val('multiple_choice_single').trigger('change');
 
-            // Add this line to ensure correct answer field is added for new questions in quiz mode
             if ($('#isQuiz').is(':checked')) {
                 this.updateCorrectAnswerField(questionCard, 'multiple_choice_single');
             }
@@ -233,6 +232,14 @@ $(document).ready(function() {
                 'question-index')));
         },
 
+        getCorrectAnswerField: function(type, questionIndex) {
+            return `
+                <div class="form-group correct-answer-field">
+                    <label>Correct Answer:</label>
+                    ${this.getCorrectAnswerInput(type, questionIndex)}
+                </div>`;
+        },
+
         getCorrectAnswerInput: function(type, questionIndex) {
             switch (type) {
                 case 'paragraph':
@@ -268,7 +275,7 @@ $(document).ready(function() {
     };
 
     // Event Listeners
-    $("#add-item").click(function() {
+    $("#add-item").off('click').on('click', function() {
         QuestionCardManager.addQuestionCard();
     });
 
@@ -276,7 +283,7 @@ $(document).ready(function() {
         $(this).closest('.question-card').remove();
     });
 
-    $('#question_list_container').on('click', '.add-option', function() {
+    $('#question_list_container').off('click', '.add-option').on('click', '.add-option', function(e) {
         const questionCard = $(this).closest('.question-card');
         const questionType = questionCard.find('.question-type').val();
         const questionIndex = questionCard.data('question-index');
@@ -324,15 +331,14 @@ $(document).ready(function() {
     // Initialize
     function initializeForm(isQuiz) {
         if (isQuiz) {
-            $('#isQuiz').prop('checked', true).change();
+            $('#isQuiz').prop('checked', true);
+            $('.question-card').each(function() {
+                const type = $(this).find('.question-type').val();
+                QuestionCardManager.updateCorrectAnswerField($(this), type);
+            });
+        } else {
+            $('.correct-answer-field').remove();
         }
-        $('.question-card').each(function() {
-            const $card = $(this);
-            const $typeSelect = $card.find('.question-type');
-            if (isQuiz) {
-                QuestionCardManager.updateCorrectAnswerField($card, $typeSelect.val());
-            }
-        });
     }
 
     // Call initializeForm with the isQuiz parameter passed from PHP

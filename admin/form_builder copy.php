@@ -399,6 +399,11 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
         $('#formSettingsCollapse').on('hide.bs.collapse', function() {
             $('.settings-header i.fas').removeClass('fa-chevron-up').addClass('fa-chevron-down');
         });
+        
+        $('#isQuiz').change(function() {
+            var isQuiz = $(this).is(':checked');
+            FormManager.fetchQuestions(formId || 0, isQuiz);
+        });
     });
     </script>
 

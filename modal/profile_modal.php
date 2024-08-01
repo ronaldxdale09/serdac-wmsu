@@ -80,7 +80,66 @@
 
 
 
- <script>
+<!-- Assessment Modal -->
+<div class="modal fade" id="assessmentModal" tabindex="-1" role="dialog" aria-labelledby="assessmentModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="assessmentModalLabel">Assessment Forms</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Form ID</th>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assessmentTableBody">
+                        <!-- Assessment forms will be loaded here dynamically -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+    $('.btnAssessment').click(function() {
+        var requestId = $(this).data('request-id');
+
+        // AJAX call to fetch assessment forms
+        $.ajax({
+            url: 'fetch/fetch_assessment_forms.php', // You need to create this PHP file
+            method: 'POST',
+            data: {
+                request_id: requestId
+            },
+            success: function(response) {
+                $('#assessmentTableBody').html(response);
+                var modal = new bootstrap.Modal(document.getElementById('assessmentModal'));
+                modal.show();
+            },
+            error: function() {
+                alert('Error fetching assessment forms');
+            }
+        });
+    });
+});
+
+
 $(document).ready(function() {
     $('.btnView').on('click', function() {
         var request = $(this).data('request');
