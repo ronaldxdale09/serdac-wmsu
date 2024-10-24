@@ -12,6 +12,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $vision = mysqli_real_escape_string($con, $_POST['vision']);
     $goals = mysqli_real_escape_string($con, $_POST['goals']);
 
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $contact = mysqli_real_escape_string($con, $_POST['contact']);
+
+
     // Handle file upload
     $bannerImage = '';
     if (isset($_FILES['banner_image']) && $_FILES['banner_image']['error'] == 0) {
@@ -40,9 +44,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               about_us = ?, 
               mission = ?, 
               vision = ?, 
-              goals = ?";
-    $params = [$aboutUs, $mission, $vision, $goals];
-    $types = "ssss";
+              goals = ?,
+              org_email = ?,
+              org_contact = ?";
+    $params = [$aboutUs, $mission, $vision, $goals,$email, $contact];
+    $types = "ssssss";
 
     if ($bannerImage) {
         $query .= ", banner_image = ?";

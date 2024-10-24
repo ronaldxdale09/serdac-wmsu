@@ -1,5 +1,60 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<style>
+.action-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 10px;
+    /* Adds space between buttons */
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+    border-radius: 5px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-sm i {
+    margin-right: 5px;
+    /* Space between icon and text */
+}
+
+.btn-sm:hover {
+    transform: translateY(-2px);
+    /* Slight hover effect */
+}
+
+.edit-btn {
+    background-color: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.edit-btn:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.btn-sm i {
+    margin: 0;
+    /* Remove space for buttons with just icons */
+}
+</style>
 
 <body>
     <!-- Left Panel -->
@@ -39,10 +94,10 @@
                             </ul>
                             <div class="tab-content mt-3" id="settingsTabContent">
                                 <div class="tab-pane fade show active" id="profile" role="tabpanel">
-                                  <?php include('settings/content_update.php'); ?>
+                                    <?php include('settings/content_update.php'); ?>
                                 </div>
                                 <div class="tab-pane fade" id="security" role="tabpanel">
-                                <?php include('settings/registration_dropdowns.php'); ?>
+                                    <?php include('settings/registration_dropdowns.php'); ?>
 
                                 </div>
                                 <div class="tab-pane fade" id="notifications" role="tabpanel">

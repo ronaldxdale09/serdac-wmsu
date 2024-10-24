@@ -21,6 +21,27 @@ include('function/db.php'); // Path to your database connection
 //     // Update last activity time
 //     $_SESSION['last_activity'] = time();
 // }
+
+        // Fetch the web details
+        $query = "SELECT * FROM web_details LIMIT 1";
+        $result = mysqli_query($con, $query);
+
+        if ($result && mysqli_num_rows($result) > 0) {
+            $webDetails = mysqli_fetch_assoc($result);
+        } else {
+            // If no data found, initialize with empty strings
+            $webDetails = [
+                'about_us' => '',
+                'mission' => '',
+                'vision' => '',
+                'goals' => '',
+                'banner_image' => '' ,
+                'org_email' => '',
+                'org_contact' => ''
+            ];
+        }
+
+        
 ?>
 
 <head>

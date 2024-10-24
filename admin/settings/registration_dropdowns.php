@@ -61,10 +61,15 @@ $occupations = getTableData('r_occupations');
                                     data-id="<?php echo $item['id']; ?>"><?php echo htmlspecialchars($item[array_keys($item)[1]]); ?></span>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-primary edit-btn"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-sm btn-danger delete-btn"
-                                    data-table="<?php echo $table['name']; ?>" data-id="<?php echo $item['id']; ?>"><i
-                                        class="fas fa-trash"></i></button>
+                                <div class="action-buttons">
+                                    <button class="btn btn-sm btn-primary edit-btn" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger delete-btn" title="Delete"
+                                        data-table="<?php echo $table['name']; ?>" data-id="<?php echo $item['id']; ?>">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>

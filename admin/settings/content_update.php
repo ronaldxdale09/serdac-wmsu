@@ -51,7 +51,9 @@ if ($result && mysqli_num_rows($result) > 0) {
         'mission' => '',
         'vision' => '',
         'goals' => '',
-        'banner_image' => '' 
+        'banner_image' => '' ,
+        'org_email' => '',
+        'org_contact' => ''
     ];
 }
 
@@ -64,75 +66,98 @@ mysqli_free_result($result);
     <div class="container-fluid py-4">
         <h2 class="mb-4">Website Content Management</h2>
         <form id="contentUpdateForm" method="post" action="update_web_details.php" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-md-6 mb-4">
-                    <div class="card content-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Banner Image</h5>
-                            <?php if (!empty($webDetails['banner_image'])): ?>
-                            <div class=" mb-3">
-                                <img src="../assets/images/<?php echo htmlspecialchars($webDetails['banner_image']); ?>"
-                                    alt="Current Banner" id="bannerPreview" class="img-fluid">
+            <div class="container-fluid py-4">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card content-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Banner Image</h5>
+                                <?php if (!empty($webDetails['banner_image'])): ?>
+                                <div class="mb-3">
+                                    <img src="../assets/images/<?php echo htmlspecialchars($webDetails['banner_image']); ?>"
+                                        alt="Current Banner" id="bannerPreview" class="img-fluid">
+                                </div>
+                                <?php endif; ?>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="bannerImage" name="banner_image"
+                                        accept="image/*">
+                                    <label class="custom-file-label" for="bannerImage">Choose file</label>
+                                </div>
                             </div>
-                            <?php endif; ?>
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="bannerImage" name="banner_image"
-                                    accept="image/*">
-                                <label class="custom-file-label" for="bannerImage">Choose file</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card content-card">
+                            <div class="card-body">
+                                <h5 class="card-title">About Us</h5>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="aboutUs" name="about_us" rows="5"
+                                        placeholder="Enter About Us content"><?php echo htmlspecialchars($webDetails['about_us']); ?></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 mb-4">
-                    <div class="card content-card">
-                        <div class="card-body">
-                            <h5 class="card-title">About Us</h5>
-                            <div class="form-group">
-                                <textarea class="form-control" id="aboutUs" name="about_us" rows="5"
-                                    placeholder="Enter About Us content"><?php echo htmlspecialchars($webDetails['about_us']); ?></textarea>
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card content-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Mission</h5>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="mission" name="mission" rows="4"
+                                        placeholder="Enter Mission statement"><?php echo htmlspecialchars($webDetails['mission']); ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card content-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Vision</h5>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="vision" name="vision" rows="4"
+                                        placeholder="Enter Vision statement"><?php echo htmlspecialchars($webDetails['vision']); ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card content-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Goals</h5>
+                                <div class="form-group">
+                                    <textarea class="form-control" id="goals" name="goals" rows="4"
+                                        placeholder="Enter Goals"><?php echo htmlspecialchars($webDetails['goals']); ?></textarea>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card content-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Mission</h5>
-                            <div class="form-group">
-                                <textarea class="form-control" id="mission" name="mission" rows="4"
-                                    placeholder="Enter Mission statement"><?php echo htmlspecialchars($webDetails['mission']); ?></textarea>
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card content-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Contact Information</h5>
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        placeholder="Enter email address"
+                                        value="<?php echo htmlspecialchars($webDetails['org_email']); ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactAddress">Contact Address</label>
+                                    <input type="text" class="form-control" id="contactAddress" name="contact"
+                                        placeholder="Enter contact address"
+                                        value="<?php echo htmlspecialchars($webDetails['org_contact']); ?>">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card content-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Vision</h5>
-                            <div class="form-group">
-                                <textarea class="form-control" id="vision" name="vision" rows="4"
-                                    placeholder="Enter Vision statement"><?php echo htmlspecialchars($webDetails['vision']); ?></textarea>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary btn-lg">Update Content</button>
                     </div>
-                </div>
-                <div class="col-md-4 mb-4">
-                    <div class="card content-card">
-                        <div class="card-body">
-                            <h5 class="card-title">Goals</h5>
-                            <div class="form-group">
-                                <textarea class="form-control" id="goals" name="goals" rows="4"
-                                    placeholder="Enter Goals"><?php echo htmlspecialchars($webDetails['goals']); ?></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary btn-lg">Update Content</button>
                 </div>
             </div>
         </form>

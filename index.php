@@ -20,22 +20,7 @@
         }
     }
 
-        // Fetch the web details
-        $query = "SELECT * FROM web_details LIMIT 1";
-        $result = mysqli_query($con, $query);
 
-        if ($result && mysqli_num_rows($result) > 0) {
-            $webDetails = mysqli_fetch_assoc($result);
-        } else {
-            // If no data found, initialize with empty strings
-            $webDetails = [
-                'about_us' => '',
-                'mission' => '',
-                'vision' => '',
-                'goals' => '',
-        'banner_image' => ''
-            ];
-        }
 
         // Don't forget to free the result
         ?>
@@ -214,13 +199,13 @@
                         <div class="email">
                             <i class="fas fa-envelope"></i>
                             <h4>Email:</h4>
-                            <p>wmsuserdac@wmsu.edu.ph</p>
+                            <p><?php echo htmlspecialchars($webDetails['org_email']); ?></p>
                         </div>
 
                         <div class="phone">
                             <i class="fas fa-phone"></i>
                             <h4>Call:</h4>
-                            <p>0917-109-8164</p>
+                            <p><?php echo htmlspecialchars($webDetails['org_contact']); ?></p>
                         </div>
 
                         <iframe

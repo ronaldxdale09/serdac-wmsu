@@ -56,8 +56,10 @@ $purposes_of_request = getReqData('r_purpose_of_request');
                                 <span class="editable" data-table="<?php echo $table['name']; ?>" data-id="<?php echo $item['id']; ?>" data-column="<?php echo $table['column']; ?>"><?php echo htmlspecialchars($item[$table['column']]); ?></span>
                             </td>
                             <td>
+                            <div class="action-buttons">
                                 <button class="btn btn-sm btn-primary edit-btn"><i class="fas fa-edit"></i></button>
                                 <button class="btn btn-sm btn-danger delete-btn" data-table="<?php echo $table['name']; ?>" data-id="<?php echo $item['id']; ?>"><i class="fas fa-trash"></i></button>
+                                </div>
                             </td>
                         </tr>
                         <?php endforeach; ?>
