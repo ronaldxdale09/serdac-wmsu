@@ -3,84 +3,93 @@
     width: 100%;
 }
 </style>
+<div class="custom-table-container">
+    <div class="table-header">
+        <div class="table-title">
+            <h2>Service Requests</h2>
+        </div>
+       
+    </div>
 
-<div class="table-responsive custom-table-container">
     <?php
-                            // Fetch data from the service_request table
-                            $results = mysqli_query($con, "SELECT * FROM service_request
-                            LEFT JOIN users ON users.user_id = service_request.user_id
-                            WHERE service_request.status = 'Pending' ");
-                            ?>
-    <table class="table table-hover" id='service_request_table'>
-        <thead>
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Status</th>
+    $results = mysqli_query($con, "SELECT * FROM service_request 
+                                  LEFT JOIN users ON users.user_id = service_request.user_id 
+                                  WHERE service_request.status = 'Pending'");
+    $has_results = mysqli_num_rows($results) > 0;
+    ?>
 
-                <th scope="col">Service Type</th>
-                <th scope="col">Client</th>
+    <?php if ($has_results): ?>
+    <div class="table-responsive">
+        <table class="table" id='service_request_table'>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Status</th>
+                    <th>Service Type</th>
+                    <th>Client</th>
+                    <th>Agency</th>
+                    <th>Purpose</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php while ($row = mysqli_fetch_array($results)) { 
+                    $status_color = match($row['status']) {
+                        'Pending' => 'badge-warning',
+                        'Approved' => 'badge-success',
+                        'Rejected' => 'badge-danger',
+                        default => ''
+                    };
 
-                <th scope="col">Agency</th>
-                <th scope="col">Purpose</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = mysqli_fetch_array($results)) { 
-            // Status color coding (optional)
-            $status_color = '';
-            switch ($row['status']) {
-                case "Pending":
-                    $status_color = 'badge-warning';
-                    break;
-                case "Approved":
-                    $status_color = 'badge-success';
-                    break;
-                case "Rejected":
-                    $status_color = 'badge-danger';
-               
-                    break;
-            }
+                    $type_color = match($row['service_type']) {
+                        'data-analysis' => 'badge-success',
+                        'capability-training' => 'badge-primary',
+                        'technical-assistance' => 'badge-dark',
+                        default => ''
+                    };
 
-            $type_color = '';
-            if ($row['service_type'] === "data-analysis") {
-                $type_color = 'badge-success';
-            } elseif ($row['service_type'] === "capability-training") {
-                $type_color = 'badge-primary';
-            } elseif ($row['service_type'] === "technical-assistance") {
-                $type_color = 'badge-dark';
-            }
-            $client = $row['fname'].' '.$row['lname'];
-
-
-                                                ?>
-            <tr>
-                <td><?php echo $row['request_id']; ?></td>
-                <td><span class="badge <?php echo $status_color; ?>">
-                        <?php echo $row['status']; ?>
-                    </span></td>
-
-                <td><span class="badge <?php echo $type_color; ?>">
-                        <?php echo $row['service_type']; ?>
-                    </span>
-                </td>
-                <td><?php echo $client ?></td>
-
-                <td><?php echo $row['office_agency']; ?></td>
-                <td><?php echo $row['selected_purposes']; ?></td>
-                <td>
-                    <div class="button-grid">
-
-                        <button type="button" class="btn btn-sm btn-primary mb-1 btnEdit"
-                            data-request='<?php echo json_encode($row); ?>'>
-                            <i class="fas fa-book"></i> Details
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+                    $client = htmlspecialchars($row['fname'].' '.$row['lname']);
+                ?>
+                <tr>
+                    <td>#<?php echo str_pad($row['request_id'], 4, '0', STR_PAD_LEFT); ?></td>
+                    <td>
+                        <span class="badge <?php echo $status_color; ?>">
+                            <?php echo $row['status']; ?>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge <?php echo $type_color; ?>">
+                            <?php echo $row['service_type']; ?>
+                        </span>
+                    </td>
+                    <td>
+                        <div class="client-info">
+                            <?php echo $client; ?>
+                        </div>
+                    </td>
+                    <td><?php echo htmlspecialchars($row['office_agency']); ?></td>
+                    <td><?php echo htmlspecialchars($row['selected_purposes']); ?></td>
+                    <td>
+                        <div class="button-grid">
+                            <button type="button" class="btn-sm btn-primary btnEdit"
+                                data-request='<?php echo json_encode($row); ?>'>
+                                <i class="fas fa-book"></i>
+                                <span>Details</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
+    </div>
+    <?php else: ?>
+    <div class="empty-state">
+        <i class="fas fa-inbox fa-3x mb-3"></i>
+        <h3>No Pending Requests</h3>
+        <p>There are currently no pending service requests to display.</p>
+    </div>
+    <?php endif; ?>
 </div>
 
 

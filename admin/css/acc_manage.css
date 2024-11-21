@@ -1,0 +1,138 @@
+.card {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
+    background: #fff;
+}
+
+.card-header {
+    background: linear-gradient(to right, #2c3e50, #3498db);
+    color: white;
+    border-radius: 12px 12px 0 0 !important;
+    padding: 1.2rem 1.5rem;
+    border: none;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+
+/* New Admin Button */
+
+.btn-dark {
+    background: #2c3e50;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-dark:hover {
+    background: #34495e;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(44, 62, 80, 0.15);
+}
+
+
+/* Table Styling */
+
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table {
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.table thead th {
+    background-color: #f8f9fa;
+    color: #2c3e50;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    padding: 1rem;
+    border: none;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border: none;
+    border-bottom: 1px solid #f0f2f5;
+    color: #4a5568;
+    font-size: 0.875rem;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f8fafc;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease;
+}
+
+
+/* Badge Styling */
+
+.badge {
+    padding: 0.4em 0.8em;
+    font-weight: 500;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    letter-spacing: 0.3px;
+}
+
+.badge-success {
+    background: #10B981;
+    color: white;
+}
+
+.badge-info {
+    background: #3B82F6;
+    color: white;
+    margin: 0.1rem;
+}
+
+
+/* Current User Row Styling */
+
+.table-primary {
+    background-color: #EBF4FF !important;
+}
+
+.table-primary:hover {
+    background-color: #DBEAFE !important;
+}
+
+
+/* Action Icons */
+
+.fa-edit {
+    color: #3B82F6;
+}
+
+.fa-trash {
+    color: #EF4444;
+}
+
+.fa-check {
+    color: #10B981;
+}
+
+.fa-ban {
+    color: #F59E0B;
+}

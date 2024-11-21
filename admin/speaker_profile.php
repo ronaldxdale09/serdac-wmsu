@@ -1,5 +1,6 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="css/acc_manage.css">
 
 <body>
     <!-- Left Panel -->
@@ -10,7 +11,7 @@
         <!-- Header-->
         <?php include('include/navbar.php')?>
 
-      
+
 
         <div class="content">
             <div class="row">
@@ -26,44 +27,46 @@
                                     data-target="#createSpeakerModal">
                                     <i class="fa fa-user"></i> NEW SPEAKER
                                 </button>
-                                <hr>
-                                <table class="table table-bordered table-hover table-striped" id='speaker_profile'>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Address</th>
-                                            <th scope="col">Email</th>
-                                            <th scope="col">Specialization</th>
-                                            <th scope="col">Occupation</th>
+                                <div class="table-responsive custom-table-container">
 
-                                            <th scope="col">Contact #</th>
-                                            <th scope="col">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <?php
+                                    <table class="table table-bordered table-hover table-striped" id='speaker_profile'>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Address</th>
+                                                <th scope="col">Email</th>
+                                                <th scope="col">Specialization</th>
+                                                <th scope="col">Occupation</th>
+
+                                                <th scope="col">Contact #</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <?php
                                  $results = mysqli_query($con, "SELECT * from speaker_profile"); ?>
-                                    <tbody>
-                                        <?php while ($row = mysqli_fetch_array($results)) { ?>
-                                        <tr>
-                                            <td><?php echo $row['speaker_id']; ?></td>
-                                            <td><?php echo $row['name']; ?></td>
-                                            <td><?php echo $row['address']; ?></td>
-                                            <td><?php echo $row['email']; ?></td>
-                                            <td><?php echo $row['specialization']; ?></td>
-                                            <td><?php echo $row['occupation']; ?></td>
+                                        <tbody>
+                                            <?php while ($row = mysqli_fetch_array($results)) { ?>
+                                            <tr>
+                                                <td><?php echo $row['speaker_id']; ?></td>
+                                                <td><?php echo $row['name']; ?></td>
+                                                <td><?php echo $row['address']; ?></td>
+                                                <td><?php echo $row['email']; ?></td>
+                                                <td><?php echo $row['specialization']; ?></td>
+                                                <td><?php echo $row['occupation']; ?></td>
 
-                                            <td><?php echo $row['contact']; ?></td>
-                                            <td>
-                                                <button type="button" class="btn btn-sm btn-dark btnEdit"
-                                                    data-speaker='<?php echo json_encode($row); ?>'>
-                                                    <i class="fa fa-book"></i> 
-                                                </button>
-                                            </td>
-                                        </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
+                                                <td><?php echo $row['contact']; ?></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-sm btn-dark btnEdit"
+                                                        data-speaker='<?php echo json_encode($row); ?>'>
+                                                        <i class="fa fa-book"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <?php } ?>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>

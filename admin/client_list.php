@@ -1,14 +1,26 @@
 <?php include('include/header.php')?>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="css/assmt.form.view.css">
+<link rel="stylesheet" href="css/client_list.css">
+
 <?php 
+function getFilterOptions($table, $column) {
+    global $con;
+    $options = array();
+    $query = "SELECT $column FROM $table ORDER BY $column";
+    $result = $con->query($query);
+    if ($result->num_rows > 0) {
+        while($row = $result->fetch_assoc()) {
+            $options[] = $row[$column];
+        }
+    }
+    return $options;
+}
 
+// Fetch options
+$education_levels = getFilterOptions('r_education_levels', 'education_level');
+$genders = getFilterOptions('r_genders', 'gender');
+$occupations = getFilterOptions('r_occupations', 'occupation');
 
-// Fetch client data
-$query = "SELECT user_id, CONCAT(fname, ' ', IFNULL(midname, ''), ' ', lname) AS full_name, 
-          contact_no, email, gender, occupation, education_level, registration_date 
-          FROM users WHERE accessType = 'Client'";
-$results = mysqli_query($con, $query);
 ?>
 
 <body>
@@ -44,87 +56,121 @@ $results = mysqli_query($con, $query);
                 </div>
             </div>
         </div>
+        <?php 
+            // Fetch client data
+            $query = "SELECT user_id, CONCAT(fname, ' ', IFNULL(midname, ''), ' ', lname) AS full_name, 
+                    contact_no, email, gender, occupation, education_level, registration_date 
+                    FROM users WHERE accessType = 'Client'";
+            $results = mysqli_query($con, $query); 
+            ?>
 
         <div class="content">
             <div class="container-fluid mt-4">
-                <h2>Registered Clients</h2> <br>
-
-                <div class="filters row">
-                    <div class="col-md-3">
-                        <select id="genderFilter" class="form-control">
-                            <option value="">All Genders</option>
-                            <option value="Male">Male</option>
-                            <option value="Female">Female</option>
-                        </select>
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h2 class="font-weight-bold text-primary">Registered Clients</h2>
                     </div>
-                    <div class="col-md-3">
-                        <select id="occupationFilter" class="form-control">
-                            <option value="">All Occupations</option>
-                            <option value="employed_ft">Employed (Full-time)</option>
-                            <option value="employed_pt">Employed (Part-time)</option>
-                            <option value="self_employed">Self-employed</option>
-                            <option value="student">Student</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <select id="educationFilter" class="form-control">
-                            <option value="">All Education Levels</option>
-                            <option value="elementary">Elementary</option>
-                            <option value="high_school">High School</option>
-                            <option value="college">College</option>
-                            <option value="postgraduate">Postgraduate</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="dateFilter" class="form-control" placeholder="Registration Date">
+                    <div class="col-md-4 text-right">
+                        <button class="btn btn-primary" onclick="exportToExcel()">
+                            <i class="fas fa-download mr-2"></i>Export to Excel
+                        </button>
                     </div>
                 </div>
-                <br>
-                <table class="table table-bordered table-hover" id="clientTable">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Contact #</th>
-                            <th>Email</th>
-                            <th>Gender</th>
-                            <th>Occupation</th>
-                            <th>Education</th>
-                            <th>Registered</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php while ($row = mysqli_fetch_assoc($results)) { ?>
-                        <tr>
-                            <td><?php echo $row['user_id']; ?></td>
-                            <td><?php echo htmlspecialchars($row['full_name']); ?></td>
-                            <td><?php echo htmlspecialchars($row['contact_no']); ?></td>
-                            <td><?php echo htmlspecialchars($row['email']); ?></td>
-                            <td><?php echo htmlspecialchars($row['gender']); ?></td>
-                            <td><?php echo htmlspecialchars($row['occupation']); ?></td>
-                            <td><?php echo htmlspecialchars($row['education_level']); ?></td>
-                            <td><?php echo date('Y-m-d', strtotime($row['registration_date'])); ?></td>
-                            <td>
-                                <button class="btn btn-sm btn-primary edit-btn"
-                                    data-id="<?php echo $row['user_id']; ?>">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn btn-sm btn-danger delete-btn"
-                                    data-id="<?php echo $row['user_id']; ?>">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <?php } ?>
-                    </tbody>
-                </table>
+
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <div class="filters-container">
+                            <div class="filters-row">
+                                <div class="filter-group">
+                                    <label class="filter-label">Gender</label>
+                                    <select id="genderFilter" class="filter-select">
+                                        <option value="">All Genders</option>
+                                        <?php foreach($genders as $gender): ?>
+                                        <option value="<?php echo htmlspecialchars($gender); ?>">
+                                            <?php echo htmlspecialchars($gender); ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="filter-group">
+                                    <label class="filter-label">Occupation</label>
+                                    <select id="occupationFilter" class="filter-select">
+                                        <option value="">All Occupations</option>
+                                        <?php foreach($occupations as $occupation): ?>
+                                        <option value="<?php echo htmlspecialchars($occupation); ?>">
+                                            <?php echo htmlspecialchars($occupation); ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="filter-group">
+                                    <label class="filter-label">Education Level</label>
+                                    <select id="educationFilter" class="filter-select">
+                                        <option value="">All Education Levels</option>
+                                        <?php foreach($education_levels as $level): ?>
+                                        <option value="<?php echo htmlspecialchars($level); ?>">
+                                            <?php echo htmlspecialchars($level); ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="filter-group">
+                                    <label class="filter-label">Registration Date</label>
+                                    <input type="date" id="dateFilter" class="date-input">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="clientTable">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Contact #</th>
+                                        <th>Email</th>
+                                        <th>Gender</th>
+                                        <th>Occupation</th>
+                                        <th>Education</th>
+                                        <th>Registered</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php while ($row = mysqli_fetch_assoc($results)) { ?>
+                                    <tr>
+                                        <td><?php echo $row['user_id']; ?></td>
+                                        <td><?php echo htmlspecialchars($row['full_name']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['contact_no']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['email']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['gender']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['occupation']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['education_level']); ?></td>
+                                        <td><?php echo date('Y-m-d', strtotime($row['registration_date'])); ?></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button class="btn btn-sm btn-outline-primary edit-btn"
+                                                    data-id="<?php echo $row['user_id']; ?>">
+                                                    <i class="fas fa-edit"></i>
+                                                </button>
+                                                <button class="btn btn-sm btn-outline-danger delete-btn"
+                                                    data-id="<?php echo $row['user_id']; ?>">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    </div>
-
 
 </body>
 
@@ -136,67 +182,101 @@ $results = mysqli_query($con, $query);
 
 <script>
 $(document).ready(function() {
+    // Initialize DataTable with advanced features
     var table = $('#clientTable').DataTable({
-        "order": [
-            [0, "desc"]
-        ],
-        "pageLength": 25
+        dom: 'Bfrtip',
+        buttons: ['excel', 'pdf', 'print'],
+        order: [[0, 'desc']],
+        pageLength: 25,
+        responsive: true,
+        language: {
+            search: "_INPUT_",
+            searchPlaceholder: "Search records..."
+        },
+        columnDefs: [{ orderable: false, targets: -1 }]
     });
 
-    // Apply filters
-    $('#genderFilter, #occupationFilter, #educationFilter').on('change', function() {
+    // Combined filter function
+    function filterTable() {
+        var filters = {
+            gender: $('#genderFilter').val(),
+            occupation: $('#occupationFilter').val(),
+            education: $('#educationFilter').val(),
+            date: $('#dateFilter').val()
+        };
+
+        $.fn.dataTable.ext.search.pop(); // Remove previous filter
+        $.fn.dataTable.ext.search.push((settings, data) => {
+            return (!filters.gender || data[4] === filters.gender) &&
+                   (!filters.occupation || data[5] === filters.occupation) &&
+                   (!filters.education || data[6] === filters.education) &&
+                   (!filters.date || new Date(data[7]).toDateString() === new Date(filters.date).toDateString());
+        });
+
         table.draw();
-    });
+    }
 
-    $('#dateFilter').on('keyup', function() {
-        table.draw();
-    });
+    // Attach filter event
+    $('.filter-select, #dateFilter').on('change', filterTable);
 
+    // Edit button handler
     $('.edit-btn').on('click', function() {
         var userId = $(this).data('id');
         var row = $(this).closest('tr');
 
         $('#editUserId').val(userId);
-        $('#editName').val(row.find('td:eq(1)').text());
-        $('#editContact').val(row.find('td:eq(2)').text());
-        $('#editEmail').val(row.find('td:eq(3)').text());
-        $('#editGender').val(row.find('td:eq(4)').text());
-        $('#editOccupation').val(row.find('td:eq(5)').text());
-        $('#editEducation').val(row.find('td:eq(6)').text());
+        $('#editName').val(row.find('td:eq(1)').text().trim());
+        $('#editContact').val(row.find('td:eq(2)').text().trim());
+        $('#editEmail').val(row.find('td:eq(3)').text().trim());
+        $('#editGender').val(row.find('td:eq(4)').text().trim());
+        $('#editOccupation').val(row.find('td:eq(5)').text().trim());
+        $('#editEducation').val(row.find('td:eq(6)').text().trim());
 
-        var editModal = new bootstrap.Modal(document.getElementById('editModal'));
-        editModal.show();
+        new bootstrap.Modal(document.getElementById('editModal')).show();
     });
 
-    // Save changes button click
+    // Save changes handler
     $('#saveChanges').on('click', function() {
+        if (!$('#editForm')[0].checkValidity()) {
+            $('#editForm')[0].reportValidity();
+            return;
+        }
+
         $.ajax({
             url: 'function/update_client_details.php',
             method: 'POST',
             data: $('#editForm').serialize() + '&operation=update',
             dataType: 'json',
             success: function(response) {
-                console.log('Update response:', response); // Debug log
-                location.reload(); // Refresh the page immediately
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Client details updated successfully',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => location.reload());
+                } else {
+                    Swal.fire('Error!', response.message || 'Update failed', 'error');
+                }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', status, error); // Debug log
-                location.reload(); // Refresh the page even on error
+            error: function() {
+                Swal.fire('Error!', 'Failed to update client details', 'error');
             }
         });
     });
 
-    // Delete button click
+    // Delete button handler
     $('.delete-btn').on('click', function() {
         var userId = $(this).data('id');
         $('#deleteModal').data('userId', userId);
-        var deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
-        deleteModal.show();
+        new bootstrap.Modal(document.getElementById('deleteModal')).show();
     });
 
-    // Confirm delete button click
+    // Confirm delete handler
     $('#confirmDelete').on('click', function() {
         var userId = $('#deleteModal').data('userId');
+
         $.ajax({
             url: 'function/update_client_details.php',
             method: 'POST',
@@ -206,19 +286,27 @@ $(document).ready(function() {
             },
             dataType: 'json',
             success: function(response) {
-                console.log('Delete response:', response); // Debug log
-                location.reload(); // Refresh the page immediately
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: 'Client has been deleted successfully',
+                        timer: 1500,
+                        showConfirmButton: false
+                    }).then(() => location.reload());
+                } else {
+                    Swal.fire('Error!', response.message || 'Deletion failed', 'error');
+                }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error:', status, error); // Debug log
-                location.reload(); // Refresh the page even on error
+            error: function() {
+                Swal.fire('Error!', 'Failed to delete client', 'error');
             }
         });
     });
-
-    // Check for notification on page load
- 
 });
-</script>
 
-</html>
+// Export to Excel function
+function exportToExcel() {
+    $('.buttons-excel').click();
+}
+</script>

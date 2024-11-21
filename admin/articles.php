@@ -161,8 +161,7 @@
                             <div class="page-title">
                                 <ol class="breadcrumb text-right">
                                     <li><a href="#">Dashboard</a></li>
-                                    <li><a href="#">Table</a></li>
-                                    <li class="active">Data table</li>
+                                    <li class="active">Articles</li>
                                 </ol>
                             </div>
                         </div>
@@ -177,7 +176,7 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
                             <strong class="card-title">List of Articles</strong>
-                            <a href="create_article.php" class="btn btn-success btn-sm">
+                            <a href="new_article.php" class="btn btn-success btn-sm">
                                 <i class="fas fa-plus"></i> New Article
                             </a>
                         </div>

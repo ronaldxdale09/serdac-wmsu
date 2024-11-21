@@ -1,172 +1,35 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-::selection {
-    background: rgba(23, 162, 184, 0.3);
-}
+/* Reset and Base Styles */
 
-.inventory-table {
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap;
+:root {
+    --primary-color: #2C3E50;
+    --secondary-color: #34495E;
+    --accent-color: #3498DB;
+    --success-color: #27AE60;
+    --warning-color: #F39C12;
+    --danger-color: #E74C3C;
+    --light-gray: #ECF0F1;
+    --dark-gray: #7F8C8D;
+    --white: #FFFFFF;
 }
 
 .wrapper {
-    max-width: 100%;
-    width: 100%;
-    margin: 8px auto;
-    padding: 10px 10px 10px 10px;
-    border-radius: 5px;
-    background: #fff;
-    box-shadow: 0px 10px 15px rgba(165, 32, 32, 0.1);
+    background: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px auto;
     overflow: hidden;
 }
 
-.wrapper header {
-    font-size: 30px;
-    font-weight: 600;
-    padding-bottom: 20px;
-}
 
-.wrapper nav {
-    position: relative;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-}
+/* Hide all content sections by default */
 
-.wrapper nav label {
-    flex: 1;
-    display: block;
-    text-align: center;
-    cursor: pointer;
-    padding: 10px 15px;
-    z-index: 5;
-    /* Keeping this higher ensures labels are always on top */
-    color: #1c1c1c;
-    background-color: #f7f7f7;
-    font-size: 16px;
-    border-radius: 5px;
-    margin: 0 5px;
-    /* this will make labels grow and take equal space */
-}
-
-
-/* For tablets (between 600px and 900px) */
-
-@media (min-width: 600px) and (max-width: 900px) {
-    .wrapper nav label {
-        font-size: 15px;
-    }
-}
-
-
-/* For larger phones (between 400px and 600px) */
-
-@media (min-width: 400px) and (max-width: 599px) {
-    .wrapper nav label {
-        font-size: 13px;
-    }
-}
-
-
-/* For small phones (less than 400px) */
-
-@media (max-width: 399px) {
-    .wrapper nav label {
-        font-size: 11px;
-    }
-}
-
-
-/* Mobile styles and media queries */
-
-@media (max-width: 900px) {
-    .wrapper {
-        padding: 20px 25px;
-    }
-    .wrapper header {
-        font-size: 25px;
-        padding-bottom: 15px;
-    }
-    section .content .title {
-        font-size: 19px;
-        margin: 25px 0 8px 0;
-    }
-}
-
-@media (max-width: 599px) {
-    .wrapper nav label {
-        font-size: 13px;
-    }
-}
-
-@media (max-width: 399px) {
-    .wrapper nav label {
-        font-size: 11px;
-    }
-}
-
-.wrapper nav label:hover {
-    background: rgba(23, 162, 184, 0.3);
-}
-
-#home:checked~nav label.home,
-#blog:checked~nav label.blog,
-#drying:checked~nav label.drying,
-#code:checked~nav label.code,
-#help:checked~nav label.help,
-#about:checked~nav label.about {
-    color: #fff;
-    background: #1b325f;
-    /* Adding a background color to the selected label */
-}
-
-nav label i {
-    padding-right: 7px;
-}
-
-nav .slider {
-    position: absolute;
-    height: 100%;
-    width: 20%;
-    left: 0;
-    bottom: 0;
-    z-index: 1;
-    border-radius: 5px;
-    background: #1b325f;
+.wrapper section .content {
     display: none;
-    /* Hide all sliders by default */
+    padding: 20px;
 }
 
-nav .slider:first-of-type {
-    display: block;
-    /* Only show the first slider */
-}
 
-input[type="radio"] {
-    display: none;
-}
-
-#blog:checked~nav .slider {
-    left: 20%;
-}
-
-#drying:checked~nav .slider {
-    left: 40%;
-}
-
-#code:checked~nav .slider {
-    left: 60%;
-}
-
-#help:checked~nav .slider {
-    left: 80%;
-}
-
-section .content {
-    display: none;
-    background: #fff;
-}
+/* Show content based on selected tab */
 
 #home:checked~section .content-1,
 #blog:checked~section .content-2,
@@ -176,142 +39,190 @@ section .content {
     display: block;
 }
 
-section .content .title {
-    font-size: 16px;
+
+/* Navigation Styles */
+
+.wrapper nav {
+    display: flex;
+    background: var(--light-gray);
+    padding: 10px;
+    position: relative;
+    border-radius: 8px 8px 0 0;
+}
+
+.wrapper nav label {
+    flex: 1;
+    padding: 12px 20px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--secondary-color);
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    z-index: 1;
+}
+
+.wrapper nav label i {
+    margin-right: 8px;
+}
+
+
+/* Active Tab Styles */
+
+#home:checked~nav label.home,
+#blog:checked~nav label.blog,
+#drying:checked~nav label.drying,
+#code:checked~nav label.code,
+#help:checked~nav label.help {
+    background: var(--primary-color);
+    color: var(--white);
+}
+
+
+/* Badge Styles */
+
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-left: 8px;
+    background: var(--accent-color);
+    color: var(--white);
+}
+
+
+/* Table Styles */
+
+.table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 20px;
+}
+
+.table th {
+    background: var(--primary-color);
+    color: var(--white);
+    padding: 12px;
+    text-align: left;
     font-weight: 500;
-    margin: 30px 0 10px 0;
 }
 
-section .content p {
-    text-align: justify;
+.table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--light-gray);
 }
 
 
-/* Mobile Responsive Changes */
+/* Button Styles */
+
+.btn {
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: var(--accent-color);
+    color: var(--white);
+}
+
+.btn-secondary {
+    background: var(--secondary-color);
+    color: var(--white);
+}
+
+
+/* Hide Radio Inputs */
+
+input[type="radio"] {
+    display: none;
+}
+
+
+/* Section Title Styles */
+
+.section-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+    text-align: center;
+    padding: 15px 0;
+    border-bottom: 3px solid var(--primary-color);
+    margin-bottom: 20px;
+}
+
+
+/* Action Buttons Container */
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+
+/* Responsive Styles */
 
 @media (max-width: 768px) {
-    /* You can change 768px to a different breakpoint if you want */
-    /* Change the height of the nav container and switch the flex direction */
     .wrapper nav {
         flex-direction: column;
-        height: auto;
-        position: relative;
-        /* Ensure this is here so that the slider positions relative to it */
-        /* adjust this based on the height of each nav item and the number of items you have */
+        padding: 5px;
     }
-    /* Modify nav items for vertical stacking */
     .wrapper nav label {
-        width: 100%;
         margin: 5px 0;
-        /* adjust vertical margin for spacing */
+        padding: 10px;
     }
-    /* Adjust the slider's positioning for mobile */
-    nav .slider {
-        left: 0 !important;
-        width: 100%;
-        height: 50px;
-        /* Adjust based on your label's height */
+    .action-buttons {
+        flex-direction: column;
     }
-    /* Adjust slider positions for each radio */
-}
-
-@media (max-width: 768px) {
-    #home:checked~nav .slider {
-        top: 0;
+    .table {
+        display: block;
+        overflow-x: auto;
     }
-    #blog:checked~nav .slider {
-        top: 50px;
-    }
-    #drying:checked~nav .slider {
-        top: 100px;
-    }
-    #code:checked~nav .slider {
-        top: 150px;
-    }
-    #help:checked~nav .slider {
-        top: 200px;
+    .table th,
+    .table td {
+        min-width: 120px;
     }
 }
 
-.button-grid {
-    border: 1px solid #a9a9a9;
-    /* Solid border with a lighter gray color */
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    /* Three columns of equal size */
-    gap: 5px;
-    /* Space between buttons */
-    justify-content: center;
-    /* Center buttons horizontally */
+
+/* Search and Export Options */
+
+.table-actions {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    /* Align buttons vertically */
-    padding: 5px;
-    /* Padding around the content inside the border */
+    margin-bottom: 20px;
 }
 
-.button-grid .btn {
-    font-size: 10px;
-    /* Smaller font size */
+.export-options {
+    display: flex;
+    gap: 10px;
+}
+
+.export-options a {
     padding: 5px 10px;
-    /* Smaller padding for a more compact button appearance */
-    /* You can adjust font-size and padding as needed */
+    color: var(--secondary-color);
+    text-decoration: none;
 }
 
-input[type="text"] {
-    border: none;
-    /* Removes the border */
-}
-
-thead th {
-    font-size: 13px;
-    /* Change the font size as needed */
-}
-
-
-/* Styling specific to inputs with IDs 'service_title' and 'serviceVenue' */
-
-#service_title,
-#serviceVenue {
-    border-radius: 0.35rem;
-    border: 2px solid #d1d3e2;
-    /* Slightly thicker border for more focus */
-    font-size: 1.25rem;
-    /* Larger font size for readability */
-    text-align: center;
-    /* Centers text */
-    height: 50px;
-    /* Fixed height for uniform appearance */
-    padding: 10px;
-    /* Ample padding for comfort */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    /* More pronounced shadow for a modern look */
-    outline: none;
-    /* Removes the default focus outline */
-}
-
-#service_title:focus,
-#serviceVenue:focus {
-    border-color: #5a5c69;
-    /* Changes border color on focus */
-    box-shadow: 0 0 8px rgba(90, 92, 105, 0.25);
-    /* Brighter shadow on focus for better visibility */
-}
-
-
-/* Labels for specific inputs to maintain consistent styling */
-
-label[for="service_title"],
-label[for="serviceVenue"] {
-    font-size: 1rem;
-    /* Standard font size for labels */
-    font-weight: bold;
-    /* Bold text for better readability */
-    color: #333;
-    /* Dark color for contrast */
-    margin-bottom: 5px;
-    /* Space below the label */
-    display: block;
-    /* Ensures the label takes up the full width available */
-    text-align: left;
-    /* Aligns the text to the left for consistency */
+.search-box {
+    padding: 8px;
+    border: 1px solid var(--light-gray);
+    border-radius: 4px;
+    width: 200px;
 }

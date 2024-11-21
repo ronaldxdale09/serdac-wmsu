@@ -1,6 +1,4 @@
-<?php 
-
-
+<?php
 // Function to get table data
 function getTableData($table) {
     global $con;
@@ -21,17 +19,16 @@ $occupations = getTableData('r_occupations');
 ?>
 
 <div class="container mt-5">
-
     <div class="row">
         <?php 
-            $tables = [
-                ['name' => 'r_education_levels', 'title' => 'Education Levels', 'data' => $education_levels],
-                ['name' => 'r_genders', 'title' => 'Genders', 'data' => $genders],
-                ['name' => 'r_occupations', 'title' => 'Occupations', 'data' => $occupations]
-            ];
-            
-            foreach ($tables as $table): 
-            ?>
+        $tables = [
+            ['name' => 'r_education_levels', 'title' => 'Education Levels', 'data' => $education_levels, 'column' => 'education_level'],
+            ['name' => 'r_genders', 'title' => 'Genders', 'data' => $genders, 'column' => 'gender'],
+            ['name' => 'r_occupations', 'title' => 'Occupations', 'data' => $occupations, 'column' => 'occupation']
+        ];
+        
+        foreach ($tables as $table): 
+        ?>
         <div class="col-md-4">
             <h4><?php echo $table['title']; ?></h4>
             <form class="add-form" data-table="<?php echo $table['name']; ?>">
@@ -58,14 +55,16 @@ $occupations = getTableData('r_occupations');
                             <td><?php echo $item['id']; ?></td>
                             <td>
                                 <span class="editable" data-table="<?php echo $table['name']; ?>"
-                                    data-id="<?php echo $item['id']; ?>"><?php echo htmlspecialchars($item[array_keys($item)[1]]); ?></span>
+                                    data-id="<?php echo $item['id']; ?>" data-column="<?php echo $table['column']; ?>">
+                                    <?php echo htmlspecialchars($item[$table['column']]); ?>
+                                </span>
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <button class="btn btn-sm btn-primary edit-btn" title="Edit">
+                                    <button class="btn btn-sm btn-primary edit-btn">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger delete-btn" title="Delete"
+                                    <button class="btn btn-sm btn-danger delete-btn"
                                         data-table="<?php echo $table['name']; ?>" data-id="<?php echo $item['id']; ?>">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -80,6 +79,7 @@ $occupations = getTableData('r_occupations');
         <?php endforeach; ?>
     </div>
 </div>
+
 <script>
 $(document).ready(function() {
     // Edit functionality
@@ -121,7 +121,7 @@ $(document).ready(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: 'function/crud_registration.php',
+                    url: 'function/crud_request_dropdown.php',
                     method: 'POST',
                     data: {
                         action: 'delete',
@@ -131,13 +131,12 @@ $(document).ready(function() {
                     dataType: 'json',
                     success: function(response) {
                         if (response.status === 'success') {
+                            $btn.closest('tr').remove();
                             Swal.fire(
                                 'Deleted!',
                                 'The item has been deleted.',
                                 'success'
-                            ).then(() => {
-                                location.reload();
-                            });
+                            );
                         } else {
                             Swal.fire(
                                 'Error!',
@@ -146,12 +145,10 @@ $(document).ready(function() {
                             );
                         }
                     },
-                    error: function(xhr, status, error) {
-                        console.error('AJAX error:', status, error);
-                        console.log('Response Text:', xhr.responseText);
+                    error: function() {
                         Swal.fire(
                             'Error!',
-                            'Error communicating with the server: ' + error,
+                            'Error communicating with the server.',
                             'error'
                         );
                     }
@@ -168,7 +165,7 @@ $(document).ready(function() {
         var newValue = $input.val();
 
         $.ajax({
-            url: 'function/crud_registration.php',
+            url: 'function/crud_request_dropdown.php',
             method: 'POST',
             data: {
                 action: 'add',
@@ -194,12 +191,10 @@ $(document).ready(function() {
                     );
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX error:', status, error);
-                console.log('Response Text:', xhr.responseText);
+            error: function() {
                 Swal.fire(
                     'Error!',
-                    'Error communicating with the server: ' + error,
+                    'Error communicating with the server.',
                     'error'
                 );
             }
@@ -208,7 +203,7 @@ $(document).ready(function() {
 
     function updateValue(table, id, newValue, $span, column) {
         $.ajax({
-            url: 'function/crud_registration.php',
+            url: 'function/crud_request_dropdown.php',
             method: 'POST',
             data: {
                 action: 'update',
@@ -220,14 +215,14 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status === 'success') {
+                    $span.text(newValue).show();
+                    $span.next('input').remove();
                     Swal.fire({
                         title: 'Updated!',
                         text: 'The item has been updated.',
                         icon: 'success',
                         timer: 1500,
                         showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
                     });
                 } else {
                     Swal.fire(
@@ -239,12 +234,10 @@ $(document).ready(function() {
                     $span.next('input').remove();
                 }
             },
-            error: function(xhr, status, error) {
-                console.error('AJAX error:', status, error);
-                console.log('Response Text:', xhr.responseText);
+            error: function() {
                 Swal.fire(
                     'Error!',
-                    'Error communicating with the server: ' + error,
+                    'Error communicating with the server.',
                     'error'
                 );
                 $span.show();

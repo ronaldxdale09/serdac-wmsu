@@ -98,124 +98,112 @@ error_reporting(E_ALL);
             <div class="container-fluid">
                 <div class="inventory-table">
                     <div class="wrapper" id="myTab">
-                        <input type="radio" name="slider" id="home" <?php if ($tab == '') {
-                                                                                echo 'checked';
-                                                                            } else {
-                                                                                echo '';
-                                                                            } ?>>
-                        <input type="radio" name="slider" id="blog" <?php if ($tab == '2') {
-                                                                                echo 'checked';
-                                                                            } else {
-                                                                                echo '';
-                                                                            } ?>>
-                        <input type="radio" name="slider" id="drying" <?php if ($tab == '3') {
-                                                                                    echo 'checked';
-                                                                                } else {
-                                                                                    echo '';
-                                                                                } ?>>
-                        <input type="radio" name="slider" id="code" <?php if ($tab == '4') {
-                                                                                echo 'checked';
-                                                                            } else {
-                                                                                echo '';
-                                                                            } ?>>
-                        <input type="radio" name="slider" id="help" <?php if ($tab == '5') {
-                                                                                echo 'checked';
-                                                                            } else {
-                                                                                echo '';
-                                                                            } ?>>
+                        <!-- Radio inputs for tab control -->
+                        <input type="radio" name="slider" id="home" <?php echo ($tab == '') ? 'checked' : ''; ?>>
+                        <input type="radio" name="slider" id="blog" <?php echo ($tab == '2') ? 'checked' : ''; ?>>
+                        <input type="radio" name="slider" id="drying" <?php echo ($tab == '3') ? 'checked' : ''; ?>>
+                        <input type="radio" name="slider" id="code" <?php echo ($tab == '4') ? 'checked' : ''; ?>>
+                        <input type="radio" name="slider" id="help" <?php echo ($tab == '5') ? 'checked' : ''; ?>>
 
-                        <nav>
-                            <!-- Pending Approval -->
-                            <label for="home" class="home">
-                                <i class="fas fa-hourglass-half"></i> Pending
-                                <span class="badge bg-danger text-light"> <?php echo $pending_count ?> </span>
+                        <!-- Tab Navigation -->
+                        <nav class="tab-navigation">
+                            <label for="home" class="home tab-label">
+                                <div class="tab-content">
+                                    <i class="fas fa-hourglass-half"></i>
+                                    <span class="tab-text">Pending</span>
+                                    <span class="badge badge-pending"><?php echo $pending_count ?></span>
+                                </div>
                             </label>
 
-                            <!-- Scheduled -->
-                            <label for="blog" class="blog">
-                                <i class="fas fa-calendar-alt"></i> Scheduled
-                                <span class="badge bg-danger text-light"> <?php echo $approved_count ?> </span>
+                            <label for="blog" class="blog tab-label">
+                                <div class="tab-content">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <span class="tab-text">Scheduled</span>
+                                    <span class="badge badge-scheduled"><?php echo $approved_count ?></span>
+                                </div>
                             </label>
 
-                            <!-- Completed -->
-                            <label for="drying" class="drying">
-                                <i class="fas fa-clock"></i> In Progress
-                                <span class="badge bg-danger text-light"> <?php echo $progress_count ?> </span>
+                            <label for="drying" class="drying tab-label">
+                                <div class="tab-content">
+                                    <i class="fas fa-clock"></i>
+                                    <span class="tab-text">In Progress</span>
+                                    <span class="badge badge-progress"><?php echo $progress_count ?></span>
+                                </div>
                             </label>
 
-                            <!-- Cancelled (Assuming you need this) -->
-                            <label for="code" class="code">
-                                <i class="fas fa-times-circle"></i> Cancelled
-                                <span class="badge bg-danger text-light"><?php echo $cancel_count ?> </span>
+                            <label for="code" class="code tab-label">
+                                <div class="tab-content">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span class="tab-text">Cancelled</span>
+                                    <span class="badge badge-cancelled"><?php echo $cancel_count ?></span>
+                                </div>
                             </label>
 
-                            <!-- Archived -->
-                            <label for="help" class="help">
-                                <i class="fas fa-archive"></i> Completed
-                                <span class="badge bg-danger text-light"> <?php echo $completed_count ?> </span>
+                            <label for="help" class="help tab-label">
+                                <div class="tab-content">
+                                    <i class="fas fa-archive"></i>
+                                    <span class="tab-text">Completed</span>
+                                    <span class="badge badge-completed"><?php echo $completed_count ?></span>
+                                </div>
                             </label>
-
 
                             <div class="slider"></div>
                         </nav>
-                        <section>
+
+                        <!-- Tab Content Sections -->
+                        <section class="tab-sections">
+                            <!-- Pending Section -->
                             <div class="content content-1">
-
-                                <div class="title"
-                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    Pending Service</div>
-
+                                <header class="section-header">
+                                    <h2 class="section-title">Pending Service</h2>
+                                </header>
                                 <?php include('request_tab/req.pending.php'); ?>
-
                             </div>
+
+                            <!-- Scheduled Section -->
                             <div class="content content-2">
-
-                                <div class="title"
-                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    Scheduled Request</div>
-                                <hr>
+                                <header class="section-header">
+                                    <h2 class="section-title">Scheduled Request</h2>
+                                </header>
                                 <?php include('request_tab/req.approved.php'); ?>
-
                             </div>
 
+                            <!-- In Progress Section -->
                             <div class="content content-3">
-                            <div class="content-title"
-                                        style="font-size: 24px; font-weight: bold; color: maroon; font-family: Arial, sans-serif; text-align: center; flex-grow: 1;">
-                                        In Progress Request
-                                    </div>
-                                <div class="content-header"
-                                    style="display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; flex-wrap: wrap;">
-                                    <div style="display: flex; gap: 10px;">
-                                        <button class="new-service-btn" data-toggle="modal"
-                                            data-target="#serviceRequestModal"
-                                            style="padding: 10px 15px; font-size: 14px; background-color: maroon; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                                            <i class="fas fa-plus"></i> New Service
+                                <header class="section-header">
+                                    <h2 class="section-title">In Progress Request</h2>
+                                    <div class="action-buttons">
+                                        <button class="btn btn-primary new-service-btn" data-toggle="modal"
+                                            data-target="#serviceRequestModal">
+                                            <i class="fas fa-plus"></i>
+                                            <span>New Service</span>
                                         </button>
-                                        <button type="button" class="btn btn-primary" id="viewEmailLogsBtn"
-                                            style="padding: 10px 15px; font-size: 14px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                                            <i class="fas fa-envelope-open-text"></i> View Email Logs
+                                        <button type="button" class="btn btn-secondary" id="viewEmailLogsBtn">
+                                            <i class="fas fa-envelope-open-text"></i>
+                                            <span>View Email Logs</span>
                                         </button>
                                     </div>
-                             
-                                </div>
+                                </header>
                                 <?php include('request_tab/req.progress.php'); ?>
                             </div>
+
+                            <!-- Cancelled Section -->
                             <div class="content content-4">
-                                <div class="title"
-                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    Cancelled Request</div>
+                                <header class="section-header">
+                                    <h2 class="section-title">Cancelled Request</h2>
+                                </header>
                                 <?php include('request_tab/req.cancelled.php'); ?>
-
                             </div>
-                            <div class="content content-5">
-                                <div class="title"
-                                    style="text-align: center; font-size: 24px; font-weight: bold; color: maroon; padding: 15px 0; border-bottom: 3px solid maroon; margin-bottom: 20px; font-family: Arial, sans-serif;">
-                                    Completed</div>
-                                <?php include('request_tab/req.completed.php'); ?>
 
+                            <!-- Completed Section -->
+                            <div class="content content-5">
+                                <header class="section-header">
+                                    <h2 class="section-title">Completed</h2>
+                                </header>
+                                <?php include('request_tab/req.completed.php'); ?>
+                            </div>
                         </section>
                     </div>
-
                 </div>
             </div>
         </div>
