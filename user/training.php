@@ -31,12 +31,13 @@
 
                 // Fetch data from the service_request and service_participant tables
                 $query = "
-                    SELECT sr.*, sp.registration_date, u.fname, u.lname, u.midname,
-                           (SELECT COUNT(*) FROM sr_meeting WHERE sr_meeting.request_id = sr.request_id) AS meeting_count
-                    FROM service_request AS sr
-                    JOIN service_participant AS sp ON sr.request_id = sp.request_id
-                    JOIN users AS u ON u.user_id = sp.user_id
-                    WHERE sp.user_id = $id and service_type='capability-training' ";
+                SELECT sr.*, sp.registration_date, u.fname, u.lname, u.midname,
+                       (SELECT COUNT(*) FROM sr_meeting WHERE sr_meeting.request_id = sr.request_id) AS meeting_count,
+                       (SELECT COUNT(*) FROM asmt_forms WHERE asmt_forms.request_id = sr.request_id) AS assessment_count
+                FROM service_request AS sr
+                JOIN service_participant AS sp ON sr.request_id = sp.request_id
+                JOIN users AS u ON u.user_id = sp.user_id
+                WHERE sp.user_id = $id AND service_type='capability-training'";
 
                 $results = mysqli_query($con, $query);
 
@@ -119,7 +120,12 @@
                             data-request='<?php echo json_encode($row); ?>'>
                             <i class="fas fa-book"></i>
                         </button>
-
+                        <button type="button" class="btn btn-sm btn-info btnAssessment"
+                            data-request-id="<?php echo $row['request_id']; ?>" data-toggle="tooltip"
+                            title="Assessment Forms">
+                            <i class="fas fa-clipboard-check"></i> Assessments <span
+                                class="badge badge-light"><?php echo $row['assessment_count']; ?></span>
+                        </button>
                     </div>
                 </td>
             </tr>

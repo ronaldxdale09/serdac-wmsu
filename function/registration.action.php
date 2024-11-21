@@ -22,7 +22,7 @@ $city = $_POST['city'];
 $barangay = $_POST['barangay'];
 $userType = 'Client'; 
 $isActive = 0; 
-$activationCode = substr(str_shuffle(md5(microtime())), 0, 10);
+$activationCode = substr(str_shuffle(md5(microtime())), 0, 12);
 
 $current_date_dmy = date('d-m-Y');
 

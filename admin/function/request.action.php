@@ -14,7 +14,7 @@ if (isset($_POST['confirm'])) {
     $sched_date = sanitize_input($_POST['sched_date']);
     $remarks = sanitize_input($_POST['remarks']);
     
-    $inviteCode = substr(str_shuffle(md5(microtime())), 0, 12);
+    $inviteCode = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 0, 5));
     
     // Use prepared statement to prevent SQL injection
     $query = "UPDATE service_request SET scheduled_remarks=?, status='Approved',
