@@ -1,24 +1,5 @@
 <?php include('include/header.php')?>
-<link rel="stylesheet" href="css/assmt.form.view.css">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.all.min.js"></script>
-<style>
-.date-range {
-    display: flex;
-    flex-direction: column;
-}
-
-.start-date,
-.end-date {
-    white-space: nowrap;
-}
-
-.start-date::after {
-    content: " to";
-    font-style: italic;
-    color: #888;
-}
-</style>
+<link rel="stylesheet" href="css/assessment.css">
 
 <body>
     <!-- Left Panel -->
@@ -31,51 +12,56 @@
 
         <!-- Content -->
 
-        <div class="content">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <strong class="card-title">Assessment Form List</strong>
-                            <div>
-                                <a href="form_builder.php" class="btn btn-primary btn-sm" id="addNewFormBtn">
-                                    <i class="fas fa-plus"></i> New Form
-                                </a>
-                                <button class="btn btn-primary btn-sm" id="manageFormTypesBtn">
-                                    <i class="fas fa-cog"></i> Manage Form Types
-                                </button>
-                            </div>
+        <div class="card">
+            <!-- Header Section -->
+            <div class="card-header">
+                <div class="header-content">
+                    <h5 class="header-title">
+                        <i class="fas fa-clipboard-list"></i>
+                        Assessment Form List
+                    </h5>
+                    <div class="btn-group">
+                        <a href="form_builder.php" class="btn btn-primary">
+                            <i class="fas fa-plus"></i>
+                            New Form
+                        </a>
+                        <button class="btn btn-outline" id="manageFormTypesBtn">
+                            <i class="fas fa-cog"></i>
+                            Manage Types
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filters Section -->
+            <div class="filters-section">
+                <div class="filters-grid">
+                    <div class="form-group">
+                        <label class="form-label">Form Type</label>
+                        <select id="formTypeFilter" class="form-select">
+                            <option value="">All Types</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Training</label>
+                        <select id="serviceTypeFilter" class="form-select">
+                            <option value="">All Trainings</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Date Range</label>
+                        <div class="date-range-group">
+                            <input type="date" id="startDate" class="form-control">
+                            <input type="date" id="endDate" class="form-control">
+                            <button id="applyDateFilter" class="btn btn-primary">
+                                <i class="fas fa-filter"></i>
+                                Apply
+                            </button>
                         </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <label for="formTypeFilter">Form Type:</label>
-                                        <select id="formTypeFilter" class="form-control">
-                                            <option value="">All</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <label for="serviceTypeFilter">Training:</label>
-                                        <select id="serviceTypeFilter" class="form-control">
-                                            <option value="">All</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label>Date Range:</label>
-                                        <div class="input-group">
-                                            <input type="date" id="startDate" class="form-control">
-                                            <div class="input-group-prepend input-group-append">
-                                                <span class="input-group-text">to</span>
-                                            </div>
-                                            <input type="date" id="endDate" class="form-control">
-                                            <div class="input-group-append">
-                                                <button id="applyDateFilter" class="btn btn-primary">Apply</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php
+                    </div>
+                </div>
+            </div>
+            <?php
                                     // Update the query to include both training title and service type
                                     $query = "SELECT af.*, sr.request_id, sr.service_type, srt.title as training_title 
                                             FROM asmt_forms af
@@ -87,127 +73,166 @@
                                         die("Query failed: " . mysqli_error($con));
                                     }
                                     ?>
+            <!-- Table Section -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Form ID</th>
+                            <th>Title</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Training</th>
+                            <th style="text-align: center">Responses</th>
+                            <th>Dates</th>
+                            <th style="text-align: center">Status</th>
+                            <th style="text-align: right">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                                        while ($row = mysqli_fetch_array($results)) { 
+                                            $form_id = $row['form_id'];
+                                            $questionCountResult = mysqli_query($con, "SELECT COUNT(*) as question_count FROM asmt_questions WHERE form_id = $form_id");
+                                            $questionCount = mysqli_fetch_assoc($questionCountResult)['question_count'];
 
-                                <table class="table table-hover" id="assessment_form_table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Form ID</th>
-                                            <th scope="col">Title</th>
-                                            <th scope="col">Type</th>
-                                            <th scope="col">Description</th>
-                                            <th scope="col">Training</th>
-                                            <th scope="col">Responses</th>
-                                            <th scope="col">Dates</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php 
-        while ($row = mysqli_fetch_array($results)) { 
-            $form_id = $row['form_id'];
-            $questionCountResult = mysqli_query($con, "SELECT COUNT(*) as question_count FROM asmt_questions WHERE form_id = $form_id");
-            $questionCount = mysqli_fetch_assoc($questionCountResult)['question_count'];
+                                            $responseCountResult = mysqli_query($con, "SELECT COUNT(DISTINCT user_id) as response_count FROM asmt_responses WHERE form_id = $form_id");
+                                            $responseCount = mysqli_fetch_assoc($responseCountResult)['response_count'];
 
-            $responseCountResult = mysqli_query($con, "SELECT COUNT(DISTINCT user_id) as response_count FROM asmt_responses WHERE form_id = $form_id");
-            $responseCount = mysqli_fetch_assoc($responseCountResult)['response_count'];
+                                            $startDate = date('F j, Y', strtotime($row['start_date']));
+                                            $endDate = date('F j, Y', strtotime($row['end_date'])); 
+                                            
+                                            $responsesWithQuota = $responseCount . '/' . $row['quota'];
 
-            $startDate = date('F j, Y', strtotime($row['start_date']));
-            $endDate = date('F j, Y', strtotime($row['end_date'])); 
-            
-            $responsesWithQuota = $responseCount . '/' . $row['quota'];
+                                            $displayTitle = !empty($row['training_title']) ? $row['training_title'] : $row['service_type'];
 
-            $displayTitle = !empty($row['training_title']) ? $row['training_title'] : $row['service_type'];
+                                            // Determine status
+                                            $currentDate = new DateTime();
+                                            $formEndDate = new DateTime($row['end_date']);
+                                            $status = ($currentDate > $formEndDate) ? 'Completed' : 'Ongoing';
+                                            $statusClass = ($status === 'Completed') ? 'text-success' : 'text-primary';
+                                        ?>
 
-            // Determine status
-            $currentDate = new DateTime();
-            $formEndDate = new DateTime($row['end_date']);
-            $status = ($currentDate > $formEndDate) ? 'Completed' : 'Ongoing';
-            $statusClass = ($status === 'Completed') ? 'text-success' : 'text-primary';
-        ?>
-                                        <tr>
-                                            <td><?php echo $row['form_id']; ?></td>
-                                            <td><?php echo $row['title']; ?></td>
-                                            <td><?php echo $row['form_type']; ?></td>
-                                            <td><?php echo $row['description']; ?></td>
-                                            <td><?php echo $displayTitle ?? 'N/A'; ?></td>
-                                            <td><?php echo $responsesWithQuota; ?></td>
-                                            <td>
-                                                <div class="date-range">
-                                                    <div class="start-date"><?php echo $startDate; ?></div>
-                                                    <div class="end-date"><?php echo $endDate; ?></div>
-                                                </div>
-                                            </td>
-                                            <td><span class="<?php echo $statusClass; ?>"><?php echo $status; ?></span>
-                                            </td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-secondary btn-sm dropdown-toggle"
-                                                        type="button"
-                                                        id="dropdownMenuButton-<?php echo $row['form_id']; ?>"
-                                                        data-toggle="dropdown" aria-expanded="false">
-                                                        Actions
-                                                    </button>
-                                                    <ul class="dropdown-menu"
-                                                        aria-labelledby="dropdownMenuButton-<?php echo $row['form_id']; ?>">
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="../assmnt.form.php?form_id=<?php echo $row['form_id']; ?>"
-                                                                target="_blank">
-                                                                <i class="fas fa-eye"></i> View Form
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item"
-                                                                href="form_builder.php?form_id=<?php echo $row['form_id']; ?>"
-                                                                target="_blank">
-                                                                <i class="fas fa-pen"></i> Edit Form
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item btnViewResponses" href="#"
-                                                                data-form-id="<?php echo $row['form_id']; ?>"
-                                                                data-is-quiz="<?php echo $row['is_quiz']; ?>">
-                                                                <i class="fas fa-list"></i> View Responses
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item btnSendInvite" href="#"
-                                                                data-form-id="<?php echo $row['form_id']; ?>"
-                                                                data-title="<?php echo htmlspecialchars($row['title']); ?>"
-                                                                data-description="<?php echo htmlspecialchars($row['description']); ?>"
-                                                                data-toggle="modal" data-bs-target="#emailModal">
-                                                                <i class="fas fa-envelope"></i> Send Invite
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a class="dropdown-item btnDeleteForm" href="#"
-                                                                data-form-id="<?php echo $row['form_id']; ?>"
-                                                                data-title="<?php echo htmlspecialchars($row['title']); ?>">
-                                                                <i class="fas fa-trash-alt"></i> Delete Form
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php } ?>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
+                        <tr>
+                            <td class="text-muted">#<?php echo $row['form_id']; ?></td>
+                            <td class="fw-medium"><?php echo $row['title']; ?></td>
+                            <td>
+                                <span class="badge badge-primary"><?php echo $row['form_type']; ?></span>
+                            </td>
+                            <td
+                                style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                <?php echo $row['description']; ?>
+                            </td>
+                            <td><?php echo $displayTitle ?? 'N/A'; ?></td>
+                            <td style="text-align: center">
+                                <span class="badge badge-primary"><?php echo $responsesWithQuota; ?></span>
+                            </td>
+                            <td>
+                                <div>
+                                    <div><i class="far fa-calendar me-1"></i><?php echo $startDate; ?></div>
+                                    <div><i class="far fa-calendar me-1"></i><?php echo $endDate; ?></div>
+                                </div>
+                            </td>
+                            <td style="text-align: center">
+                                <span
+                                    class="badge <?php echo $status === 'Completed' ? 'badge-success' : 'badge-primary'; ?>">
+                                    <?php echo $status; ?>
+                                </span>
+                            </td>
+                            <td style="text-align: right">
+                                <div class="actions-dropdown">
+                                    <button class="btn btn-outline" onclick="toggleDropdown(this)">
+                                        Actions
+                                        <i class="fas fa-chevron-down"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item"
+                                            href="../assmnt.form.php?form_id=<?php echo $row['form_id']; ?>"
+                                            target="_blank">
+                                            <i class="fas fa-eye" style="color: var(--primary-color)"></i>
+                                            View Form
+                                        </a>
+                                        <a class="dropdown-item"
+                                            href="form_builder.php?form_id=<?php echo $row['form_id']; ?>"
+                                            target="_blank">
+                                            <i class="fas fa-pen" style="color: #eab308"></i>
+                                            Edit Form
+                                        </a>
+                                        <a class="dropdown-item btnViewResponses" href="#"
+                                            data-form-id="<?php echo $row['form_id']; ?>"
+                                            data-is-quiz="<?php echo $row['is_quiz']; ?>">
+                                            <i class="fas fa-list" style="color: #0ea5e9"></i>
+                                            View Responses
+                                        </a>
+                                        <a class="dropdown-item btnSendInvite" href="#"
+                                            data-form-id="<?php echo $row['form_id']; ?>"
+                                            data-title="<?php echo htmlspecialchars($row['title']); ?>"
+                                            data-description="<?php echo htmlspecialchars($row['description']); ?>"
+                                            data-toggle="modal" data-bs-target="#emailModal">
+                                            <i class="fas fa-envelope" style="color: var(--success-color)"></i>
+                                            Send Invite
+                                        </a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item btnDeleteForm" href="#"
+                                            data-form-id="<?php echo $row['form_id']; ?>"
+                                            data-title="<?php echo htmlspecialchars($row['title']); ?>"
+                                            style="color: #ef4444">
+                                            <i class="fas fa-trash-alt"></i>
+                                            Delete Form
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
             </div>
         </div>
+
     </div>
 
 
     <?php include('include/footer.php');?>
 
-
     <script>
+    function toggleDropdown(button) {
+        const dropdown = button.nextElementSibling;
+        const buttonRect = button.getBoundingClientRect();
+
+        // Close all other dropdowns first
+        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+            if (menu !== dropdown) menu.classList.remove('show');
+        });
+
+        // Toggle current dropdown
+        dropdown.classList.toggle('show');
+
+        if (dropdown.classList.contains('show')) {
+            // Position the dropdown relative to the button
+            dropdown.style.position = 'fixed';
+            dropdown.style.left = buttonRect.left + 'px';
+            dropdown.style.top = (buttonRect.bottom + window.scrollY) + 'px';
+
+            // Check if dropdown goes off-screen to the right
+            const dropdownRect = dropdown.getBoundingClientRect();
+            if (dropdownRect.right > window.innerWidth) {
+                dropdown.style.left = (window.innerWidth - dropdownRect.width - 10) + 'px';
+            }
+        }
+    }
+
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.actions-dropdown')) {
+            document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+                menu.classList.remove('show');
+            });
+        }
+    });
+
+
+
     $(document).ready(function() {
 
         var table = $('#assessment_form_table').DataTable({

@@ -1,4 +1,5 @@
 <?php include('include/header.php');?>
+<link rel="stylesheet" href="css/about_us.css">
 
 <body>
     <!-- Sub Header -->
@@ -19,7 +20,6 @@
             $articles[] = $row;
         }
     }
-
 
 
         // Don't forget to free the result
@@ -66,7 +66,7 @@
     </section>
 
     <section class="services">
-        <div class="bg-light py-2 service-11">
+        <div class="py-2 service-11">
             <div class="container">
                 <div class="section-title">
                     <h2>What We Offer</h2>
@@ -129,44 +129,58 @@
                     </div>
                     <div class="col-md-12 mt-3 text-center">
                         <a class="btn btn-maroon text-white border-0 btn-md" href="request.php"><span>REQUEST
-                                SERVICE</span></a>
+                                SERVICE</span></a> 
+                                <br>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <br>
-    <div class="section-container">
-
+    <section class="mvg-section">
         <div class="container">
-            <div class="section-title">
-                <h2>Building a Stronger Research Network</h2>
-                <p><?php echo htmlspecialchars($webDetails['about_us']); ?></p>
+            <div class="section-header">
+                <h2 class="section-title-about">Building a Stronger Research Network</h2>
+                <p class="section-description"><?php echo htmlspecialchars($webDetails['about_us']); ?></p>
             </div>
-
-            <div class="about-content">
-                <div class="about-section">
-                    <span class="icon">🎯</span> <!-- Replace with actual icons or images -->
-                    <h2>Mission</h2>
+            <div class="mvg-grid">
+                <div class="mvg-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" class="target-icon">
+                            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
+                            <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2" />
+                            <circle cx="12" cy="12" r="2" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <h3>Mission</h3>
                     <p><?php echo htmlspecialchars($webDetails['mission']); ?></p>
                 </div>
 
-                <div class="about-section">
-                    <span class="icon">💡</span> <!-- Replace with actual icons or images -->
-                    <h2>Vision</h2>
+                <div class="mvg-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" class="vision-icon">
+                            <path
+                                d="M12 4V2m0 20v-2m10-10h2M0 12h2m4.314-5.686L7.72 4.9m8.56 14.2l1.414-1.414M4.9 16.28l-1.414 1.414m14.2-8.56L19.1 7.72"
+                                stroke="currentColor" fill="none" stroke-width="2" />
+                            <circle cx="12" cy="12" r="4" fill="currentColor" />
+                        </svg>
+                    </div>
+                    <h3>Vision</h3>
                     <p><?php echo htmlspecialchars($webDetails['vision']); ?></p>
                 </div>
 
-                <div class="about-section">
-                    <span class="icon">🏆</span> <!-- Replace with actual icons or images -->
-                    <h2>Goals</h2>
+                <div class="mvg-card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" class="goals-icon">
+                            <path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2" />
+                            <path d="M17 7l-5 5-5-5m0 10l5-5 5 5" fill="none" stroke="currentColor" stroke-width="2" />
+                        </svg>
+                    </div>
+                    <h3>Goals</h3>
                     <p><?php echo htmlspecialchars($webDetails['goals']); ?></p>
                 </div>
             </div>
-
         </div>
-    </div>
+    </section>
 
 
 
@@ -209,7 +223,7 @@
                         </div>
 
                         <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3962.8919974525347!2d122.14191481477147!3d6.660305395184244!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMzknMzcuMSJOIDEyMsKwMDgnMzguOCJF!5e0!3m2!1sen!2sph!4v1690030559152!5m2!1sen!2sph"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d20361.026531977903!2d122.04334815541998!3d6.913594200000012!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x325041dd7a24816f%3A0x51af215fb64cc81a!2sWestern%20Mindanao%20State%20University!5e1!3m2!1sen!2sph!4v1734487486187!5m2!1sen!2sph"
                             frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
                     </div>
 

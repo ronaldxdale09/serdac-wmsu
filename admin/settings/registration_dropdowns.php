@@ -31,9 +31,9 @@ $occupations = getTableData('r_occupations');
         ?>
         <div class="col-md-4">
             <h4><?php echo $table['title']; ?></h4>
-            <form class="add-form" data-table="<?php echo $table['name']; ?>">
+            <form class="registration-add-form" data-table="<?php echo $table['name']; ?>">
                 <div class="input-group">
-                    <input type="text" class="form-control"
+                    <input type="text" class="form-control registration-add-input"
                         placeholder="Add new <?php echo strtolower($table['title']); ?>" required>
                     <div class="input-group-append">
                         <button class="btn btn-success" type="submit"><i class="fas fa-plus"></i> Add</button>
@@ -54,17 +54,17 @@ $occupations = getTableData('r_occupations');
                         <tr>
                             <td><?php echo $item['id']; ?></td>
                             <td>
-                                <span class="editable" data-table="<?php echo $table['name']; ?>"
+                                <span class="registration-editable" data-table="<?php echo $table['name']; ?>"
                                     data-id="<?php echo $item['id']; ?>" data-column="<?php echo $table['column']; ?>">
                                     <?php echo htmlspecialchars($item[$table['column']]); ?>
                                 </span>
                             </td>
                             <td>
-                                <div class="action-buttons">
-                                    <button class="btn btn-sm btn-primary edit-btn">
+                                <div class="registration-action-buttons">
+                                    <button class="btn btn-sm btn-primary registration-edit-btn">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="btn btn-sm btn-danger delete-btn"
+                                    <button class="btn btn-sm btn-danger registration-delete-btn"
                                         data-table="<?php echo $table['name']; ?>" data-id="<?php echo $item['id']; ?>">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -79,16 +79,14 @@ $occupations = getTableData('r_occupations');
         <?php endforeach; ?>
     </div>
 </div>
-
-<script>
-$(document).ready(function() {
+<script>$(document).ready(function() {
     // Edit functionality
-    $('.edit-btn').on('click', function() {
-        var $span = $(this).closest('tr').find('.editable');
-        var currentValue = $span.text();
+    $('.registration-edit-btn').on('click', function() {
+        var $span = $(this).closest('tr').find('.registration-editable');
+        var currentValue = $span.text().trim();
         var input = $('<input>').attr({
             type: 'text',
-            class: 'form-control form-control-sm',
+            class: 'form-control form-control-sm registration-edit-input',
             value: currentValue
         });
 
@@ -98,8 +96,7 @@ $(document).ready(function() {
         input.on('blur', function() {
             var newValue = $(this).val();
             if (newValue !== currentValue) {
-                updateValue($span.data('table'), $span.data('id'), newValue, $span, $span.data(
-                    'column'));
+                updateRegistrationValue($span.data('table'), $span.data('id'), newValue, $span, $span.data('column'));
             } else {
                 $span.show();
                 $(this).remove();
@@ -108,7 +105,7 @@ $(document).ready(function() {
     });
 
     // Delete functionality
-    $('.delete-btn').on('click', function() {
+    $('.registration-delete-btn').on('click', function() {
         var $btn = $(this);
         Swal.fire({
             title: 'Are you sure?',
@@ -121,7 +118,7 @@ $(document).ready(function() {
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: 'function/crud_request_dropdown.php',
+                    url: 'function/crud_registration.php',
                     method: 'POST',
                     data: {
                         action: 'delete',
@@ -158,14 +155,14 @@ $(document).ready(function() {
     });
 
     // Add functionality
-    $('.add-form').on('submit', function(e) {
+    $('.registration-add-form').on('submit', function(e) {
         e.preventDefault();
         var $form = $(this);
-        var $input = $form.find('input');
+        var $input = $form.find('.registration-add-input');
         var newValue = $input.val();
 
         $.ajax({
-            url: 'function/crud_request_dropdown.php',
+            url: 'function/crud_registration.php',
             method: 'POST',
             data: {
                 action: 'add',
@@ -201,9 +198,9 @@ $(document).ready(function() {
         });
     });
 
-    function updateValue(table, id, newValue, $span, column) {
+    function updateRegistrationValue(table, id, newValue, $span, column) {
         $.ajax({
-            url: 'function/crud_request_dropdown.php',
+            url: 'function/crud_registration.php',
             method: 'POST',
             data: {
                 action: 'update',
@@ -216,7 +213,7 @@ $(document).ready(function() {
             success: function(response) {
                 if (response.status === 'success') {
                     $span.text(newValue).show();
-                    $span.next('input').remove();
+                    $span.next('.registration-edit-input').remove();
                     Swal.fire({
                         title: 'Updated!',
                         text: 'The item has been updated.',
@@ -231,7 +228,7 @@ $(document).ready(function() {
                         'error'
                     );
                     $span.show();
-                    $span.next('input').remove();
+                    $span.next('.registration-edit-input').remove();
                 }
             },
             error: function() {
@@ -241,7 +238,7 @@ $(document).ready(function() {
                     'error'
                 );
                 $span.show();
-                $span.next('input').remove();
+                $span.next('.registration-edit-input').remove();
             }
         });
     }

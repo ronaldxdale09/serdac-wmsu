@@ -1,5 +1,7 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="css/settings.css">
+<link rel="stylesheet" href="css/project_mngmt.css">
+
 <style>
 .action-buttons {
     display: flex;

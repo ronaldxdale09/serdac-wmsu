@@ -6,36 +6,51 @@ function handleNewArticleSubmission($con) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Extracting form data
         $title = mysqli_real_escape_string($con, $_POST['title']);
-        $subtitle = isset($_POST['subtitle']) ? mysqli_real_escape_string($con, $_POST['subtitle']) : '';
+        $subtitle = mysqli_real_escape_string($con, $_POST['subtitle']);
         $content = mysqli_real_escape_string($con, $_POST['content']);
-        $publishedBy = 'username';
-        $isDraft = isset($_POST['draft']) ? 1 : 0; // Updated to store 1 or 0 based on the checkbox
-        $type = isset($_POST['type']) ? mysqli_real_escape_string($con, $_POST['type']) : ''; // Escape the 'type' as well
+        $author = mysqli_real_escape_string($con, $_POST['author']);
+        $type = mysqli_real_escape_string($con, $_POST['type']);
+        $isDraft = isset($_POST['isDraft']) && $_POST['isDraft'] === '1' ? 1 : 0;
 
-        // Handling file upload
-        $imagePath = '';
+        // Handle image upload
+        $imageName = '';
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            // Define your image upload path, e.g., 'uploads/'
             $uploadDir = '../images/article/';
-            $imageName = basename($_FILES['image']['name']);
-            $imagePath = $uploadDir . $imageName;
-            // Move the file to the upload directory
-            move_uploaded_file($_FILES['image']['tmp_name'], $imagePath);
+            $imageName = time() . '_' . basename($_FILES['image']['name']); // Add timestamp to prevent duplicates
+            $targetPath = $uploadDir . $imageName;
+
+            if (!move_uploaded_file($_FILES['image']['tmp_name'], $targetPath)) {
+                echo "Failed to upload image";
+                return;
+            }
         }
 
-        // SQL query to insert article data
+        // Prepare and execute query using prepared statements
         $query = "INSERT INTO articles (title, subtitle, content, published_at, author, is_draft, type, image_path) 
-        VALUES ('$title', '$subtitle', '$content', NOW(), '$publishedBy', '$isDraft', '$type', '$imageName')";
-        
-        // Execute the query
-        if (!mysqli_query($con, $query)) {
-            echo "ERROR: Could not execute query: $query. " . mysqli_error($con);
-            exit;
+                 VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)";
+
+        $stmt = mysqli_prepare($con, $query);
+        if ($stmt) {
+            mysqli_stmt_bind_param($stmt, "ssssiss", 
+                $title, 
+                $subtitle, 
+                $content, 
+                $author, 
+                $isDraft, 
+                $type, 
+                $imageName
+            );
+
+            if (mysqli_stmt_execute($stmt)) {
+                echo 'success';
+            } else {
+                echo "Error: " . mysqli_stmt_error($stmt);
+            }
+            mysqli_stmt_close($stmt);
         } else {
-            echo 'success';
+            echo "Error preparing statement: " . mysqli_error($con);
         }
     }
 }
-
 handleNewArticleSubmission($con);
 ?>

@@ -50,8 +50,6 @@ while ($row = mysqli_fetch_assoc($result)) {
 }
 
 ?>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="css/assmt.form.builder.css">
 
 
@@ -175,25 +173,26 @@ while ($row = mysqli_fetch_assoc($result)) {
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label for="serviceType">Service Request ID</label>
-                                            <select id="serviceType" name="request_id" class="form-control">
+                                            <select id="serviceType" name="request_id" class="form-control select2">
                                                 <option value="" selected disabled>Select Service Type</option>
                                                 <?php
-                                                        // Fetch service types from the service_request table
-                                                        $sql = "SELECT request_id, service_type, completed_date, ongoing_date FROM service_request";
-                                                        $result = $con->query($sql);
+                                            // Fetch service types from the service_request table
+                                            $sql = "SELECT request_id, service_type, completed_date, ongoing_date FROM service_request";
+                                            $result = $con->query($sql);
 
-                                                        if ($result->num_rows > 0) {
-                                                            while($row = $result->fetch_assoc()) {
-                                                                $date = !empty($row["completed_date"]) ? $row["completed_date"] : $row["ongoing_date"];
-                                                                $dateLabel = !empty($row["completed_date"]) ? "Completed" : "Ongoing";
-                                                                echo "<option value='".$row["request_id"]."'>ID:".$row["request_id"]." - ".$row["service_type"]." - ".$dateLabel.": ".date('Y-m-d', strtotime($date))."</option>";
-                                                            }
-                                                        } else {
-                                                            echo "<option value='' disabled>No services available</option>";
-                                                        }
-                                                        ?>
+                                            if ($result->num_rows > 0) {
+                                                while($row = $result->fetch_assoc()) {
+                                                    $date = !empty($row["completed_date"]) ? $row["completed_date"] : $row["ongoing_date"];
+                                                    $dateLabel = !empty($row["completed_date"]) ? "Completed" : "Ongoing";
+                                                    echo "<option value='".$row["request_id"]."'>ID:".$row["request_id"]." - ".$row["service_type"]." - ".$dateLabel.": ".date('Y-m-d', strtotime($date))."</option>";
+                                                }
+                                            } else {
+                                                echo "<option value='' disabled>No services available</option>";
+                                            }
+                                            ?>
                                             </select>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div id="question_list_container" class="form-builder-container">
@@ -249,7 +248,24 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
 
 
     <?php include('include/footer.php');?>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            placeholder: "Select Service Type",
+            allowClear: true,
+            width: '100%',
+            minimumResultsForSearch: 0,
+            language: {
+                noResults: function() {
+                    return "No matching results found";
+                }
+            }
+        });
+    });
+
+
     const FormManager = {
         saveForm: function(isUpdate) {
             $('#is_update').val(isUpdate ? 1 : 0);
@@ -303,12 +319,14 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
 
         validateForm: function() {
             var isValid = true;
+            var errorMessages = [];
 
             // Check required fields
-            $('input[required], select[required], textarea[required]').each(function() {
+            $('input[name="title"], textarea[name="description"], #formType, #serviceType').each(function() {
                 if ($(this).val() === '') {
                     isValid = false;
                     $(this).addClass('is-invalid');
+                    errorMessages.push($(this).attr('name').replace('_', ' ') + ' is required');
                 } else {
                     $(this).removeClass('is-invalid');
                 }
@@ -322,26 +340,25 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
                 isValid = false;
                 if (!startDate) $('#startDate').addClass('is-invalid');
                 if (!endDate) $('#endDate').addClass('is-invalid');
-                Swal.fire('Validation Error', 'Please set both start and end dates.', 'error');
-                return false;
+                errorMessages.push('Please set both start and end dates');
             } else {
                 $('#startDate, #endDate').removeClass('is-invalid');
+                if (new Date(endDate) <= new Date(startDate)) {
+                    isValid = false;
+                    $('#endDate').addClass('is-invalid');
+                    errorMessages.push('End date must be after start date');
+                }
             }
 
-            // Check if end date is after start date
-            if (new Date(endDate) <= new Date(startDate)) {
-                isValid = false;
-                $('#endDate').addClass('is-invalid');
-                Swal.fire('Validation Error', 'End date must be after start date.', 'error');
-                return false;
-            }
+
 
             if (!isValid) {
-                Swal.fire('Validation Error', 'Please fill in all required fields correctly.', 'error');
+                Swal.fire('Validation Error', errorMessages.join('<br>'), 'error');
             }
 
             return isValid;
         },
+
 
         fetchQuestions: function(form_id, isQuiz) {
             $.ajax({
@@ -354,21 +371,39 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
                 success: function(data) {
                     $('#question_list_container').html(data);
                     // Re-initialize event listeners or other functionalities if needed
+                    if (isQuiz) {
+                        $('.question-card').each(function() {
+                            const type = $(this).find('.question-type').val();
+                            QuestionCardManager.updateCorrectAnswerField($(this), type);
+                        });
+                    }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error('Error fetching questions:', textStatus, errorThrown);
                 }
             });
+        },
+
+        handleQuizChange: function(isChecked) {
+            var formId = $('input[name="form_id"]').val();
+            this.fetchQuestions(formId, isChecked);
         }
+
+
     };
 
-    // Document ready function
+
+
     $(document).ready(function() {
+
+
         // Event listener for opening the save modal
         $('#saveFormButton').click(function(e) {
             e.preventDefault();
-            var modal = new bootstrap.Modal(document.getElementById('saveModal'));
-            modal.show();
+            if (FormManager.validateForm()) {
+                var modal = new bootstrap.Modal(document.getElementById('saveModal'));
+                modal.show();
+            }
         });
 
         // Event listener for updating the form
@@ -399,11 +434,14 @@ $modalBody = $formIdExists ? "Do you want to update this form or save it as a ne
         $('#formSettingsCollapse').on('hide.bs.collapse', function() {
             $('.settings-header i.fas').removeClass('fa-chevron-up').addClass('fa-chevron-down');
         });
-        
+
+        // Event listener for the quiz checkbox
         $('#isQuiz').change(function() {
-            var isQuiz = $(this).is(':checked');
-            FormManager.fetchQuestions(formId || 0, isQuiz);
+            var isChecked = $(this).is(':checked');
+            FormManager.handleQuizChange(isChecked);
         });
+
+
     });
     </script>
 

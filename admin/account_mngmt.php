@@ -218,61 +218,60 @@ $(document).ready(function() {
     });
 
 
-
     $('#newUserForm').on('submit', function(e) {
-        e.preventDefault();
+    e.preventDefault();
 
-        var password = $('#password').val();
-        var confirmPassword = $('#confirmPassword').val();
+    // Password validation
+    var password = $('#password').val();
+    var confirmPassword = $('#confirmPassword').val();
 
-        if (password !== confirmPassword) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Password Mismatch',
-                text: 'The passwords you entered do not match. Please try again.',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
+    if (password !== confirmPassword) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Password Mismatch',
+            text: 'The passwords you entered do not match. Please try again.',
+            confirmButtonText: 'OK'
+        });
+        return;
+    }
 
-        $.ajax({
-            type: 'POST',
-            url: 'function/user.mngmnt.php',
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(response) {
-                if (response.status === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: response.message,
-                        confirmButtonText: 'OK'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = 'account_mngmt.php';
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: response.message,
-                        confirmButtonText: 'OK'
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
+    // Form submission
+    $.ajax({
+        type: 'POST',
+        url: 'function/user.mngmnt.php',
+        data: $(this).serialize(),
+        dataType: 'json',
+        success: function(response) {
+            if (response.status === 'success') {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: response.message,
+                    confirmButtonText: 'OK'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload(); // Changed this line to reload the page
+                    }
+                });
+            } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'An unexpected error occurred. Please try again. Error details: ' +
-                        error,
+                    text: response.message,
                     confirmButtonText: 'OK'
                 });
             }
-        });
+        },
+        error: function(xhr, status, error) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An unexpected error occurred. Please try again. Error details: ' + error,
+                confirmButtonText: 'OK'
+            });
+        }
     });
-
+});
 
     $('.btnEdit').on('click', function() {
         var user = $(this).data('user');

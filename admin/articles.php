@@ -1,140 +1,7 @@
 <?php include('include/header.php')?>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-<style>
-.article-card {
-    border: none;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #666;
-    margin-bottom: 20px;
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 350px;
-    /* Fixed height for all cards */
-    width: 90%;
-    /* Ensure all cards have the same width */
-}
-
-.article-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.article-image {
-    width: 100%;
-    height: 150px;
-    /* Fixed height for images */
-    background-size: cover;
-    background-position: center;
-    position: relative;
-}
-
-.article-body {
-    padding: 12px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.article-title {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    /* Add some space below the title */
-}
-
-.article-date {
-    font-size: 13px;
-    color: #666;
-    margin-bottom: 8px;
-}
-
-.article-summary {
-    font-size: 13px;
-    margin-bottom: 10px;
-    flex-grow: 1;
-    /* Allow summary to grow and fill the space */
-    overflow: hidden;
-    /* Hide overflow text */
-}
-
-.article-buttons {
-    display: flex;
-    gap: 5px;
-    /* Small gap between buttons */
-}
-
-.article-buttons .btn {
-    padding: 2px 6px;
-    /* Smaller padding */
-    font-size: 12px;
-    /* Smaller font size */
-    border-radius: 4px;
-    /* Adjusted border radius */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-transform: uppercase;
-    font-weight: bold;
-}
-
-.article-buttons .btn i {
-    margin-right: 3px;
-}
-
-
-.article-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
-
-.article-image {
-    width: 100%;
-    height: 150px; /* Fixed height for images */
-    background-size: cover;
-    background-position: center;
-    position: relative;
-}
-
-.article-status,
-.article-type {
-    position: absolute;
-    top: 10px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    color: #fff;
-}
-
-.article-status {
-    right: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-.article-status.published {
-    background-color: #28a745;
-}
-
-.article-status.draft {
-    background-color: #ffc107;
-}
-
-.article-type {
-    left: 10px;
-    background-color: rgba(0, 0, 0, 0.7);
-}
-
-/* Reduce gutter space between columns */
-.row>[class*='col-'] {
-    padding-right: 5px;
-    padding-left: 5px;
-}
-</style>
+<link rel="stylesheet" href="css/article.list.css">
+<link rel="stylesheet" href="css/article.modal.css">
 
 <body>
     <!-- Left Panel -->
@@ -169,19 +36,7 @@
                 </div>
             </div>
         </div>
-
-        <div class="content">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <strong class="card-title">List of Articles</strong>
-                            <a href="new_article.php" class="btn btn-success btn-sm">
-                                <i class="fas fa-plus"></i> New Article
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <?php 
+        <?php 
                     $articles = [];
                     $query = "SELECT * FROM articles ORDER BY published_at DESC";
                     $result = mysqli_query($con, $query);
@@ -192,44 +47,105 @@
                         }
                     }
                     ?>
-                            <div class="row">
+        <!-- Complete HTML -->
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="dashboard-card">
+                        <div class="dashboard-card-header">
+                            <div class="header-content">
+                                <h2 class="dashboard-title">List of Articles</h2>
+                                <a href="new_article.php" class="btn-new-article">
+                                    <i class="fas fa-plus"></i>
+                                    <span>New Article</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="filters-bar">
+                            <div class="search-box">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="searchArticles" placeholder="Search articles...">
+                            </div>
+                            <div class="filters-group">
+                                <select id="typeFilter" class="filter-select">
+                                    <option value="">All Types</option>
+                                    <option value="Announcement">Announcement</option>
+                                    <option value="Meeting">Meeting</option>
+                                    <option value="Article">Article</option>
+                                    <option value="Event">Event</option>
+                                    <option value="News">News</option>
+                                </select>
+                                <select id="statusFilter" class="filter-select">
+                                    <option value="">All Status</option>
+                                    <option value="published">Published</option>
+                                    <option value="draft">Draft</option>
+                                </select>
+                                <select id="authorFilter" class="filter-select">
+                                    <option value="">All Authors</option>
+                                    <?php
+                            $authors = array_unique(array_column($articles, 'author'));
+                            foreach($authors as $author):
+                            ?>
+                                    <option value="<?= htmlspecialchars($author) ?>"><?= htmlspecialchars($author) ?>
+                                    </option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="dashboard-card-body">
+                            <div class="article-grid" id="articlesContainer">
                                 <?php foreach ($articles as $article): ?>
-                                <div class="col-md-4 d-flex align-items-stretch">
-                                    <div class="article-card">
-                                        <div class="article-image"
-                                            style="background-image: url('images/article/<?= $article['image_path']; ?>');">
+                                <div class="article-card" data-type="<?= htmlspecialchars($article['type']) ?>"
+                                    data-status="<?= $article['is_draft'] ? 'draft' : 'published' ?>"
+                                    data-author="<?= htmlspecialchars($article['author']) ?>"
+                                    data-title="<?= htmlspecialchars($article['title']) ?>">
+                                    <div class="card-media"
+                                        style="background-image: url('images/article/<?= $article['image_path']; ?>')">
+                                        <div class="media-overlay"></div>
+                                        <div class="card-badges">
                                             <span
-                                                class="article-status <?= $article['is_draft'] ? 'draft' : 'published' ?>">
+                                                class="badge badge-type"><?= htmlspecialchars($article['type']); ?></span>
+                                            <span
+                                                class="badge <?= $article['is_draft'] ? 'badge-draft' : 'badge-published' ?>">
                                                 <?= $article['is_draft'] ? 'Draft' : 'Published' ?>
                                             </span>
-                                            <span class="article-type">
-                                                <?= htmlspecialchars($article['type']); ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-content">
+                                        <h3 class="card-title"><?= htmlspecialchars($article['title']); ?></h3>
+                                        <div class="card-meta">
+                                            <span class="meta-date">
+                                                <i class="far fa-calendar-alt"></i>
+                                                <?= date('M d, Y', strtotime($article['published_at'])); ?>
+                                            </span>
+                                            <span class="meta-author">
+                                                <i class="far fa-user"></i>
+                                                <?= htmlspecialchars($article['author']); ?>
                                             </span>
                                         </div>
-                                        <div class="article-body">
-                                            <div>
-                                                <div class="article-title"><?= htmlspecialchars($article['title']); ?>
-                                                </div>
-                                                <div class="article-date">Published on: <?= $article['published_at']; ?>
-                                                </div>
-                                                <div class="article-summary">
-                                                    <?= substr(strip_tags($article['content']), 0, 100) . '...'; ?>
-                                                </div>
-                                            </div>
-                                            <div class="article-buttons">
-                                                <a href="../article.php?id=<?= $article['article_id']; ?>"
-                                                    target="_blank" class="btn btn-primary btn-sm">
-                                                    <i class="fas fa-eye"></i> View
-                                                </a>
-                                                <button class="btn btn-warning btn-sm btnEdit"
-                                                    data-article='<?= json_encode($article); ?>'>
-                                                    <i class="fas fa-edit"></i> Edit
-                                                </button>
-                                                <button class="btn btn-danger btn-sm btnDelete"
-                                                    data-article-id="<?= $article['article_id']; ?>">
-                                                    <i class="fas fa-trash-alt"></i> Delete
-                                                </button>
-                                            </div>
+                                        <p class="card-excerpt">
+                                            <?= substr(strip_tags($article['content']), 0, 120) . '...'; ?>
+                                        </p>
+
+                                        <div class="card-actions">
+                                            <a href="../article.php?id=<?= $article['article_id']; ?>"
+                                                class="action-btn btn-view" target="_blank">
+                                                <i class="fas fa-eye"></i>
+                                                <span>View</span>
+                                            </a>
+                                            <button class="action-btn btn-edit btnEdit"
+                                                data-article='<?= htmlspecialchars(json_encode($article), ENT_QUOTES, 'UTF-8'); ?>'>
+                                                <i class="fas fa-edit"></i>
+                                                <span>Edit</span>
+                                            </button>
+                                            <button class="action-btn btn-delete btnDelete"
+                                                data-article-id="<?= $article['article_id']; ?>">
+                                                <i class="fas fa-trash-alt"></i>
+                                                <span>Delete</span>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -240,9 +156,8 @@
                 </div>
             </div>
         </div>
-
         <!-- Footer -->
-    <?php include('modal/article.modal.php');?>
+        <?php include('modal/article.modal.php');?>
 
     </div>
     <?php include('include/footer.php');?>
@@ -251,39 +166,141 @@
 
 
     <script>
-
     tinymce.init({
-            selector: '#edit_content',
-            plugins: 'lists wordcount',
-            toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | removeformat',
-            menubar: false,
-            statusbar: false,
-            height: 300,
-            content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }'
+        selector: '#edit_content',
+        plugins: 'lists wordcount',
+        toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | removeformat',
+        menubar: false,
+        statusbar: false,
+        height: 300,
+        content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }'
+    });
+
+    // Filter functionality
+    function filterArticles() {
+        const searchTerm = $('#searchArticles').val().toLowerCase();
+        const typeFilter = $('#typeFilter').val();
+        const statusFilter = $('#statusFilter').val();
+        const authorFilter = $('#authorFilter').val();
+
+        $('.article-card').each(function() {
+            const $card = $(this);
+            const title = $card.data('title').toLowerCase();
+            const type = $card.data('type');
+            const status = $card.data('status');
+            const author = $card.data('author');
+
+            const matchesSearch = title.includes(searchTerm);
+            const matchesType = !typeFilter || type === typeFilter;
+            const matchesStatus = !statusFilter || status === statusFilter;
+            const matchesAuthor = !authorFilter || author === authorFilter;
+
+            if (matchesSearch && matchesType && matchesStatus && matchesAuthor) {
+                $card.removeClass('hidden').fadeIn();
+            } else {
+                $card.addClass('hidden').fadeOut();
+            }
         });
+    }
+
+    // Event listeners for filters
+    $('#searchArticles').on('input', filterArticles);
+    $('#typeFilter, #statusFilter, #authorFilter').on('change', filterArticles);
+
+
+
 
     $('.btnEdit').on('click', function() {
-        var article = $(this).data('article');
+        try {
+            // Get and parse article data
+            const article = $(this).data('article');
 
-        $('#edit_article_id').val(article.article_id);
-        $('#edit_title').val(article.title);
-        $('#edit_author').val(article.author);
-        $('#edit_subtitle').val(article.subtitle);
-        $('#edit_image_preview').attr('src', 'images/article/' + article.image_path);
+            // Decode HTML content
+            const decodedContent = $('<div/>').html(article.content).text();
 
-        tinymce.get('edit_content').setContent(article.content);
+            // Populate the modal fields
+            $('#edit_article_id').val(article.article_id);
+            $('#edit_title').val(article.title);
+            $('#edit_author').val(article.author);
+            $('#edit_subtitle').val(article.subtitle);
+            $('#edit_type').val(article.type);
 
-        var modal = new bootstrap.Modal(document.getElementById('editArticleModal'));
-        modal.show();
+            // Handle image preview
+            if (article.image_path) {
+                $('#edit_image_preview')
+                    .attr('src', 'images/article/' + article.image_path)
+                    .on('error', function() {
+                        $(this).attr('src',
+                        'assets/img/placeholder.jpg'); // Update with your placeholder path
+                    });
+                $('#file-chosen').text(article.image_path);
+            } else {
+                $('#edit_image_preview').attr('src', '').hide();
+                $('#file-chosen').text('No file chosen');
+            }
+
+            // Initialize or update TinyMCE content
+            if (tinymce.get('edit_content')) {
+                tinymce.get('edit_content').setContent(decodedContent);
+            } else {
+                // Initialize TinyMCE if it doesn't exist
+                tinymce.init({
+                    selector: '#edit_content',
+                    plugins: 'lists wordcount code',
+                    toolbar: 'undo redo | blocks | bold italic underline | alignleft aligncenter alignright | bullist numlist | removeformat | code',
+                    menubar: false,
+                    statusbar: false,
+                    height: 300,
+                    content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }',
+                    entity_encoding: 'raw',
+                    setup: function(editor) {
+                        editor.on('init', function() {
+                            editor.setContent(decodedContent);
+                        });
+                    }
+                });
+            }
+
+            // Reset validation states
+            $('.is-invalid').removeClass('is-invalid');
+            $('.invalid-feedback').remove();
+
+            // Show modal
+            const editModal = new bootstrap.Modal(document.getElementById('editArticleModal'));
+            editModal.show();
+
+            // Focus first input
+            $('#editArticleModal').on('shown.bs.modal', function() {
+                $('#edit_title').focus();
+            });
+
+        } catch (error) {
+            console.error('Error in edit handler:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to load article data. Please try again.'
+            });
+        }
     });
+
+    // Handle image input change in edit modal
     $('#edit_image').on('change', function() {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            $('#edit_image_preview').attr('src', e.target.result);
-        };
-        reader.readAsDataURL(this.files[0]);
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#edit_image_preview')
+                    .attr('src', e.target.result)
+                    .show();
+            };
+            reader.readAsDataURL(file);
+            $('#file-chosen').text(file.name);
+        } else {
+            $('#edit_image_preview').attr('src', '').hide();
+            $('#file-chosen').text('No file chosen');
+        }
     });
-
 
     $('.btnDelete').on('click', function() {
         var articleId = $(this).data('article-id');

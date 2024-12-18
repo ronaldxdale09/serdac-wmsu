@@ -5,8 +5,6 @@ if (isset($_GET['tab'])) {
     $tab = filter_var($_GET['tab']);
 }
 ?>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link rel="stylesheet" href="css/assmt.form.view.css">
 <link rel='stylesheet' href='css/tab-report.css'>
 
 <body>
@@ -25,7 +23,7 @@ if (isset($_GET['tab'])) {
                     <div class="col-sm-4">
                         <div class="page-header float-left">
                             <div class="page-title">
-                                <h1>Activity Log Management</h1>
+                                <h1>Service Request Report</h1>
                             </div>
                         </div>
                     </div>
@@ -33,8 +31,8 @@ if (isset($_GET['tab'])) {
                         <div class="page-header float-right">
                             <div class="page-title">
                                 <ol class="breadcrumb text-right">
-                                    <li><a href="#">Dashboard</a></li>
-                                    <li class="active">Activity Logs</li>
+                                    <li><a href="index.php">Dashboard</a></li>
+                                    <li class="active">Service Request Report</li>
                                 </ol>
                             </div>
                         </div>

@@ -13,8 +13,8 @@
                         <br> Normal Road, Baliwasan,
                         , Zamboanga City 7000 Philippines
                         <br><br>
-                        <strong>Phone:</strong> +63 935 2232 051<br>
-                        <strong>Email:</strong> wmsuserdac@wmsu.edu.ph<br>
+                        <strong>Phone:</strong><?php echo htmlspecialchars($webDetails['org_contact']); ?><br>
+                        <strong>Email:</strong> <?php echo htmlspecialchars($webDetails['org_email']); ?><br>
                     </p>
                 </div>
 
@@ -55,7 +55,7 @@
 
     <div class="container footer-bottom clearfix ">
         <div class="copyright ">
-            &copy; Copyright <strong><span> <a style='color:white;' href="https://facebook.com/aetherio.tech">SERDAC-WMSU </a></span></strong>. All Rights Reserved
+            &copy; Copyright <strong><span> <a style='color:white;' href="https://serdac-wmsu.online/">SERDAC-WMSU </a></span></strong>. All Rights Reserved
         </div>
         <!-- <div class="credits">
             Designed by SERDAC WMSU</a>

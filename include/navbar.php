@@ -1,14 +1,33 @@
 <style>
-.notificon {
-    position: relative;
+
+
+.header-area .main-nav .nav {
     display: flex;
     align-items: center;
 }
 
-.notification-dropdown {
-    margin-left: 20px;
-    /* Increased spacing from PORTAL */
+
+/* Profile/Portal and notification container */
+.user-section {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 }
+
+/* Update notification icon styles */
+.notificon {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-left: auto;
+}
+
+.notification-dropdown {
+    position: relative;
+    margin-left: 0;
+    /* Remove the previous margin */
+}
+
 
 .notification-icon {
     position: relative;
@@ -149,30 +168,34 @@ function getUnreadNotifications($con, $userId, $limit = 5) {
                                 <li><a href="request.php"><i class="fas fa-chalkboard-teacher"></i> REQUEST SERVICE</a>
                                 <li><a href="service_join.php"><i class="fas fa-user-plus"></i> JOIN TRAINING</a></li>
 
-                                </li>
-                            </ul>
                         </li>
-                        <li><a href="contact_us.php">Contact Us</a></li>
+                    </ul>
+                    </li>
+                    <li><a href="contact_us.php">Contact Us</a></li>
 
-                        <?php
+                    <?php
 if (isset($_SESSION["userId_code"]) && !empty($_SESSION["userId_code"])) {
     $userId = $_SESSION["userId_code"];
     $unreadNotifications = getUnreadNotifications($con, $userId);
     $unreadCount = mysqli_num_rows($unreadNotifications);
     
+    echo '<div class="user-section">';
+    
     if (($_SESSION["accessType"]) == 'Administrator') {
-        echo '<li><a href="admin/index.php"><i class="fas fa-user"></i> PORTAL </a>';
+        echo '<li><a href="admin/index.php"><i class="fas fa-user"></i> PORTAL</a></li>';
     } else {
-        echo '<li class="notificon"><a href="profile.php"><i class="fas fa-user"></i> PROFILE </a>';
+        echo '<li><a href="profile.php"><i class="fas fa-user"></i> PROFILE</a></li>';
     }
     
-    // Add notification icon and dropdown
-    echo '<span class="notification-dropdown">';
-    echo '<a href="#" class="notification-icon" id="notificationToggle"><i class="fas fa-bell"></i>';
+    // Notification icon and dropdown
+    echo '<li class="notification-dropdown">';
+    echo '<a href="#" class="notification-icon" id="notificationToggle">';
+    echo '<i class="fas fa-bell"></i>';
     if ($unreadCount > 0) {
         echo '<span class="notification-badge">' . $unreadCount . '</span>';
     }
     echo '</a>';
+    
     echo '<div class="notification-content" id="notificationContent">';
     if ($unreadCount > 0) {
         while ($row = mysqli_fetch_assoc($unreadNotifications)) {
@@ -184,9 +207,11 @@ if (isset($_SESSION["userId_code"]) && !empty($_SESSION["userId_code"])) {
     } else {
         echo '<div class="notification-item"><p>No new notifications</p></div>';
     }
-    echo '</div></span></li>';
+    echo '</div>';
+    echo '</li>';
+    echo '</div>';
 } else {
-    echo '<li><a href="login.php"><i class="fas fa-sign-in-alt"></i> LOGIN </a></li>';
+    echo '<li><a href="login.php"><i class="fas fa-sign-in-alt"></i> LOGIN</a></li>';
 }
 ?>
                     </ul>

@@ -1,24 +1,11 @@
 <?php include('include/header.php')?>
 <style>
 /* ... other styles ... */
-
-#editor-container {
-    height: 200px;
-}
-
-.custom-file {
-    position: relative;
-    display: inline-block;
-}
-
-#file-chosen {
-    margin-left: 10px;
-    font-family: Arial, sans-serif;
-    color: #666;
-}
 </style>
 
 
+
+<link rel="stylesheet" href="css/new_article.css">
 
 <body>
     <!-- Left Panel -->
@@ -69,7 +56,15 @@
                                 <form action="#" method="post" id="articlePost" enctype="multipart/form-data">
                                     <div class="form-group row">
                                         <!-- Type Dropdown - occupies 2 columns -->
-                                        <div class="col-2">
+
+
+                                        <!-- Title Input Field - occupies 9 columns -->
+                                        <div class="col-6">
+                                            <label for="title" class="required">Title:</label>
+                                            <input type="text" class="form-control " id="title" name="title"
+                                                placeholder="Enter Title">
+                                        </div>
+                                        <div class="col-3">
                                             <label for="type">Type:</label>
                                             <select class="form-control" id="type" name="type">
                                                 <option value="Announcement">Announcement</option>
@@ -79,22 +74,18 @@
                                                 <option value="News">News</option>
                                             </select>
                                         </div>
-
-                                        <!-- Title Input Field - occupies 9 columns -->
-                                        <div class="col-7">
-                                            <label for="title" class="required">Title:</label>
-                                            <input type="text" class="form-control " id="title" name="title" required>
-                                        </div>
                                         <div class="col-3">
                                             <label for="title " class="required">Author:</label>
-                                            <input type="text" class="form-control" id="author" name="author" required>
+                                            <input type="text" class="form-control" id="author" name="author"
+                                                value="<?php echo  $_SESSION["fullName"]; ?>" required>
                                         </div>
                                     </div>
 
 
                                     <div class="form-group">
                                         <label for="subtitle" class="required">Subtitle:</label>
-                                        <input type="text" class="form-control" id="subtitle" name="subtitle">
+                                        <input type="text" class="form-control" id="subtitle" name="subtitle"
+                                            placeholder="Enter Subtitle">
                                     </div>
                                     <div class="form-group">
                                         <label for="image" class="required">Image:</label>
@@ -103,6 +94,11 @@
                                                 accept="image/*" hidden>
                                             <label class="btn btn-sm btn-secondary" for="image">Choose File</label>
                                             <span id="file-chosen">No file chosen</span>
+                                        </div>
+                                        <!-- Add this new div for image preview -->
+                                        <div id="imagePreviewContainer" style="display: none; margin-top: 10px;">
+                                            <img id="imagePreview" src="#" alt="Preview"
+                                                style="max-width: 200px; max-height: 200px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -148,10 +144,26 @@
             content_style: 'body { font-family: Arial, sans-serif; font-size: 14px; }'
         });
 
-        // Update file input label when a file is selected
+        // Update file input label and show image preview when a file is selected
         $('#image').on('change', function() {
-            var fileName = this.files[0] ? this.files[0].name : 'No file chosen';
-            $('#file-chosen').text(fileName);
+            var file = this.files[0];
+            if (file) {
+                // Update filename display
+                $('#file-chosen').text(file.name);
+
+                // Show image preview
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#imagePreview').attr('src', e.target.result);
+                    $('#imagePreviewContainer').fadeIn('fast');
+                }
+                reader.readAsDataURL(file);
+            } else {
+                // Reset everything if no file is selected
+                $('#file-chosen').text('No file chosen');
+                $('#imagePreviewContainer').hide();
+                $('#imagePreview').attr('src', '#');
+            }
         });
 
         // Function to validate form
@@ -195,12 +207,11 @@
 
             var form = $('#articlePost')[0];
             var formData = new FormData(form);
+            var isDraft = this.id === 'draft';
 
-            // Update content from TinyMCE before appending to formData
+            // Update content from TinyMCE
             formData.set('content', tinymce.get('content').getContent());
-
-            // Check if it's a draft or publish
-            formData.append('isDraft', this.id === 'draft');
+            formData.set('isDraft', isDraft ? '1' : '0'); // Explicitly set 1 or 0
 
             $.ajax({
                 type: "POST",
@@ -213,28 +224,20 @@
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: 'Article successfully ' + (formData.get(
-                                'isDraft') === 'true' ? 'saved as draft!' :
-                                'published!'),
+                            text: 'Article successfully ' + (isDraft ?
+                                'saved as draft!' : 'published!'),
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK'
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                // Disable form elements
-                                $('#articlePost input, #articlePost textarea, #articlePost select')
-                                    .prop('readonly', true);
-                                $('#articlePost input[type="file"]').prop(
-                                    'disabled', true);
-                                $('#publishBtn, #draft').prop('disabled', true);
-                                tinymce.get('content').setMode('readonly');
-
-                                // Optionally, redirect to a different page or reload
-                                // window.location.href = 'articles_list.php';
+                                window.location.href = 'articles.php';
                             }
                         });
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: response,
+                            text: response
                         });
                     }
                 },
@@ -242,7 +245,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'Form submission failed: ' + error,
+                        text: 'Form submission failed: ' + error
                     });
                 }
             });

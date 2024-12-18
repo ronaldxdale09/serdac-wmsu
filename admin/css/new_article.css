@@ -1,0 +1,244 @@
+/* Main Container Styles */
+
+.content {
+    padding: 30px;
+    background-color: #f8f9fa;
+}
+
+
+/* Card Styles */
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background: #ffffff;
+}
+
+.card:hover {
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background: linear-gradient(to right, #f8f9fa, #ffffff);
+    border-bottom: 2px solid #eef0f2;
+    padding: 20px 25px;
+    border-radius: 10px 10px 0 0;
+}
+
+.card-title {
+    color: #2c3e50;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.card-body {
+    padding: 30px;
+}
+
+
+/* Form Styles */
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+label {
+    color: #495057;
+    font-weight: 500;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.required::after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.form-control {
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.form-control:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+    outline: none;
+}
+
+select.form-control {
+    height: 45px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23495057' viewBox='0 0 16 16'%3E%3Cpath d='M8 12l-6-6h12l-6 6z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+}
+
+
+/* File Input Styles */
+
+.custom-file {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+}
+
+#file-chosen {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+
+/* Button Styles */
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-sm {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border: none;
+    color: white;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    background-color: #4a90e2;
+    border: none;
+    color: white;
+    margin-left: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #357abd;
+    transform: translateY(-1px);
+}
+
+
+/* Textarea Styles */
+
+textarea.form-control {
+    min-height: 200px;
+    resize: vertical;
+}
+
+
+/* Responsive Adjustments */
+
+@media (max-width: 768px) {
+    .content {
+        padding: 15px;
+    }
+    .card-body {
+        padding: 20px;
+    }
+    .col-2,
+    .col-7,
+    .col-3 {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .form-group.row {
+        margin: 0;
+    }
+}
+
+
+/* Animation for Form Elements */
+
+.form-control,
+.btn {
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* TinyMCE Editor Customization */
+
+.tox-tinymce {
+    border-radius: 6px !important;
+    border-color: #e2e8f0 !important;
+}
+
+.tox-toolbar__primary {
+    background: #f8f9fa !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+
+/* Error State Styles */
+
+.form-control.is-invalid {
+    border-color: #dc3545;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23dc3545' viewBox='0 0 16 16'%3E%3Cpath d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    padding-right: 40px;
+}
+
+#imagePreviewContainer {
+    transition: all 0.3s ease;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: inline-block;
+}
+
+#imagePreview {
+    transition: all 0.3s ease;
+}
+
+#imagePreview:hover {
+    transform: scale(1.05);
+}
+
+
+/* EDIT ARTICLE MODAL */
+
+
+/* Edit Modal Styles */

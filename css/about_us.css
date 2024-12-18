@@ -1,0 +1,102 @@
+.mvg-section {
+    padding: 5rem 0;
+    background: linear-gradient(to bottom, #ffffff, #f8fafc);
+}
+
+.section-header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+}
+
+.section-title-about {
+    color: #1e3a8a;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.section-description {
+    color: #475569;
+    font-size: 1.125rem;
+    line-height: 1.75;
+}
+
+.mvg-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.mvg-card {
+    background: white;
+    border-radius: 1rem;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.mvg-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.card-icon {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 1.5rem;
+    color: #2563eb;
+    transition: transform 0.3s ease;
+}
+
+.mvg-card:hover .card-icon {
+    transform: scale(1.1);
+}
+
+.mvg-card h3 {
+    color: #1e3a8a;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.mvg-card p {
+    color: #475569;
+    line-height: 1.75;
+    margin: 0;
+}
+
+
+/* Card-specific colors */
+
+.mvg-card:nth-child(1) .card-icon {
+    color: #2563eb;
+}
+
+.mvg-card:nth-child(2) .card-icon {
+    color: #f59e0b;
+}
+
+.mvg-card:nth-child(3) .card-icon {
+    color: #10b981;
+}
+
+
+/* Responsive adjustments */
+
+@media (max-width: 768px) {
+    .mvg-section {
+        padding: 3rem 0;
+    }
+    .section-title {
+        font-size: 2rem;
+    }
+    .mvg-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}

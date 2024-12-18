@@ -1,6 +1,6 @@
 <?php include('include/header.php')?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-<link rel="stylesheet" href="css/assmt.form.view.css">
+<link rel="stylesheet" href="css/activity_log.css">
 
 <body>
     <!-- Left Panel -->
@@ -47,7 +47,6 @@
                         </div>
                         <div class="card-body">
                             <div class="inventory-table">
-                                <hr>
                                 <table class="table table-bordered table-hover table-striped" id='activity_log'>
                                     <thead>
                                         <tr>

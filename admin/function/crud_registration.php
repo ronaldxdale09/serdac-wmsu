@@ -22,14 +22,14 @@ if (isset($_POST['action'])) {
 
     // Determine the column name based on the table
     switch ($table) {
-        case 'r_agency_classification':
-            $column = 'classification';
+        case 'r_education_levels':
+            $column = 'education_level';
             break;
-        case 'r_client_type':
-            $column = 'type';
+        case 'r_genders':
+            $column = 'gender';
             break;
-        case 'r_purpose_of_request':
-            $column = 'purpose';
+        case 'r_occupations':
+            $column = 'occupation';
             break;
         default:
             logMessage("Invalid table accessed", ['table' => $table]);
@@ -149,6 +149,7 @@ if (isset($_POST['action'])) {
 
         echo json_encode([
             'status' => 'success',
+            'message' => 'Operation completed successfully',
             'affected_rows' => $affected_rows
         ]);
 

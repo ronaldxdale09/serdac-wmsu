@@ -43,30 +43,20 @@ try {
         json_output(["success" => false, "message" => "Invalid email or password"]);
     }
 
-    // Check for existing session and its last activity time
-    $current_time = time();
-    $session_timeout = 60 * 60; // 1 hour in seconds
-
-    if (!empty($user['session_token']) && !empty($user['last_activity'])) {
-        $last_activity = strtotime($user['last_activity']);
-        if (($current_time - $last_activity) < $session_timeout) {
-            json_output([
-                "success" => false, 
-                "message" => "This account is already logged in on another device. Please try again later."
-            ]);
-        }
-    }
-
     // Generate new session token and update last activity
     $session_token = bin2hex(random_bytes(32));
-    $last_activity = date('Y-m-d H:i:s', $current_time);
+    $last_activity = date('Y-m-d H:i:s');
 
     $update_stmt = $con->prepare("UPDATE users SET session_token = ?, last_activity = ? WHERE user_id = ?");
     $update_stmt->bind_param("ssi", $session_token, $last_activity, $user['user_id']);
     $update_stmt->execute();
     $update_stmt->close();
+    $fullName = $user['fname'] . ' ' . $user['lname']; // Assuming your users table has fname and lname columns
 
+    // Update the session block
     $_SESSION["fname"] = $user['fname'];
+    $_SESSION["fullName"] = $fullName; // New session for full nam
+    
     $_SESSION["email"] = $email;
     $_SESSION["userId_code"] = $user['user_id'];
     $_SESSION["accessType"] = $user['accessType'];
@@ -74,7 +64,6 @@ try {
     $_SESSION["isLogin"] = 1;
     $_SESSION["session_token"] = $session_token;
     $_SESSION["last_activity"] = time();
-
 
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 

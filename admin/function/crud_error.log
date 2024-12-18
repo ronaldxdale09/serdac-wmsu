@@ -13,3 +13,4 @@
 [24-Jul-2024 08:32:44 Europe/Berlin] [2024-07-24 08:32:44] Received POST request: {"action":"add","table":"r_education_levels","value":"dsa"}
 [24-Jul-2024 08:32:44 Europe/Berlin] [2024-07-24 08:32:44] Action: add, Table: r_education_levels
 [24-Jul-2024 08:32:44 Europe/Berlin] [2024-07-24 08:32:44] Successfully added new item with ID: 22 to table: r_education_levels
+[2024-11-22 02:36:11] Invalid table accessed | Context: {"table":"r_education_levels"}
