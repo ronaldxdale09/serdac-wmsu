@@ -75,50 +75,50 @@ if (isset($_SESSION["userId_code"])) {
                     <div class="row">
                         <div class="col-12">
                             <div class="profile-card-3 z-depth-3">
-                               
-<div class="card profile-card">
-    <div class="card-body position-relative p-4">
-        <div class="row g-4 align-items-center">
-            <!-- User image -->
-            <div class="col-lg-3 col-md-4 text-center">
-                <img src="https://png.pngtree.com/png-vector/20190114/ourmid/pngtree-vector-avatar-icon-png-image_313572.jpg"
-                    alt="user avatar" class="img-fluid rounded-circle profile-image">
-            </div>
-            <!-- User details -->
-            <div class="col-lg-9 col-md-8">
-                <div class="profile-info">
-                    <h4 class="mb-3"><?php echo $name ?></h4>
-                    <ul class="list-unstyled mb-0">
-                        <li class="mb-2">
-                            <div class="d-flex align-items-center">
-                                <div class="list-icon me-3">
-                                    <i class="fas fa-phone"></i>
+
+                                <div class="card profile-card">
+                                    <div class="card-body position-relative p-4">
+                                        <div class="row g-4 align-items-center">
+                                            <!-- User image -->
+                                            <div class="col-lg-3 col-md-4 text-center">
+                                                <img src="https://png.pngtree.com/png-vector/20190114/ourmid/pngtree-vector-avatar-icon-png-image_313572.jpg"
+                                                    alt="user avatar" class="img-fluid rounded-circle profile-image">
+                                            </div>
+                                            <!-- User details -->
+                                            <div class="col-lg-9 col-md-8">
+                                                <div class="profile-info">
+                                                    <h4 class="mb-3"><?php echo $name ?></h4>
+                                                    <ul class="list-unstyled mb-0">
+                                                        <li class="mb-2">
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="list-icon me-3">
+                                                                    <i class="fas fa-phone"></i>
+                                                                </div>
+                                                                <div class="list-details">
+                                                                    <span><?php echo $contact ?></span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                        <li>
+                                                            <div class="d-flex align-items-center">
+                                                                <div class="list-icon me-3">
+                                                                    <i class="fas fa-envelope"></i>
+                                                                </div>
+                                                                <div class="list-details">
+                                                                    <span><?php echo $email ?></span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-outline-secondary btn-sm logout-btn"
+                                            onclick="location.href='function/logout.php'">
+                                            <i class="fas fa-sign-out-alt me-1"></i> Logout
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="list-details">
-                                    <span><?php echo $contact ?></span>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="d-flex align-items-center">
-                                <div class="list-icon me-3">
-                                    <i class="fas fa-envelope"></i>
-                                </div>
-                                <div class="list-details">
-                                    <span><?php echo $email ?></span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <button class="btn btn-outline-secondary btn-sm logout-btn"
-            onclick="location.href='function/logout.php'">
-            <i class="fas fa-sign-out-alt me-1"></i> Logout
-        </button>
-    </div>
-</div>
                             </div>
                         </div>
 
@@ -126,29 +126,35 @@ if (isset($_SESSION["userId_code"])) {
                         <div class="col-lg-12">
                             <div class="card z-depth-3">
                                 <div class="card-body details-card">
-                                <ul class="nav nav-pills nav-pills-primary flex-column flex-md-row">
-    <li class="nav-item flex-md-fill text-md-center mb-2 mb-md-0">
-        <a href="?tab=profile" class="nav-link <?php echo $tab === 'profile' ? 'active' : ''; ?>">
-            <i class="fas fa-user"></i> <span class="d-md-inline">Profile</span>
-        </a>
-    </li>
-    <li class="nav-item flex-md-fill text-md-center mb-2 mb-md-0">
-        <a href="?tab=request" class="nav-link <?php echo $tab === 'request' ? 'active' : ''; ?>">
-            <i class="fas fa-envelope-open"></i> <span class="d-md-inline">SERVICE REQUEST</span>
-            <?php if ($req_count > 0): ?>
-                <span class="badge bg-danger text-light ms-1"><?php echo $req_count ?></span>
-            <?php endif; ?>
-        </a>
-    </li>
-    <li class="nav-item flex-md-fill text-md-center">
-        <a href="?tab=training" class="nav-link <?php echo $tab === 'training' ? 'active' : ''; ?>">
-            <i class="fas fa-edit"></i> <span class="d-md-inline">TRAININGS</span>
-            <?php if ($current_trainings_count > 0): ?>
-                <span class="badge bg-danger text-light ms-1"><?php echo $current_trainings_count ?></span>
-            <?php endif; ?>
-        </a>
-    </li>
-</ul>
+                                    <ul class="nav nav-pills nav-pills-primary flex-column flex-md-row">
+                                        <li class="nav-item flex-md-fill text-md-center mb-2 mb-md-0">
+                                            <a href="?tab=profile"
+                                                class="nav-link <?php echo $tab === 'profile' ? 'active' : ''; ?>">
+                                                <i class="fas fa-user"></i> <span class="d-md-inline">Profile</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item flex-md-fill text-md-center mb-2 mb-md-0">
+                                            <a href="?tab=request"
+                                                class="nav-link <?php echo $tab === 'request' ? 'active' : ''; ?>">
+                                                <i class="fas fa-envelope-open"></i> <span class="d-md-inline">SERVICE
+                                                    REQUEST</span>
+                                                <?php if ($req_count > 0): ?>
+                                                <span
+                                                    class="badge bg-danger text-light ms-1"><?php echo $req_count ?></span>
+                                                <?php endif; ?>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item flex-md-fill text-md-center">
+                                            <a href="?tab=training"
+                                                class="nav-link <?php echo $tab === 'training' ? 'active' : ''; ?>">
+                                                <i class="fas fa-edit"></i> <span class="d-md-inline">TRAININGS</span>
+                                                <?php if ($current_trainings_count > 0): ?>
+                                                <span
+                                                    class="badge bg-danger text-light ms-1"><?php echo $current_trainings_count ?></span>
+                                                <?php endif; ?>
+                                            </a>
+                                        </li>
+                                    </ul>
                                     <div class="tab-content p-3 tab-min-height">
                                         <?php if ($tab === 'profile' || $tab === ''): ?>
                                         <div class="tab-pane active" id="profile">

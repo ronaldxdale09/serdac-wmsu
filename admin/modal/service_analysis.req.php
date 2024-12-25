@@ -1,160 +1,5 @@
-<style>
-.document-title {
-    font-size: 1.5rem;
-    /* Adjust size as needed */
-    color: #333;
-    /* Dark grey for readability */
-    text-align: center;
-    /* Centers text horizontally */
-    width: 100%;
-    /* Maintains padding if needed, though it might be unnecessary with centering */
-}
+<link rel="stylesheet" href="css/service_analysis.req.css">
 
-
-/* Style the tab */
-.tab {
-    background-color: #800000;
-    /* Maroon background */
-    border: 1px solid #ccc;
-    overflow: hidden;
-}
-
-/* Style the buttons inside the tab */
-.tab button {
-    background-color: inherit;
-    /* Inherits maroon from .tab */
-    color: #ffffff;
-    /* White text for readability */
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
-    font-size: 17px;
-}
-
-/* Change background color of buttons on hover */
-.tab button:hover {
-    background-color: #b30000;
-    /* A slightly lighter maroon on hover */
-    color: #ffffff;
-    /* Maintains white text on hover */
-}
-
-/* Create an active/current tablink class */
-.tab button.active {
-    background-color: #990000;
-    /* A different shade of maroon for active state */
-    color: #ffffff;
-    /* White text for active state */
-}
-
-/* Style the tab content */
-.tabcontent {
-    display: none;
-    padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-top: none;
-    background-color: white;
-    /* White text for content */
-}
-
-.tabcontent.active {
-    display: block;
-}
-</style>
-<style>
-.request-progress-message p {
-    font-size: 1.2em;
-    /* Adjust size as needed */
-    color: #2a2a2a;
-    /* Dark grey text color for readability */
-    padding: 10px 20px;
-    /* Padding for spacing around the text */
-    background-color: #f0f8ff;
-    /* Light background color to match uploader */
-    border-radius: 5px;
-    /* Slightly rounded corners for the message box */
-    margin-bottom: 20px;
-    /* Space between message and uploader */
-    border: 1px solid #d1eaff;
-    /* Subtle border color */
-    text-align: center;
-    /* Center the text for better focus */
-}
-
-.file-uploader {
-    font-family: Arial, sans-serif;
-    width: 100%;
-    border: 2px dashed #00A1FF;
-    padding: 20px;
-    border-radius: 8px;
-    text-align: center;
-    margin: 20px;
-    background-color: #f0f8ff;
-}
-
-.upload-box {
-    cursor: pointer;
-    color: #007bff;
-    padding: 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
-
-.upload-box:hover {
-    background-color: #e0f7ff;
-}
-
-.upload-box i {
-    font-size: 24px;
-}
-
-.file-list h4 {
-    margin-top: 20px;
-    color: #333;
-}
-
-#file-list {
-    list-style: none;
-    padding: 0;
-}
-
-#file-list li {
-    background-color: #e9ecef;
-    padding: 8px 10px;
-    margin-top: 8px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.file-icon {
-    width: 50px;
-    display: inline-block;
-    padding-right: 10px;
-    text-align: center;
-}
-
-.remove-btn {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    color: #dc3545;
-}
-
-.file-uploader .remarks-input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    box-sizing: border-box;
-    /* Includes padding and border in the element's width/height */
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-</style>
 
 
 <div class="modal fade" id="anaylsisReqModal" tabindex="-1" role="dialog"
@@ -235,19 +80,14 @@
 
                     <!-- Tab content -->
                     <div id="Tab1" class="tabcontent active">
-                        <hr>
                         <h3 class="document-title">Documents Submitted by Client</h3>
-                        <hr>
                         <div id="upload_document_list"></div>
 
                     </div>
                     <div id="Tab2" class="tabcontent">
                         <div class="form-row">
-                            <hr>
                             <h3 class="document-title">Data Analysis Results</h3>
-                            <hr>
                             <div id="upload_document_result" style="width: 100% !important;"></div>
-                            <hr>
                             <div class="file-uploader">
                                 <div class="upload-box" onclick="document.getElementById('file-input').click();">
                                     <i class="fa fa-cloud-upload-alt"></i>
@@ -265,10 +105,6 @@
                             </button>
                         </div>
                     </div>
-
-
-
-
             </div>
 
             <div class="modal-footer">

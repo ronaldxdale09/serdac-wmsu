@@ -79,10 +79,13 @@
 
 .btn:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}.modal.fade .modal-dialog {
+}
+
+.modal.fade .modal-dialog {
     transition: transform 0.3s ease-out;
     transform: translate(0, -50px);
 }
+
 .modal.show .modal-dialog {
     transform: none;
 }
@@ -205,7 +208,8 @@
 
                     // Fetch data from the service_request table
                     $results = mysqli_query($con, "SELECT sr.*, u.fname, u.lname, u.midname, 
-                    (SELECT COUNT(*) FROM sr_meeting WHERE sr_meeting.request_id = sr.request_id) AS meeting_count
+                    (SELECT COUNT(*) FROM sr_meeting WHERE sr_meeting.request_id = sr.request_id) AS meeting_count,
+                    (SELECT COUNT(*) FROM sr_dataanalysis_files WHERE sr_dataanalysis_files.request_id = sr.request_id) AS document_count
                     FROM service_request AS sr
                     LEFT JOIN users AS u ON u.user_id = sr.user_id
                     WHERE u.user_id = $id");
@@ -300,11 +304,12 @@
                                     class="badge badge-light"><?php echo $row['meeting_count']; ?></span>
                             </button>
                             <?php } ?>
-                            <!-- Conditionally displayed Requirements button for 'data-analysis' services in 'In Progress' status -->
+                            <!-- Documents button with count -->
                             <?php if ($row['service_type'] === "data-analysis" && ($row['status'] === "In Progress" || $row['status'] === "Completed" )) { ?>
                             <button type="button" class="btn btn-sm btn-dark btnRequirement"
                                 data-request='<?php echo json_encode($row); ?>'>
-                                <i class="fas fa-tasks"></i> Docu
+                                <i class="fas fa-tasks"></i> Docu <span
+                                    class="badge badge-light"><?php echo $row['document_count']; ?></span>
                             </button>
                             <?php } ?>
                         </div>
@@ -319,15 +324,8 @@
             </tbody>
         </table>
     </div>
- 
-
-
-
-
 </div>
 <script>
-
-    
 $(document).ready(function() {
     $('.btnRequirement').on('click', function() {
         var request = $(this).data('request');
@@ -400,7 +398,7 @@ $(document).ready(function() {
             // Show loading indicator
             $('#notificationTableContainer').html(
                 '<p class="text-center"><i class="fas fa-spinner fa-spin"></i> Loading notifications...</p>'
-                );
+            );
 
             // Show the modal immediately
             notificationModal.show();
@@ -423,7 +421,7 @@ $(document).ready(function() {
                     console.error("Error fetching notifications:", error);
                     $('#notificationTableContainer').html(
                         '<p class="text-center text-danger">Error loading notifications. Please try again.</p>'
-                        );
+                    );
                 }
             });
         }

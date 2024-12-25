@@ -127,10 +127,19 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-12 mt-3 text-center">
-                        <a class="btn btn-maroon text-white border-0 btn-md" href="request.php"><span>REQUEST
-                                SERVICE</span></a> 
-                                <br>
+                    <div class="service-cta">
+                        <a href="request.php" class="cta-button">
+                            <span class="icon-wrapper">
+                                <i class="fas fa-handshake"></i>
+                            </span>
+                            <span class="text-wrapper">
+                                <span class="primary-text">Request Service</span>
+                                <span class="secondary-text">Get Started with SERDAC</span>
+                            </span>
+                            <span class="arrow-icon">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                        </a>
                     </div>
                 </div>
             </div>

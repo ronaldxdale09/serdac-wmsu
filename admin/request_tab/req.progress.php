@@ -1,13 +1,14 @@
 <div class="table-responsive">
     <?php
-                    // Fetch data from the service_request table
-                $results = mysqli_query($con, "SELECT 
-                sr.*, 
-                u.fname, u.lname, u.email, 
-                (SELECT COUNT(*) FROM sr_meeting sm WHERE sm.request_id = sr.request_id) AS meeting_count 
-                FROM service_request sr
-                LEFT JOIN users u ON u.user_id = sr.user_id
-                WHERE sr.status = 'In Progress' ");
+            $results = mysqli_query($con, "SELECT 
+            sr.*, 
+            u.fname, u.lname, u.email, 
+            (SELECT COUNT(*) FROM sr_meeting sm WHERE sm.request_id = sr.request_id) AS meeting_count,
+            (SELECT COUNT(*) FROM sr_dataanalysis_files df WHERE df.request_id = sr.request_id) AS document_count,
+            (SELECT COUNT(*) FROM service_participant sp WHERE sp.request_id = sr.request_id) AS participant_count 
+            FROM service_request sr
+            LEFT JOIN users u ON u.user_id = sr.user_id
+            WHERE sr.status = 'In Progress' ");
                 ?>
     <table class="table table-hover" id='service_prog_table' style="width: 100% !important;">
         <thead>
@@ -78,7 +79,8 @@
                         <?php if ($row['service_type'] == 'data-analysis'): ?>
                         <button type="button" class="btn btn-sm btn-warning text-dark btnRequirement"
                             data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip" title="Requirements">
-                            <i class="fas fa-tasks"></i> Documents
+                            <i class="fas fa-tasks"></i> Documents <span
+                                class="badge badge-light"><?php echo $row['document_count']; ?></span>
                         </button>
                         <?php endif; ?>
 
@@ -89,11 +91,9 @@
                         </button>
                         <button type="button" class="btn btn-sm btn-danger btnProgParticiapnts"
                             data-request='<?php echo json_encode($row); ?>' data-toggle="tooltip" title="Participants">
-                            <i class="fas fa-user-friends"></i> Participants
+                            <i class="fas fa-user-friends"></i> Participants <span
+                                class="badge badge-light"><?php echo $row['participant_count']; ?></span>
                         </button>
-
-
-
                         <?php endif; ?>
 
                         <button type="button" class="btn btn-sm btn-success btnCompleteService"
