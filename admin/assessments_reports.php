@@ -122,21 +122,7 @@
                 </div>
             </div>
 
-            <!-- Modal for Form Details -->
-            <div class="modal fade" id="formDetailsModal" tabindex="-1" aria-labelledby="formDetailsModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="formDetailsModalLabel">Form Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body" id="formDetailsContent">
-                            <!-- Form details will be loaded here -->
-                        </div>
-                    </div>
-                </div>
-            </div>
+     
 
 
         </div>
@@ -147,6 +133,7 @@
 
     </div>
     <?php include('include/footer.php');?>
+    <?php include('modal/report.modal.assessment.php');?>
 
     <script>
     $(document).ready(function() {
@@ -332,30 +319,6 @@
             $('#summaryCards').html(summaryHtml);
         }
 
-        $(document).on('click', '.view-details', function() {
-            var formId = $(this).data('id');
-            $.ajax({
-                url: 'fetch/fetch_report_assessment_form.php',
-                method: 'GET',
-                data: {
-                    formId: formId
-                },
-                success: function(data) {
-                    $('#formDetailsContent').html(data);
-                    var modal = new bootstrap.Modal(document.getElementById(
-                        'formDetailsModal'));
-                    modal.show();
-                },
-                error: function(xhr, status, error) {
-                    console.error("AJAX Error: " + status + " - " + error);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to fetch form details. Please try again.'
-                    });
-                }
-            });
-        });
 
         // Initial data load and summary update
         applyFilters();

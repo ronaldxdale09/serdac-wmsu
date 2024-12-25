@@ -47,7 +47,7 @@ $output = '
 if (mysqli_num_rows($result) > 0) {
     while ($row = mysqli_fetch_assoc($result)) {
         $fileSizeFormatted = formatSizeUnits($row['size']);
-        $fileUrl = "../files/uploads/" . rawurlencode($row['filename']); // Adjust the path as per your uploads directory
+        $fileUrl = "files/uploads/" . rawurlencode($row['filename']); // Adjust the path as per your uploads directory
         $dateFormatted = date('M d, Y', strtotime($row['date_uploaded']));
 
         $output .= '
