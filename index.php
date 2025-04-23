@@ -1,11 +1,30 @@
-<?php include('include/header.php');?>
-<link rel="stylesheet" href="css/about_us.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SERDAC-WMSU</title>
+    <?php include('include/header.php');?>
+    <link rel="stylesheet" href="css/about_us.css">
+    <!-- Add Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/carousel.css">
+    <style>
+     
+        .hero-section {
+            margin-top: 0;
+            padding-top: 0;
+            position: relative;
+            z-index: 1;
+        }
+    </style>
+</head>
+<!-- Include the custom navbar CSS -->
 
 <body>
     <!-- Sub Header -->
     <?php include('include/navbar.php');?>
-
-    <!-- ***** Header Area End ***** -->
 
     <!-- ***** Main Banner Area Start ***** -->
     <?php 
@@ -20,24 +39,22 @@
             $articles[] = $row;
         }
     }
+    ?>
 
-
-        // Don't forget to free the result
-        ?>
-    <link rel="stylesheet" href="css/carousel.css">
-
-    <section class="section main-banner" id="top" data-section="section1">
+    <section class="hero-section" id="top" data-section="section1">
         <div id="newsCarousel" class="carousel-container">
             <div class="carousel-slide active">
                 <img src="assets/images/<?php echo htmlspecialchars($webDetails['banner_image']); ?>"
                     alt="Banner Image" />
-                <div class="video-overlay">
-                    <div class="caption">
-                        <h6>Socio-Economic Research and Data Analytics Center</h6>
-                        <h2>WELCOME TO SERDAC-WMSU</h2>
-                        <p>The general objective of the project is to enhance socio-economic research in Luzon, the
-                            Visayas, and Mindanao through the establishment of satellite centers, as well as to
-                            continuously provide assistance to other research sectors.</p>
+                <div class="hero-overlay">
+                    <div class="hero-content">
+                        <span class="hero-badge">Research Excellence</span>
+                        <h1>Socio-Economic Research and Data Analytics Center</h1>
+                        <p>Enhancing socio-economic research in Luzon, the Visayas, and Mindanao through data-driven insights and innovative research methodologies.</p>
+                        <div class="hero-buttons">
+                            <a href="request.php" class="btn btn-primary">Request Service</a>
+                            <a href="about.php" class="btn btn-outline">Learn More</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -46,143 +63,114 @@
             <div class="carousel-slide">
                 <img src="admin/images/article/<?= htmlspecialchars($article['image_path']); ?>"
                     alt="<?= htmlspecialchars($article['title']); ?>" />
-                <div class="video-overlay">
-                    <div class="caption">
-                        <h6><span class="badge bg-light text-dark"><?= htmlspecialchars($article['type']); ?></span>
-                        </h6>
-                        <h2>
-                            <a href="article.php?id=<?= $article['article_id'] ?>" target="_blank" class="article-link">
+                <div class="hero-overlay">
+                    <div class="hero-content">
+                        <span class="hero-badge"><?= htmlspecialchars($article['type']); ?></span>
+                        <h1>
+                            <a href="article.php?id=<?= $article['article_id'] ?>" class="article-link">
                                 <?= htmlspecialchars($article['title']); ?>
                             </a>
-                        </h2>
+                        </h1>
                         <p><?= htmlspecialchars($article['subtitle']); ?></p>
+                        <div class="hero-buttons">
+                            <a href="article.php?id=<?= $article['article_id'] ?>" class="btn btn-primary">Read Article</a>
+                        </div>
                     </div>
                 </div>
             </div>
             <?php endforeach; ?>
         </div>
-        <span class="carousel-control carousel-control-prev" onclick="moveSlide(-1)">&#10094;</span>
-        <span class="carousel-control carousel-control-next" onclick="moveSlide(1)">&#10095;</span>
+        <div class="carousel-controls">
+            <span class="carousel-control carousel-control-prev" onclick="moveSlide(-1)">
+                <i class="fas fa-chevron-left"></i>
+            </span>
+            <span class="carousel-control carousel-control-next" onclick="moveSlide(1)">
+                <i class="fas fa-chevron-right"></i>
+            </span>
+        </div>
     </section>
 
     <section class="services">
-        <div class="py-2 service-11">
-            <div class="container">
-                <div class="section-title">
-                    <h2>What We Offer</h2>
-                    <p>At SERDAC WMSU, we’re dedicated to advancing socio-economic research and data analytics. Our
-                        offerings are focused on providing top-tier research tools, in-depth data analysis, and dynamic
-                        capacity-building programs. Whether you’re delving into socio-economic studies or seeking
-                        data-driven insights, our services are designed to elevate your research and inform impactful
-                        decision-making.</p>
-                </div>
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Our Services</span>
+                <h2 class="section-title">What We Offer</h2>
+                <div class="section-divider"></div>
+                <p class="section-description">At SERDAC WMSU, we're dedicated to advancing socio-economic research and data analytics. Our
+                    offerings are focused on providing top-tier research tools, in-depth data analysis, and dynamic
+                    capacity-building programs.</p>
+            </div>
 
-                <!-- Row  -->
-                <div class="row">
-                    <!-- Column -->
-                    <div class="col-md-4 wrap-service11-box">
-                        <div class="card card-shadow border-0 mb-4">
-                            <div class="p-4">
-                                <div class="icon-space">
-                                    <div class="icon-round text-center d-inline-block ">
-                                        <img src="assets/images/analysis.png" alt="">
-                                    </div>
-                                </div>
-                                <h6 class="font-weight-medium">Training and Consultancy</h6>
-                                <p class="mt-3">The center provides trainings and workshops to initiate research
-                                    capability building
-                                    activities</p>
-                            </div>
-                        </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <img src="assets/images/analysis.png" alt="Training and Consultancy">
                     </div>
-                    <!-- Column -->
-                    <div class="col-md-4 wrap-service11-box">
-                        <div class="card card-shadow border-0 mb-4">
-                            <div class="p-4">
-                                <div class="icon-space">
-                                    <div class="icon-round text-center d-inline-block ">
-                                        <img src="assets/images/predictive-chart.png" alt="">
-                                    </div>
-                                </div>
-                                <h6 class="font-weight-medium">Data Analytics</h6>
-                                <p class="mt-3">The center offers in-depth data analytics services, providing
-                                    socio-economic and
-                                    statistical analysis to support robust research outcomes.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Column -->
-                    <div class="col-md-4 wrap-service11-box">
-                        <div class="card card-shadow border-0 mb-4">
-                            <div class="p-4">
-                                <div class="icon-space">
-                                    <div class="icon-round text-center d-inline-block ">
-                                        <img src="assets/images/online-library.png" alt="">
-                                    </div>
-                                </div>
-                                <h6 class="font-weight-medium">Publications</h6>
-                                <p class="mt-3">Selected books and journals on socio-economics, econometrics,
-                                    statistics, and related
-                                    subjects are available.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="service-cta">
-                        <a href="request.php" class="cta-button">
-                            <span class="icon-wrapper">
-                                <i class="fas fa-handshake"></i>
-                            </span>
-                            <span class="text-wrapper">
-                                <span class="primary-text">Request Service</span>
-                                <span class="secondary-text">Get Started with SERDAC</span>
-                            </span>
-                            <span class="arrow-icon">
-                                <i class="fas fa-arrow-right"></i>
-                            </span>
-                        </a>
-                    </div>
+                    <h3>Training and Consultancy</h3>
+                    <p>The center provides trainings and workshops to initiate research capability building activities</p>
                 </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <img src="assets/images/predictive-chart.png" alt="Data Analytics">
+                    </div>
+                    <h3>Data Analytics</h3>
+                    <p>The center offers in-depth data analytics services, providing socio-economic and statistical analysis to support robust research outcomes.</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">
+                        <img src="assets/images/online-library.png" alt="Publications">
+                    </div>
+                    <h3>Publications</h3>
+                    <p>Selected books and journals on socio-economics, econometrics, statistics, and related subjects are available.</p>
+                </div>
+            </div>
+            
+            <div class="cta-container">
+                <a href="request.php" class="cta-button">
+                    <div class="cta-content">
+                        <span class="cta-icon"><i class="fas fa-handshake"></i></span>
+                        <div class="cta-text">
+                            <span class="cta-primary">Request Service</span>
+                            <span class="cta-secondary">Get Started with SERDAC</span>
+                        </div>
+                    </div>
+                    <span class="cta-arrow"><i class="fas fa-arrow-right"></i></span>
+                </a>
             </div>
         </div>
     </section>
-    <section class="mvg-section">
+
+    <section class="about-section">
         <div class="container">
             <div class="section-header">
-                <h2 class="section-title-about">Building a Stronger Research Network</h2>
+                <span class="section-subtitle">About Us</span>
+                <h2 class="section-title">Building a Stronger Research Network</h2>
+                <div class="section-divider"></div>
                 <p class="section-description"><?php echo htmlspecialchars($webDetails['about_us']); ?></p>
             </div>
-            <div class="mvg-grid">
-                <div class="mvg-card">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" class="target-icon">
-                            <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2" />
-                            <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="2" />
-                            <circle cx="12" cy="12" r="2" fill="currentColor" />
-                        </svg>
+            
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-bullseye"></i>
                     </div>
                     <h3>Mission</h3>
                     <p><?php echo htmlspecialchars($webDetails['mission']); ?></p>
                 </div>
 
-                <div class="mvg-card">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" class="vision-icon">
-                            <path
-                                d="M12 4V2m0 20v-2m10-10h2M0 12h2m4.314-5.686L7.72 4.9m8.56 14.2l1.414-1.414M4.9 16.28l-1.414 1.414m14.2-8.56L19.1 7.72"
-                                stroke="currentColor" fill="none" stroke-width="2" />
-                            <circle cx="12" cy="12" r="4" fill="currentColor" />
-                        </svg>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-eye"></i>
                     </div>
                     <h3>Vision</h3>
                     <p><?php echo htmlspecialchars($webDetails['vision']); ?></p>
                 </div>
 
-                <div class="mvg-card">
-                    <div class="card-icon">
-                        <svg viewBox="0 0 24 24" class="goals-icon">
-                            <path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2" />
-                            <path d="M17 7l-5 5-5-5m0 10l5-5 5 5" fill="none" stroke="currentColor" stroke-width="2" />
-                        </svg>
+                <div class="value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-flag"></i>
                     </div>
                     <h3>Goals</h3>
                     <p><?php echo htmlspecialchars($webDetails['goals']); ?></p>
@@ -191,129 +179,94 @@
         </div>
     </section>
 
-
-
-    <section id="contact" class="contact">
-        <div class="container" data-aos="fade-up">
-
-            <div class="section-title">
-                <h2>Contact</h2>
-                <p>If you have any inquiries or wish to discuss how we can cater our services to your specific needs,
-                    don't hesitate to reach out to us. Our team at AetherIO is dedicated to providing comprehensive tech
-                    solutions and we value open, direct
-                    communication with our clients. We're here to navigate the complexities of the digital world with
-                    you.</p>
-
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-subtitle">Get in Touch</span>
+                <h2 class="section-title">Contact Us</h2>
+                <div class="section-divider"></div>
+                <p class="section-description">If you have any inquiries or wish to discuss how we can cater our services to your specific needs,
+                    don't hesitate to reach out to us. Our team is dedicated to providing comprehensive research solutions.</p>
             </div>
 
-            <div class="row">
-
-                <div class="col-lg-5 d-flex align-items-stretch">
-                    <div class="info">
-                        <div class="address">
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="info-card">
+                        <div class="info-icon">
                             <i class="fas fa-map-marker-alt"></i>
-                            <h4>Location:</h4>
-                            <p>Western Mindanao State University,
-                                <br> Normal Road, Baliwasan,
-                                , Zamboanga City 7000 Philippines
-                            </p>
                         </div>
-
-                        <div class="email">
-                            <i class="fas fa-envelope"></i>
-                            <h4>Email:</h4>
-                            <p><?php echo htmlspecialchars($webDetails['org_email']); ?></p>
+                        <div class="info-content">
+                            <h4>Location</h4>
+                            <p>Western Mindanao State University,<br> Normal Road, Baliwasan,<br> Zamboanga City 7000 Philippines</p>
                         </div>
-
-                        <div class="phone">
-                            <i class="fas fa-phone"></i>
-                            <h4>Call:</h4>
-                            <p><?php echo htmlspecialchars($webDetails['org_contact']); ?></p>
-                        </div>
-
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d20361.026531977903!2d122.04334815541998!3d6.913594200000012!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x325041dd7a24816f%3A0x51af215fb64cc81a!2sWestern%20Mindanao%20State%20University!5e1!3m2!1sen!2sph!4v1734487486187!5m2!1sen!2sph"
-                            frameborder="0" style="border:0; width: 100%; height: 290px;" allowfullscreen></iframe>
                     </div>
 
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Email</h4>
+                            <p><?php echo htmlspecialchars($webDetails['org_email']); ?></p>
+                        </div>
+                    </div>
 
+                    <div class="info-card">
+                        <div class="info-icon">
+                            <i class="fas fa-phone"></i>
+                        </div>
+                        <div class="info-content">
+                            <h4>Phone</h4>
+                            <p><?php echo htmlspecialchars($webDetails['org_contact']); ?></p>
+                        </div>
+                    </div>
+
+                    <div class="map-container">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d20361.026531977903!2d122.04334815541998!3d6.913594200000012!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x325041dd7a24816f%3A0x51af215fb64cc81a!2sWestern%20Mindanao%20State%20University!5e1!3m2!1sen!2sph!4v1734487486187!5m2!1sen!2sph"
+                            frameborder="0" allowfullscreen></iframe>
+                    </div>
                 </div>
 
-                <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
-                    <form method="post" action="contact.php" role="form" id="contactForm" class="php-email-form">
-
-                        <div class="row">
-                            <div class="form-group col-md-6">
+                <div class="contact-form">
+                    <form method="post" action="contact.php" role="form" id="contactForm" class="form">
+                        <div class="form-row">
+                            <div class="form-group">
                                 <label for="name">Your Name</label>
                                 <input type="text" name="name" class="form-control" id="name" required>
                             </div>
-                            <div class="form-group col-md-6">
-                                <label for="name">Your Email</label>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
                                 <input type="email" class="form-control" name="email" id="email" required>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name">Mobile</label>
+                            <label for="mobile">Mobile</label>
                             <input type="text" name="mobile" class="form-control" id="mobile" required>
                         </div>
                         <div class="form-group">
-                            <label for="name">Subject</label>
+                            <label for="subject">Subject</label>
                             <input type="text" class="form-control" name="subject" id="subject" required>
                         </div>
                         <div class="form-group">
-                            <label for="name">Message</label>
-                            <textarea class="form-control" name="message" rows="10" required></textarea>
+                            <label for="message">Message</label>
+                            <textarea class="form-control" name="message" id="message" rows="5" required></textarea>
                         </div>
-                        <div class="my-3">
+                        <div class="form-messages">
                             <div class="loading">Loading</div>
                             <div class="error-message"></div>
                             <div class="sent-message">Your message has been sent. Thank you!</div>
                         </div>
-                        <div class="text-center"><button type="submit" name="submit">Send Message</button></div>
+                        <div class="form-submit">
+                            <button type="submit" name="submit" class="submit-btn">Send Message</button>
+                        </div>
                     </form>
-
                 </div>
-
             </div>
-
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script>
-        $(document).ready(function() {
-            $('#contactForm').submit(function(e) {
-                e.preventDefault();
-                var form = $(this);
-                var url = form.attr('action');
-
-                $.ajax({
-                    type: "POST",
-                    url: url,
-                    data: form.serialize(),
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.status === 'success') {
-                            $('.sent-message').text(data.message).show();
-                            $('.error-message').hide();
-                        } else {
-                            $('.error-message').text(data.message).show();
-                            $('.sent-message').hide();
-                        }
-                        form[0].reset();
-                    },
-                    error: function() {
-                        $('.error-message').text(
-                                'An unexpected error occurred. Please try again later.')
-                            .show();
-                        $('.sent-message').hide();
-                    }
-                });
-            });
-        });
-        </script>
-
     </section>
+    
     <?php include('include/footer.php')?>
-
 
     <!-- Scripts -->
     <!-- Bootstrap core JavaScript -->
@@ -329,39 +282,37 @@
     <script src="assets/js/custom.js"></script>
 
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("contactForm").addEventListener("submit", function(e) {
-            e.preventDefault(); // Prevent the default form submission
+    $(document).ready(function() {
+        $('#contactForm').submit(function(e) {
+            e.preventDefault();
+            var form = $(this);
+            var url = form.attr('action');
 
-            var formData = new FormData(this);
-
-            fetch("function/send.contact_us.php", {
-                    method: "POST",
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.querySelector(".sent-message").style.display = "block";
-                        document.querySelector(".error-message").style.display = "none";
-                        document.getElementById("contactForm").reset(); // Reset the form
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: form.serialize(),
+                dataType: 'json',
+                success: function(data) {
+                    if (data.status === 'success') {
+                        $('.sent-message').text(data.message).show();
+                        $('.error-message').hide();
                     } else {
-                        document.querySelector(".sent-message").style.display = "none";
-                        document.querySelector(".error-message").style.display = "block";
-                        document.querySelector(".error-message").innerHTML = data.message;
+                        $('.error-message').text(data.message).show();
+                        $('.sent-message').hide();
                     }
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    document.querySelector(".sent-message").style.display = "none";
-                    document.querySelector(".error-message").style.display = "block";
-                    document.querySelector(".error-message").innerHTML =
-                        "There was an error submitting your message. Please try again.";
-                });
+                    form[0].reset();
+                },
+                error: function() {
+                    $('.error-message').text(
+                            'An unexpected error occurred. Please try again later.')
+                        .show();
+                    $('.sent-message').hide();
+                }
+            });
         });
     });
     </script>
-
 
     <script>
     let currentSlideIndex = 0;
@@ -391,9 +342,6 @@
 
     showSlide(currentSlideIndex);
     setInterval(autoMoveSlide, 5000);
-
-
-
 
     //according to loftblog tut
     $('.nav li:first').addClass('active');

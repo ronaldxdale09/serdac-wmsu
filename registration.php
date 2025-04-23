@@ -78,7 +78,7 @@ include('function/db.php');
 function getOptions($table, $valueColumn, $textColumn) {
     global $con;
     $options = "";
-    $sql = "SELECT $valueColumn, $textColumn FROM $table ORDER BY $textColumn ASC";
+    $sql = "SELECT $valueColumn, $textColumn FROM $table ORDER BY id DESC";
     $result = $con->query($sql);
     if ($result->num_rows > 0) {
         while($row = $result->fetch_assoc()) {

@@ -20,7 +20,7 @@
 
     <?php if ($has_results): ?>
     <div class="table-responsive">
-        <table class="table" id='service_request_table'>
+        <table class="table" id='service_request_table' style="width: 100%">
             <thead>
                 <tr>
                     <th>ID</th>

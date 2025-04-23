@@ -1,11 +1,9 @@
 <style>
-
-
+/* Remove the conflicting notification styles from here since they're in navbar.css */
 .header-area .main-nav .nav {
     display: flex;
     align-items: center;
 }
-
 
 /* Profile/Portal and notification container */
 .user-section {
@@ -14,101 +12,14 @@
     gap: 20px;
 }
 
-/* Update notification icon styles */
-.notificon {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    margin-left: auto;
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
 
-.notification-dropdown {
-    position: relative;
-    margin-left: 0;
-    /* Remove the previous margin */
-}
-
-
-.notification-icon {
-    position: relative;
-    cursor: pointer;
-}
-
-.notification-badge {
-    position: absolute;
-    right: -8px;
-    padding: 2px 5px;
-    border-radius: 50%;
-    background: red;
-    color: white;
-    font-size: 10px;
-    line-height: 1;
-}
-
-.notification-content {
-    display: none;
-    position: absolute;
-    right: -10px;
-    top: 100%;
-    background-color: #ffffff;
-    min-width: 300px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    border-radius: 8px;
-    z-index: 1000;
-    max-height: 400px;
-    overflow-y: auto;
-    margin-top: 12px;
-    padding: 8px 0;
-    font-family: Arial, sans-serif;
-}
-
-.notification-item {
-    padding: 12px 16px;
-    border-bottom: 1px solid #f0f0f0;
-    transition: background-color 0.2s ease;
-    cursor: pointer;
-}
-
-.notification-item:last-child {
-    border-bottom: none;
-}
-
-.notification-item:hover {
-    background-color: #f9f9f9;
-}
-
-.notification-item p {
-    margin: 0 0 4px 0;
-    font-size: 14px;
-    color: #333;
-    line-height: 1.4;
-}
-
-.notification-item small {
-    font-size: 12px;
-    color: #888;
-}
-
-.notification-item:last-child {
-    border-bottom: none;
-}
-
-/* Scrollbar styling for webkit browsers */
-.notification-content::-webkit-scrollbar {
-    width: 8px;
-}
-
-.notification-content::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
-.notification-content::-webkit-scrollbar-thumb {
-    background: #888;
-    border-radius: 4px;
-}
-
-.notification-content::-webkit-scrollbar-thumb:hover {
-    background: #555;
+.header-area + .hero-section {
+    margin-top: -1px; /* This removes any potential gap */
 }
 </style>
 
@@ -122,20 +33,23 @@ function getUnreadNotifications($con, $userId, $limit = 5) {
     return mysqli_stmt_get_result($stmt);
 }
 ?>
+<link rel="stylesheet" href="css/homepage.css">
+
+<link rel="stylesheet" href="css/navbar.css">
+
+<!-- Sub Header -->
 <div class="sub-header">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-sm-8">
                 <div class="left-content">
-                    <p>Satellite Socio-Economic Research and Data Analytics Center - WMSU </p>
+                    <p>Satellite Socio-Economic Research and Data Analytics Center - WMSU</p>
                 </div>
             </div>
             <div class="col-lg-4 col-sm-4">
                 <div class="right-icons">
                     <ul>
-                        <li><a href="https://www.facebook.com/satellite.serdac.wmsu" target="_blank"><i
-                                    class="fa fa-facebook"></i></a>
-                        </li>
+                        <li><a href="https://www.facebook.com/satellite.serdac.wmsu" target="_blank"><i class="fa fa-facebook"></i></a></li>
                     </ul>
                 </div>
             </div>
@@ -143,142 +57,302 @@ function getUnreadNotifications($con, $userId, $limit = 5) {
     </div>
 </div>
 
-<header class="header-area header-sticky">
+<!-- Main Header -->
+<header class="header-area">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <nav class="main-nav">
+                    <!-- Logo -->
                     <div class="logo">
-                        <img src="assets/images/logo_nav.png" alt="Logo" class="navbar-logo">
+                        <a href="index.php">
+                            <img src="assets/images/logo_nav.png" alt="SERDAC Logo" class="navbar-logo">
+                        </a>
                     </div>
 
+                    <!-- Navigation Menu -->
                     <ul class="nav">
-                        <li><a href="index.php" class="active">Home</a></li>
-                        <li><a href="news.php">News</a></li>
-                        <li class="has-sub servnav">
-                            <a href="javascript:void(0)">Repository</a>
+                        <li><a href="index.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>">HOME</a></li>
+                        <li><a href="news.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'news.php') ? 'active' : ''; ?>">NEWS</a></li>
+                        <li class="has-sub">
+                            <a href="javascript:void(0)">REPOSITORY</a>
                             <ul class="sub-menu">
                                 <li><a href="project_list.php"><i class="fas fa-project-diagram"></i> Projects</a></li>
                                 <li><a href="publication.php"><i class="fas fa-book"></i> E-Books</a></li>
                             </ul>
                         </li>
-                        <li class="has-sub servnav">
+                        <li class="has-sub">
                             <a href="javascript:void(0)">SERVICES</a>
                             <ul class="sub-menu">
-                                <li><a href="request.php"><i class="fas fa-chalkboard-teacher"></i> REQUEST SERVICE</a>
-                                <li><a href="service_join.php"><i class="fas fa-user-plus"></i> JOIN TRAINING</a></li>
-
+                                <li><a href="request.php"><i class="fas fa-chalkboard-teacher"></i>   Request Service</a></li>
+                                <li><a href="service_join.php"><i class="fas fa-user-plus"></i> Join Training</a></li>
+                            </ul>
                         </li>
-                    </ul>
-                    </li>
-                    <li><a href="contact_us.php">Contact Us</a></li>
+                        <li><a href="contact_us.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'contact_us.php') ? 'active' : ''; ?>">CONTACT US</a></li>
 
-                    <?php
-if (isset($_SESSION["userId_code"]) && !empty($_SESSION["userId_code"])) {
-    $userId = $_SESSION["userId_code"];
-    $unreadNotifications = getUnreadNotifications($con, $userId);
-    $unreadCount = mysqli_num_rows($unreadNotifications);
-    
-    echo '<div class="user-section">';
-    
-    if (($_SESSION["accessType"]) == 'Administrator') {
-        echo '<li><a href="admin/index.php"><i class="fas fa-user"></i> PORTAL</a></li>';
-    } else {
-        echo '<li><a href="profile.php"><i class="fas fa-user"></i> PROFILE</a></li>';
-    }
-    
-    // Notification icon and dropdown
-    echo '<li class="notification-dropdown">';
-    echo '<a href="#" class="notification-icon" id="notificationToggle">';
-    echo '<i class="fas fa-bell"></i>';
-    if ($unreadCount > 0) {
-        echo '<span class="notification-badge">' . $unreadCount . '</span>';
-    }
-    echo '</a>';
-    
-    echo '<div class="notification-content" id="notificationContent">';
-    if ($unreadCount > 0) {
-        while ($row = mysqli_fetch_assoc($unreadNotifications)) {
-            echo '<div class="notification-item" data-notification-id="' . $row['notification_id'] . '">';
-            echo '<p>' . htmlspecialchars($row['message']) . '</p>';
-            echo '<small>' . date('M j, Y H:i', strtotime($row['created_at'])) . '</small>';
-            echo '</div>';
-        }
-    } else {
-        echo '<div class="notification-item"><p>No new notifications</p></div>';
-    }
-    echo '</div>';
-    echo '</li>';
-    echo '</div>';
-} else {
-    echo '<li><a href="login.php"><i class="fas fa-sign-in-alt"></i> LOGIN</a></li>';
-}
-?>
+                        <?php
+                        if (isset($_SESSION["userId_code"]) && !empty($_SESSION["userId_code"])) {
+                            $userId = $_SESSION["userId_code"];
+                            $unreadNotifications = getUnreadNotifications($con, $userId);
+                            $unreadCount = mysqli_num_rows($unreadNotifications);
+                            
+                            echo '<div class="user-section">';
+                            
+                            if (($_SESSION["accessType"]) == 'Administrator') {
+                                echo '<li><a href="admin/index.php"><i class="fas fa-user"></i> PORTAL</a></li>';
+                            } else {
+                                echo '<li><a href="profile.php"><i class="fas fa-user"></i> PROFILE</a></li>';
+                            }
+                            
+                            // Updated notification icon and dropdown
+                            echo '<li class="notification-dropdown">';
+                            echo '<a href="javascript:void(0)" class="notification-icon" id="notificationToggle">';
+                            echo '<i class="fas fa-bell"></i>';
+                            if ($unreadCount > 0) {
+                                echo '<span class="notification-badge">' . $unreadCount . '</span>';
+                            }
+                            echo '</a>';
+                            
+                            echo '<div class="notification-content" id="notificationContent">';
+                            if ($unreadCount > 0) {
+                                while ($row = mysqli_fetch_assoc($unreadNotifications)) {
+                                    echo '<div class="notification-item" data-notification-id="' . $row['notification_id'] . '">';
+                                    echo '<p>' . htmlspecialchars($row['message']) . '</p>';
+                                    echo '<small>' . date('M j, Y H:i', strtotime($row['created_at'])) . '</small>';
+                                    echo '</div>';
+                                }
+                            } else {
+                                echo '<div class="notification-item"><p>No new notifications</p></div>';
+                            }
+                            echo '</div>';
+                            echo '</li>';
+                            echo '</div>';
+                        } else {
+                            echo '<li><a href="request.php" class="btn-primary"><i class="fas fa-handshake"></i> REQUEST SERVICE</a></li>';
+                            echo '<li><a href="login.php" class="btn-login"><i class="fas fa-sign-in-alt"></i> LOGIN</a></li>';
+                        }
+                        ?>
                     </ul>
-                    <a class='menu-trigger'>
-                        <span>Menu</span>
-                    </a>
+                    
+                    <!-- Mobile Menu Trigger -->
+                    <div class='menu-trigger'>
+                        <i class="fas fa-bars"></i>
+                    </div>
                 </nav>
             </div>
         </div>
     </div>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay"></div>
 </header>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    var notificationToggle = document.getElementById('notificationToggle');
-    var notificationContent = document.getElementById('notificationContent');
-
-    if (notificationToggle && notificationContent) {
-        notificationToggle.addEventListener('click', function(e) {
+    const menuTrigger = document.querySelector('.menu-trigger');
+    const nav = document.querySelector('.header-area .main-nav .nav');
+    const overlay = document.querySelector('.mobile-nav-overlay');
+    const hasSubItems = document.querySelectorAll('.header-area .main-nav .nav li.has-sub');
+    
+    // Toggle mobile menu
+    if (menuTrigger && nav && overlay) {
+        menuTrigger.addEventListener('click', function(e) {
             e.preventDefault();
             e.stopPropagation();
-            if (notificationContent.style.display === 'block') {
-                notificationContent.style.display = 'none';
+            
+            // Toggle classes
+            this.classList.toggle('active');
+            nav.classList.toggle('show');
+            overlay.classList.toggle('show');
+            
+            // Toggle body scroll
+            if (nav.classList.contains('show')) {
+                document.body.style.overflow = 'hidden';
             } else {
-                notificationContent.style.display = 'block';
+                document.body.style.overflow = '';
             }
         });
 
-        // Close the dropdown when clicking outside of it
-        document.addEventListener('click', function(e) {
-            if (!notificationToggle.contains(e.target) && !notificationContent.contains(e.target)) {
-                notificationContent.style.display = 'none';
-            }
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', function() {
+            menuTrigger.classList.remove('active');
+            nav.classList.remove('show');
+            overlay.classList.remove('show');
+            document.body.style.overflow = '';
         });
 
-        // Handle clicks on notification items
-        notificationContent.addEventListener('click', function(e) {
-            var notificationItem = e.target.closest('.notification-item');
-            if (notificationItem) {
-                var notificationId = notificationItem.dataset.notificationId;
-                if (notificationId) {
-                    // Mark notification as read
-                    markNotificationAsRead(notificationId);
-                    // Redirect to the notification details page or perform any other action
-                    window.location.href = 'profile.php?tab=request';
-                }
-            }
+        // Prevent menu from closing when clicking inside nav
+        nav.addEventListener('click', function(e) {
             e.stopPropagation();
         });
     }
-});
 
-function markNotificationAsRead(notificationId) {
-    // Send an AJAX request to mark the notification as read
-    fetch('function/mark_notification_read.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'notification_id=' + notificationId
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Update UI if needed (e.g., remove the notification, update counter)
-                console.log('Notification marked as read');
+    // Handle dropdowns
+    hasSubItems.forEach(item => {
+        const link = item.querySelector('a');
+        const submenu = item.querySelector('.sub-menu');
+        
+        if (link && submenu) {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth <= 991) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Close other open submenus
+                    hasSubItems.forEach(otherItem => {
+                        if (otherItem !== item && otherItem.classList.contains('open')) {
+                            otherItem.classList.remove('open');
+                            const otherSubmenu = otherItem.querySelector('.sub-menu');
+                            if (otherSubmenu) {
+                                otherSubmenu.style.maxHeight = '0px';
+                            }
+                        }
+                    });
+                    
+                    // Toggle current submenu
+                    item.classList.toggle('open');
+                    if (item.classList.contains('open')) {
+                        submenu.style.maxHeight = submenu.scrollHeight + "px";
+                    } else {
+                        submenu.style.maxHeight = "0px";
+                    }
+                }
+            });
+        }
+    });
+
+    // Close mobile menu on window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 991) {
+            if (menuTrigger) menuTrigger.classList.remove('active');
+            if (nav) nav.classList.remove('show');
+            if (overlay) overlay.classList.remove('show');
+            document.body.style.overflow = '';
+            
+            // Reset all submenus
+            hasSubItems.forEach(item => {
+                item.classList.remove('open');
+                const submenu = item.querySelector('.sub-menu');
+                if (submenu) {
+                    submenu.style.maxHeight = '';
+                }
+            });
+        }
+    });
+
+    // Enhanced notification handling
+    const notificationToggle = document.getElementById('notificationToggle');
+    const notificationContent = document.getElementById('notificationContent');
+    const mobileOverlay = document.querySelector('.mobile-nav-overlay');
+
+    if (notificationToggle && notificationContent) {
+        // Toggle notification dropdown
+        notificationToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Close any open mobile menu first
+            const nav = document.querySelector('.header-area .main-nav .nav');
+            const menuTrigger = document.querySelector('.menu-trigger');
+            if (nav && nav.classList.contains('show')) {
+                nav.classList.remove('show');
+                menuTrigger.classList.remove('active');
+                mobileOverlay.classList.remove('show');
             }
-        })
-        .catch(error => console.error('Error:', error));
-}
+
+            // Toggle notification dropdown
+            const isOpen = notificationContent.classList.contains('show');
+            
+            // Close all other dropdowns first
+            document.querySelectorAll('.notification-content.show').forEach(dropdown => {
+                if (dropdown !== notificationContent) {
+                    dropdown.classList.remove('show');
+                }
+            });
+
+            // Toggle current dropdown
+            notificationContent.classList.toggle('show');
+            
+            // Show overlay on mobile when notifications are open
+            if (window.innerWidth <= 991) {
+                if (!isOpen) {
+                    mobileOverlay.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    mobileOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        // Close notification when clicking a notification item
+        notificationContent.addEventListener('click', function(e) {
+            if (e.target.closest('.notification-item')) {
+                notificationContent.classList.remove('show');
+                if (window.innerWidth <= 991) {
+                    mobileOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        // Close notification when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!notificationToggle.contains(e.target) && !notificationContent.contains(e.target)) {
+                notificationContent.classList.remove('show');
+                if (window.innerWidth <= 991) {
+                    mobileOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            }
+        });
+
+        // Close notification on overlay click (mobile)
+        if (mobileOverlay) {
+            mobileOverlay.addEventListener('click', function() {
+                if (notificationContent.classList.contains('show')) {
+                    notificationContent.classList.remove('show');
+                    mobileOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (notificationContent.classList.contains('show')) {
+                if (window.innerWidth > 991) {
+                    mobileOverlay.classList.remove('show');
+                    document.body.style.overflow = '';
+                } else {
+                    mobileOverlay.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+        });
+    }
+
+    // Sticky header
+    const header = document.querySelector('.header-area');
+    const subHeader = document.querySelector('.sub-header');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', function() {
+        const currentScroll = window.pageYOffset;
+        const subHeaderHeight = subHeader ? subHeader.offsetHeight : 0;
+
+        if (currentScroll > subHeaderHeight) {
+            header.classList.add('header-sticky');
+            if (currentScroll > lastScroll) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+        } else {
+            header.classList.remove('header-sticky');
+            header.style.transform = '';
+        }
+        lastScroll = currentScroll;
+    });
+});
 </script>

@@ -1,8 +1,12 @@
+/* Carousel Component Styles */
+
 .carousel-container {
     position: relative;
     width: 100%;
-    height: 500px;
+    height: 100%;
     overflow: hidden;
+    margin: 0;
+    padding: 0;
 }
 
 .carousel-slide {
@@ -12,35 +16,97 @@
     width: 100%;
     height: 100%;
     opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    visibility: hidden;
+    transition: opacity 1s ease, visibility 1s ease;
+    z-index: 1;
+    margin: 0;
+    padding: 0;
 }
 
 .carousel-slide.active {
     opacity: 1;
+    visibility: visible;
+    z-index: 2;
 }
 
 .carousel-slide img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center;
+}
+
+/* Carousel Controls */
+.carousel-controls {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px;
+    z-index: 10;
 }
 
 .carousel-control {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    color: white;
-    font-size: 36px;
-    text-decoration: none;
-    transition: all 0.3s;
-    z-index: 10;
-    opacity: 0.7;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 18px;
     cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .carousel-control:hover {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.1);
+    background-color: #800000;
+}
+
+/* Smooth Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(1.05);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+}
+
+.carousel-slide.active {
+    animation: fadeIn 1s forwards;
+}
+
+.carousel-slide:not(.active) {
+    animation: fadeOut 1s forwards;
+}
+
+/* Article Link Styles */
+.article-link {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease;
+}
+
+.article-link:hover {
+    color: #f5a425;
 }
 
 .carousel-control-prev {
