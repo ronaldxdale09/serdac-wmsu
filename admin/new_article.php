@@ -3,8 +3,8 @@
 /* ... other styles ... */
 </style>
 
-
-
+<!-- Add Bootstrap Datepicker CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
 <link rel="stylesheet" href="css/new_article.css">
 
 <body>
@@ -81,6 +81,19 @@
                                         </div>
                                     </div>
 
+                                    <!-- Add Date Picker Field -->
+                                    <div class="form-group row">
+                                        <div class="col-4">
+                                            <label for="published_date" class="required">Publication Date:</label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control" id="published_date" name="published_date" 
+                                                    placeholder="Select Date" value="<?php echo date('Y-m-d'); ?>">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="form-group">
                                         <label for="subtitle" class="required">Subtitle:</label>
@@ -131,8 +144,18 @@
 
     </div>
     <?php include('include/footer.php');?>
+    <!-- Add Bootstrap Datepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
     <script>
     $(document).ready(function() {
+        // Initialize Datepicker
+        $('#published_date').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true,
+            todayBtn: 'linked'
+        });
+
         // Initialize TinyMCE
         tinymce.init({
             selector: '#content',
@@ -173,6 +196,7 @@
             var subtitle = $('#subtitle').val().trim();
             var image = $('#image')[0].files[0];
             var content = tinymce.get('content').getContent().trim();
+            var published_date = $('#published_date').val().trim();
 
             if (!title) {
                 Swal.fire('Error', 'Please enter a title', 'info');
@@ -192,6 +216,10 @@
             }
             if (!content) {
                 Swal.fire('Error', 'Please enter some content', 'info');
+                return false;
+            }
+            if (!published_date) {
+                Swal.fire('Error', 'Please select a publication date', 'info');
                 return false;
             }
             return true;

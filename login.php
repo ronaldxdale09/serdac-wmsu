@@ -55,6 +55,7 @@ window.onload = function() {
     <link rel="icon" type="image/x-icon" href="assets/images/serdac.ico">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
@@ -66,57 +67,97 @@ window.onload = function() {
 
 
 <body>
-    <div class="wrapper">
-
-        <div class="logos-container">
-            <img src="assets/images/serdac.png" alt="School Logo 1" class="school-logo" />
-            <img src="assets/images/wmsu.png" alt="School Logo 2" class="school-logo" />
-        </div>
-        <div class="alert alert-success alert-dismissible fade show" style="display:none" role="alert"
-            id="show-activate">
-            <strong>Activation Successful</strong> – Your account has been successfully activated. Welcome aboard!
-        </div>
-        <div class="headline">
-            <h1>WELCOME<br>SERDAC-WMSU</h1>
-        </div>
-        <form class="form" method="post" action="#" id="loginForm">
-            <div class="form-group">
-                <input type="email" name="email" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <input type="password" name="password" placeholder="Password">
-            </div>
-            <div class="forget-password">
-                <div class="check-box">
-                    <input type="checkbox" id="checkbox">
-                    <label for="checkbox">Remember me</label>
+    <div class="login-container">
+        <div class="login-wrapper">
+            <div class="login-left">
+                <div class="login-overlay"></div>
+                <div class="login-content">
+                    <h1>Welcome to SERDAC-WMSU</h1>
+                    <p>Socio-Economic Research and Data Analytics Center</p>
                 </div>
-                <a href="reset_pass.php">Forget password?</a>
             </div>
-            <button type="submit" class="btn">LOGIN</button>
-            <div class="account-exist">
-                Create a new account? <a href="registration.php" id="signup">Signup</a>
-                <button onclick="location.href='index.php';" class="btn-dashboard">Return to Homepage</button>
+            
+            <div class="login-right">
+                <div class="logos-container">
+                    <img src="assets/images/serdac.png" alt="SERDAC Logo" class="school-logo" />
+                    <img src="assets/images/wmsu.png" alt="WMSU Logo" class="school-logo" />
+                </div>
 
+                <div class="alert alert-success alert-dismissible fade show" style="display:none" role="alert" id="show-activate">
+                    <strong>Activation Successful</strong> – Your account has been successfully activated. Welcome aboard!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="login-form-container">
+                    <h2>Sign In</h2>
+                    <p class="login-subtitle">Please login to your account</p>
+
+                    <form class="login-form" method="post" action="#" id="loginForm">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                <input type="email" name="email" placeholder="Email Address" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                <input type="password" name="password" placeholder="Password" required>
+                                <span class="input-group-text password-toggle">
+                                    <i class="fas fa-eye-slash"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-options">
+                            <div class="remember-me">
+                                <input type="checkbox" id="checkbox">
+                                <label for="checkbox">Remember me</label>
+                            </div>
+                            <a href="reset_pass.php" class="forgot-password">Forgot password?</a>
+                        </div>
+
+                        <button type="submit" class="btn-login">Sign In</button>
+
+                        <div class="login-footer">
+                            <p>Don't have an account? <a href="registration.php">Sign Up</a></p>
+                            <a href="index.php" class="btn-return">Return to Homepage</a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </form>
+        </div>
     </div>
-</body>
 
-</html>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Password visibility toggle
+        const passwordToggles = document.querySelectorAll('.password-toggle');
+        passwordToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const icon = this.querySelector('i');
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                } else {
+                    input.type = 'password';
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                }
+            });
+        });
+    });
 
-<script>
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
 
-    var formData = new FormData(this);
-
-    fetch('function/login.php', {
+        fetch('function/login.php', {
             method: 'post',
             body: formData
         }).then(response => response.json())
         .then(data => {
-            console.log('Response data:', data); // Add this line to inspect the data
             if (data.success) {
                 window.location.href = data.redirect;
             } else {
@@ -124,14 +165,16 @@ document.getElementById('loginForm').addEventListener('submit', function(e) {
                     icon: 'info',
                     title: 'Login Failed',
                     text: data.message,
-                    confirmButtonColor: '#3085d6',
+                    confirmButtonColor: '#800000',
                     confirmButtonText: 'Try Again'
                 });
-
             }
         })
         .catch(error => {
             console.error('Error:', error);
         });
-});
-</script>
+    });
+    </script>
+</body>
+
+</html>

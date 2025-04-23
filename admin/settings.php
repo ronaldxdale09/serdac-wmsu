@@ -58,10 +58,9 @@
 }
 </style>
 
-<body>
+<body class="bg-light">
     <!-- Left Panel -->
     <?php include('include/sidebar.php')?>
-    <!-- /#left-panel -->
     <!-- Right Panel -->
     <div id="right-panel" class="right-panel">
         <!-- Header-->
@@ -69,187 +68,163 @@
 
         <!-- Content -->
         <div class="content">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <strong class="card-title"> Settings</strong>
+            <div class="settings-wrapper">
+                <div class="settings-grid">
+                    <!-- Settings Navigation -->
+                    <div class="settings-nav">
+                        <div class="settings-nav-header">
+                            <h5 class="settings-nav-title">Settings</h5>
+                            <p class="settings-nav-subtitle">Manage your system preferences</p>
                         </div>
-                        <div class="card-body">
-                            <ul class="nav nav-tabs" id="settingsTabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="profile-tab" data-toggle="tab" href="#profile"
-                                        role="tab">CMS</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="security-tab" data-toggle="tab" href="#security"
-                                        role="tab">Registration Settings</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="notifications-tab" data-toggle="tab" href="#notifications"
-                                        role="tab">Service Request</a>
-                                </li>
-                                <!-- <li class="nav-item">
-                                    <a class="nav-link" id="appearance-tab" data-toggle="tab" href="#appearance"
-                                        role="tab">Appearance</a>
-                                </li> -->
-                            </ul>
-                            <div class="tab-content mt-3" id="settingsTabContent">
-                                <div class="tab-pane fade show active" id="profile" role="tabpanel">
-                                    <?php include('settings/content_update.php'); ?>
-                                </div>
-                                <div class="tab-pane fade" id="security" role="tabpanel">
-                                    <?php include('settings/registration_dropdowns.php'); ?>
+                        <ul class="settings-nav-list">
+                            <li class="settings-nav-item">
+                                <a href="#cms" class="settings-nav-link active" data-toggle="tab">
+                                    <i class="fas fa-newspaper"></i>
+                                    <span>Content Management</span>
+                                </a>
+                            </li>
+                            <li class="settings-nav-item">
+                                <a href="#registration" class="settings-nav-link" data-toggle="tab">
+                                    <i class="fas fa-user-plus"></i>
+                                    <span>Registration</span>
+                                </a>
+                            </li>
+                            <li class="settings-nav-item">
+                                <a href="#service" class="settings-nav-link" data-toggle="tab">
+                                    <i class="fas fa-cogs"></i>
+                                    <span>Service Request</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
+                    <!-- Settings Content -->
+                    <div class="settings-content">
+                        <div class="tab-content">
+                            <!-- CMS Settings -->
+                            <div class="tab-pane fade show active" id="cms">
+                                <div class="settings-header">
+                                    <div>
+                                        <h4 class="settings-title">Content Management System</h4>
+                                        <p class="settings-description">Manage your website content and information</p>
+                                    </div>
                                 </div>
-                                <div class="tab-pane fade" id="notifications" role="tabpanel">
-                                    <h3>Service Request Dropdown</h3>
-                                    <?php include('settings/request_dropdown.php'); ?>
+                                <div class="settings-body">
+                                    <div class="settings-section">
+                                        <div class="settings-section-header">
+                                            <h6 class="settings-section-title">Website Content</h6>
+                                            <p class="settings-section-description">Update your website's main content and information</p>
+                                        </div>
+                                        <?php include('settings/content_update.php'); ?>
+                                    </div>
                                 </div>
-                                <div class="tab-pane fade" id="appearance" role="tabpanel">
-                                    <h3>Appearance Settings</h3>
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="theme">Theme</label>
-                                            <select class="form-control" id="theme">
-                                                <option>Light</option>
-                                                <option>Dark</option>
-                                                <option>System Default</option>
-                                            </select>
+                            </div>
+
+                            <!-- Registration Settings -->
+                            <div class="tab-pane fade" id="registration">
+                                <div class="settings-header">
+                                    <div>
+                                        <h4 class="settings-title">Registration Settings</h4>
+                                        <p class="settings-description">Configure registration options and requirements</p>
+                                    </div>
+                                </div>
+                                <div class="settings-body">
+                                    <div class="settings-section">
+                                        <div class="settings-section-header">
+                                            <h6 class="settings-section-title">Registration Options</h6>
+                                            <p class="settings-section-description">Manage registration fields and requirements</p>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="fontSize">Font Size</label>
-                                            <select class="form-control" id="fontSize">
-                                                <option>Small</option>
-                                                <option>Medium</option>
-                                                <option>Large</option>
-                                            </select>
+                                        <?php include('settings/registration_dropdowns.php'); ?>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Service Request Settings -->
+                            <div class="tab-pane fade" id="service">
+                                <div class="settings-header">
+                                    <div>
+                                        <h4 class="settings-title">Service Request Settings</h4>
+                                        <p class="settings-description">Configure service request options and workflows</p>
+                                    </div>
+                                </div>
+                                <div class="settings-body">
+                                    <div class="settings-section">
+                                        <div class="settings-section-header">
+                                            <h6 class="settings-section-title">Service Options</h6>
+                                            <p class="settings-section-description">Manage service types and configurations</p>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Save Appearance</button>
-                                    </form>
+                                        <?php include('settings/request_dropdown.php'); ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div><!-- .animated -->
+            </div>
         </div>
     </div>
 
     <script>
     $(document).ready(function() {
-        $('#settingsTabs a').on('click', function(e) {
+        // Initialize tooltips
+        $('[data-toggle="tooltip"]').tooltip();
+
+        // Handle tab navigation
+        $('.settings-nav-link').on('click', function(e) {
             e.preventDefault();
-            $(this).tab('show');
+            const target = $(this).attr('href');
+            
+            // Update navigation state
+            $('.settings-nav-link').removeClass('active');
+            $(this).addClass('active');
+            
+            // Update content visibility
+            $('.tab-pane').removeClass('show active');
+            $(target).addClass('show active');
         });
-    });
-    </script>
-</body>
-<style>
-.modal-header {
-    background-color: #343a40;
-    color: #fff;
-    border-bottom: none;
-    padding: 20px;
-}
 
-.modal-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-}
+        // Show initial tab
+        const initialTab = window.location.hash || '#cms';
+        $(`.settings-nav-link[href="${initialTab}"]`).addClass('active');
+        $(initialTab).addClass('show active');
 
-.modal-body {
-    padding: 20px;
-}
+        // Handle form submissions with feedback
+        $('.settings-form').on('submit', function(e) {
+            e.preventDefault();
+            const $form = $(this);
+            const $button = $form.find('button[type="submit"]');
+            
+            // Add loading state
+            $button.prop('disabled', true)
+                   .html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
 
-.modal-footer {
-    border-top: none;
-    padding: 20px;
-}
+            // Simulate form submission (replace with actual AJAX call)
+            setTimeout(() => {
+                $button.prop('disabled', false).html('Save Changes');
+                showAlert('success', 'Settings saved successfully!');
+            }, 1000);
+        });
 
-.form-control {
-    border-radius: 0.25rem;
-}
-
-.btn-primary {
-    background-color: #007bff;
-    border: none;
-    border-radius: 0.25rem;
-    transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-}
-
-.btn-secondary {
-    border-radius: 0.25rem;
-}
-
-.form-control-file {
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    padding: 5px;
-}
-</style>
-<!-- Add Ebook Modal -->
-<div class="modal fade" id="addEbookModal" tabindex="-1" role="dialog" aria-labelledby="addEbookModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form method="post" action="function/repo.ebook.action.php" enctype="multipart/form-data">
-                <div class="modal-header">
-                    <h6 class="modal-title" id="addEbookModalLabel">Add Ebook</h6>
+        // Function to show alerts
+        function showAlert(type, message) {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="bookTitle">Book Title</label>
-                        <input type="text" class="form-control" id="bookTitle" name="book_title" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group col-md-6">
-                            <label for="author">Author</label>
-                            <input type="text" class="form-control" id="author" name="author" required>
-                        </div>
-                        <div class="form-group col-md-6">
-                            <label for="yearPublished">Year Published</label>
-                            <input type="number" class="form-control" id="yearPublished" name="year_published" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="coverPage">Cover Page</label>
-                        <input type="file" class="form-control-file" id="coverPage" name="cover_page">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="new_ebook" class="btn btn-primary">Save</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<?php include('include/footer.php');?>
+            `;
+            $('.settings-body').prepend(alertHtml);
+            
+            // Auto dismiss after 3 seconds
+            setTimeout(() => {
+                $('.alert').alert('close');
+            }, 3000);
+        }
+    });
+    </script>
 
-
-
-
-<script>
-$('.btnDelete').on('click', function() {
-
-    var $tr = $(this).closest('tr');
-    var data = $tr.children("td").map(function() {
-        return $.trim($(this).text()); // Trimming the text content of each 'td'
-    }).get();
-
-
-    $('#deleteUserId').val(data[0]);
-
-    // Show the Delete User modal
-    var modal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
-    modal.show();
-});
-</script>
-
+    <?php include('include/footer.php');?>
+</body>
 </html>

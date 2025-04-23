@@ -60,168 +60,167 @@ if ($result && mysqli_num_rows($result) > 0) {
 // Don't forget to free the result
 mysqli_free_result($result);
 ?>
-<form id="contentUpdateForm" method="post" action="update_web_details.php">
 
-
-    <div class="container-fluid py-4">
-        <h2 class="mb-4">Website Content Management</h2>
-        <form id="contentUpdateForm" method="post" action="update_web_details.php" enctype="multipart/form-data">
-            <div class="container-fluid py-4">
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="card content-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Banner Image</h5>
-                                <?php if (!empty($webDetails['banner_image'])): ?>
-                                <div class="mb-3">
-                                    <img src="../assets/images/<?php echo htmlspecialchars($webDetails['banner_image']); ?>"
-                                        alt="Current Banner" id="bannerPreview" class="img-fluid">
-                                </div>
-                                <?php endif; ?>
-                                <div class="custom-file">
-                                    <input type="file" class="custom-file-input" id="bannerImage" name="banner_image"
-                                        accept="image/*">
-                                    <label class="custom-file-label" for="bannerImage">Choose file</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="card content-card">
-                            <div class="card-body">
-                                <h5 class="card-title">About Us</h5>
-                                <div class="form-group">
-                                    <textarea class="form-control" id="aboutUs" name="about_us" rows="5"
-                                        placeholder="Enter About Us content"><?php echo htmlspecialchars($webDetails['about_us']); ?></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 mb-4">
-                        <div class="card content-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Mission</h5>
-                                <div class="form-group">
-                                    <textarea class="form-control" id="mission" name="mission" rows="4"
-                                        placeholder="Enter Mission statement"><?php echo htmlspecialchars($webDetails['mission']); ?></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="card content-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Vision</h5>
-                                <div class="form-group">
-                                    <textarea class="form-control" id="vision" name="vision" rows="4"
-                                        placeholder="Enter Vision statement"><?php echo htmlspecialchars($webDetails['vision']); ?></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4 mb-4">
-                        <div class="card content-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Goals</h5>
-                                <div class="form-group">
-                                    <textarea class="form-control" id="goals" name="goals" rows="4"
-                                        placeholder="Enter Goals"><?php echo htmlspecialchars($webDetails['goals']); ?></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="card content-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Contact Information</h5>
-                                <div class="form-group">
-                                    <label for="email">Email Address</label>
-                                    <input type="email" class="form-control" id="email" name="email"
-                                        placeholder="Enter email address"
-                                        value="<?php echo htmlspecialchars($webDetails['org_email']); ?>">
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactAddress">Contact Address</label>
-                                    <input type="text" class="form-control" id="contactAddress" name="contact"
-                                        placeholder="Enter contact address"
-                                        value="<?php echo htmlspecialchars($webDetails['org_contact']); ?>">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary btn-lg">Update Content</button>
-                    </div>
-                </div>
+<form class="content-form" method="post" action="function/content.update.php" enctype="multipart/form-data">
+    <!-- Banner Image Section -->
+    <div class="content-group">
+        <label class="content-label">Banner Image</label>
+        <p class="content-description">Upload a high-quality image for your website banner</p>
+        <div class="editor-container">
+            <input type="file" class="form-control" name="banner_image" accept="image/*">
+            <?php if(isset($webDetails['banner_image']) && !empty($webDetails['banner_image'])): ?>
+            <div class="content-image-preview">
+                <img src="../assets/images/<?php echo htmlspecialchars($webDetails['banner_image']); ?>" alt="Current Banner">
             </div>
-        </form>
+            <?php endif; ?>
+        </div>
     </div>
-    <script>
-    $(document).ready(function() {
-        $('.custom-file-input').on('change', function() {
-            let fileName = $(this).val().split('\\').pop();
-            $(this).next('.custom-file-label').addClass("selected").html(fileName);
 
-            // Preview the new image
-            if (this.files && this.files[0]) {
-                let reader = new FileReader();
-                reader.onload = function(e) {
-                    $('#bannerPreview').attr('src', e.target.result).show();
-                }
-                reader.readAsDataURL(this.files[0]);
-            }
-        });
-    })
+    <!-- About Us Section -->
+    <div class="content-group">
+        <label class="content-label">About Us</label>
+        <p class="content-description">Describe your organization and its mission</p>
+        <div class="editor-container">
+            <div class="editor-toolbar">
+                <button type="button" class="editor-tool" title="Bold"><i class="fas fa-bold"></i></button>
+                <button type="button" class="editor-tool" title="Italic"><i class="fas fa-italic"></i></button>
+                <button type="button" class="editor-tool" title="Link"><i class="fas fa-link"></i></button>
+            </div>
+            <textarea class="content-textarea" name="about_us" placeholder="Enter your about us content"><?php echo isset($webDetails['about_us']) ? htmlspecialchars($webDetails['about_us']) : ''; ?></textarea>
+        </div>
+        <div class="content-counter">0/1000 characters</div>
+    </div>
 
-    document.getElementById('contentUpdateForm').addEventListener('submit', function(e) {
-        e.preventDefault();
+    <!-- Mission Section -->
+    <div class="content-group">
+        <label class="content-label">Mission</label>
+        <p class="content-description">State your organization's mission</p>
+        <div class="editor-container">
+            <div class="editor-toolbar">
+                <button type="button" class="editor-tool" title="Bold"><i class="fas fa-bold"></i></button>
+                <button type="button" class="editor-tool" title="Italic"><i class="fas fa-italic"></i></button>
+                <button type="button" class="editor-tool" title="List"><i class="fas fa-list"></i></button>
+            </div>
+            <textarea class="content-textarea" name="mission" placeholder="Enter your mission statement"><?php echo isset($webDetails['mission']) ? htmlspecialchars($webDetails['mission']) : ''; ?></textarea>
+        </div>
+        <div class="content-counter">0/500 characters</div>
+    </div>
 
-        // Show loading state
-        Swal.fire({
-            title: 'Updating...',
-            text: 'Please wait while we update the content.',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            showConfirmButton: false,
-            willOpen: () => {
-                Swal.showLoading();
-            }
-        });
+    <!-- Vision Section -->
+    <div class="content-group">
+        <label class="content-label">Vision</label>
+        <p class="content-description">Share your organization's vision for the future</p>
+        <div class="editor-container">
+            <div class="editor-toolbar">
+                <button type="button" class="editor-tool" title="Bold"><i class="fas fa-bold"></i></button>
+                <button type="button" class="editor-tool" title="Italic"><i class="fas fa-italic"></i></button>
+                <button type="button" class="editor-tool" title="List"><i class="fas fa-list"></i></button>
+            </div>
+            <textarea class="content-textarea" name="vision" placeholder="Enter your vision statement"><?php echo isset($webDetails['vision']) ? htmlspecialchars($webDetails['vision']) : ''; ?></textarea>
+        </div>
+        <div class="content-counter">0/500 characters</div>
+    </div>
 
-        // Get form data
-        const formData = new FormData(this);
+    <!-- Goals Section -->
+    <div class="content-group">
+        <label class="content-label">Goals</label>
+        <p class="content-description">List your organization's main objectives</p>
+        <div class="editor-container">
+            <div class="editor-toolbar">
+                <button type="button" class="editor-tool" title="Bold"><i class="fas fa-bold"></i></button>
+                <button type="button" class="editor-tool" title="Italic"><i class="fas fa-italic"></i></button>
+                <button type="button" class="editor-tool" title="List"><i class="fas fa-list"></i></button>
+            </div>
+            <textarea class="content-textarea" name="goals" placeholder="Enter your organizational goals"><?php echo isset($webDetails['goals']) ? htmlspecialchars($webDetails['goals']) : ''; ?></textarea>
+        </div>
+        <div class="content-counter">0/1000 characters</div>
+    </div>
 
-        // Send AJAX request
-        fetch('function/update_web_details.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'The content has been updated successfully.',
-                        confirmButtonColor: '#3085d6'
-                    });
-                } else {
-                    throw new Error(data.message || 'Unknown error occurred');
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: error.message || 'Something went wrong!',
-                    confirmButtonColor: '#d33'
-                });
-            });
+    <!-- Contact Information Section -->
+    <div class="content-group">
+        <label class="content-label">Contact Information</label>
+        <p class="content-description">Provide your contact details</p>
+        
+        <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-control" name="email" value="<?php echo isset($webDetails['org_email']) ? htmlspecialchars($webDetails['org_email']) : ''; ?>" placeholder="Enter your email address">
+        </div>
+        
+        <div class="form-group">
+            <label class="form-label">Contact Number</label>
+            <input type="tel" class="form-control" name="contact" value="<?php echo isset($webDetails['org_contact']) ? htmlspecialchars($webDetails['org_contact']) : ''; ?>" placeholder="Enter your contact number">
+        </div>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="content-actions">
+        <button type="button" class="btn btn-content btn-content-secondary">
+            <i class="fas fa-undo"></i>
+            Reset Changes
+        </button>
+        <button type="submit" name="update_content" class="btn btn-content btn-content-primary">
+            <i class="fas fa-save"></i>
+            Save Changes
+        </button>
+    </div>
+</form>
+
+<script>
+$(document).ready(function() {
+    // Character counter functionality
+    $('.content-textarea').on('input', function() {
+        const maxLength = $(this).attr('name') === 'about_us' || $(this).attr('name') === 'goals' ? 1000 : 500;
+        const currentLength = $(this).val().length;
+        $(this).closest('.content-group').find('.content-counter').text(`${currentLength}/${maxLength} characters`);
     });
-    </script>
+
+    // Trigger initial character count
+    $('.content-textarea').trigger('input');
+
+    // Editor toolbar functionality
+    $('.editor-tool').click(function() {
+        const textarea = $(this).closest('.editor-container').find('textarea');
+        const start = textarea.prop('selectionStart');
+        const end = textarea.prop('selectionEnd');
+        const text = textarea.val();
+        let format = '';
+
+        switch($(this).attr('title')) {
+            case 'Bold':
+                format = '**';
+                break;
+            case 'Italic':
+                format = '_';
+                break;
+            case 'Link':
+                format = '[](url)';
+                break;
+            case 'List':
+                format = '\n- ';
+                break;
+        }
+
+        if (format === '\n- ') {
+            textarea.val(text.substring(0, start) + format + text.substring(end));
+            textarea.prop('selectionStart', start + format.length);
+            textarea.prop('selectionEnd', start + format.length);
+        } else if (format === '[](url)') {
+            const selectedText = text.substring(start, end);
+            const replacement = `[${selectedText}](url)`;
+            textarea.val(text.substring(0, start) + replacement + text.substring(end));
+        } else {
+            textarea.val(text.substring(0, start) + format + text.substring(start, end) + format + text.substring(end));
+        }
+        
+        textarea.focus();
+        textarea.trigger('input');
+    });
+
+    // Reset button functionality
+    $('.btn-content-secondary').click(function() {
+        if(confirm('Are you sure you want to reset all changes?')) {
+            location.reload();
+        }
+    });
+});
+</script>

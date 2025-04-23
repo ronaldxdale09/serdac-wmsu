@@ -2,18 +2,13 @@
 <html>
 
 <head>
-    <title>SERDAC-WMSU</title>
+    <title>SERDAC-WMSU - Registration</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="css/registration.css">
     <link rel="icon" type="image/x-icon" href="assets/images/serdac.ico">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></script>
-
-
 </head>
 
 <style>
@@ -96,142 +91,120 @@ $con->close();
 ?>
 
 <body>
-    <div class="wrapper">
-        <div class="container">
-            <div class="card">
-                <div class="form">
-                    <div class="left-side">
-                        <form id="regForm" action="" method="post">
-                            <div class="left-heading">
-                                <h3>ACCOUNT REGISTRATION</h3>
-                            </div>
-                            <div class="steps-content">
-                                <h3>Step <span class="step-number">1</span></h3>
-                                <p class="step-number-content active">Please review and accept our data privacy
-                                    agreement.</p>
-                                <p class="step-number-content d-none">Enter your personal information to get closer to
-                                    companies.</p>
-                                <p class="step-number-content d-none">Inform companies about your current address.</p>
-                                <p class="step-number-content d-none">Set up your account information.</p>
-                            </div>
-                            <ul class="progress-bar">
-                                <li class="active">Data Privacy</li>
-                                <li>Personal Information</li>
-                                <li>Address</li>
-                                <li>Account Info</li>
-                            </ul>
+    <div class="container">
+        <div class="card">
+            <div class="form">
+                <div class="left-side">
+                    <div class="left-heading">
+                        <h3>Create Your Account</h3>
+                        <p>Join SERDAC-WMSU community</p>
                     </div>
-                    <div class="right-side">
+                    <div class="steps-content">
+                        <h3>Step <span class="step-number">1</span></h3>
+                        <p class="step-number-content active">Review and accept our data privacy agreement.</p>
+                        <p class="step-number-content d-none">Fill in your personal information.</p>
+                        <p class="step-number-content d-none">Provide your current address details.</p>
+                        <p class="step-number-content d-none">Set up your account credentials.</p>
+                    </div>
+                    <ul class="progress-bar">
+                        <li class="active">Data Privacy</li>
+                        <li>Personal Info</li>
+                        <li>Address</li>
+                        <li>Account</li>
+                    </ul>
+                </div>
 
-                        <div class="main active ">
+                <div class="right-side">
+                    <form id="regForm" action="" method="post">
+                        <!-- Step 1: Data Privacy -->
+                        <div class="main active">
                             <small>
-                                <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
-                                    class="school-logo" />
+                                <img src="assets/images/serdac.png" alt="SERDAC Logo" />
                             </small>
                             <div class="text">
                                 <h2>Data Privacy Agreement</h2>
                                 <p>Please review our data privacy policy before proceeding.</p>
                             </div>
                             <div class="data-privacy">
-                                <p>
-                                    All information will remain secured and confidential within the organization and
-                                    only authorized personnel shall have access to them. This is guided and in
-                                    compliance with the Data Privacy
-                                    Act of 2012. The act includes the right to object to the processing of your data,
-                                    the right to access
-                                    your data, the right to correct any inaccurate data, and the right to erasure or
-                                    blocking of data.
-                                </p>
+                                <p>All information will remain secured and confidential within the organization and only authorized personnel shall have access to them. This is guided and in compliance with the Data Privacy Act of 2012. The act includes the right to object to the processing of your data, the right to access your data, the right to correct any inaccurate data, and the right to erasure or blocking of data.</p>
                                 <div class="checkbox">
                                     <input type="checkbox" id="agree" name="agree">
-                                    <label for="agree">By clicking I Agree and proceeding with this online registration,
-                                        you are
-                                        giving us consent to collect your data.</label>
+                                    <label for="agree">By clicking I Agree and proceeding with this online registration, you are giving us consent to collect your data.</label>
                                 </div>
-                            </div> <br>
+                            </div>
                             <div class="buttons">
-
-
                                 <button class="next_button" id="agreeButton">I Agree</button>
-
                             </div>
                         </div>
 
-
-                        <div class="main ">
-                            <small> <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
-                                    class="school-logo" />
+                        <!-- Step 2: Personal Information -->
+                        <div class="main">
+                            <small>
+                                <img src="assets/images/serdac.png" alt="SERDAC Logo" />
                             </small>
                             <div class="text">
-                                <h2>Your Personal Information</h2>
-                                <p>Enter your personal information to get closer to copanies.</p>
+                                <h2>Personal Information</h2>
+                                <p>Tell us about yourself</p>
                             </div>
                             <div class="input-text">
                                 <div class="input-div">
-                                    <input type="text" required id="user_name" name="fname">
-                                    <span>First Name</span>
+                                    <label for="fname">First Name</label>
+                                    <input type="text" id="fname" name="fname" required>
                                 </div>
                                 <div class="input-div">
-                                    <input type="text" name="midname">
-                                    <span>Middle Name</span>
+                                    <label for="midname">Middle Name</label>
+                                    <input type="text" id="midname" name="midname">
                                 </div>
                                 <div class="input-div">
-                                    <input type="text" required name="lname">
-                                    <span>Last Name</span>
+                                    <label for="lname">Last Name</label>
+                                    <input type="text" id="lname" name="lname" required>
                                 </div>
                             </div>
+
                             <div class="input-text">
                                 <div class="input-div">
+                                    <label for="contact_no">Phone Number</label>
                                     <input type="text" id="contact_no" name="contact_no" required>
-                                    <span>Phone number</span>
                                 </div>
-
                             </div>
 
                             <div class="input-text">
                                 <div class="input-div">
-                                    <label for="sex-select">Sex*</label>
+                                    <label for="sex-select">Sex</label>
                                     <select id="sex-select" name="sex" required>
-                                        <option value="" selected disabled>- Sex -</option>
-
+                                        <option value="" selected disabled>Select Sex</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
-
                                     </select>
-
                                 </div>
                                 <div class="input-div">
-                                    <label for="gender-select">Gender*</label>
+                                    <label for="gender-select">Gender Identity</label>
                                     <select name="gender" id="gender-select" required>
-                                        <option value="" selected disabled>- Gender -</option>
+                                        <option value="" selected disabled>Select Gender</option>
                                         <?php echo $genderOptions; ?>
                                         <option value="other">Other</option>
                                     </select>
                                 </div>
                                 <div class="input-div" id="custom-gender-div" style="display: none;">
                                     <label for="custom-gender">Specify Gender</label>
-                                    <input type="text" id="custom-gender" name="custom_gender"
-                                        placeholder="Enter your gender">
+                                    <input type="text" id="custom-gender" name="custom_gender" placeholder="Enter your gender">
                                 </div>
                             </div>
 
                             <div class="input-text">
                                 <div class="input-div">
-                                    <label for="occupation-select">Occupation*</label>
+                                    <label for="occupation-select">Occupation</label>
                                     <select id="occupation-select" name="occupation" required>
-                                        <option value="" selected disabled>- Occupation -</option>
+                                        <option value="" selected disabled>Select Occupation</option>
                                         <?php echo $occupationOptions; ?>
-
                                     </select>
-
                                 </div>
                                 <div class="input-div">
-                                    <label for="education-level-select">Educational Level*</label>
+                                    <label for="education-level-select">Educational Level</label>
                                     <select id="education-level-select" name="education_level" required>
-                                        <option value="" selected disabled>- Educational Level -</option>
+                                        <option value="" selected disabled>Select Educational Level</option>
                                         <?php echo $educationOptions; ?>
                                     </select>
-
                                 </div>
                             </div>
 
@@ -240,113 +213,109 @@ $con->close();
                                 <button class="next_button">Next Step</button>
                             </div>
                         </div>
-                        <div class="main ">
-                            <small> <img src="assets/images/serdac.png" style="width:50px" alt="School Logo 1"
-                                    class="school-logo" />
+
+                        <!-- Step 3: Address -->
+                        <div class="main">
+                            <small>
+                                <img src="assets/images/serdac.png" alt="SERDAC Logo" />
                             </small>
                             <div class="text">
-                                <h2>Address</h2>
-                                <p>Inform companies about your current address.</p>
+                                <h2>Address Information</h2>
+                                <p>Provide your current address details</p>
                             </div>
                             <div class="input-text">
                                 <div class="input-div">
-                                    <select name="region" id="region-select"></select>
+                                    <label for="region-select">Region</label>
+                                    <select name="region" id="region-select" required></select>
                                 </div>
                                 <div class="input-div">
-                                    <select name="province" id="province-select">
-                                    </select>
+                                    <label for="province-select">Province</label>
+                                    <select name="province" id="province-select" required></select>
+                                </div>
+                            </div>
+                            <div class="input-text">
+                                <div class="input-div">
+                                    <label for="city-select">City/Municipality</label>
+                                    <select name="city" id="city-select" required></select>
+                                </div>
+                                <div class="input-div">
+                                    <label for="barangay-select">Barangay</label>
+                                    <select name="barangay" id="barangay-select" required></select>
+                                </div>
+                            </div>
 
-                                </div>
-                            </div>
-                            <div class="input-text">
-                                <div class="input-div">
-                                    <select name="city" id="city-select">
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="input-text">
-                                <div class="input-div">
-                                    <select name="barangay" id="barangay-select">
-                                    </select>
-                                </div>
-
-                            </div>
-                            <div class="buttons button_space">
+                            <div class="buttons">
                                 <button class="back_button">Back</button>
                                 <button class="next_button">Next Step</button>
                             </div>
                         </div>
 
-                        <div class="main ">
+                        <!-- Step 4: Account Information -->
+                        <div class="main">
+                            <small>
+                                <img src="assets/images/serdac.png" alt="SERDAC Logo" />
+                            </small>
                             <div class="text">
                                 <h2>Account Information</h2>
+                                <p>Set up your login credentials</p>
                             </div>
 
                             <div class="input-text">
                                 <div class="input-div">
-                                    <input type="email" name="email" required>
-                                    <span>Email: *</span>
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" name="email" required>
                                 </div>
                             </div>
 
-
-                            <label for="password" class="password-requirements-label">Password must be at least
-                                6 characters long, contain a number, and a symbol.</label>
                             <div class="input-text">
                                 <div class="input-div">
-                        
-                                    <input type="password" class="form-control" name="password" id="password" required>
-                                    <span>Password: *</span>
-                                    <div class="password-requirements" style="display: none;">
+                                    <label for="password">Password</label>
+                                    <input type="password" id="password" name="password" required>
+                                    <div class="password-requirements">
                                         <p id="length-check" class="requirement">At least 6 characters</p>
                                         <p id="number-check" class="requirement">Contains a number</p>
                                         <p id="symbol-check" class="requirement">Contains a symbol</p>
                                     </div>
                                 </div>
                                 <div class="input-div">
-                                    <input type="password" class="form-control" name="confirm_pass"
-                                        id="confirm-password" required>
-                                    <span>Confirm Password: *</span>
-                                    <div class="password-requirements" style="display: none;">
+                                    <label for="confirm-password">Confirm Password</label>
+                                    <input type="password" id="confirm-password" name="confirm_pass" required>
+                                    <div class="password-requirements">
                                         <p id="password-match" class="requirement">Passwords match</p>
                                     </div>
                                 </div>
                             </div>
-                            <br>
 
-                            <div class="buttons button_space">
+                            <div class="buttons">
                                 <button class="back_button">Back</button>
-                                <button class="submit_button">Submit</button>
+                                <button class="submit_button">Create Account</button>
                             </div>
                         </div>
 
-
-
-
+                        <!-- Success Step -->
                         <div class="main">
-                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-                            </svg>
-
+                            <div class="success-animation">
+                                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                                </svg>
+                            </div>
                             <div class="text congrats">
-                                <h2>Thank You <span class="shown_name"></span> for Registering!</h2>
-                                <p style="color: #7a0014">We've sent an activation link to your email. Please check
-                                    your inbox to complete the
-                                    registration process.</p>
-
-                                <div class="main-button-red">
-                                    <a href="login.php">Return to login page</a>
+                                <h2>Welcome to SERDAC-WMSU!</h2>
+                                <p>We've sent an activation link to your email. Please check your inbox to complete the registration process.</p>
+                                <div class="buttons">
+                                    <button type="button" onclick="window.location.href='login.php'" class="next_button">Go to Login</button>
                                 </div>
-
                             </div>
                         </div>
-                    </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+    <!-- Keep your existing JavaScript code -->
 </body>
 
 </html>

@@ -11,6 +11,14 @@ function handleNewArticleSubmission($con) {
         $author = mysqli_real_escape_string($con, $_POST['author']);
         $type = mysqli_real_escape_string($con, $_POST['type']);
         $isDraft = isset($_POST['isDraft']) && $_POST['isDraft'] === '1' ? 1 : 0;
+        
+        // Get the custom publication date or use current date if not provided
+        $published_date = isset($_POST['published_date']) && !empty($_POST['published_date']) 
+            ? mysqli_real_escape_string($con, $_POST['published_date']) 
+            : date('Y-m-d');
+        
+        // Add time to the date to make it a datetime
+        $published_datetime = $published_date . ' ' . date('H:i:s');
 
         // Handle image upload
         $imageName = '';
@@ -27,14 +35,15 @@ function handleNewArticleSubmission($con) {
 
         // Prepare and execute query using prepared statements
         $query = "INSERT INTO articles (title, subtitle, content, published_at, author, is_draft, type, image_path) 
-                 VALUES (?, ?, ?, NOW(), ?, ?, ?, ?)";
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         $stmt = mysqli_prepare($con, $query);
         if ($stmt) {
-            mysqli_stmt_bind_param($stmt, "ssssiss", 
+            mysqli_stmt_bind_param($stmt, "sssssiss", 
                 $title, 
                 $subtitle, 
                 $content, 
+                $published_datetime,  // Use the custom datetime
                 $author, 
                 $isDraft, 
                 $type, 

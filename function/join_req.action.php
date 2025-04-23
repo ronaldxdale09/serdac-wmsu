@@ -14,20 +14,29 @@ $stmt = mysqli_prepare($con, $query);
 // Bind parameters and execute
 mysqli_stmt_bind_param($stmt, "iis", $user_id, $req_id, $current_date);
 
+// Set header for JSON response
+header('Content-Type: application/json');
+
 if (mysqli_stmt_execute($stmt)) {
+    // Update participant count
+    $updateQuery = "UPDATE service_request SET participants = participants + 1 WHERE request_id = ?";
+    $updateStmt = mysqli_prepare($con, $updateQuery);
+    mysqli_stmt_bind_param($updateStmt, "i", $req_id);
+    mysqli_stmt_execute($updateStmt);
+
     // Log the activity
     $activity_type = 'service_participation';
     $activity_description = "User participated in service request with ID $req_id";
     // log_activity($con, $user_id, $activity_type, $activity_description);
 
-    // Optionally, send a service request summary email
+    // Fetch service details and send email...
     $serviceQuery = $con->prepare("SELECT service_type, office_agency, agency_classification, client_type, selected_purposes FROM service_request WHERE request_id = ?");
     $serviceQuery->bind_param("i", $req_id);
     $serviceQuery->execute();
     $serviceResult = $serviceQuery->get_result();
     $service = $serviceResult->fetch_assoc();
 
-    $email = getUserEmail($con, $user_id); // Function to fetch user email
+    $email = getUserEmail($con, $user_id);
 
     if ($email) {
         sendServiceRequestSummaryEmail(
@@ -40,9 +49,9 @@ if (mysqli_stmt_execute($stmt)) {
         );
     }
 
-    echo "success";
+    echo json_encode(['status' => 'success', 'message' => 'Successfully joined the training session']);
 } else {
-    echo "Error: " . mysqli_error($con);
+    echo json_encode(['status' => 'error', 'message' => 'Failed to join training: ' . mysqli_error($con)]);
 }
 
 // Fetch user email

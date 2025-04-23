@@ -319,7 +319,6 @@
             $('#summaryCards').html(summaryHtml);
         }
 
-
         // Initial data load and summary update
         applyFilters();
     });
