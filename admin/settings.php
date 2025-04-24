@@ -82,20 +82,20 @@
                                     <i class="fas fa-newspaper"></i>
                                     <span>Content Management</span>
                                 </a>
-                            </li>
+                                </li>
                             <li class="settings-nav-item">
                                 <a href="#registration" class="settings-nav-link" data-toggle="tab">
                                     <i class="fas fa-user-plus"></i>
                                     <span>Registration</span>
                                 </a>
-                            </li>
+                                </li>
                             <li class="settings-nav-item">
                                 <a href="#service" class="settings-nav-link" data-toggle="tab">
                                     <i class="fas fa-cogs"></i>
                                     <span>Service Request</span>
                                 </a>
-                            </li>
-                        </ul>
+                                </li>
+                            </ul>
                     </div>
 
                     <!-- Settings Content -->
@@ -222,8 +222,8 @@
                 $('.alert').alert('close');
             }, 3000);
         }
-    });
-    </script>
+});
+</script>
 
     <?php include('include/footer.php');?>
 </body>

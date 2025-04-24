@@ -42,8 +42,8 @@ function checkSession($timeout = 3600) {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
     <!-- jQuery -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.tiny.cloud/1/i4wkwvc9nr31mvrwas0kz0vto4ixdbzytmc79eqbij6y332r/tinymce/7/tinymce.min.js"
-        referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/34fuma3udsijpij954yigoo4813n2ue4218jx2x7lel162dk/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
