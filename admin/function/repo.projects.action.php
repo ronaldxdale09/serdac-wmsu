@@ -49,6 +49,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $activity_description = "Project created: $projectTitle";
         $user_id = 1; // Assuming 1 for the logged-in user, adjust based on your application context
        // log_activity($con, $user_id, $activity_type, $activity_description);
+       header("Location: ../project_mngnt.php");
+
     }
 
     // Close the statement
