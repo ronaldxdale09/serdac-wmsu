@@ -38,21 +38,31 @@ function checkSession($timeout = 3600) {
 
     <?php include('include/css_cdn.php');?>
 
-
+    <!-- jQuery first, then other scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
-    <!-- jQuery -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.tiny.cloud/1/34fuma3udsijpij954yigoo4813n2ue4218jx2x7lel162dk/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/34fuma3udsijpij954yigoo4813n2ue4218jx2x7lel162dk/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
-
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <!-- Select2 -->
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- DataTables -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
-
-
 <link rel="stylesheet" href="css/custom.button.css">
-
 <link rel="stylesheet" href="css/modal.css">
 <style>
 #weatherWidget .currentDesc {

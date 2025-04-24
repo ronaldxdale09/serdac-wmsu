@@ -53,6 +53,8 @@ function createUser($con) {
                     "status" => "success",
                     "message" => "User created successfully!"
                 );
+                header("Location: ../account_mngmt.php"); // Change redirect location if needed
+
             } else {
                 throw new Exception("Database error: " . $stmt->error);
             }
@@ -110,10 +112,8 @@ function updateUser($con) {
         $stmt->bind_param($types, ...$params);
 
         if ($stmt->execute()) {
-            return array(
-                "status" => "success",
-                "message" => "User updated successfully!"
-            );
+            header("Location: ../account_mngmt.php"); // Change redirect location if needed
+
         } else {
             throw new Exception("Execute failed: " . $stmt->error);
         }
@@ -142,10 +142,9 @@ function deleteUser($con) {
         $stmt->bind_param("i", $user_id);
         
         if ($stmt->execute()) {
-            return array(
-                "status" => "success",
-                "message" => "User deleted successfully."
-            );
+            header("Location: ../account_mngmt.php"); // Change redirect location if needed
+
+         
         } else {
             return array(
                 "status" => "error",
