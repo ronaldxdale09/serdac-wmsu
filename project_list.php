@@ -1,145 +1,129 @@
-<?php include('include/header.php');
-
-?>
-<link rel="stylesheet" href="css/profile.css">
-
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+<?php include('include/header.php'); ?>
+<link rel="stylesheet" href="css/project_list.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <body>
-    <?php include('include/navbar.php');?>
-    <!-- ***** Header Area End ***** -->
-    <section class="heading-page header-text" id="top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h2>PROJECTS</h2>
-
-                </div>
-            </div>
-        </div>
-    </section>
-    <section id="contact" class="contact">
-        <div class="container" data-aos="fade-up">
-
-            <div class="section-title">
-
-
-            </div>
-
-            <div class="content">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header d-flex justify-content-between align-items-center">
-                                <strong class="card-title">Project List</strong>
+    <?php include('include/navbar.php'); ?>
+    
+    <main class="container py-5">
+        <h1 class="h3 font-weight-bold text-maroon mb-4">Research Projects</h1>
+        
+        <?php
+        $results = mysqli_query($con, "SELECT * FROM repo_projects");
+        ?>
+        
+        <div class="project-grid">
+            <?php while($row = mysqli_fetch_assoc($results)): ?>
+                <div class="project-card">
+                    <div class="project-header">
+                        <h2 class="project-title"><?= htmlspecialchars($row['ProjectTitle']) ?></h2>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-meta">
+                            <div class="meta-item">
+                                <i class="fas fa-user"></i>
+                                <?= htmlspecialchars($row['ProjectLeader']) ?>
                             </div>
-                            <div class="card-body">
-                                <div class="table-responsive custom-table-container">
-                                    <?php
-                                // Fetch data from the repo_projects table with only the required columns
-                                $results = mysqli_query($con, "SELECT * FROM repo_projects");
-                                ?>
-                                    <table class="table table-hover" id="projects_table">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">Project ID</th>
-                                                <th scope="col">Project Title</th>
-                                                <th scope="col">Project Leader</th>
-                                                <th scope="col">Implementing Agency</th>
-                                                <th scope="col">Start Date</th>
-                                                <th scope="col">Status</th>
-                                                <th scope="col">Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php 
-                                                while ($row = mysqli_fetch_array($results)) { 
-                                            ?>
-                                            <tr>
-                                                <td><?php echo $row['ProjectID']; ?></td>
-                                                <td><?php echo $row['ProjectTitle']; ?></td>
-                                                <td><?php echo $row['ProjectLeader']; ?></td>
-                                                <td><?php echo $row['ImplementingAgency']; ?></td>
-                                                <td><?php echo $row['ProjectDurationStart']; ?></td>
-                                                <td><?php echo $row['Status']; ?></td>
-                                                <td>
-                                                    <button type="button" class="btn btn-sm btn-dark btnEdit"
-                                                        data-project='<?php echo json_encode($row); ?>'>
-                                                        <i class="fa fa-eye"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <?php } ?>
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <div class="meta-item">
+                                <i class="fas fa-building"></i>
+                                <?= htmlspecialchars($row['ImplementingAgency']) ?>
                             </div>
-
+                            <div class="meta-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <?= date('M Y', strtotime($row['ProjectDurationStart'])) ?>
+                            </div>
+                        </div>
+                        
+                        <?php if(!empty($row['ProjectAbstract'])): ?>
+                            <p class="mb-3"><?= substr(htmlspecialchars($row['ProjectAbstract']), 0, 150) ?>...</p>
+                        <?php endif; ?>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="status-badge status-<?= strtolower($row['Status']) ?>">
+                                <?= $row['Status'] ?>
+                            </span>
+                            <button class="view-btn" data-bs-toggle="modal" data-bs-target="#projectModal<?= $row['ProjectID'] ?>">
+                                <i class="fas fa-eye"></i> View Details
+                            </button>
                         </div>
                     </div>
                 </div>
-            </div>
-
+                
+                <!-- Project Modal -->
+                <div class="modal fade project-modal" id="projectModal<?= $row['ProjectID'] ?>" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title"><?= htmlspecialchars($row['ProjectTitle']) ?></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="detail-row">
+                                    <div class="detail-label">Program Title:</div>
+                                    <div class="detail-value"><?= htmlspecialchars($row['ProgramTitle']) ?></div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Project Leader:</div>
+                                    <div class="detail-value"><?= htmlspecialchars($row['ProjectLeader']) ?></div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Implementing Agency:</div>
+                                    <div class="detail-value"><?= htmlspecialchars($row['ImplementingAgency']) ?></div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Duration:</div>
+                                    <div class="detail-value">
+                                        <?= date('M d, Y', strtotime($row['ProjectDurationStart'])) ?> - 
+                                        <?= date('M d, Y', strtotime($row['ProjectDurationEnd'])) ?>
+                                        <?php if($row['ExtensionDate']): ?>
+                                            (Extended to <?= date('M d, Y', strtotime($row['ExtensionDate'])) ?>)
+                                        <?php endif; ?>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Project Cost:</div>
+                                    <div class="detail-value">₱<?= number_format($row['ProjectCost'], 2) ?></div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Status:</div>
+                                    <div class="detail-value">
+                                        <span class="status-badge status-<?= strtolower($row['Status']) ?>">
+                                            <?= $row['Status'] ?>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">SDG Addressed:</div>
+                                    <div class="detail-value"><?= htmlspecialchars($row['SDGAddressed']) ?></div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Funded By:</div>
+                                    <div class="detail-value"><?= htmlspecialchars($row['FundedBy']) ?></div>
+                                </div>
+                                <div class="detail-row">
+                                    <div class="detail-label">Facilitated By:</div>
+                                    <div class="detail-value"><?= htmlspecialchars($row['FacilitatedBy']) ?></div>
+                                </div>
+                                
+                                <div class="project-abstract">
+                                    <h6>Project Abstract</h6>
+                                    <p><?= nl2br(htmlspecialchars($row['ProjectAbstract'])) ?></p>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <?php endwhile; ?>
         </div>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <?php include('modal/repo.project.php');?>
-        <script>
-        $(document).ready(function() {
         
+        <div class="divider"></div>
+    </main>
 
-            $('.btnEdit').on('click', function() {
-                var project = $(this).data('project');
-
-                // Fill the form with project data
-                $('#editProjectID').val(project.ProjectID);
-                $('#editProgramTitle').val(project.ProgramTitle);
-                $('#editProjectTitle').val(project.ProjectTitle);
-                $('#editProjectLeader').val(project.ProjectLeader);
-                $('#editProjectLeaderSex').val(project.ProjectLeaderSex);
-                $('#editProjectLeaderAgency').val(project.ProjectLeaderAgency);
-                $('#editProjectLeaderContact').val(project.ProjectLeaderContact);
-                $('#editCooperatingAgencies').val(project.CooperatingAgencies);
-                $('#editImplementingAgency').val(project.ImplementingAgency);
-                $('#editImplementingAgencyAddress').val(project.ImplementingAgencyAddress);
-                $('#editBaseStation').val(project.BaseStation);
-                $('#editOtherImplementationSites').val(project.OtherImplementationSites);
-                $('#editStartDate').val(project.ProjectDurationStart);
-                $('#editEndDate').val(project.ProjectDurationEnd);
-                $('#editExtensionDate').val(project.ExtensionDate);
-                $('#editProjectCost').val(project.ProjectCost);
-                $('#editSdgAddressed').val(project.SDGAddressed);
-                $('#editProjectAbstract').val(project.ProjectAbstract);
-                $('#editFundedBy').val(project.FundedBy);
-                $('#editFacilitatedBy').val(project.FacilitatedBy);
-                $('#editStatus').val(project.Status);
-
-                // Show the modal
-                var modal = new bootstrap.Modal(document.getElementById('editProjectModal'));
-                modal.show();
-            });
-
-
-        });
-        </script>
-
-    </section>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <script src="assets/js/isotope.min.js"></script>
-    <script src="assets/js/owl-carousel.js"></script>
-    <script src="assets/js/lightbox.js"></script>
-    <script src="asscripts/tabs.js"></script>
-    <script src="assets/js/video.js"></script>
-    <script src="assets/js/slick-slider.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <br>
-
-
-    <?php include('include/footer.php');?>
-
-
+    <?php include('include/footer.php'); ?>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
-</html>
