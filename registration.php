@@ -91,30 +91,30 @@ $con->close();
 ?>
 
 <body>
-    <div class="container">
-        <div class="card">
-            <div class="form">
-                <div class="left-side">
-                    <div class="left-heading">
+        <div class="container">
+            <div class="card">
+                <div class="form">
+                    <div class="left-side">
+                            <div class="left-heading">
                         <h3>Create Your Account</h3>
                         <p>Join SERDAC-WMSU community</p>
-                    </div>
-                    <div class="steps-content">
-                        <h3>Step <span class="step-number">1</span></h3>
+                            </div>
+                            <div class="steps-content">
+                                <h3>Step <span class="step-number">1</span></h3>
                         <p class="step-number-content active">Review and accept our data privacy agreement.</p>
                         <p class="step-number-content d-none">Fill in your personal information.</p>
                         <p class="step-number-content d-none">Provide your current address details.</p>
                         <p class="step-number-content d-none">Set up your account credentials.</p>
-                    </div>
-                    <ul class="progress-bar">
-                        <li class="active">Data Privacy</li>
+                            </div>
+                            <ul class="progress-bar">
+                                <li class="active">Data Privacy</li>
                         <li>Personal Info</li>
-                        <li>Address</li>
+                                <li>Address</li>
                         <li>Account</li>
-                    </ul>
-                </div>
+                            </ul>
+                    </div>
 
-                <div class="right-side">
+                    <div class="right-side">
                     <form id="regForm" action="" method="post">
                         <!-- Step 1: Data Privacy -->
                         <div class="main active">
@@ -295,19 +295,19 @@ $con->close();
                         <!-- Success Step -->
                         <div class="main">
                             <div class="success-animation">
-                                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-                                    <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-                                    <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-                                </svg>
+                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                                <circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+                                <path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+                            </svg>
                             </div>
                             <div class="text congrats">
                                 <h2>Welcome to SERDAC-WMSU!</h2>
                                 <p>We've sent an activation link to your email. Please check your inbox to complete the registration process.</p>
                                 <div class="buttons">
                                     <button type="button" onclick="window.location.href='login.php'" class="next_button">Go to Login</button>
-                                </div>
                             </div>
                         </div>
+                    </div>
                     </form>
                 </div>
             </div>

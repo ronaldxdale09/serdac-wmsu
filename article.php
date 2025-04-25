@@ -1,10 +1,8 @@
 <?php include('include/header.php');
 if (isset($_GET['id'])) {
-
   $id = $_GET['id'];
   $id = preg_replace('~\D~', '', $id);
 
-  
   $sql = "SELECT * FROM articles WHERE article_id = $id";
   $result = $con->query($sql);
   if ($result->num_rows > 0) {
@@ -12,203 +10,141 @@ if (isset($_GET['id'])) {
 
     $title = $record['title'];
     $subtitle = $record['subtitle'];
-    $image_path = $record['image_path'];
+    $image_path = 'admin/images/article/' . $record['image_path'];
+    $image_caption = $record['image_caption'] ?? '';
     $content = $record['content'];
     $published_at = $record['published_at'];
     $author = $record['author'];
     $type = $record['type'];
-
   }
-
 }
-
 ?>
 
-<style>
-.share ul {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    gap: 10px;
-}
-
-.share ul li a {
-    display: inline-flex;
-    align-items: center;
-    padding: 5px 10px;
-    background-color: #f0f0f0;
-    border-radius: 5px;
-    text-decoration: none;
-    color: #333;
-    transition: background-color 0.3s ease;
-}
-
-.share ul li a:hover {
-    background-color: #e0e0e0;
-}
-
-.share ul li a i {
-    margin-right: 5px;
-}
-</style>
+<link rel="stylesheet" type="text/css" href="css/article.css">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;700&family=Helvetica+Neue:wght@300;400;700&display=swap" rel="stylesheet">
 
 <body>
-
     <?php include('include/navbar.php');?>
-    <!-- ***** Header Area End ***** -->
-
-    <section class="heading-page header-text" id="top">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h6><?php echo $subtitle; ?></h6>
-                    <h2><?php echo $title; ?></h2>
+    
+    <main class="main-content">
+        <article class="article-container">
+            <header class="article-header">
+                <h1 class="article-title"><?php echo htmlspecialchars($title); ?></h1>
+                <?php if(!empty($subtitle)): ?>
+                    <h2 class="article-subtitle"><?php echo htmlspecialchars($subtitle); ?></h2>
+                <?php endif; ?>
+                
+                <div class="article-meta">
+                    <span>By <?php echo htmlspecialchars($author); ?></span>
+                    <span><?php echo date('F j, Y', strtotime($published_at)); ?></span>
+                    <?php if(!empty($type)): ?>
+                        <span class="article-type"><?php echo htmlspecialchars($type); ?></span>
+                    <?php endif; ?>
                 </div>
-            </div>
-        </div>
-    </section>
+            </header>
 
-    <section class="meetings-page" id="meetings">
-        <div class="container">
-            <div class="row">
-                < class="col-lg-12">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="meeting-single-item">
-                                <div class="thumb">
-                                    <div class="price">
-                                        <span><?php echo htmlspecialchars($type); ?></span>
-                                    </div>
-                                    <div class="date">
-                                        <h6><?= date("M", strtotime($published_at)); ?>
-                                            <span><?= date("d", strtotime($published_at)); ?></span>
-                                        </h6>
-                                    </div>
-                                    <a href="article-details.php?id=<?= $id; ?>">
-                                        <img src="admin/images/article/<?php echo htmlspecialchars($image_path); ?>"
-                                            alt="<?php echo htmlspecialchars($title); ?>">
-                                    </a>
-                                </div>
-                                <div class="down-content">
-                                    <a href="article-details.php?id=<?= $id; ?>">
-                                        <h4><?php echo htmlspecialchars($title); ?></h4>
-                                    </a>
-                                    <p><?php echo htmlspecialchars($subtitle); ?></p>
-                                    <div class="description">
-                                        <?php echo $content; ?>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <div class="share">
-                                                <h5>Share:</h5>
-                                                <?php
-                                                // Debugging: Output the current URL
-                                                $current_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-                                   
-                                                $encoded_url = urlencode($current_url);
-                                                $encoded_title = urlencode($title);
-                                              
-                                                ?>
-                                                <ul>
-                                                    <li>
-                                                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $encoded_url; ?>"
-                                                            target="_blank" rel="noopener noreferrer" class="facebook">
-                                                            <i class="fab fa-facebook-f"></i> Facebook
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="https://twitter.com/intent/tweet?url=<?php echo $encoded_url; ?>&text=<?php echo $encoded_title; ?>"
-                                                            target="_blank" rel="noopener noreferrer" class="twitter">
-                                                            <i class="fab fa-twitter"></i> Twitter
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo $encoded_url; ?>&title=<?php echo $encoded_title; ?>"
-                                                            target="_blank" rel="noopener noreferrer" class="linkedin">
-                                                            <i class="fab fa-linkedin-in"></i> LinkedIn
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <div class="main-button-red">
-                                    <a href="index.php">Back To Homepage</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <?php if(isset($image_path) && file_exists($image_path)): ?>
+                <div class="image-container">
+                    <img src="<?php echo $image_path; ?>" alt="<?php echo htmlspecialchars($title); ?>" class="article-header-image">
+                    <?php if(!empty($image_caption)): ?>
+                        <p class="image-caption"><?php echo htmlspecialchars($image_caption); ?></p>
+                    <?php endif; ?>
                 </div>
+            <?php endif; ?>
+            
+            <div class="article-content">
+                <?php echo $content; ?>
             </div>
-            <br> <br>
-            <?php include('include/footer.php');?>
-    </section>
 
-    <!-- Scripts -->
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <div class="share">
+                <h5>Share This Article</h5>
+                <ul>
+                    <li>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"); ?>" target="_blank" rel="noopener noreferrer" class="facebook">
+                            <i class="fab fa-facebook-f"></i> Facebook
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://twitter.com/intent/tweet?url=<?php echo urlencode((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"); ?>&text=<?php echo urlencode($title); ?>" target="_blank" rel="noopener noreferrer" class="twitter">
+                            <i class="fab fa-twitter"></i> Twitter
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://www.linkedin.com/shareArticle?mini=true&url=<?php echo urlencode((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"); ?>&title=<?php echo urlencode($title); ?>" target="_blank" rel="noopener noreferrer" class="linkedin">
+                            <i class="fab fa-linkedin-in"></i> LinkedIn
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-    <script src="assets/js/isotope.min.js"></script>
-    <script src="assets/js/owl-carousel.js"></script>
-    <script src="assets/js/lightbox.js"></script>
-    <script src="assets/js/tabs.js"></script>
-    <script src="assets/js/video.js"></script>
-    <script src="assets/js/slick-slider.js"></script>
-    <script src="assets/js/custom.js"></script>
-    <script>
-    //according to loftblog tut
-    $('.nav li:first').addClass('active');
+            <hr class="article-divider">
 
-    var showSection = function showSection(section, isAnimate) {
+            <div class="back-to-home">
+                <a href="index.php" class="button">← Back to Homepage</a>
+            </div>
+        </article>
+    </main>
+
+    <?php include('include/footer.php'); ?>
+</body>
+
+<!-- Scripts -->
+<!-- Bootstrap core JavaScript -->
+<script src="vendor/jquery/jquery.min.js"></script>
+<script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="assets/js/isotope.min.js"></script>
+<script src="assets/js/owl-carousel.js"></script>
+<script src="assets/js/lightbox.js"></script>
+<script src="assets/js/tabs.js"></script>
+<script src="assets/js/video.js"></script>
+<script src="assets/js/slick-slider.js"></script>
+<script src="assets/js/custom.js"></script>
+<script>
+//according to loftblog tut
+$('.nav li:first').addClass('active');
+
+var showSection = function showSection(section, isAnimate) {
+    var
+        direction = section.replace(/#/, ''),
+        reqSection = $('.section').filter('[data-section="' + direction + '"]'),
+        reqSectionPos = reqSection.offset().top - 0;
+
+    if (isAnimate) {
+        $('body, html').animate({
+                scrollTop: reqSectionPos
+            },
+            800);
+    } else {
+        $('body, html').scrollTop(reqSectionPos);
+    }
+
+};
+
+var checkSection = function checkSection() {
+    $('.section').each(function() {
         var
-            direction = section.replace(/#/, ''),
-            reqSection = $('.section').filter('[data-section="' + direction + '"]'),
-            reqSectionPos = reqSection.offset().top - 0;
-
-        if (isAnimate) {
-            $('body, html').animate({
-                    scrollTop: reqSectionPos
-                },
-                800);
-        } else {
-            $('body, html').scrollTop(reqSectionPos);
-        }
-
-    };
-
-    var checkSection = function checkSection() {
-        $('.section').each(function() {
+            $this = $(this),
+            topEdge = $this.offset().top - 80,
+            bottomEdge = topEdge + $this.height(),
+            wScroll = $(window).scrollTop();
+        if (topEdge < wScroll && bottomEdge > wScroll) {
             var
-                $this = $(this),
-                topEdge = $this.offset().top - 80,
-                bottomEdge = topEdge + $this.height(),
-                wScroll = $(window).scrollTop();
-            if (topEdge < wScroll && bottomEdge > wScroll) {
-                var
-                    currentId = $this.data('section'),
-                    reqLink = $('a').filter('[href*=\\#' + currentId + ']');
-                reqLink.closest('li').addClass('active').
-                siblings().removeClass('active');
-            }
-        });
-    };
-
-    $('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function(e) {
-        e.preventDefault();
-        showSection($(this).attr('href'), true);
+                currentId = $this.data('section'),
+                reqLink = $('a').filter('[href*=\\#' + currentId + ']');
+            reqLink.closest('li').addClass('active').
+            siblings().removeClass('active');
+        }
     });
+};
 
-    $(window).scroll(function() {
-        checkSection();
-    });
-    </script>
-</body>
+$('.main-menu, .responsive-menu, .scroll-to-section').on('click', 'a', function(e) {
+    e.preventDefault();
+    showSection($(this).attr('href'), true);
+});
 
-
-</body>
-
+$(window).scroll(function() {
+    checkSection();
+});
+</script>
 </html>

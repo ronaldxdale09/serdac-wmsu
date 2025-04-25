@@ -45,7 +45,7 @@ if ($result) {
     <?php include('include/navbar.php');?>
 
     <!-- ***** Header Area End ***** -->
-    <link rel="stylesheet" type="text/css" href="css/article.css">
+    <link rel="stylesheet" type="text/css" href="css/news.css">
 
     <section class="heading-page header-text" id="top">
         <div class="container">
