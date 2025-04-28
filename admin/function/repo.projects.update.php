@@ -24,8 +24,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['projectID'])) {
     $fundedBy = $_POST['fundedBy'];
     $facilitatedBy = $_POST['facilitatedBy'];
     $status = $_POST['status'];
+    $keywords = $_POST['Keywords'];
 
-    $sql = "UPDATE repo_projects SET ProgramTitle=?, ProjectTitle=?, ProjectLeader=?, ProjectLeaderSex=?, ProjectLeaderAgency=?, ProjectLeaderContact=?, CooperatingAgencies=?, ImplementingAgency=?, ImplementingAgencyAddress=?, BaseStation=?, OtherImplementationSites=?, ProjectDurationStart=?, ProjectDurationEnd=?, ExtensionDate=?, ProjectCost=?, sectors=?, SDGAddressed=?, ProjectAbstract=?, FundedBy=?, FacilitatedBy=?, Status=? WHERE ProjectID=?";
+    $sql = "UPDATE repo_projects SET ProgramTitle=?, ProjectTitle=?, ProjectLeader=?, ProjectLeaderSex=?, ProjectLeaderAgency=?, ProjectLeaderContact=?, CooperatingAgencies=?, ImplementingAgency=?, ImplementingAgencyAddress=?, BaseStation=?, OtherImplementationSites=?, ProjectDurationStart=?, ProjectDurationEnd=?, ExtensionDate=?, ProjectCost=?, sectors=?, SDGAddressed=?, ProjectAbstract=?, FundedBy=?, FacilitatedBy=?, Status=?, Keywords=? WHERE ProjectID=?";
     $stmt = $con->prepare($sql);
 
     if ($stmt === false) {
@@ -33,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['projectID'])) {
         exit();
     }
 
-    $stmt->bind_param("ssssssssssssssdssssssi", $programTitle, $projectTitle, $projectLeader, $projectLeaderSex, $projectLeaderAgency, $projectLeaderContact, $cooperatingAgencies, $implementingAgency, $implementingAgencyAddress, $baseStation, $otherImplementationSites, $startDate, $endDate, $extensionDate, $projectCost, $sectors, $sdgAddressed, $projectAbstract, $fundedBy, $facilitatedBy, $status, $projectID);
+    $stmt->bind_param("ssssssssssssssdsssssssi", $programTitle, $projectTitle, $projectLeader, $projectLeaderSex, $projectLeaderAgency, $projectLeaderContact, $cooperatingAgencies, $implementingAgency, $implementingAgencyAddress, $baseStation, $otherImplementationSites, $startDate, $endDate, $extensionDate, $projectCost, $sectors, $sdgAddressed, $projectAbstract, $fundedBy, $facilitatedBy, $status, $keywords, $projectID);
 
     if ($stmt->execute()) {
         echo json_encode(['success' => true, 'message' => 'Project updated successfully.']);

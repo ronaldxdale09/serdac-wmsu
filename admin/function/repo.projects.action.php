@@ -25,9 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $fundedBy = $_POST['fundedBy'];
     $facilitatedBy = $_POST['facilitatedBy'];
     $status = $_POST['status'];
+    $keywords = $_POST['Keywords'];
 
     // Prepare the SQL statement with placeholders
-    $sql = "INSERT INTO repo_projects (ProgramTitle, ProjectTitle, ProjectLeader, ProjectLeaderSex, ProjectLeaderAgency, ProjectLeaderContact, CooperatingAgencies, ImplementingAgency, ImplementingAgencyAddress, BaseStation, OtherImplementationSites, ProjectDurationStart, ProjectDurationEnd, ExtensionDate, ProjectCost, sectors, SDGAddressed, ProjectAbstract, FundedBy, FacilitatedBy, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO repo_projects (ProgramTitle, ProjectTitle, ProjectLeader, ProjectLeaderSex, ProjectLeaderAgency, ProjectLeaderContact, CooperatingAgencies, ImplementingAgency, ImplementingAgencyAddress, BaseStation, OtherImplementationSites, ProjectDurationStart, ProjectDurationEnd, ExtensionDate, ProjectCost, sectors, SDGAddressed, ProjectAbstract, FundedBy, FacilitatedBy, Status, Keywords) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     $stmt = $con->prepare($sql);
 
     // Check if the statement was prepared successfully
@@ -37,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Bind the parameters to the SQL query
-    $stmt->bind_param("ssssssssssssssdssssss", $programTitle, $projectTitle, $projectLeader, $projectLeaderSex, $projectLeaderAgency, $projectLeaderContact, $cooperatingAgencies, $implementingAgency, $implementingAgencyAddress, $baseStation, $otherImplementationSites, $startDate, $endDate, $extensionDate, $projectCost, $sectors, $sdgAddressed, $projectAbstract, $fundedBy, $facilitatedBy, $status);
+    $stmt->bind_param("ssssssssssssssdsssssss", $programTitle, $projectTitle, $projectLeader, $projectLeaderSex, $projectLeaderAgency, $projectLeaderContact, $cooperatingAgencies, $implementingAgency, $implementingAgencyAddress, $baseStation, $otherImplementationSites, $startDate, $endDate, $extensionDate, $projectCost, $sectors, $sdgAddressed, $projectAbstract, $fundedBy, $facilitatedBy, $status, $keywords);
 
     // Execute the statement
     if ($stmt->execute() === false) {

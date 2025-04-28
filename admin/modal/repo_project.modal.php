@@ -141,6 +141,10 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="createKeywords">Keywords</label>
+                        <input type="text" class="form-control" id="createKeywords" name="Keywords" placeholder="Enter keywords (comma separated)">
+                    </div>
 
             </div>
 
@@ -310,6 +314,10 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label for="editKeywords">Keywords</label>
+                        <input type="text" class="form-control" id="editKeywords" name="Keywords" placeholder="Enter keywords (comma separated)">
+                    </div>
 
                     <div class="form-row">
                         <div class="col-md-12 text-right">
@@ -342,4 +350,35 @@ $(document).ready(function() {
         });
     });
 });
+
+window.editProject = function(project) {
+    $('#editProjectID').val(project.projectID);
+    $('#editStatus').val(project.status);
+    $('#editProgramTitle').val(project.programTitle);
+    $('#editProjectTitle').val(project.projectTitle);
+    $('#editProjectLeader').val(project.projectLeader);
+    $('#editProjectLeaderSex').val(project.projectLeaderSex);
+    $('#editProjectLeaderAgency').val(project.projectLeaderAgency);
+    $('#editProjectLeaderContact').val(project.projectLeaderContact);
+    $('#editCooperatingAgencies').val(project.cooperatingAgencies);
+    $('#editImplementingAgency').val(project.implementingAgency);
+    $('#editImplementingAgencyAddress').val(project.implementingAgencyAddress);
+    $('#editBaseStation').val(project.baseStation);
+    $('#editOtherImplementationSites').val(project.otherImplementationSites);
+    $('#editStartDate').val(project.startDate);
+    $('#editEndDate').val(project.endDate);
+    $('#editExtensionDate').val(project.extensionDate);
+    $('#editProjectCost').val(project.projectCost);
+    $('#editSectors').val(project.sectors);
+    $('#editSdgAddressed').val(project.sdgAddressed);
+    $('#editProjectAbstract').val(project.projectAbstract);
+    $('#editFundedBy').val(project.fundedBy);
+    $('#editFacilitatedBy').val(project.facilitatedBy);
+    $('#editKeywords').val(project.Keywords || '');
+}
+
+window.clearCreateProjectModal = function() {
+    $('#createProjectForm')[0].reset();
+    $('#createKeywords').val('');
+}
 </script>

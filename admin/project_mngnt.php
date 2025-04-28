@@ -61,51 +61,53 @@
                     <table id="projects_table" class="table table-striped table-bordered">
                         <thead>
                             <tr>
-                                <th>Project ID</th>
-                                <th>Program Title</th>
-                                <th>Project Title</th>
-                                <th>Project Leader</th>
-                                <th>Leader Agency</th>
+                                <th>Title</th>
+                                <th>Proponent</th>
+                                <th>Contact</th>
+                                <th>Year Started</th>
+                                <th>Year Completed</th>
+                                <th>Research Locale</th>
+                                <th>Sector</th>
+                                <th>Abstract</th>
+                                <th>Keywords</th>
+                                <th>Publication</th>
                                 <th>Implementing Agency</th>
-                                <th>Dates</th>
-                                <th style="text-align: center">Status</th>
+                                <th>Collaborating Agency</th>
+                                <th>Funding Agency</th>
+                                <th>Approved Budget</th>
                                 <th style="text-align: right">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
                 while ($row = mysqli_fetch_array($results)) { 
-                    $startDate = date('F j, Y', strtotime($row['ProjectDurationStart']));
-                    $endDate = date('F j, Y', strtotime($row['ProjectDurationEnd']));
+                    $startDate = date('m-Y', strtotime($row['ProjectDurationStart']));
+                    $endDate = date('m-Y', strtotime($row['ProjectDurationEnd']));
                 ?>
                             <tr>
-                                <td class="text-muted">#<?php echo $row['ProjectID']; ?></td>
-                                <td class="fw-medium"><?php echo $row['ProgramTitle']; ?></td>
-                                <td><?php echo $row['ProjectTitle']; ?></td>
-                                <td><?php echo $row['ProjectLeader']; ?></td>
-                                <td><?php echo $row['ProjectLeaderAgency']; ?></td>
-                                <td><?php echo $row['ImplementingAgency']; ?></td>
-                                <td>
-                                    <div>
-                                        <div><i class="far fa-calendar me-1"></i><?php echo $startDate; ?></div>
-                                        <div><i class="far fa-calendar me-1"></i><?php echo $endDate; ?></div>
-                                    </div>
-                                </td>
-                                <td style="text-align: center">
-                                    <span
-                                        class="badge <?php echo $row['Status'] === 'Completed' ? 'badge-success' : 'badge-primary'; ?>">
-                                        <?php echo $row['Status']; ?>
-                                    </span>
-                                </td>
+                                <td><?php echo htmlspecialchars($row['ProjectTitle']); ?></td>
+                                <td><?php echo htmlspecialchars($row['ProjectLeader']); ?></td>
+                                <td><?php echo htmlspecialchars($row['ProjectLeaderContact']); ?></td>
+                                <td><?php echo $startDate; ?></td>
+                                <td><?php echo $endDate; ?></td>
+                                <td><?php echo htmlspecialchars($row['BaseStation']); ?></td>
+                                <td><?php echo htmlspecialchars($row['sectors']); ?></td>
+                                <td><?php
+    $abstract = strip_tags($row['ProjectAbstract']);
+    echo strlen($abstract) > 100 ? htmlspecialchars(substr($abstract, 0, 100)) . '...' : htmlspecialchars($abstract);
+?></td>
+                                <td><?php echo isset($row['Keywords']) ? htmlspecialchars($row['Keywords']) : ''; ?></td>
+                                <td><?php echo htmlspecialchars($row['Publication'] ?? ''); ?></td>
+                                <td><?php echo htmlspecialchars($row['ImplementingAgency']); ?></td>
+                                <td><?php echo htmlspecialchars($row['CooperatingAgencies']); ?></td>
+                                <td><?php echo htmlspecialchars($row['FundedBy']); ?></td>
+                                <td><?php echo number_format($row['ProjectCost'], 2); ?></td>
                                 <td style="text-align: right">
                                     <div class="dropdown">
                                         <button class="btn btn-outline dropdown-toggle" type="button" id="dropdownMenuButton<?php echo $row['ProjectID']; ?>" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             Actions
                                         </button>
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton<?php echo $row['ProjectID']; ?>">
-                                            <!-- <a class="dropdown-item" href="#" onclick='viewProject(<?php echo json_encode($row); ?>)'>
-                                                <i class="fas fa-eye" style="color: var(--primary-color)"></i> View Project
-                                            </a> -->
                                             <a class="dropdown-item" href="#" onclick='editProject(<?php echo json_encode($row); ?>)'>
                                                 <i class="fas fa-pen" style="color: #eab308"></i> View Project
                                             </a>
