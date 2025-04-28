@@ -100,7 +100,13 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="projectCost">Project Cost</label>
-                            <input type="number" class="form-control" id="projectCost" name="projectCost" required>
+                            <input type="number" step="0.01" class="form-control" id="projectCost" name="projectCost" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="sectors">Sectors</label>
+                            <input type="text" class="form-control" id="sectors" name="sectors" required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -263,7 +269,13 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="editProjectCost">Project Cost</label>
-                            <input type="number" class="form-control" id="editProjectCost" name="projectCost" required>
+                            <input type="number" step="0.01" class="form-control" id="editProjectCost" name="projectCost" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-12">
+                            <label for="editSectors">Sectors</label>
+                            <input type="text" class="form-control" id="editSectors" name="sectors" required>
                         </div>
                     </div>
                     <div class="form-row">
@@ -310,3 +322,24 @@
         </div>
     </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#editProjectForm').on('submit', function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            url: 'function/repo.projects.update.php',
+            type: 'POST',
+            data: formData,
+            success: function(response) {
+                // Optionally show a toast or alert
+                location.reload();
+            },
+            error: function() {
+                alert('Failed to update project.');
+            }
+        });
+    });
+});
+</script>

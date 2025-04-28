@@ -42,8 +42,7 @@
                     <p>Connect with us on our social networks. Stay updated with our latest news, insights, and
                         innovations.</p>
                     <div class="social-links mt-3">
-                        <a href="https://facebook.com/aetherio.tech" class="facebook" target="_blank"><i
-                                class="fa fa-facebook"></i></a>
+                        <a href="https://www.facebook.com/satellite.serdac.wmsu" class="facebook" target="_blank"><i class="bx bxl-facebook"></i></a>
                
 
                     </div>
