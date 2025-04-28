@@ -71,11 +71,24 @@ body {
 }
 
 .header-area.header-sticky {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1050;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  background: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+body.sticky-navbar-active {
+  padding-top: 90px; /* Adjust based on navbar height */
+}
+
+@media (max-width: 991px) {
+  body.sticky-navbar-active {
+    padding-top: 120px; /* For mobile nav height */
+  }
 }
 
 .header-area .container {

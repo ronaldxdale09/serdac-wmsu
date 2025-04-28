@@ -420,7 +420,7 @@
 .nav-pills-success .show>.nav-link {
     color: #fff;
     background-color: #15ca20;
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(21, 202, 32, .5);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(21, 202, 32, 0.5);
 }
 
 .nav-pills-info .nav-link.active,
@@ -434,28 +434,28 @@
 .nav-pills-danger .show>.nav-link {
     color: #fff;
     background-color: #fd3550;
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(253, 53, 80, .5);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(253, 53, 80, 0.5);
 }
 
 .nav-pills-warning .nav-link.active,
 .nav-pills-warning .show>.nav-link {
     color: #fff;
     background-color: #ff9700;
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(255, 151, 0, .5);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(255, 151, 0, 0.5);
 }
 
 .nav-pills-dark .nav-link.active,
 .nav-pills-dark .show>.nav-link {
     color: #fff;
     background-color: #223035;
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(34, 48, 53, .5);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(34, 48, 53, 0.5);
 }
 
 .nav-pills-secondary .nav-link.active,
 .nav-pills-secondary .show>.nav-link {
     color: #fff;
     background-color: #75808a;
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(117, 128, 138, .5);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(117, 128, 138, 0.5);
 }
 
 .card .tab-content {
@@ -817,21 +817,46 @@ html {
 }
 
 .status-badge {
-  padding: 5px 10px;
+  padding: 5px 12px;
   border-radius: 20px;
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
+  display: inline-block;
+  letter-spacing: 1px;
+  border: 2px solid transparent;
+  box-shadow: 0 2px 6px rgba(128,0,0,0.07);
 }
 
-.status-active {
-  background-color: #e6f7ee;
-  color: #28a745;
+.status-ongoing {
+  background-color: #e3f0ff;
+  color: #1766c2;
+  border-color: #1766c2;
 }
 
 .status-completed {
-  background-color: #f8f9fa;
-  color: #6c757d;
+  background-color: #e7f8ef;
+  color: #26a96c;
+  border-color: #26a96c;
+}
+
+.status-pending {
+  background-color: #fff5e3;
+  color: #ff9800;
+  border-color: #ff9800;
+}
+
+.status-cancelled, .status-canceled {
+  background-color: #ffe3e3;
+  color: #e53935;
+  border-color: #e53935;
+}
+
+/* fallback for unknown statuses */
+.status-badge:not([class*='status-ongoing']):not([class*='status-completed']):not([class*='status-pending']):not([class*='status-cancelled']):not([class*='status-canceled']) {
+  background-color: #f5f5f5;
+  color: #888;
+  border-color: #bbb;
 }
 
 .action-btn {
@@ -891,11 +916,9 @@ html {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.project-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .project-header {
@@ -912,6 +935,9 @@ html {
 
 .project-body {
   padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
 }
 
 .project-meta {
@@ -966,10 +992,11 @@ html {
   background-color: #600000;
 }
 
-.divider {
-  height: 1px;
-  background: linear-gradient(to right, transparent, #800000, transparent);
-  margin: 40px 0;
+.project-card-bottom {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .project-modal .modal-content {

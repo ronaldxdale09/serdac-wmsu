@@ -39,7 +39,7 @@
                             <p class="mb-3"><?= substr(htmlspecialchars($row['ProjectAbstract']), 0, 150) ?>...</p>
                         <?php endif; ?>
                         
-                        <div class="d-flex justify-content-between align-items-center">
+                        <div class="project-card-bottom">
                             <span class="status-badge status-<?= strtolower($row['Status']) ?>">
                                 <?= $row['Status'] ?>
                             </span>

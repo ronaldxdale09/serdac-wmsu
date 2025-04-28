@@ -340,17 +340,13 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('scroll', function() {
         const currentScroll = window.pageYOffset;
         const subHeaderHeight = subHeader ? subHeader.offsetHeight : 0;
-
+        const body = document.body;
         if (currentScroll > subHeaderHeight) {
             header.classList.add('header-sticky');
-            if (currentScroll > lastScroll) {
-                header.style.transform = 'translateY(-100%)';
-            } else {
-                header.style.transform = 'translateY(0)';
-            }
+            body.classList.add('sticky-navbar-active');
         } else {
             header.classList.remove('header-sticky');
-            header.style.transform = '';
+            body.classList.remove('sticky-navbar-active');
         }
         lastScroll = currentScroll;
     });
