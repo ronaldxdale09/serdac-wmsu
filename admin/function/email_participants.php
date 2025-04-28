@@ -13,11 +13,11 @@ function sendEmail($emails, $subject, $body, $request_id) {
         $mail->Host = 'smtp.hostinger.com';
         $mail->SMTPAuth = true;
         $mail->Port = 587;
-        $mail->Username = 'no-reply@serdac-wmsu.online';
-        $mail->Password = 'Serdac@2024';
+        $mail->Username = 'no-reply@satserdac-wmsu.com';
+        $mail->Password = 'Serdacnotif@2025';
 
         //Recipients
-        $mail->setFrom('no-reply@serdac-wmsu.online', 'SERDAC-WMSU');
+        $mail->setFrom('no-reply@satserdac-wmsu.com', 'SERDAC-WMSU');
         
         foreach (explode(',', $emails) as $email) {
             if (PHPMailer::validateAddress(trim($email))) {

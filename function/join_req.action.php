@@ -75,15 +75,15 @@ function sendServiceRequestSummaryEmail($recipientEmail, $serviceType, $officeAg
         $mail->Host = 'smtp.hostinger.com';
         $mail->SMTPAuth = true;
         $mail->Port = 587;
-        $mail->Username = 'no-reply@serdac-wmsu.online';
-        $mail->Password = 'Serdac@2024';
+        $mail->Username = 'no-reply@satserdac-wmsu.com';
+        $mail->Password = 'Serdacnotif@2025';
 
         // Recipient
         if (!PHPMailer::validateAddress($recipientEmail)) {
             throw new Exception("Invalid email address");
         }
 
-        $mail->setFrom('no-reply@serdac-wmsu.online', 'SERDAC-WMSU');
+        $mail->setFrom('no-reply@satserdac-wmsu.com', 'SERDAC-WMSU');
         $mail->addAddress($recipientEmail);
 
         // Content

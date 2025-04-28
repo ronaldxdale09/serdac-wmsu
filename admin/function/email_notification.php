@@ -51,8 +51,8 @@ function dataAnalysisDocument($recipientEmail) {
          $mail->Host = 'smtp.hostinger.com';
          $mail->SMTPAuth = true;
          $mail->Port = 587;
-         $mail->Username = 'no-reply@serdac-wmsu.online'; // SMTP username
-         $mail->Password = 'Serdac@2024'; // SMTP password
+         $mail->Username = 'no-reply@satserdac-wmsu.com'; // SMTP username
+         $mail->Password = 'Serdacnotif@2025'; // SMTP password
 
 
         // Recipient
@@ -60,7 +60,7 @@ function dataAnalysisDocument($recipientEmail) {
             throw new Exception("Invalid email address");
         }
 
-         $mail->setFrom('no-reply@serdac-wmsu.online', 'SERDAC-WMSU');
+         $mail->setFrom('no-reply@satserdac-wmsu.com', 'SERDAC-WMSU');
         $mail->addAddress($recipientEmail);
 
         
