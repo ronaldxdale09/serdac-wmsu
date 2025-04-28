@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<html>
 <?php
-
-
 
 // Existing code
 include('function/db.php');
@@ -15,10 +11,11 @@ if (isset($_SESSION["isLogin"])) {
     // If isLogin is not 1 (e.g., 0), allow login
 }
 
-
 $codeExists = false;
+$activationAttempted = false;
 
 if (isset($_GET["code"])) {
+    $activationAttempted = true;
     $activationCode = $_GET['code'];
     // Prepare a statement to avoid SQL injection
     $stmt = $con->prepare("SELECT * FROM users WHERE activationCode = ?");
@@ -29,7 +26,6 @@ if (isset($_GET["code"])) {
     if ($result->num_rows > 0) {
         // Valid activation code
         $codeExists = true;
-
         $stmt = $con->prepare("UPDATE users SET `isActive` = 1 WHERE activationCode = ?");
         $stmt->bind_param("s", $activationCode);
         $stmt->execute();
@@ -42,12 +38,22 @@ $con->close();
 <!-- After closing the PHP tag, place your HTML outside of PHP -->
 <?php if ($codeExists): ?>
 <script>
-window.onload = function() {
-    document.getElementById('show-activate').style.display = 'block';
-};
+document.addEventListener('DOMContentLoaded', function() {
+    var activateAlert = document.getElementById('show-activate');
+    if (activateAlert) activateAlert.style.display = 'block';
+});
+</script>
+<?php elseif ($activationAttempted): ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var failAlert = document.getElementById('show-activate-fail');
+    if (failAlert) failAlert.style.display = 'block';
+});
 </script>
 <?php endif; ?>
 
+<!DOCTYPE html>
+<html>
 <head>
     <title>SERDAC-WMSU</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -64,7 +70,6 @@ window.onload = function() {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
     integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
 </script>
-
 
 <body>
     <div class="login-container">
@@ -85,6 +90,11 @@ window.onload = function() {
 
                 <div class="alert alert-success alert-dismissible fade show" style="display:none" role="alert" id="show-activate">
                     <strong>Activation Successful</strong> – Your account has been successfully activated. Welcome aboard!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+
+                <div class="alert alert-danger alert-dismissible fade show" style="display:none" role="alert" id="show-activate-fail">
+                    <strong>Activation Failed</strong> – The activation link is invalid or has already been used.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 
