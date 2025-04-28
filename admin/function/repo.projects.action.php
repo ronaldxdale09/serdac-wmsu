@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $keywords = $_POST['Keywords'];
 
     // Prepare the SQL statement with placeholders
-    $sql = "INSERT INTO repo_projects (ProgramTitle, ProjectTitle, ProjectLeader, ProjectLeaderSex, ProjectLeaderAgency, ProjectLeaderContact, CooperatingAgencies, ImplementingAgency, ImplementingAgencyAddress, BaseStation, OtherImplementationSites, ProjectDurationStart, ProjectDurationEnd, ExtensionDate, ProjectCost, sectors, SDGAddressed, ProjectAbstract, FundedBy, FacilitatedBy, Status, Keywords) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+    $sql = "INSERT INTO repo_projects (ProgramTitle, ProjectTitle, ProjectLeader, ProjectLeaderSex, ProjectLeaderAgency, ProjectLeaderContact, ImplementingAgency, ImplementingAgencyAddress, BaseStation, ProjectDurationStart, ProjectDurationEnd, ExtensionDate, ProjectCost, SDGAddressed, ProjectAbstract, FundedBy, FacilitatedBy, Status, CooperatingAgencies, OtherImplementationSites, sectors, Keywords) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     $stmt = $con->prepare($sql);
 
     // Check if the statement was prepared successfully
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     // Bind the parameters to the SQL query
-    $stmt->bind_param("ssssssssssssssdsssssss", $programTitle, $projectTitle, $projectLeader, $projectLeaderSex, $projectLeaderAgency, $projectLeaderContact, $cooperatingAgencies, $implementingAgency, $implementingAgencyAddress, $baseStation, $otherImplementationSites, $startDate, $endDate, $extensionDate, $projectCost, $sectors, $sdgAddressed, $projectAbstract, $fundedBy, $facilitatedBy, $status, $keywords);
+    $stmt->bind_param("ssssssssssssdsssssssss", $programTitle, $projectTitle, $projectLeader, $projectLeaderSex, $projectLeaderAgency, $projectLeaderContact, $implementingAgency, $implementingAgencyAddress, $baseStation, $startDate, $endDate, $extensionDate, $projectCost, $sdgAddressed, $projectAbstract, $fundedBy, $facilitatedBy, $status, $cooperatingAgencies, $otherImplementationSites, $sectors, $keywords);
 
     // Execute the statement
     if ($stmt->execute() === false) {
