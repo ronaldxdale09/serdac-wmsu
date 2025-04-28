@@ -54,7 +54,7 @@
 
     <div class="container footer-bottom clearfix ">
         <div class="copyright ">
-            &copy; Copyright <strong><span> <a style='color:white;' href="https://serdac-wmsu.online/">SERDAC-WMSU </a></span></strong>. All Rights Reserved
+            &copy; Copyright <strong><span> <a style='color:white;' href="https://satserdac-wmsu.com/">SERDAC-WMSU </a></span></strong>. All Rights Reserved
         </div>
         <!-- <div class="credits">
             Designed by SERDAC WMSU</a>

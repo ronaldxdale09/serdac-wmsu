@@ -184,11 +184,11 @@ $(document).on('click', '.notify_docu', function() {
             Please make sure to submit the documents at your earliest convenience.
 
             You can review and upload the required documents by logging into your profile here:
-            [SERDAC-WMSU Profile](https://serdac-wmsu.online/profile.php)
+            [SERDAC-WMSU Profile](https://satserdac-wmsu.com/profile.php)
 
             Best regards,
             SERDAC-WMSU
-            https://serdac-wmsu.online
+            https://satserdac-wmsu.com
         `;
 
         // Assuming the existence of a modal for email notification

@@ -26,7 +26,6 @@ $activationCode = substr(str_shuffle(md5(microtime())), 0, 12);
 
 $current_date_dmy = date('d-m-Y');
 
-
 // Check if email is already registered
 $emailCheckQuery = "SELECT email FROM users WHERE email = ?";
 $emailCheckStmt = mysqli_prepare($con, $emailCheckQuery);
@@ -44,22 +43,29 @@ if (mysqli_stmt_num_rows($emailCheckStmt) > 0) {
     $stmt = mysqli_prepare($con, $query);
     mysqli_stmt_bind_param($stmt, "ssssssssssssssssssss", $sex, $activationCode, $fname, $midname, $lname, $contact_no, $email, $password, $occupation, $education_level, $accessType, $gender, $zipcode, $region, $province, $city, $barangay, $userType, $isActive,$current_date_dmy);
 
+    ob_start();
+
     if (mysqli_stmt_execute($stmt)) {
         $response['status'] = 'success';
         // Send activation email
-        $activationLink = 'https://serdac-wmsu.online/login.php?code='.$activationCode; // Replace with actual activation link
+        $activationLink = 'https://satserdac-wmsu.com/login.php?code='.$activationCode;
         $userEmail = $email;
-        sendActivationEmail($userEmail, $activationLink);
+        // Suppress any output from sendActivationEmail
+        $emailResult = @sendActivationEmail($userEmail, $activationLink);
+        if (!$emailResult) {
+            error_log('Activation email failed for: ' . $userEmail);
+            $response['email_warning'] = 'Activation email could not be sent, but your account was created.';
+        }
     } else {
         $response['status'] = 'error';
         $response['message'] = 'Error: ' . mysqli_error($con);
     }
+
+    // --- Clean output buffer and only return JSON ---
+    ob_end_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
 }
-
-// Return response as JSON
-header('Content-Type: application/json');
-echo json_encode($response);
-
 
 function sendActivationEmail($recipientEmail, $activationLink) {
     try {
@@ -163,12 +169,8 @@ function sendActivationEmail($recipientEmail, $activationLink) {
         $mail->send();
         return true;
     } catch (Exception $e) {
-        // Handle exceptions or log errors
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        error_log("Activation email error: {$mail->ErrorInfo}");
         return false;
     }
 }
-
-
-
 ?>

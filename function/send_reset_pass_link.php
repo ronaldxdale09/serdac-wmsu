@@ -23,7 +23,7 @@ if ($result->num_rows === 0) {
     $stmt->execute();
 
     // Send the reset email
-    $resetLink = 'https://serdac-wmsu.online/set_password.php?token=' . $resetToken;
+    $resetLink = 'https://satserdac-wmsu.com/set_password.php?token=' . $resetToken;
     $mail = new PHPMailer(true);
 
     try {
