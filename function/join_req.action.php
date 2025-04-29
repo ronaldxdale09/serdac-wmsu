@@ -112,7 +112,7 @@ function sendServiceRequestSummaryEmail($recipientEmail, $serviceType, $officeAg
                 <p>Please expect an invitation email from us soon with further details about the training. We look forward to your participation.</p>
                 <p>If you have any questions or need assistance, please feel free to contact us.</p>
                 <p class='footer'>This is an automated message. Please do not reply to this email.<br>
-                For inquiries or assistance, visit <a href='http://www.serdac-wmsu.online/contact_us.php'>www.serdac-wmsu.online/support</a>.</p>
+                For inquiries or assistance, visit <a href='http://www.satserdac-wmsu.com/contact_us.php'>www.satserdac-wmsu.com/support</a>.</p>
             </div>
         </body>
         </html>";

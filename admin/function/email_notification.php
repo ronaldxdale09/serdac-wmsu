@@ -33,9 +33,9 @@ function loadEmailTemplate() {
             <p>Dear User,</p>
             <p>Your request has been successfully confirmed. To proceed to the next stage, you must submit all required documents and files necessary for your data analysis request.</p>
             <p>To submit your documents, please click on the following link:</p>
-            <p><a href='http://serdac-wmsu.online/profile.php' class='submit-button'>Submit Document</a></p>
+            <p><a href='http://satserdac-wmsu.com/profile.php' class='submit-button'>Submit Document</a></p>
             <p class='footer'>Do not reply to this email; it was sent from an unmonitored email address.<br>
-            For inquiries, please contact our Technical Support at <a href='http://www.serdac-wmsu.online/support'>www.serdac-wmsu.online/support</a>.</p>
+            For inquiries, please contact our Technical Support at <a href='http://www.satserdac-wmsu.com/support'>www.satserdac-wmsu.com/support</a>.</p>
         </div>
     
     </body>

@@ -158,7 +158,7 @@ function sendActivationEmail($recipientEmail, $activationLink) {
                 <p><a href='{$activationLink}'>{$activationLink}</a></p>
                 <div class='footer'>
                     <p>Do not reply to this email; it was sent from an unmonitored email address.<br>
-                    For inquiries, please contact our Technical Support at <a href='http://www.serdac-wmsu.online/support'>www.serdac-wmsu.online/support</a>.</p>
+                    For inquiries, please contact our Technical Support at <a href='http://www.satserdac-wmsu.com/support'>www.satserdac-wmsu.com/support</a>.</p>
                 </div>
             </div>
         </body>

@@ -129,7 +129,7 @@ function     sendServiceRequestSummaryEmail($recipientEmail, $serviceType, $offi
                 </ul>
                 <p>We are currently processing your request and will send you an update soon. Please feel free to contact us if you have any further questions or need assistance.</p>
                 <p class='footer'>This is an automated message. Please do not reply to this email.<br>
-                For inquiries or assistance, visit <a href='http://www.serdac-wmsu.online/support'>www.serdac-wmsu.online/support</a>.</p>
+                For inquiries or assistance, visit <a href='http://www.satserdac-wmsu.com/support'>www.satserdac-wmsu.com/support</a>.</p>
             </div>
         </body>
         </html>";

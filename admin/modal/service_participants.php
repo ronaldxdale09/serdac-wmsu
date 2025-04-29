@@ -186,7 +186,7 @@ $(document).ready(function() {
 function generateQRCode() {
     var inviteCodeText = document.getElementById('inviteCode').textContent;
 
-    var inviteCode = 'serdac-wmsu.online/service_join.php?inv=' +
+    var inviteCode = 'satserdac-wmsu.com/service_join.php?inv=' +
         inviteCodeText; // Convert the number to a string to use as text in QR code
     var qrContainer = document.getElementById('qrCode');
 
@@ -524,7 +524,7 @@ $(document).ready(function() {
                         <p>Dear Participant,</p>
                         <p>We are pleased to invite you to our upcoming event, scheduled to take place from <strong>${fromDisplay}</strong> to <strong>${toDisplay}</strong> at <strong>${serviceVenue}</strong>. This event will offer you the opportunity to engage with industry leaders and enhance your skills.</p>
                         <p>Please find the invitation code attached: <strong>${inviteCode}</strong></p>
-                        <p>Invitation Link: <strong>https://www.serdac-wmsu.online/service_join.php?inv=${inviteCode}</strong></p>
+                        <p>Invitation Link: <strong>https://www.satserdac-wmsu.com/service_join.php?inv=${inviteCode}</strong></p>
                         <p><a href="${googleCalendarUrl}" target="_blank" class="btn btn-primary">Save to Google Calendar</a></p>
                         <p>We look forward to your participation.</p>
                         <p>Best regards,<br>SERDAC-WMSU</p>
