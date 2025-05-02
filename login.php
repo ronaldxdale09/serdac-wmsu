@@ -89,7 +89,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
 
                 <div class="alert alert-success alert-dismissible fade show" style="display:none" role="alert" id="show-activate">
-                    <strong>Activation Successful</strong> – Your account has been successfully activated. Welcome aboard!
+                    <strong>Activation Successful</strong><br>
+                    Your account has been successfully activated.<br>
+                    <ul style="margin-top:8px;margin-bottom:0;">
+                        <li>You can now log in and access all features of your account.</li>
+                        <li>If you have not received a confirmation email, please check your spam or junk folder.</li>
+                        <li>For any issues, contact support at <a href="mailto:support@serdac-wmsu.edu.ph">support@serdac-wmsu.edu.ph</a>.</li>
+                    </ul>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
 

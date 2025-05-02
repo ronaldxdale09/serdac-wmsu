@@ -36,7 +36,10 @@ try {
     $user = $result->fetch_assoc();
 
     if ($user['isActive'] == 0) {
-        json_output(["success" => false, "message" => "Please activate your account first"]);
+        json_output([
+            "success" => false,
+            "message" => "Please check your email and activate your account first."
+        ]);
     }
 
     if (!password_verify($password, $user['password'])) {
